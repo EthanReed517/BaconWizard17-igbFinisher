@@ -48,11 +48,42 @@ def verifyConfigExistence():
         except AssertionError:
             # The assertion failed (the file does not exist)
             # Print the error message
-            print("ERROR: settings.ini does not exist. Restore the file and try again")
+            print("ERROR: settings.ini does not exist. Restore the file and try again.")
             # Wait for user confirmation
-            questionary.press_any_key_to_continue("Press any key to try again...").ask
+            questionary.press_any_key_to_continue("Press any key to try again...").ask()
     # Print the success message
     print("settings.ini found.\n")
+
+# Define the function to check if XVI32 was installed
+def verifyXVI32Existence():
+    # Eternal loop until broken
+    while True:
+        try:
+            # Check if the file exists
+            assert os.path.exists("XVI32")
+            # Break out of the loop if there are no errors
+            break
+        except AssertionError:
+            # The assertion failed (the file does not exist)
+            # Print the error message
+            print("ERROR: folder \"XVI32\" does not exist. Install XVI32 and try again.")
+            # Wait for user confirmation
+            questionary.press_any_key_to_continue("Press any key to try again...").ask()
+    # Eternal loop until broken
+    while True:
+        try:
+            # Check if the file exists
+            assert os.path.exists("XVI32\\XVI32.exe")
+            # Break out of the loop if there are no errors
+            break
+        except AssertionError:
+            # The assertion failed (the file does not exist)
+            # Print the error message
+            print("ERROR: XVI32.exe does not exist in the \"XVI32\". Install XVI32 and try again.")
+            # Wait for user confirmation
+            questionary.press_any_key_to_continue("Press any key to try again...").ask()
+    # Print the success message
+    print("XVI32 installation found.\n")
 
 # Define the function to get the character numbers
 def characterNumberGetter(game):
@@ -1172,6 +1203,11 @@ MUA2Num = settings[3]
 hexEditChoice = settings[4]
 runAlchemyChoice = settings[5]
 multiPose = settings[6]
+# Determine if hex editing is needed
+if hexEditChoice == "True":
+    # Hex editing is needed
+    # Verify existence of XVI32
+    verifyXVI32Existence()
 # Check if the asset can be recognized from the file name
 assetType = getAssetTypeFromName()
 # Determine if the asset type is unknown
