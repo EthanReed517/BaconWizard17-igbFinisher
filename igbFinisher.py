@@ -202,7 +202,7 @@ def getFilePath(Game1Num, Game2Num, Game1Name, Game2Name):
         # Create the message for the prompt
         message = "Enter the path to the folder for the " + games + " release:"
         # Ask the question
-        filePath = questionary.text(message, validate = pathValidator).ask()
+        filePath = questionary.path(message, validate = pathValidator).ask()
     # Replace any incorrect slashes
     filePath = filePath.replace("\\", "/")
     # Return the path
@@ -1109,7 +1109,7 @@ def otherModelNameInput(charNum, gameName):
         # Create the question
         prompt = "What is the name of this file for " + gameName + "? Do not include the file extension."
         # Ask the question
-        fileName = questionary.text(prompt, validate = fileNameValidator).ask()
+        fileName = questionary.path(prompt, validate = fileNameValidator).ask()
         # add the file extension
         fileName += ".igb"
     # return the collected value
@@ -1190,7 +1190,7 @@ if assetType == "Unknown":
     if not(assetType == "Other"):
         # Asset is not "Other", need to get the file name
         # Ask for the file name
-        fileName = questionary.text("What is the name of the file that you are processing?", validate = fileNameValidatorStart).ask()
+        fileName = questionary.path("What is the name of the file that you are processing?", validate = fileNameValidatorStart).ask()
         # add the file extension
         fileName += ".igb"
 else:
