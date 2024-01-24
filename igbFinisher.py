@@ -48,7 +48,9 @@ def verifyConfigExistence():
         except AssertionError:
             # The assertion failed (the file does not exist)
             # Print the error message
-            print("settings.ini does not exist. Restore the file and try again")
+            print("ERROR: settings.ini does not exist. Restore the file and try again")
+            # Wait for user confirmation
+            questionary.press_any_key_to_continue("Press any key to try again...").ask
     # Print the success message
     print("settings.ini found.\n")
 
@@ -80,11 +82,11 @@ def characterNumberGetter(game):
             else:
                 # The value is not blank
                 # Get a new use input
-                print("Character number for " + str(game) + " is set to " + str(number) + ", which is not a number. Please enter a number.")
+                print("ERROR: Character number for " + str(game) + " is set to " + str(number) + ", which is not a number. Please enter a number.")
                 number = input("Enter a new value: ")
         except AssertionError:
             # The number is not within the accepted range (assertion failed)
-            print("Character number for " + str(game) + " is set to " + str(number) + ", which is not within the acceptable range (0-255). Please enter a number.")
+            print("ERROR: Character number for " + str(game) + " is set to " + str(number) + ", which is not within the acceptable range (0-255). Please enter a number.")
             number = input("Enter a new value: ")
     # Update the number in the settings
     config['Settings'][setting] = number
@@ -112,7 +114,7 @@ def settingsGetter(settingName):
             break
         except (ValueError, AssertionError):
             # The value is not acceptable
-            print("The value for setting " + str(settingName) + " is set to " + str(setting) + ", which is not an acceptable value. It must be True or False. Please enter an acceptable value.")
+            print("ERROR: The value for setting " + str(settingName) + " is set to " + str(setting) + ", which is not an acceptable value. It must be True or False. Please enter an acceptable value.")
             setting = input("Enter a new value: ")
     # Update the setting in the settings
     config['Settings'][settingName] = setting
