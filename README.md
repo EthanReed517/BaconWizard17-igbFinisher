@@ -17,6 +17,7 @@ This is a program to perform finishing operations on igb files to prepare them f
 2. Download igbFinisher.
 3. Extract it in a location of your choosing.
 4. Within the `igbFinisher` folder, create a folder called `XVI32`. Install XVI32 there.
+5. Install all other prerequisite programs per their installation instructions.
  
 ## Usage
 1. Export an igb file to use with the finisher. See the section below titled "Asset Setup" for more information.
