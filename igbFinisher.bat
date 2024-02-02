@@ -1,6 +1,6 @@
 @echo off
 REM set the title
-title igbFinisher
+REM title igbFinisher
 REM call the python file
 py igbFinisher.py
 REM pause to allow the program to stay open

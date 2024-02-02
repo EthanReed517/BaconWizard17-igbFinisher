@@ -1,8 +1,7 @@
 Add "Press any key to continue" to questions.py
 Update paths to be relative to run with py.exe: https://stackoverflow.com/questions/918154/relative-paths-in-python
-Set up window title through Python: https://stackoverflow.com/questions/7387276/set-windows-command-line-terminal-title-in-python (See Jeffrey Harper's answer and the first comment under it)
 Need to add the ability to check the number of igb files in the current folder. This will be used to see if there's any file that can be worked on, as well as to determine how many files there actually are during multi-file detection
 Reset Alchemy eval
 Call command prompt stuff within the script instead of through batch files
 Can hex editing be done in Python directly?
-Create a UI that will allow drag and drop of files
+Create a UI that will allow drag and drop of files: https://stackoverflow.com/questions/14267900/drag-and-drop-explorer-files-to-tkinter-entry-widget (Eliav Louski's answer)

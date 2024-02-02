@@ -6,6 +6,8 @@
 # ####### #
 # IMPORTS #
 # ####### #
+# To be able to set the title
+import ctypes
 # To be able to copy and move files
 import os
 # To be able to parse the ini file
@@ -1145,6 +1147,8 @@ def deleteLingering(fileList):
 # ############## #
 # MAIN EXECUTION #
 # ############## #
+# Set the window title
+ctypes.windll.kernel32.SetConsoleTitleW("BaconWizard17's igb Finisher")
 # Display the title
 resources.printPlain("██╗ ██████╗ ██████╗ ███████╗██╗███╗   ██╗██╗███████╗██╗  ██╗███████╗██████╗ ")
 resources.printPlain("██║██╔════╝ ██╔══██╗██╔════╝██║████╗  ██║██║██╔════╝██║  ██║██╔════╝██╔══██╗")
