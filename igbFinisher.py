@@ -2,6 +2,7 @@
 # INFORMATION #
 # ########### #
 
+
 # ####### #
 # IMPORTS #
 # ####### #
@@ -9,86 +10,15 @@
 import os
 # To be able to parse the ini file
 import configparser
-# To be able to create command line list questions
-import questionary
-# To be able to validate answers
-from questionary import Validator, ValidationError, prompt, Style
 # To be able to copy files
 import shutil
-
-# ###### #
-# STYLES #
-# ###### #
-# Define the style for error messages
-errorStyle = "bold fg:#ff0000"
-
-# Define the style for warning messages
-warningStyle = "bold fg:#ffff00"
-
-# Define the style for important text messages
-importantTextStyle = "bold fg:#ffffff"
-
-# Define the style for plain text messages
-plainTextStyle = "fg:#ffffff"
-
-# Define the style for success messages
-successStyle = "fg:#3a96dd"
-
-# Define the style for choices
-questionStyle = Style([
-    ('qmark', 'fg:#3a96dd bold'),
-    ('question', 'bold'),
-    ('answer', 'fg:#3a96dd bold'),
-    ('pointer', 'fg:#3a96dd bold'),
-    ('highlighted', 'fg:#3a96dd bold underline'),
-    ('instruction', ''),
-    ('text', ''),
-    ('disabled', 'fg:#858585 italic')
-])
+# To simplify operations
+import resources
 
 
 # ######### #
 # FUNCTIONS #
 # ######### #
-# Define the function for choice-based questions
-def questionarySelect(question, options):
-    # Define the general form for asking questions
-    answer = questionary.select(
-        question,
-        choices = options,
-        pointer = ">",
-        style = questionStyle
-    ).ask()
-    # Return the collected value
-    return answer
-
-# Define the function for path-based questions
-def questionaryPath(question, validator):
-    # Define the general form for asking questions
-    answer = questionary.path(
-        question,
-        validate = validator,
-        style = questionStyle
-    ).ask()
-    # Return the collected value
-    return answer
-
-# Define the function for confirmation questions
-def questionaryConfirm(question, defaultChoice):
-    # Define the general form for asking questions
-    answer = questionary.confirm(
-        question,
-        default = defaultChoice,
-        style = questionStyle
-    ).ask()
-    # Return the collected value
-    return answer
-
-# Define the function for styled printing
-def questionaryPrint(message, styleChoice):
-    # Define the general form for printing
-    questionary.print(message, style = styleChoice)
-
 # Define the function for getting the settings.
 def parseConfig():
     # Check if the config file exists
@@ -118,9 +48,9 @@ def verifyConfigExistence():
         except AssertionError:
             # The assertion failed (the file does not exist)
             # Print the error message
-            questionaryPrint("ERROR: settings.ini does not exist. Restore the file and try again.", errorStyle)
+            resources.printError("ERROR: settings.ini does not exist. Restore the file and try again.")
             # Wait for user confirmation
-            questionary.press_any_key_to_continue("Press any key to try again...").ask()
+            resources.pressAnyKey("Press any key to try again...")
     # Print the success message
     #print("settings.ini found.")
 
@@ -136,9 +66,9 @@ def verifyXVI32Existence():
         except AssertionError:
             # The assertion failed (the file does not exist)
             # Print the error message
-            questionaryPrint("ERROR: folder \"XVI32\" does not exist. Install XVI32 and try again.", errorStyle)
+            resources.printError("ERROR: folder \"XVI32\" does not exist. Install XVI32 and try again.")
             # Wait for user confirmation
-            questionary.press_any_key_to_continue("Press any key to try again...").ask()
+            resources.pressAnyKey("Press any key to try again...")
     # Eternal loop until broken
     while True:
         try:
@@ -149,9 +79,9 @@ def verifyXVI32Existence():
         except AssertionError:
             # The assertion failed (the file does not exist)
             # Print the error message
-            questionaryPrint("ERROR: XVI32.exe does not exist in the \"XVI32\". Install XVI32 and try again.", errorStyle)
+            resources.printError("ERROR: XVI32.exe does not exist in the \"XVI32\". Install XVI32 and try again.")
             # Wait for user confirmation
-            questionary.press_any_key_to_continue("Press any key to try again...").ask()
+            resources.pressAnyKey("Press any key to try again...")
     # Print the success message
     #print("XVI32 installation found.")
 
@@ -183,11 +113,11 @@ def characterNumberGetter(game):
             else:
                 # The value is not blank
                 # Get a new use input
-                questionaryPrint("ERROR: Character number for " + str(game) + " is set to " + str(number) + ", which is not a number. Please enter a number.", errorStyle)
+                resources.printError("ERROR: Character number for " + str(game) + " is set to " + str(number) + ", which is not a number. Please enter a number.")
                 number = input("Enter a new value: ")
         except AssertionError:
             # The number is not within the accepted range (assertion failed)
-            questionaryPrint("ERROR: Character number for " + str(game) + " is set to " + str(number) + ", which is not within the acceptable range (0-255). Please enter a number.", errorStyle)
+            resources.printError("ERROR: Character number for " + str(game) + " is set to " + str(number) + ", which is not within the acceptable range (0-255). Please enter a number.")
             number = input("Enter a new value: ")
     # Update the number in the settings
     config['Settings'][setting] = number
@@ -215,7 +145,7 @@ def settingsGetter(settingName):
             break
         except (ValueError, AssertionError):
             # The value is not acceptable
-            questionaryPrint("ERROR: The value for setting " + str(settingName) + " is set to " + str(setting) + ", which is not an acceptable value. It must be True or False. Please enter an acceptable value.", errorStyle)
+            resources.printError("ERROR: The value for setting " + str(settingName) + " is set to " + str(setting) + ", which is not an acceptable value. It must be True or False. Please enter an acceptable value.")
             setting = input("Enter a new value: ")
     # Update the setting in the settings
     config['Settings'][settingName] = setting
@@ -248,12 +178,12 @@ def getAssetTypeFromName():
     if validCounter > 1:
         # More than 1 asset is present
         # Warn the user
-        questionaryPrint("WARNING: More than 1 igb file with a known file name was found. Only 1 igb file can be processed at a time. The file being processed is a " + assetType + ".\n", warningStyle)
+        resources.printWarning("WARNING: More than 1 igb file with a known file name was found. Only 1 igb file can be processed at a time. The file being processed is a " + assetType + ".\n")
     # Check if only 1 asset is present
     elif validCounter == 1:
         # Only 1 asset
         # State the asset type
-        questionaryPrint("The asset type was automatically identified as a " + assetType + ".\n", successStyle)
+        resources.printSuccess("The asset type was automatically identified as a " + assetType + ".\n")
     # return the asset type
     return assetType
 
@@ -303,7 +233,7 @@ def getFilePath(Game1Num, Game2Num, Game1Name, Game2Name):
         # Create the message for the prompt
         message = "Enter the path to the folder for the " + games + " release:"
         # Ask the question
-        filePath = questionaryPath(message, pathValidator)
+        filePath = resources.path(message, pathValidator)
     # Replace any incorrect slashes
     filePath = filePath.replace("\\", "/")
     # Return the path
@@ -321,12 +251,12 @@ def pathValidator(path):
 # Define the function to process skins
 def skinProcessing(XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath):
     # Determine the texture size
-    textureSize = questionarySelect("What is the original size of the main texture?", ["256x256 or less", "Over 256x256"])
+    textureSize = resources.select("What is the original size of the main texture?", ["256x256 or less", "Over 256x256"])
     # Ask additional questions based on texture size
     if textureSize == "256x256 or less":
         # Standard Texture
         # Ask which type of skin is being used
-        skinType = questionarySelect("Is this for a primary skin or secondary skin?", ["Primary skin", "Secondary skin"])
+        skinType = resources.select("Is this for a primary skin or secondary skin?", ["Primary skin", "Secondary skin"])
         # Filter based on skin type
         if skinType == "Primary skin":
             # Primary skin
@@ -362,7 +292,7 @@ def skinProcessing(XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath):
         # Add remaining texture options
         textureFormatList.extend(["XML2 PC, Xbox, and Wii","PS2","GameCube, PSP, and MUA2 PS2"])
     # Ask which texture format was used
-    textureFormat = questionarySelect("What texture format was used for this asset?", textureFormatList)
+    textureFormat = resources.select("What texture format was used for this asset?", textureFormatList)
     # Determine if cel shading needs to be asked about
     if (textureFormat == "Wii" or textureFormat == "MUA1 PC, Steam, 360, and PS3"):
         # Texture format that would not use cel shading
@@ -370,7 +300,7 @@ def skinProcessing(XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath):
     else:
         # Texture format that could be with a cel shaded skin
         # Determine if the skin has cel shading or not
-        celChoice = questionaryConfirm("Does the skin use cel shading?", False)
+        celChoice = resources.confirm("Does the skin use cel shading?", False)
     # Filter based on cel shading choice
     if celChoice == True:
         # cel shading is used
@@ -553,7 +483,7 @@ def skinProcessing(XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath):
 # Define the function to process mannequins
 def mannequinProcessing(MUA1Num, MUA2Num, MUAPath, multiPose):
     # Determine the texture size
-    textureSize = questionarySelect("What is the original size of the main texture?", ["256x256 or less", "Over 256x256"])
+    textureSize = resources.select("What is the original size of the main texture?", ["256x256 or less", "Over 256x256"])
     # Ask additional questions based on texture size
     if textureSize == "256x256 or less":
         # Standard Texture
@@ -564,12 +494,12 @@ def mannequinProcessing(MUA1Num, MUA2Num, MUAPath, multiPose):
         # Initialize a list to store the options in
         textureFormatList = ["MUA1 PC, Steam, 360, and PS3","XML2 PC, Xbox, and Wii","PS2","GameCube, PSP, and MUA2 PS2"]
     # Ask which texture format was used
-    textureFormat = questionarySelect("What texture format was used for this asset?", textureFormatList)
+    textureFormat = resources.select("What texture format was used for this asset?", textureFormatList)
     # Filter names based on whether or not the character uses multiple mannequin poses
     if multiPose == "True":
         # Character uses multiple poses
         # determine the pose name
-        mannequinPose = questionarySelect("Which mannequin pose is being used?", ["MUA1 Pose", "MUA1 Last-Gen Pose", "MUA1 Next-Gen Pose", "MUA2 Pose", "OCP Pose", "Custom Pose"])
+        mannequinPose = resources.select("Which mannequin pose is being used?", ["MUA1 Pose", "MUA1 Last-Gen Pose", "MUA1 Next-Gen Pose", "MUA2 Pose", "OCP Pose", "Custom Pose"])
         # Set up file names
         MUA1Name = MUA1Num + "XX (Mannequin - " + mannequinPose + ").igb"
         MUA2Name = MUA2Num + "XX (Mannequin - " + mannequinPose + ").igb"
@@ -719,7 +649,7 @@ def mannequinProcessing(MUA1Num, MUA2Num, MUAPath, multiPose):
 # Define the function to process 3D Heads
 def headProcessing(XML1Num, XML2Num, XMLPath):
     # Determine the texture size
-    textureSize = questionarySelect("What is the original size of the main texture?", ["256x256 or less", "Over 256x256"])
+    textureSize = resources.select("What is the original size of the main texture?", ["256x256 or less", "Over 256x256"])
     # Ask additional questions based on texture size
     if textureSize == "256x256 or less":
         # Standard Texture
@@ -730,7 +660,7 @@ def headProcessing(XML1Num, XML2Num, XMLPath):
         # Initialize a list to store the options in
         textureFormatList = ["XML2 PC, Xbox, and Wii","PS2","GameCube, PSP, and MUA2 PS2"]
     # Ask which texture format was used
-    textureFormat = questionarySelect("What texture format was used for this asset?", textureFormatList)
+    textureFormat = resources.select("What texture format was used for this asset?", textureFormatList)
     # Set up file names
     XML1Name = XML1Num + "XX (3D Head).igb"
     XML2Name = XML2Num + "XX (3D Head).igb"
@@ -797,12 +727,12 @@ def headProcessing(XML1Num, XML2Num, XMLPath):
 # Define the function to process conversation portraits
 def convoProcessing(XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath):
     # Determine the portrait type
-    portraitType = questionarySelect("What is the portrait type?", ["Standard", "Next-Gen Style"])
+    portraitType = resources.select("What is the portrait type?", ["Standard", "Next-Gen Style"])
     # Determine if it's necessary to ask about texture size
     if portraitType == "Standard":
         # Standard portrait, need to determine texture size
         # Determine the texture size
-        textureSize = questionarySelect("What is the original size of the main texture?", ["128x128 or less", "Over 128x128"])
+        textureSize = resources.select("What is the original size of the main texture?", ["128x128 or less", "Over 128x128"])
     else:
         # Next-gen style portrait, size doesn't matter
         textureSize = "128x128 or less"
@@ -842,7 +772,7 @@ def convoProcessing(XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath):
             # MUA-specific formats are needed
             textureFormatList.extend(["Wii","PSP"])
     # Ask which texture format was used
-    textureFormat = questionarySelect("What texture format was used for this asset?", textureFormatList)
+    textureFormat = resources.select("What texture format was used for this asset?", textureFormatList)
     # Filter based on texture type
     if portraitType == "Next-Gen":
         # Next-Gen texture
@@ -854,7 +784,7 @@ def convoProcessing(XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath):
     else:
         # other texture formats
         # Determine the portrait type
-        portraitType = questionarySelect("What type of portrait is being used?", ["Hero Outline/General", "Villain Outline"])
+        portraitType = resources.select("What type of portrait is being used?", ["Hero Outline/General", "Villain Outline"])
         # Filter based on outline type
         if portraitType == "Hero Outline/General":
             # Hero outline/general
@@ -967,7 +897,7 @@ def convoProcessing(XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath):
 # Define the function for processing character select portraits
 def CSPProcessing(XML1Num, XML2Num, XMLPath):
     # Determine the portrait type
-    portraitType = questionarySelect("What type of portrait is being used?", ["XML1-style","XML2-style"])
+    portraitType = resources.select("What type of portrait is being used?", ["XML1-style","XML2-style"])
     # Filter based on portrait type
     if portraitType == "XML1-style":
         # XML1-style
@@ -1009,7 +939,7 @@ def CSPProcessing(XML1Num, XML2Num, XMLPath):
 # Define the function for processing other assets
 def otherProcessing(XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath):
     # Determine the texture size
-    textureSize = questionarySelect("What is the original size of the main texture?", ["256x256 or less", "Over 256x256"])
+    textureSize = resources.select("What is the original size of the main texture?", ["256x256 or less", "Over 256x256"])
     # Ask additional questions based on texture size
     if textureSize == "256x256 or less":
         # Standard Texture
@@ -1020,7 +950,7 @@ def otherProcessing(XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath):
         # Initialize a list to store the options in
         textureFormatList = ["MUA1 PC, Steam, 360, and PS3","XML2 PC, Xbox, and Wii","PS2","GameCube, PSP, and MUA2 PS2"]
     # Ask which texture format was used
-    textureFormat = questionarySelect("What texture format was used for this asset?", textureFormatList)
+    textureFormat = resources.select("What texture format was used for this asset?", textureFormatList)
     # Individually determine the file names through user input
     genericName = otherModelNameInput("NA", "the general exported file")
     XML1Name = otherModelNameInput(XML1Num, "XML1")
@@ -1165,7 +1095,7 @@ def otherModelNameInput(charNum, gameName):
         # Create the question
         prompt = "What is the name of this file for " + gameName + "? Do not include the file extension."
         # Ask the question
-        fileName = questionary.path(prompt, validate = fileNameValidator).ask()
+        fileName = resources.path(message, fileNameValidator)
         # add the file extension
         fileName += ".igb"
     # return the collected value
@@ -1216,17 +1146,17 @@ def deleteLingering(fileList):
 # MAIN EXECUTION #
 # ############## #
 # Display the title
-questionaryPrint("██╗ ██████╗ ██████╗ ███████╗██╗███╗   ██╗██╗███████╗██╗  ██╗███████╗██████╗ ", None)
-questionaryPrint("██║██╔════╝ ██╔══██╗██╔════╝██║████╗  ██║██║██╔════╝██║  ██║██╔════╝██╔══██╗", None)
-questionaryPrint("██║██║  ███╗██████╔╝█████╗  ██║██╔██╗ ██║██║███████╗███████║█████╗  ██████╔╝", None)
-questionaryPrint("██║██║   ██║██╔══██╗██╔══╝  ██║██║╚██╗██║██║╚════██║██╔══██║██╔══╝  ██╔══██╗", None)
-questionaryPrint("██║╚██████╔╝██████╔╝██║     ██║██║ ╚████║██║███████║██║  ██║███████╗██║  ██║", None)
-questionaryPrint("╚═╝ ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚═╝  ╚═══╝╚═╝╚══════╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝", None)
+resources.printPlain("██╗ ██████╗ ██████╗ ███████╗██╗███╗   ██╗██╗███████╗██╗  ██╗███████╗██████╗ ")
+resources.printPlain("██║██╔════╝ ██╔══██╗██╔════╝██║████╗  ██║██║██╔════╝██║  ██║██╔════╝██╔══██╗")
+resources.printPlain("██║██║  ███╗██████╔╝█████╗  ██║██╔██╗ ██║██║███████╗███████║█████╗  ██████╔╝")
+resources.printPlain("██║██║   ██║██╔══██╗██╔══╝  ██║██║╚██╗██║██║╚════██║██╔══██║██╔══╝  ██╔══██╗")
+resources.printPlain("██║╚██████╔╝██████╔╝██║     ██║██║ ╚████║██║███████║██║  ██║███████╗██║  ██║")
+resources.printPlain("╚═╝ ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚═╝  ╚═══╝╚═╝╚══════╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝")
 # Print relevant info
-questionaryPrint("\nVersion 1.0.0", None)
-questionaryPrint("https://marvelmods.com/forum/index.php\n", None)
+resources.printPlain("\nVersion 1.0.0")
+resources.printPlain("https://marvelmods.com/forum/index.php\n")
 # Print the welcome message
-questionaryPrint("Welcome to BaconWizard17's igb Finisher!\n", importantTextStyle)
+resources.printImportant("Welcome to BaconWizard17's igb Finisher!\n")
 # Read the settings
 settings = parseConfig()
 # Get the character numbers
@@ -1249,16 +1179,16 @@ assetType = getAssetTypeFromName()
 if assetType == "Unknown":
     # Asset type could not be identified from the name
     # Print a warning message
-    questionaryPrint("WARNING: Asset type could not be identified from the file name. Please choose the asset type.", warningStyle)
+    resources.printWarning("WARNING: Asset type could not be identified from the file name. Please choose the asset type.")
     # Check which assets should be asked about
     assetChoices = getAssetChoices(XML1Num, XML2Num, MUA1Num, MUA2Num)
     # Get the asset type
-    assetType = questionarySelect("Which asset type are you finishing?", assetChoices)
+    assetType = resources.select("Which asset type are you finishing?", assetChoices)
     # Determine if the asset is not "Other"
     if not(assetType == "Other"):
         # Asset is not "Other", need to get the file name
         # Ask for the file name
-        fileName = questionary.path("What is the name of the file that you are processing?", validate = fileNameValidatorStart).ask()
+        fileName = resources.path("What is the name of the file that you are processing?", fileNameValidatorStart)
         # add the file extension
         fileName += ".igb"
 else:
