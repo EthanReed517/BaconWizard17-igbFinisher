@@ -7,7 +7,7 @@
   },
   {
    "optionDest": "filenames",
-   "value": "C:/Users/ethan/Desktop/Marvel Mods/Modding Program Files/BaconWizard17-igbFinisher/igbFinisher.py"
+   "value": "igbFinisher.py"
   },
   {
    "optionDest": "onefile",
@@ -19,7 +19,7 @@
   },
   {
    "optionDest": "icon_file",
-   "value": "C:/Users/ethan/Desktop/Marvel Mods/Modding Program Files/BaconWizard17-igbFinisher/icon.ico"
+   "value": "icon.ico"
   },
   {
    "optionDest": "clean_build",
@@ -52,14 +52,6 @@
   {
    "optionDest": "bootloader_ignore_signals",
    "value": false
-  },
-  {
-   "optionDest": "datas",
-   "value": "C:/Users/ethan/Desktop/Marvel Mods/Modding Program Files/BaconWizard17-igbFinisher/settings.ini;."
-  },
-  {
-   "optionDest": "datas",
-   "value": "C:/Users/ethan/Desktop/Marvel Mods/Modding Program Files/BaconWizard17-igbFinisher/Scripts;Scripts/"
   }
  ],
  "nonPyinstallerOptions": {

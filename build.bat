@@ -1,1 +1,9 @@
+@echo off
+echo Clearing existing folder...
+del /q output
+echo Copying resources...
+md output
+robocopy >nul Scripts output\Scripts
+copy >nul settings.ini output
+echo Running Auto Py To Exe...
 auto-py-to-exe -c build.json
