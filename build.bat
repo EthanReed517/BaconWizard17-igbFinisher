@@ -1,9 +1,9 @@
 @echo off
 echo Clearing existing folder...
-del /q output
+if exist output del /q output
 echo Copying resources...
-md output
 robocopy >nul Scripts output\Scripts
+if exist XVI32 robocopy >nul XVI32 output\XVI32
 copy >nul settings.ini output
 echo Running Auto Py To Exe...
 auto-py-to-exe -c build.json
