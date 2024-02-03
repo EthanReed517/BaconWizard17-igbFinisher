@@ -57,7 +57,7 @@ def pathValidator(path):
         return True
 
 # Define the function to process skins
-def skinProcessing(XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath, hexEditChoice):
+def skinProcessing(XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath, hexEditChoice, runAlchemyChoice):
     # Determine the texture size
     textureSize = resources.select("What is the original size of the main texture?", ["256x256 or less", "Over 256x256"])
     # Ask additional questions based on texture size
@@ -158,27 +158,14 @@ def skinProcessing(XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath, hexEdit
             copyToDestination(XML1Name, XMLPath, "for XML1 (Xbox)")
             copyToDestination(XML2Name, XMLPath, "for XML2 (PC and Xbox)")
             copyToDestination(MUA1Name, MUAPath, "for MUA1 (Xbox)")
-        # Copy the Alchemy batch file
-        shutil.copy("Scripts/Alchemy.bat", "./")
-        # Copy the Alchemy ini file
-        shutil.copy("Scripts/skin1-1.ini", "./")
-        # Call the Alchemy batch file
-        os.system('Alchemy.bat "' + MUA1Name + '" skin1-1.ini')
+        # Perform the first Alchemy operation
+        resources.callAlchemy(MUA1Name, "skin1-1.ini", runAlchemyChoice)
         # Copy the first optimized alchemy file
         copyToDestination(MUA1Name, MUAPath, "for MUA1 (PC and 360)")
-        # Copy the Alchemy ini file
-        shutil.copy("Scripts/skin1-2.ini", "./")
-        # Call the Alchemy batch file
-        os.system('Alchemy.bat "' + MUA1Name + '" skin1-2.ini')
+        # Perform the second Alchemy operation
+        resources.callAlchemy(MUA1Name, "skin1-2.ini", runAlchemyChoice)
         # Copy the second optimized alchemy file
         copyToDestination(MUA1Name, MUAPath, "for MUA1 (Steam and PS3)")
-        # Pick out the Alchemy files to delete
-        for file in ["Alchemy.bat", "skin1-1.ini", "skin1-2.ini"]:
-            # Check if the file exists
-            if os.path.isfile(file):
-                # the file exists
-                # delete it
-                os.remove(file)
     elif textureFormat == "Wii":
         # Wii
         # Check if the MUA1 and MUA2 numbers are the same
@@ -202,49 +189,27 @@ def skinProcessing(XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath, hexEdit
         # Copy the files
         copyToDestination(XML1Name, XMLPath, "for XML1 (GC)")
         copyToDestination(XML2Name, XMLPath, "for XML2 (GC)")
-        # Copy the Alchemy batch file
-        shutil.copy("Scripts/Alchemy.bat", "./")
-        # Copy the Alchemy ini file
-        shutil.copy("Scripts/skin3.ini", "./")
         # Check if the MUA1 and MUA2 numbers are the same
         if MUA1Num == MUA2Num:
             # MUA1 and MUA2 are the same
-            # Call the Alchemy batch file
-            os.system('Alchemy.bat "' + MUA1Name + '" skin3.ini')
+            # Run alchemy
+            resources.callAlchemy(MUA1Name, "skin3.ini", runAlchemyChoice)
             # Copy the files
             copyToDestination(MUA1Name, MUAPath, "for MUA1 (PSP) and MUA2 (PS2 and PSP)")
         else:
             # MUA1 and MUA2 are not the same
-            # Call the Alchemy batch file
-            os.system('Alchemy.bat "' + MUA1Name + '" skin3.ini')
-            os.system('Alchemy.bat "' + MUA2Name + '" skin3.ini')
+            # Run alchemy
+            resources.callAlchemy(MUA1Name, "skin3.ini", runAlchemyChoice)
+            resources.callAlchemy(MUA2Name, "skin3.ini", runAlchemyChoice)
             # Copy the files
             copyToDestination(MUA1Name, MUAPath, "for MUA1 (PSP)")
             copyToDestination(MUA2Name, MUAPath, "for MUA2 (PS2 and PSP)")
-        # Pick out the Alchemy files to delete
-        for file in ["Alchemy.bat", "skin3.ini"]:
-            # Check if the file exists
-            if os.path.isfile(file):
-                # the file exists
-                # delete it
-                os.remove(file)
     elif textureFormat == "MUA1 PC, Steam, 360, and PS3":
         # MUA1 PC, Steam, 360, and PS3 (over 256x256)
-        # Copy the Alchemy batch file
-        shutil.copy("Scripts/Alchemy.bat", "./")
-        # Copy the Alchemy ini file
-        shutil.copy("Scripts/skin1-1.ini", "./")
-        # Call the Alchemy batch file
-        os.system('Alchemy.bat "' + MUA1Name + '" skin1-1.ini')
+        # Run alchemy
+        resources.callAlchemy(MUA1Name, "skin1-1.ini", runAlchemyChoice)
         # Copy the files
         copyToDestination(MUA1Name, MUAPath, "for MUA1 (PC, Steam, 360, and PS3)")
-        # Pick out the Alchemy files to delete
-        for file in ["Alchemy.bat", "skin1-1.ini"]:
-            # Check if the file exists
-            if os.path.isfile(file):
-                # the file exists
-                # delete it
-                os.remove(file)
     else:
         # XML2 PC, Xbox, and Wii
         # Copy the files
@@ -264,7 +229,7 @@ def skinProcessing(XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath, hexEdit
     deleteLingering(["igActor01_Animation01DB.igb", XML1Name, XML2Name, MUA1Name, MUA2Name])
 
 # Define the function to process mannequins
-def mannequinProcessing(MUA1Num, MUA2Num, MUAPath, multiPose, hexEditChoice):
+def mannequinProcessing(MUA1Num, MUA2Num, MUAPath, multiPose, hexEditChoice, runAlchemyChoice):
     # Determine the texture size
     textureSize = resources.select("What is the original size of the main texture?", ["256x256 or less", "Over 256x256"])
     # Ask additional questions based on texture size
@@ -314,27 +279,14 @@ def mannequinProcessing(MUA1Num, MUA2Num, MUAPath, multiPose, hexEditChoice):
         # 256x256 or less, main texture
         # Copy any files that don't need optimization.
         copyToDestination(MUA1Name, MUAPath, "for MUA1 (PS2 and Xbox)")
-        # Copy the Alchemy batch file
-        shutil.copy("Scripts/Alchemy.bat", "./")
-        # Copy the Alchemy ini file
-        shutil.copy("Scripts/mann1-1.ini", "./")
-        # Call the Alchemy batch file
-        os.system('Alchemy.bat "' + MUA1Name + '" mann1-1.ini')
+        # Perform the first alchemy operation
+        resources.callAlchemy(MUA1Name, "mann1-1.ini", runAlchemyChoice)
         # Copy the first optimized alchemy file
         copyToDestination(MUA1Name, MUAPath, "for MUA1 (PC and 360)")
-        # Copy the Alchemy ini file
-        shutil.copy("Scripts/mann1-2.ini", "./")
-        # Call the Alchemy batch file
-        os.system('Alchemy.bat "' + MUA1Name + '" mann1-2.ini')
+        # Perform the second alchemy operation
+        resources.callAlchemy(MUA1Name, "mann1-2.ini", runAlchemyChoice)
         # Copy the second optimized alchemy file
         copyToDestination(MUA1Name, MUAPath, "for MUA1 (Steam and PS3)")
-        # Pick out the Alchemy files to delete
-        for file in ["Alchemy.bat", "mann1-1.ini", "mann1-2.ini"]:
-            # Check if the file exists
-            if os.path.isfile(file):
-                # the file exists
-                # delete it
-                os.remove(file)
     elif textureFormat == "Wii":
         # Wii
         # Check if the MUA1 and MUA2 numbers are the same
@@ -353,49 +305,27 @@ def mannequinProcessing(MUA1Num, MUA2Num, MUAPath, multiPose, hexEditChoice):
         copyToDestination(MUA1Name, MUAPath, "for MUA1 (PS2)")
     elif textureFormat == "GameCube, PSP, and MUA2 PS2":
         # GameCube, PSP, and MUA2 PS2
-        # Copy the Alchemy batch file
-        shutil.copy("Scripts/Alchemy.bat", "./")
-        # Copy the Alchemy ini file
-        shutil.copy("Scripts/mann3.ini", "./")
         # Check if the MUA1 and MUA2 numbers are the same
         if MUA1Num == MUA2Num:
             # MUA1 and MUA2 are the same
-            # Call the Alchemy batch file
-            os.system('Alchemy.bat "' + MUA1Name + '" mann3.ini')
+            # Run alchemy
+            resources.callAlchemy(MUA1Name, "mann3.ini", runAlchemyChoice)
             # Copy the files
             copyToDestination(MUA1Name, MUAPath, "for MUA1 (PSP) and MUA2 (PS2 and PSP)")
         else:
             # MUA1 and MUA2 are not the same
-            # Call the Alchemy batch file
-            os.system('Alchemy.bat "' + MUA1Name + '" mann3.ini')
-            os.system('Alchemy.bat "' + MUA2Name + '" mann3.ini')
+            # Run alchemy
+            resources.callAlchemy(MUA1Name, "mann3.ini", runAlchemyChoice)
+            resources.callAlchemy(MUA2Name, "mann3.ini", runAlchemyChoice)
             # Copy the files
             copyToDestination(MUA1Name, MUAPath, "for MUA1 (PSP)")
             copyToDestination(MUA2Name, MUAPath, "for MUA2 (PS2 and PSP)")
-        # Pick out the Alchemy files to delete
-        for file in ["Alchemy.bat", "mann3.ini"]:
-            # Check if the file exists
-            if os.path.isfile(file):
-                # the file exists
-                # delete it
-                os.remove(file)
     elif textureFormat == "MUA1 PC, Steam, 360, and PS3":
         # MUA1 PC, Steam, 360, and PS3 (over 256x256)
-        # Copy the Alchemy batch file
-        shutil.copy("Scripts/Alchemy.bat", "./")
-        # Copy the Alchemy ini file
-        shutil.copy("Scripts/mann1-1.ini", "./")
-        # Call the Alchemy batch file
-        os.system('Alchemy.bat "' + MUA1Name + '" mann1-1.ini')
+        # Run alchemy
+        resources.callAlchemy(MUA1Name, "mann1-1.ini", runAlchemyChoice)
         # Copy the files
         copyToDestination(MUA1Name, MUAPath, "for MUA1 (PC, Steam, 360, and PS3)")
-        # Pick out the Alchemy files to delete
-        for file in ["Alchemy.bat", "mann1-1.ini"]:
-            # Check if the file exists
-            if os.path.isfile(file):
-                # the file exists
-                # delete it
-                os.remove(file)
     else:
         # XML2 PC, Xbox, and Wii
         # Check if the MUA1 and MUA2 numbers are the same
@@ -684,7 +614,7 @@ def CSPProcessing(XML1Num, XML2Num, XMLPath):
     deleteLingering(["123XX (Character Select Portrait).igb", XML1Name, XML2Name])
 
 # Define the function for processing other assets
-def otherProcessing(XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath):
+def otherProcessing(XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath, runAlchemyChoice):
     # Determine the texture size
     textureSize = resources.select("What is the original size of the main texture?", ["256x256 or less", "Over 256x256"])
     # Ask additional questions based on texture size
@@ -724,28 +654,14 @@ def otherProcessing(XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath):
         copyToDestination(XML1Name, XMLPath, "for XML1 (PS2 and Xbox)")
         copyToDestination(XML2Name, XMLPath, "for XML2 (PC, PS2, and Xbox)")
         copyToDestination(MUA1Name, MUAPath, "for MUA1 (PS2 and Xbox)")
-        # Copy the Alchemy batch file
-        shutil.copy("Scripts/Alchemy.bat", "./")
-        # Copy the Alchemy ini file
-        shutil.copy("Scripts/mann1-1.ini", "./")
-        # Call the Alchemy batch file
-        os.system('Alchemy.bat "' + MUA1Name + '" mann1-1.ini')
+        # Perform the first Alchemy operation
+        resources.callAlchemy(MUA1Name, "skin1-1.ini", runAlchemyChoice)
         # Copy the first optimized alchemy file
         copyToDestination(MUA1Name, MUAPath, "for MUA1 (PC and 360)")
-        # Run the second Alchemy operation
-        # Copy the Alchemy ini file
-        shutil.copy("Scripts/mann1-2.ini", "./")
-        # Call the Alchemy batch file
-        os.system('Alchemy.bat "' + MUA1Name + '" mann1-2.ini')
+        # Perform the second Alchemy operation
+        resources.callAlchemy(MUA1Name, "skin1-2.ini", runAlchemyChoice)
         # Copy the second optimized alchemy file
         copyToDestination(MUA1Name, MUAPath, "for MUA1 (Steam and PS3)")
-        # Pick out the Alchemy files to delete
-        for file in ["Alchemy.bat", "mann1-1.ini", "mann1-2.ini"]:
-            # Check if the file exists
-            if os.path.isfile(file):
-                # the file exists
-                # delete it
-                os.remove(file)
     elif textureFormat == "Wii":
         # Wii
         # Check if the MUA1 and MUA2 numbers are the same
@@ -769,49 +685,27 @@ def otherProcessing(XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath):
         # Copy the files
         copyToDestination(XML1Name, XMLPath, "for XML1 (GC)")
         copyToDestination(XML2Name, XMLPath, "for XML2 (GC)")
-        # Copy the Alchemy batch file
-        shutil.copy("Scripts/Alchemy.bat", "./")
-        # Copy the Alchemy ini file
-        shutil.copy("Scripts/mann3.ini", "./")
         # Check if the MUA1 and MUA2 numbers are the same
         if MUA1Num == MUA2Num:
             # MUA1 and MUA2 are the same
-            # Call the Alchemy batch file
-            os.system('Alchemy.bat "' + MUA1Name + '" mann3.ini')
+            # Run alchemy
+            resources.callAlchemy(MUA1Name, "skin3.ini", runAlchemyChoice)
             # Copy the files
             copyToDestination(MUA1Name, MUAPath, "for MUA1 (PSP) and MUA2 (PS2 and PSP)")
         else:
             # MUA1 and MUA2 are not the same
-            # Call the Alchemy batch file
-            os.system('Alchemy.bat "' + MUA1Name + '" mann3.ini')
-            os.system('Alchemy.bat "' + MUA2Name + '" mann3.ini')
+            # Run alchemy
+            resources.callAlchemy(MUA1Name, "skin3.ini", runAlchemyChoice)
+            resources.callAlchemy(MUA2Name, "skin3.ini", runAlchemyChoice)
             # Copy the files
             copyToDestination(MUA1Name, MUAPath, "for MUA1 (PSP)")
             copyToDestination(MUA2Name, MUAPath, "for MUA2 (PS2 and PSP)")
-        # Pick out the Alchemy files to delete
-        for file in ["Alchemy.bat", "mann3.ini"]:
-            # Check if the file exists
-            if os.path.isfile(file):
-                # the file exists
-                # delete it
-                os.remove(file)
     elif textureFormat == "MUA1 PC, Steam, 360, and PS3":
         # MUA1 PC, Steam, 360, and PS3 (over 256x256)
-        # Copy the Alchemy batch file
-        shutil.copy("Scripts/Alchemy.bat", "./")
-        # Copy the Alchemy ini file
-        shutil.copy("Scripts/mann1-1.ini", "./")
-        # Call the Alchemy batch file
-        os.system('Alchemy.bat "' + MUA1Name + '" mann1-1.ini')
+        # Run alchemy
+        resources.callAlchemy(MUA1Name, "skin1-1.ini", runAlchemyChoice)
         # Copy the files
         copyToDestination(MUA1Name, MUAPath, "for MUA1 (PC, Steam, 360, and PS3)")
-        # Pick out the Alchemy files to delete
-        for file in ["Alchemy.bat", "mann1-1.ini"]:
-            # Check if the file exists
-            if os.path.isfile(file):
-                # the file exists
-                # delete it
-                os.remove(file)
     else:
         # XML2 PC, Xbox, and Wii
         # Copy the files
@@ -922,6 +816,11 @@ if hexEditChoice == "True":
     # Hex editing is needed
     # Verify existence of XVI32
     resources.verifyXVI32Existence()
+# Determine if alchemy operations are needed
+if runAlchemyChoice == "True":
+    # Alchemy operations are needed
+    # Reset the Alchemy eval to avoid possible issues
+    resources.resetAlchemy()
 # Determine the asset type
 (assetType, fileName) = resources.assetRecognition(XML1Num, XML2Num, MUA1Num, MUA2Num)
 # Determine if any asset type was picked
@@ -945,7 +844,7 @@ if not(assetType == None):
             # Name unknown, need to update
             os.rename(fileName, "igActor01_Animation01DB.igb")
         # Call the skin processing function
-        skinProcessing(XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath, hexEditChoice)
+        skinProcessing(XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath, hexEditChoice, runAlchemyChoice)
     elif assetType == "Mannequin":
         # Mannequin
         # Determine if the file name needs to be updated
@@ -953,7 +852,7 @@ if not(assetType == None):
             # Name unknown, need to update
             os.rename(fileName, "123XX (Mannequin).igb")
         # Call the mannequin processing function
-        mannequinProcessing(MUA1Num, MUA2Num, MUAPath, multiPose, hexEditChoice)
+        mannequinProcessing(MUA1Num, MUA2Num, MUAPath, multiPose, hexEditChoice, runAlchemyChoice)
     elif assetType == "3D Head":
         # 3D Head
         # Determine if the file name needs to be updated
@@ -980,6 +879,6 @@ if not(assetType == None):
         CSPProcessing(XML1Num, XML2Num, XMLPath)
     else:
         # Other models
-        otherProcessing(XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath)
+        otherProcessing(XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath, runAlchemyChoice)
 # Add a "press any key to continue" prompt
 resources.pressAnyKey(None)

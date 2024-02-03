@@ -1,4 +1,2 @@
-Reset Alchemy eval
-Call command prompt stuff within the script instead of through batch files
 Can hex editing be done in Python directly?
 Create a UI that will allow drag and drop of files: https://stackoverflow.com/questions/14267900/drag-and-drop-explorer-files-to-tkinter-entry-widget (Eliav Louski's answer)
