@@ -981,3 +981,5 @@ if not(assetType == None):
     else:
         # Other models
         otherProcessing(XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath)
+# Add a "press any key to continue" prompt
+resources.pressAnyKey(None)
