@@ -57,7 +57,7 @@ def pathValidator(path):
         return True
 
 # Define the function to process skins
-def skinProcessing(XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath):
+def skinProcessing(XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath, hexEditChoice):
     # Determine the texture size
     textureSize = resources.select("What is the original size of the main texture?", ["256x256 or less", "Over 256x256"])
     # Ask additional questions based on texture size
@@ -137,36 +137,11 @@ def skinProcessing(XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath):
             # Number isn't empty, need to copy
             # Perform the copying
             shutil.copy("igActor01_Animation01DB.igb", name)
-    # Copy the hex editing batch file
-    shutil.copy("Scripts/hexSkin.bat", "./")
-    # Perform the hex editing
-    for num, name in zip([XML1Num, XML2Num, MUA1Num, MUA2Num], [XML1Name, XML2Name, MUA1Name, MUA2Name]):
-        # Determine if the file should be considered
-        if not(name == None):
-        # Name is not none
-        # Determine if the file exists
-            if os.path.exists(name):
-            # the file exists
-            # Determine the length of the character number
-                if len(num) == 2:
-                    # 2-digit character number
-                    # Establish hex editing values
-                    hexNum = "3" + num[0] + " 3" + num[1] + " 30 31"
-                    hexAppearance = hexNum + " 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00"
-                    hexOutline = hexNum + " 5F 6F 75 74 6C 69 6E 65 00"
-                    hexOther = hexNum + " 5F 5F"
-                else:
-                    # 3-digit character number
-                    # Establish hex editing values
-                    hexNum = "3" + num[0] + " 3" + num[1] + " 3" + num[2] + " 30 31"
-                    hexAppearance = hexNum + " 00 00 00 00 00 00 00 00 00 00 00 00 00 00"
-                    hexOutline = hexNum + " 5F 6F 75 74 6C 69 6E 65"
-                    hexOther = hexNum + " 5F"
-            # Hex edit
-            os.system('hexSkin.bat "' + name + '" "69 67 41 63 74 6F 72 30 31 41 70 70 65 61 72 61 6E 63 65" "' + hexAppearance + '" "31 32 33 30 31 5F 6F 75 74 6C 69 6E 65" "' + hexOutline + '" "31 32 33 30 31 5F" "' + hexOther + '" "31 32 33 30 31" "' + hexNum + '"')
-    # Delete the hex editing file
-    if os.path.isfile("hexSkin.bat"):
-        os.remove("hexSkin.bat")
+    # Determine if hex editing is needed
+    if hexEditChoice == "True":
+        # Hex editing is needed
+        # Perform the hex editing
+        resources.hexEdit([XML1Num, XML2Num, MUA1Num, MUA2Num], [XML1Name, XML2Name, MUA1Name, MUA2Name], "Skin")
     # Filter remaining operations based on texture type
     if (textureFormat == "PC, PS2, Xbox, and MUA1 360") or (textureFormat == "PC, Xbox, and MUA1 360"):
         # 256x256 or less, main texture, primary or secondary skin
@@ -286,10 +261,10 @@ def skinProcessing(XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath):
             copyToDestination(MUA1Name, MUAPath, "for MUA1 (Wii and Xbox)")
             copyToDestination(MUA2Name, MUAPath, "for MUA2 (Wii)")
     # Delete the lingering files
-    deleteLingering(["igActor01_Appearance.igb", XML1Name, XML2Name, MUA1Name, MUA2Name])
+    deleteLingering(["igActor01_Animation01DB.igb", XML1Name, XML2Name, MUA1Name, MUA2Name])
 
 # Define the function to process mannequins
-def mannequinProcessing(MUA1Num, MUA2Num, MUAPath, multiPose):
+def mannequinProcessing(MUA1Num, MUA2Num, MUAPath, multiPose, hexEditChoice):
     # Determine the texture size
     textureSize = resources.select("What is the original size of the main texture?", ["256x256 or less", "Over 256x256"])
     # Ask additional questions based on texture size
@@ -329,29 +304,11 @@ def mannequinProcessing(MUA1Num, MUA2Num, MUAPath, multiPose):
             # Number isn't empty, need to copy
             # Perform the copying
             shutil.copy("123XX (Mannequin).igb", name)
-    # Copy the hex editing batch file
-    shutil.copy("Scripts/hexManOrHead.bat", "./")
-    # Perform the hex editing
-    for num, name in zip([MUA1Num, MUA2Num], [MUA1Name, MUA2Name]):
-        # Determine if the file exists
-        if os.path.exists(name):
-        # the file exists
-        # Determine the length of the character number
-            if len(num) == 2:
-                # 2-digit character number
-                # Establish hex editing values
-                hexNum = "3" + num[0] + " 3" + num[1] + " 30 31"
-                hexOther = hexNum + " 5F 5F"
-            else:
-                # 3-digit character number
-                # Establish hex editing values
-                hexNum = "3" + num[0] + " 3" + num[1] + " 3" + num[2] + " 30 31"
-                hexOther = hexNum + " 5F"
-        # Hex edit
-        os.system('hexManOrHead.bat "' + name + '" "31 32 33 30 31 5F" "' + hexOther + '" "31 32 33 30 31" "' + hexNum + '"')
-    # Delete the hex editing file
-    if os.path.isfile("hexManOrHead.bat"):
-        os.remove("hexManOrHead.bat")
+    # Determine if hex editing is needed
+    if hexEditChoice == "True":
+        # Hex editing is needed
+        # Perform the hex editing
+        resources.hexEdit([MUA1Num, MUA2Num], [MUA1Name, MUA2Name], "Mannequin")
     # Filter remaining operations based on texture type
     if textureFormat == "PC, PS2, Xbox, and MUA1 360":
         # 256x256 or less, main texture
@@ -455,7 +412,7 @@ def mannequinProcessing(MUA1Num, MUA2Num, MUAPath, multiPose):
     deleteLingering(["123XX (Mannequin).igb", MUA1Name, MUA2Name])
 
 # Define the function to process 3D Heads
-def headProcessing(XML1Num, XML2Num, XMLPath):
+def headProcessing(XML1Num, XML2Num, XMLPath, hexEditChoice):
     # Determine the texture size
     textureSize = resources.select("What is the original size of the main texture?", ["256x256 or less", "Over 256x256"])
     # Ask additional questions based on texture size
@@ -485,29 +442,11 @@ def headProcessing(XML1Num, XML2Num, XMLPath):
             # Number isn't empty, need to copy
             # Perform the copying
             shutil.copy("123XX (3D Head).igb", name)
-    # Copy the hex editing batch file
-    shutil.copy("Scripts/hexManOrHead.bat", "./")
-    # Perform the hex editing
-    for num, name in zip([XML1Num, XML2Num], [XML1Name, XML2Name]):
-        # Determine if the file exists
-        if os.path.exists(name):
-        # the file exists
-        # Determine the length of the character number
-            if len(num) == 2:
-                # 2-digit character number
-                # Establish hex editing values
-                hexNum = "3" + num[0] + " 3" + num[1] + " 30 31"
-                hexOther = hexNum + " 5F 5F"
-            else:
-                # 3-digit character number
-                # Establish hex editing values
-                hexNum = "3" + num[0] + " 3" + num[1] + " 3" + num[2] + " 30 31"
-                hexOther = hexNum + " 5F"
-        # Hex edit
-        os.system('hexManOrHead.bat "' + name + '" "31 32 33 30 31 5F" "' + hexOther + '" "31 32 33 30 31" "' + hexNum + '"')
-    # Delete the hex editing file
-    if os.path.isfile("hexManOrHead.bat"):
-        os.remove("hexManOrHead.bat")
+    # Determine if hex editing is needed
+    if hexEditChoice == "True":
+        # Hex editing is needed
+        # Perform the hex editing
+        resources.hexEdit([XML1Num, XML2Num], [XML1Name, XML2Name], "3D Head")
     # Filter remaining operations based on texture type
     if textureFormat == "PC, PS2, Xbox, and MUA1 360":
         # 256x256 or less, main texture
@@ -1006,7 +945,7 @@ if not(assetType == None):
             # Name unknown, need to update
             os.rename(fileName, "igActor01_Animation01DB.igb")
         # Call the skin processing function
-        skinProcessing(XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath)
+        skinProcessing(XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath, hexEditChoice)
     elif assetType == "Mannequin":
         # Mannequin
         # Determine if the file name needs to be updated
@@ -1014,7 +953,7 @@ if not(assetType == None):
             # Name unknown, need to update
             os.rename(fileName, "123XX (Mannequin).igb")
         # Call the mannequin processing function
-        mannequinProcessing(MUA1Num, MUA2Num, MUAPath, multiPose)
+        mannequinProcessing(MUA1Num, MUA2Num, MUAPath, multiPose, hexEditChoice)
     elif assetType == "3D Head":
         # 3D Head
         # Determine if the file name needs to be updated
@@ -1022,7 +961,7 @@ if not(assetType == None):
             # Name unknown, need to update
             os.rename(fileName, "123XX (3D Head).igb")
         # Call the 3D head processing function
-        headProcessing(XML1Num, XML2Num, XMLPath)
+        headProcessing(XML1Num, XML2Num, XMLPath, hexEditChoice)
     elif assetType == "Conversation Portrait":
         # Conversation portrait
         # Determine if the file name needs to be updated

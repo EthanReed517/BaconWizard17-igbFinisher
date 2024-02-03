@@ -77,11 +77,11 @@ def assetRecognition(XML1Num, XML2Num, MUA1Num, MUA2Num):
     # Loop through the list of igb files
     for file in igbList:
         # Compare the file name and asset type lists
-        for fileName, assetOption in zip(fileNameList, assetTypeList):
+        for fileNameOption, assetTypeOption in zip(fileNameList, assetTypeList):
             # Determine if the file names match
-            if file == fileName:
+            if file == fileNameOption:
                 # File names match
-                assetType = assetOption
+                assetType = assetTypeOption
                 # Update the counter
                 validCounter += 1
     # Determine the number of igb files
