@@ -19,91 +19,6 @@ import shutil
 # ######### #
 # FUNCTIONS #
 # ######### #
-# Define the function to check if XVI32 was installed
-def verifyXVI32Existence():
-    # Eternal loop until broken
-    while True:
-        try:
-            # Check if the file exists
-            assert os.path.exists("XVI32")
-            # Break out of the loop if there are no errors
-            break
-        except AssertionError:
-            # The assertion failed (the file does not exist)
-            # Print the error message
-            resources.printError("ERROR: folder \"XVI32\" does not exist. Install XVI32 and try again.")
-            # Wait for user confirmation
-            resources.pressAnyKey("Press any key to try again...")
-    # Eternal loop until broken
-    while True:
-        try:
-            # Check if the file exists
-            assert os.path.exists("XVI32\\XVI32.exe")
-            # Break out of the loop if there are no errors
-            break
-        except AssertionError:
-            # The assertion failed (the file does not exist)
-            # Print the error message
-            resources.printError("ERROR: XVI32.exe does not exist in the \"XVI32\". Install XVI32 and try again.")
-            # Wait for user confirmation
-            resources.pressAnyKey("Press any key to try again...")
-
-# Define the function for getting the asset type from the file name
-def getAssetTypeFromName():
-    # Create the list of possible file names
-    fileNameList = ["igActor01_Animation01DB.igb", "123XX (Mannequin).igb", "123XX (3D Head).igb", "hud_head_123XX.igb", "123XX (Character Select Portrait).igb"]
-    # Create the list of asset types
-    assetTypeList = ["Skin", "Mannequin", "3D Head", "Conversation Portrait", "Character Select Portrait"]
-    # Start a counter to keep track of valid files
-    validCounter = 0
-    # Initialize the return variable
-    assetType = "Unknown"
-    # Compare the file name and asset type lists
-    for fileName, assetTypes in zip(fileNameList, assetTypeList):
-        # Check if a file of that name exists
-        if os.path.exists(fileName):
-            # A file of that name exists
-            # Update the variable
-            assetType = assetTypes
-            # Update the counter
-            validCounter += 1
-    # Check if more than 1 asset is present
-    if validCounter > 1:
-        # More than 1 asset is present
-        # Warn the user
-        resources.printWarning("WARNING: More than 1 igb file with a known file name was found. Only 1 igb file can be processed at a time. The file being processed is a " + assetType + ".\n")
-    # Check if only 1 asset is present
-    elif validCounter == 1:
-        # Only 1 asset
-        # State the asset type
-        resources.printSuccess("The asset type was automatically identified as a " + assetType + ".\n")
-    # return the asset type
-    return assetType
-
-# Define the validator for the file name of unknown assets
-def fileNameValidatorStart(fileName):
-    if len(fileName) == 0:
-        return "Please enter a file name."
-    elif ".igb" in fileName:
-        return "Do not include the file extension."
-    elif not(os.path.exists(fileName + ".igb")):
-        return "The file does not exist."
-    else:
-        return True
-
-# Define the function to get asset choice options
-def getAssetChoices(XML1Num, XML2Num, MUA1Num, MUA2Num):
-    assetChoices = ["Skin"]
-    if (not(MUA1Num == "")) or (not(MUA2Num == "")):
-        assetChoices.append("Mannequin")
-    if (not(XML1Num == "")) or (not(XML2Num == "")):
-        assetChoices.append("3D Head")
-    assetChoices.append("Conversation Portrait")
-    if (not(XML1Num == "")) or (not(XML2Num == "")):
-        assetChoices.append("Character Select Portrait")
-    assetChoices.append("Other")
-    return assetChoices
-
 # Define the function to get the file path
 def getFilePath(Game1Num, Game2Num, Game1Name, Game2Name):
     # Determine which games are in use
@@ -1067,79 +982,63 @@ multiPose = settings[6]
 if hexEditChoice == "True":
     # Hex editing is needed
     # Verify existence of XVI32
-    verifyXVI32Existence()
-# Check if the asset can be recognized from the file name
-assetType = getAssetTypeFromName()
-# Determine if the asset type is unknown
-if assetType == "Unknown":
-    # Asset type could not be identified from the name
-    # Print a warning message
-    resources.printWarning("WARNING: Asset type could not be identified from the file name. Please choose the asset type.")
-    # Check which assets should be asked about
-    assetChoices = getAssetChoices(XML1Num, XML2Num, MUA1Num, MUA2Num)
-    # Get the asset type
-    assetType = resources.select("Which asset type are you finishing?", assetChoices)
-    # Determine if the asset is not "Other"
-    if not(assetType == "Other"):
-        # Asset is not "Other", need to get the file name
-        # Ask for the file name
-        fileName = resources.path("What is the name of the file that you are processing?", fileNameValidatorStart)
-        # add the file extension
-        fileName += ".igb"
-else:
-    # asset could be identified from the name
-    fileName = "Known"
-# Determine if an XML-compatible asset is being used
-if not(assetType == "Mannequin"):
-    # XML-compatible asset is being used
-    # Get the XML file path
-    XMLPath = getFilePath(XML1Num, XML2Num, "XML1", "XML2")
-# Determine if an MUA-compatible asset is being used
-if not((assetType == "Character Select Portrait") or (assetType == "3D Head")):
-    # MUA-compatible asset is being used
-    # Get the MUA file path
-    MUAPath = getFilePath(MUA1Num, MUA2Num, "MUA1", "MUA2")
-# Begin processing
-if assetType == "Skin":
-    # Skin
-    # Determine if the file name needs to be updated
-    if not(fileName == "Known"):
-        # Name unknown, need to update
-        os.rename(fileName, "igActor01_Animation01DB.igb")
-    # Call the skin processing function
-    skinProcessing(XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath)
-elif assetType == "Mannequin":
-    # Mannequin
-    # Determine if the file name needs to be updated
-    if not(fileName == "Known"):
-        # Name unknown, need to update
-        os.rename(fileName, "123XX (Mannequin).igb")
-    # Call the mannequin processing function
-    mannequinProcessing(MUA1Num, MUA2Num, MUAPath, multiPose)
-elif assetType == "3D Head":
-    # 3D Head
-    # Determine if the file name needs to be updated
-    if not(fileName == "Known"):
-        # Name unknown, need to update
-        os.rename(fileName, "123XX (3D Head).igb")
-    # Call the 3D head processing function
-    headProcessing(XML1Num, XML2Num, XMLPath)
-elif assetType == "Conversation Portrait":
-    # Conversation portrait
-    # Determine if the file name needs to be updated
-    if not(fileName == "Known"):
-        # Name unknown, need to update
-        os.rename(fileName, "hud_head_123XX.igb")
-    # Call the conversation portrait processing function
-    convoProcessing(XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath)
-elif assetType == "Character Select Portrait":
-    # Character select portrait
-    # Determine if the file name needs to be updated
-    if not(fileName == "Known"):
-        # Name unknown, need to update
-        os.rename(fileName, "123XX (Character Select Portrait).igb")
-    # Call the mannequin processing function
-    CSPProcessing(XML1Num, XML2Num, XMLPath)
-else:
-    # Other models
-    otherProcessing(XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath)
+    resources.verifyXVI32Existence()
+# Determine the asset type
+(assetType, fileName) = resources.assetRecognition(XML1Num, XML2Num, MUA1Num, MUA2Num)
+# Determine if any asset type was picked
+if not(assetType == None):
+    # An asset was picked
+    # Determine if an XML-compatible asset is being used
+    if not(assetType == "Mannequin"):
+        # XML-compatible asset is being used
+        # Get the XML file path
+        XMLPath = getFilePath(XML1Num, XML2Num, "XML1", "XML2")
+    # Determine if an MUA-compatible asset is being used
+    if not((assetType == "Character Select Portrait") or (assetType == "3D Head")):
+        # MUA-compatible asset is being used
+        # Get the MUA file path
+        MUAPath = getFilePath(MUA1Num, MUA2Num, "MUA1", "MUA2")
+    # Begin processing
+    if assetType == "Skin":
+        # Skin
+        # Determine if the file name needs to be updated
+        if not(fileName == "Known"):
+            # Name unknown, need to update
+            os.rename(fileName, "igActor01_Animation01DB.igb")
+        # Call the skin processing function
+        skinProcessing(XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath)
+    elif assetType == "Mannequin":
+        # Mannequin
+        # Determine if the file name needs to be updated
+        if not(fileName == "Known"):
+            # Name unknown, need to update
+            os.rename(fileName, "123XX (Mannequin).igb")
+        # Call the mannequin processing function
+        mannequinProcessing(MUA1Num, MUA2Num, MUAPath, multiPose)
+    elif assetType == "3D Head":
+        # 3D Head
+        # Determine if the file name needs to be updated
+        if not(fileName == "Known"):
+            # Name unknown, need to update
+            os.rename(fileName, "123XX (3D Head).igb")
+        # Call the 3D head processing function
+        headProcessing(XML1Num, XML2Num, XMLPath)
+    elif assetType == "Conversation Portrait":
+        # Conversation portrait
+        # Determine if the file name needs to be updated
+        if not(fileName == "Known"):
+            # Name unknown, need to update
+            os.rename(fileName, "hud_head_123XX.igb")
+        # Call the conversation portrait processing function
+        convoProcessing(XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath)
+    elif assetType == "Character Select Portrait":
+        # Character select portrait
+        # Determine if the file name needs to be updated
+        if not(fileName == "Known"):
+            # Name unknown, need to update
+            os.rename(fileName, "123XX (Character Select Portrait).igb")
+        # Call the mannequin processing function
+        CSPProcessing(XML1Num, XML2Num, XMLPath)
+    else:
+        # Other models
+        otherProcessing(XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath)
