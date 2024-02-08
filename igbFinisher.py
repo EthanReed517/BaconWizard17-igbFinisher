@@ -124,7 +124,7 @@ def fileDrop(fullFileName):
         # Determine if the file name needs to be updated
         if not(fileName == "Known"):
             # Name unknown, need to update
-            os.rename(fullFileName, os.path.join(os.path.dirname(fullFileName), "igActor01_Animation01DB.igb"))
+            fullFileName = fileNameCorrection(fullFileName, "igActor01_Animation01DB.igb")
         # Call the skin processing function
         skinProcessing(fullFileName, XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath, hexEditChoice, runAlchemyChoice)
     elif assetType == "Mannequin":
@@ -132,7 +132,7 @@ def fileDrop(fullFileName):
         # Determine if the file name needs to be updated
         if not(fileName == "Known"):
             # Name unknown, need to update
-            os.rename(fileName, "123XX (Mannequin).igb")
+            fullFileName = fileNameCorrection(fullFileName, "123XX (Mannequin).igb")
         # Call the mannequin processing function
         mannequinProcessing(fullFileName, MUA1Num, MUA2Num, MUAPath, multiPose, hexEditChoice, runAlchemyChoice)
     elif assetType == "3D Head":
@@ -140,7 +140,7 @@ def fileDrop(fullFileName):
         # Determine if the file name needs to be updated
         if not(fileName == "Known"):
             # Name unknown, need to update
-            os.rename(fileName, "123XX (3D Head).igb")
+            fullFileName = fileNameCorrection(fullFileName, "123XX (3D Head).igb")
         # Call the 3D head processing function
         headProcessing(fullFileName, XML1Num, XML2Num, XMLPath, hexEditChoice)
     elif assetType == "Conversation Portrait":
@@ -148,7 +148,7 @@ def fileDrop(fullFileName):
         # Determine if the file name needs to be updated
         if not(fileName == "Known"):
             # Name unknown, need to update
-            os.rename(fileName, "hud_head_123XX.igb")
+            fullFileName = fileNameCorrection(fullFileName, "hud_head_123XX.igb")
         # Call the conversation portrait processing function
         convoProcessing(fullFileName, XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath)
     elif assetType == "Character Select Portrait":
@@ -156,7 +156,7 @@ def fileDrop(fullFileName):
         # Determine if the file name needs to be updated
         if not(fileName == "Known"):
             # Name unknown, need to update
-            os.rename(fileName, "123XX (Character Select Portrait).igb")
+            fullFileName = fileNameCorrection(fullFileName, "123XX (Character Select Portrait).igb")
         # Call the mannequin processing function
         CSPProcessing(fullFileName, XML1Num, XML2Num, XMLPath)
     else:
@@ -205,6 +205,15 @@ def pathValidator(path):
         return "Path does not exist"
     else:
         return True
+
+# Define the function to correct the file name
+def fileNameCorrection(fullFileName, correctFileName):
+    # Update the name
+    os.rename(fullFileName, os.path.join(os.path.dirname(fullFileName), correctFileName))
+    # Set the new file name
+    fullFileName = os.path.join(os.path.dirname(fullFileName), correctFileName)
+    # Return the corrected file name
+    return fullFileName
 
 # Define the function to process skins
 def skinProcessing(fullFileName, XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath, hexEditChoice, runAlchemyChoice):
