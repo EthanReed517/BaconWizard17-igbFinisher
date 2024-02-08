@@ -41,12 +41,15 @@ def callAlchemy(fileName, iniName, runAlchemyChoice):
     # Determine if the operation should be run
     if runAlchemyChoice == "True":
         # Need to run Alchemy
-        # Copy the Alchemy ini file
-        shutil.copy("Scripts/" + iniName, "./")
-        # Call the operation
-        os.system("%IG_ROOT%\\bin\\sgOptimizer.exe \"" + fileName + "\" \"" + fileName + "\" " + iniName)
-        # Make sure that the ini file still exists
-        if os.path.isfile(iniName):
-            # The file exists
-            # Delete it
-            os.remove(iniName)
+        # Determine if the file actually exists
+        if not(fileName == None):
+            # There is a file
+            # Copy the Alchemy ini file
+            shutil.copy("Scripts/" + iniName, "./")
+            # Call the operation
+            os.system("%IG_ROOT%\\bin\\sgOptimizer.exe \"" + fileName + "\" \"" + fileName + "\" " + iniName)
+            # Make sure that the ini file still exists
+            if os.path.isfile(iniName):
+                # The file exists
+                # Delete it
+                os.remove(iniName)

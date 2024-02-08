@@ -1,4 +1,7 @@
-XVI32
-output
 __pycache__
+build
+dist
 resources\__pycache__
+XVI32
+example.py
+igbFinisher.spec

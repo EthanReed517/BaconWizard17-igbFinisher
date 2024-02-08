@@ -14,11 +14,161 @@ import ctypes
 import os
 # To be able to copy files
 import shutil
+# To be able to set up UIs
+import tkinter as tk
+# For stylized UIs
+import tkinter.ttk as ttk
+# For drag and drop support
+from tkinterdnd2 import DND_FILES, TkinterDnD
+# For UI image support
+from PIL import Image, ImageTk
 
 
 # ######### #
 # FUNCTIONS #
 # ######### #
+# Define the function to get local resources
+def resource_path(relative_path):
+    # Get absolute path to resource, works for dev and for PyInstaller
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+    # Return the collected value
+    return os.path.join(base_path, relative_path)
+
+# Define the function to display the command prompt information
+def displayInfo():
+    # Display the title
+    resources.printPlain("██╗ ██████╗ ██████╗ ███████╗██╗███╗   ██╗██╗███████╗██╗  ██╗███████╗██████╗ ")
+    resources.printPlain("██║██╔════╝ ██╔══██╗██╔════╝██║████╗  ██║██║██╔════╝██║  ██║██╔════╝██╔══██╗")
+    resources.printPlain("██║██║  ███╗██████╔╝█████╗  ██║██╔██╗ ██║██║███████╗███████║█████╗  ██████╔╝")
+    resources.printPlain("██║██║   ██║██╔══██╗██╔══╝  ██║██║╚██╗██║██║╚════██║██╔══██║██╔══╝  ██╔══██╗")
+    resources.printPlain("██║╚██████╔╝██████╔╝██║     ██║██║ ╚████║██║███████║██║  ██║███████╗██║  ██║")
+    resources.printPlain("╚═╝ ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚═╝  ╚═══╝╚═╝╚══════╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝")
+    # Print relevant info
+    resources.printPlain("\nVersion 1.0.0")
+    resources.printPlain("https://marvelmods.com/forum/index.php\n")
+
+# Define the function to initialize the window
+def initializeWindow():
+    # Establish the main window. Drag and drop requires this instead of tk.Tk()
+    window_dnd = TkinterDnD.Tk()
+    # Set the window title
+    window_dnd.title("Queue for BaconWizard17's igbFinisher")
+    # Get the icon path
+    iconPath = resource_path("icon.ico")
+    # set the window icon
+    window_dnd.iconbitmap(iconPath)
+    # Make it so that the window can't be resized
+    window_dnd.resizable(width=False, height=False)
+    # Create a label to let the user know what to do
+    lbl_dnd = ttk.Label(text="Drag and drop files below:")
+    # Pack the label in the window
+    lbl_dnd.pack()
+    # Return the created window
+    return window_dnd
+
+# Define the function to initialize the drop zone
+def initializeDropZone():
+    # Get the image path
+    imagePath = resource_path("images/dropZone.png")
+    # Set up the image for the drop zone
+    imageFile_dropZone = Image.open(imagePath)
+    # Add the image
+    image_dropZone = ImageTk.PhotoImage(imageFile_dropZone)
+    # Set up the frame for the drop zone
+    frame_drop = tk.Frame(relief=tk.SUNKEN, borderwidth=2)
+    # Add the label where the image will be shown
+    lbl_drop = tk.Label(image=image_dropZone, master=frame_drop)
+    # set the image
+    lbl_drop.image = image_dropZone
+    # Register the label as a drag and drop location
+    lbl_drop.drop_target_register(DND_FILES)
+    # Set up the function for when a file is dropped
+    lbl_drop.dnd_bind('<<Drop>>', fileDrop)\
+    # Pack the frame into the UI
+    frame_drop.pack()
+    # Pack the label into the UI
+    lbl_drop.pack()
+    # Return the necessary elements for other operations
+    return lbl_drop
+    
+
+# Define the function that will occur when a file is dropped
+def fileDrop(fullFileName):
+    # Clear the screen from the previous run
+    os.system("cls")
+    # Print the welcome information
+    displayInfo()
+    # Trim the curly brackets off the file name
+    fullFileName = fullFileName.data[1:-1]
+    # Get the file name
+    inputFileName = os.path.basename(fullFileName)
+    # Determine the asset type
+    (assetType, fileName) = resources.assetRecognition(inputFileName, fullFileName, XML1Num, XML2Num, MUA1Num, MUA2Num)
+    # Determine if an XML-compatible asset is being used
+    if not(assetType == "Mannequin"):
+        # XML-compatible asset is being used
+        # Get the XML file path
+        XMLPath = getFilePath(XML1Num, XML2Num, "XML1", "XML2")
+    # Determine if an MUA-compatible asset is being used
+    if not((assetType == "Character Select Portrait") or (assetType == "3D Head")):
+        # MUA-compatible asset is being used
+        # Get the MUA file path
+        MUAPath = getFilePath(MUA1Num, MUA2Num, "MUA1", "MUA2")
+    # Begin processing
+    if assetType == "Skin":
+        # Skin
+        # Determine if the file name needs to be updated
+        if not(fileName == "Known"):
+            # Name unknown, need to update
+            os.rename(fullFileName, os.path.join(os.path.dirname(fullFileName), "igActor01_Animation01DB.igb"))
+        # Call the skin processing function
+        skinProcessing(fullFileName, XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath, hexEditChoice, runAlchemyChoice)
+    elif assetType == "Mannequin":
+        # Mannequin
+        # Determine if the file name needs to be updated
+        if not(fileName == "Known"):
+            # Name unknown, need to update
+            os.rename(fileName, "123XX (Mannequin).igb")
+        # Call the mannequin processing function
+        mannequinProcessing(fullFileName, MUA1Num, MUA2Num, MUAPath, multiPose, hexEditChoice, runAlchemyChoice)
+    elif assetType == "3D Head":
+        # 3D Head
+        # Determine if the file name needs to be updated
+        if not(fileName == "Known"):
+            # Name unknown, need to update
+            os.rename(fileName, "123XX (3D Head).igb")
+        # Call the 3D head processing function
+        headProcessing(fullFileName, XML1Num, XML2Num, XMLPath, hexEditChoice)
+    elif assetType == "Conversation Portrait":
+        # Conversation portrait
+        # Determine if the file name needs to be updated
+        if not(fileName == "Known"):
+            # Name unknown, need to update
+            os.rename(fileName, "hud_head_123XX.igb")
+        # Call the conversation portrait processing function
+        convoProcessing(fullFileName, XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath)
+    elif assetType == "Character Select Portrait":
+        # Character select portrait
+        # Determine if the file name needs to be updated
+        if not(fileName == "Known"):
+            # Name unknown, need to update
+            os.rename(fileName, "123XX (Character Select Portrait).igb")
+        # Call the mannequin processing function
+        CSPProcessing(fullFileName, XML1Num, XML2Num, XMLPath)
+    else:
+        # Other models
+        otherProcessing(fullFileName, XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath, runAlchemyChoice)
+    # Clear the screen from the previous run
+    os.system("cls")
+    # Print the welcome information
+    displayInfo()
+    # Print the completion message
+    resources.printSuccess(assetType + " " + inputFileName + " was successfully processed!")
+
 # Define the function to get the file path
 def getFilePath(Game1Num, Game2Num, Game1Name, Game2Name):
     # Determine which games are in use
@@ -57,7 +207,7 @@ def pathValidator(path):
         return True
 
 # Define the function to process skins
-def skinProcessing(XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath, hexEditChoice, runAlchemyChoice):
+def skinProcessing(fullFileName, XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath, hexEditChoice, runAlchemyChoice):
     # Determine the texture size
     textureSize = resources.select("What is the original size of the main texture?", ["256x256 or less", "Over 256x256"])
     # Ask additional questions based on texture size
@@ -113,17 +263,17 @@ def skinProcessing(XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath, hexEdit
     if celChoice == True:
         # cel shading is used
         # Set up file names
-        XML1Name = XML1Num + "XX (Skin).igb"
-        XML2Name = XML2Num + "XX (Skin).igb"
+        XML1Name = os.path.join(os.path.dirname(fullFileName), XML1Num + "XX (Skin).igb")
+        XML2Name = os.path.join(os.path.dirname(fullFileName), XML2Num + "XX (Skin).igb")
         MUA1Name = None
         MUA2Name = None
     else:
         # cel shading is not used
         # set up file names
-        XML1Name = XML1Num + "XX (Skin - No Cel).igb"
-        XML2Name = XML2Num + "XX (Skin - No Cel).igb"
-        MUA1Name = MUA1Num + "XX (Skin).igb"
-        MUA2Name = MUA2Num + "XX (Skin).igb"
+        XML1Name = os.path.join(os.path.dirname(fullFileName), XML1Num + "XX (Skin - No Cel).igb")
+        XML2Name = os.path.join(os.path.dirname(fullFileName), XML2Num + "XX (Skin - No Cel).igb")
+        MUA1Name = os.path.join(os.path.dirname(fullFileName), MUA1Num + "XX (Skin).igb")
+        MUA2Name = os.path.join(os.path.dirname(fullFileName), MUA2Num + "XX (Skin).igb")
     # #################################################################### #
     # ADDITION NEEDED - Need to verify that the file exists before copying #
     # #################################################################### #
@@ -136,7 +286,7 @@ def skinProcessing(XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath, hexEdit
         if (not(num == "") and not(name == None)):
             # Number isn't empty, need to copy
             # Perform the copying
-            shutil.copy("igActor01_Animation01DB.igb", name)
+            shutil.copy(fullFileName, name)
     # Determine if hex editing is needed
     if hexEditChoice == "True":
         # Hex editing is needed
@@ -229,7 +379,7 @@ def skinProcessing(XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath, hexEdit
     deleteLingering(["igActor01_Animation01DB.igb", XML1Name, XML2Name, MUA1Name, MUA2Name])
 
 # Define the function to process mannequins
-def mannequinProcessing(MUA1Num, MUA2Num, MUAPath, multiPose, hexEditChoice, runAlchemyChoice):
+def mannequinProcessing(fullFileName, MUA1Num, MUA2Num, MUAPath, multiPose, hexEditChoice, runAlchemyChoice):
     # Determine the texture size
     textureSize = resources.select("What is the original size of the main texture?", ["256x256 or less", "Over 256x256"])
     # Ask additional questions based on texture size
@@ -249,13 +399,13 @@ def mannequinProcessing(MUA1Num, MUA2Num, MUAPath, multiPose, hexEditChoice, run
         # determine the pose name
         mannequinPose = resources.select("Which mannequin pose is being used?", ["MUA1 Pose", "MUA1 Last-Gen Pose", "MUA1 Next-Gen Pose", "MUA2 Pose", "OCP Pose", "Custom Pose"])
         # Set up file names
-        MUA1Name = MUA1Num + "XX (Mannequin - " + mannequinPose + ").igb"
-        MUA2Name = MUA2Num + "XX (Mannequin - " + mannequinPose + ").igb"
+        MUA1Name = os.path.join(os.path.dirname(fullFileName), MUA1Num + "XX (Mannequin - " + mannequinPose + ").igb")
+        MUA2Name = os.path.join(os.path.dirname(fullFileName), MUA2Num + "XX (Mannequin - " + mannequinPose + ").igb")
     else:
         # Character uses one pose
         # set up file names
-        MUA1Name = MUA1Num + "XX (Mannequin).igb"
-        MUA2Name = MUA2Num + "XX (Mannequin).igb"
+        MUA1Name = os.path.join(os.path.dirname(fullFileName), MUA1Num + "XX (Mannequin).igb")
+        MUA2Name = os.path.join(os.path.dirname(fullFileName), MUA2Num + "XX (Mannequin).igb")
     # #################################################################### #
     # ADDITION NEEDED - Need to verify that the file exists before copying #
     # #################################################################### #
@@ -268,7 +418,7 @@ def mannequinProcessing(MUA1Num, MUA2Num, MUAPath, multiPose, hexEditChoice, run
         if not(num == ""):
             # Number isn't empty, need to copy
             # Perform the copying
-            shutil.copy("123XX (Mannequin).igb", name)
+            shutil.copy(fullFileName, name)
     # Determine if hex editing is needed
     if hexEditChoice == "True":
         # Hex editing is needed
@@ -342,7 +492,7 @@ def mannequinProcessing(MUA1Num, MUA2Num, MUAPath, multiPose, hexEditChoice, run
     deleteLingering(["123XX (Mannequin).igb", MUA1Name, MUA2Name])
 
 # Define the function to process 3D Heads
-def headProcessing(XML1Num, XML2Num, XMLPath, hexEditChoice):
+def headProcessing(fullFileName, XML1Num, XML2Num, XMLPath, hexEditChoice):
     # Determine the texture size
     textureSize = resources.select("What is the original size of the main texture?", ["256x256 or less", "Over 256x256"])
     # Ask additional questions based on texture size
@@ -357,8 +507,8 @@ def headProcessing(XML1Num, XML2Num, XMLPath, hexEditChoice):
     # Ask which texture format was used
     textureFormat = resources.select("What texture format was used for this asset?", textureFormatList)
     # Set up file names
-    XML1Name = XML1Num + "XX (3D Head).igb"
-    XML2Name = XML2Num + "XX (3D Head).igb"
+    XML1Name = os.path.join(os.path.dirname(fullFileName), XML1Num + "XX (3D Head).igb")
+    XML2Name = os.path.join(os.path.dirname(fullFileName), XML2Num + "XX (3D Head).igb")
     # #################################################################### #
     # ADDITION NEEDED - Need to verify that the file exists before copying #
     # #################################################################### #
@@ -371,7 +521,7 @@ def headProcessing(XML1Num, XML2Num, XMLPath, hexEditChoice):
         if not(num == ""):
             # Number isn't empty, need to copy
             # Perform the copying
-            shutil.copy("123XX (3D Head).igb", name)
+            shutil.copy(fullFileName, name)
     # Determine if hex editing is needed
     if hexEditChoice == "True":
         # Hex editing is needed
@@ -402,7 +552,7 @@ def headProcessing(XML1Num, XML2Num, XMLPath, hexEditChoice):
     deleteLingering(["123XX (3D Head).igb", XML1Name, XML2Name])
 
 # Define the function to process conversation portraits
-def convoProcessing(XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath):
+def convoProcessing(fullFileName, XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath):
     # Determine the portrait type
     portraitType = resources.select("What is the portrait type?", ["Standard", "Next-Gen Style"])
     # Determine if it's necessary to ask about texture size
@@ -454,10 +604,10 @@ def convoProcessing(XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath):
     if portraitType == "Next-Gen":
         # Next-Gen texture
         # Set up file names
-        XML1Name = "hud_head_" + XML1Num + "XX (Next-Gen Style).igb"
-        XML2Name = "hud_head_" + XML2Num + "XX (Next-Gen Style).igb"
-        MUA1Name = "hud_head_" + MUA1Num + "XX (Next-Gen Style).igb"
-        MUA2Name = "hud_head_" + MUA2Num + "XX (Next-Gen Style).igb"  
+        XML1Name = os.path.join(os.path.dirname(fullFileName), "hud_head_" + XML1Num + "XX (Next-Gen Style).igb")
+        XML2Name = os.path.join(os.path.dirname(fullFileName), "hud_head_" + XML2Num + "XX (Next-Gen Style).igb")
+        MUA1Name = os.path.join(os.path.dirname(fullFileName), "hud_head_" + MUA1Num + "XX (Next-Gen Style).igb")
+        MUA2Name = os.path.join(os.path.dirname(fullFileName), "hud_head_" + MUA2Num + "XX (Next-Gen Style).igb") 
     else:
         # other texture formats
         # Determine the portrait type
@@ -472,10 +622,10 @@ def convoProcessing(XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath):
             # Create the descriptor for the file name
             portraitNameAppend = " (Villain)"
         # Set up file names
-        XML1Name = "hud_head_" + XML1Num + "XX" + portraitNameAppend + ".igb"
-        XML2Name = "hud_head_" + XML2Num + "XX" + portraitNameAppend + ".igb"
-        MUA1Name = "hud_head_" + MUA1Num + "XX" + portraitNameAppend + ".igb"
-        MUA2Name = "hud_head_" + MUA2Num + "XX" + portraitNameAppend + ".igb"
+        XML1Name = os.path.join(os.path.dirname(fullFileName), "hud_head_" + XML1Num + "XX" + portraitNameAppend + ".igb")
+        XML2Name = os.path.join(os.path.dirname(fullFileName), "hud_head_" + XML2Num + "XX" + portraitNameAppend + ".igb")
+        MUA1Name = os.path.join(os.path.dirname(fullFileName), "hud_head_" + MUA1Num + "XX" + portraitNameAppend + ".igb")
+        MUA2Name = os.path.join(os.path.dirname(fullFileName), "hud_head_" + MUA2Num + "XX" + portraitNameAppend + ".igb")
     # #################################################################### #
     # ADDITION NEEDED - Need to verify that the file exists before copying #
     # #################################################################### #
@@ -488,7 +638,7 @@ def convoProcessing(XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath):
         if (not(num == "") and not(name == None)):
             # Number and name aren't empty, need to copy
             # Perform the copying
-            shutil.copy("hud_head_123XX.igb", name)
+            shutil.copy(fullFileName, name)
     # Copy the hex editing batch file
     shutil.copy("Scripts/hexConvo.bat", "./")
     # Perform the hex editing
@@ -572,20 +722,20 @@ def convoProcessing(XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath):
     deleteLingering(["hud_head_123XX.igb", XML1Name, XML2Name, MUA1Name, MUA2Name])
 
 # Define the function for processing character select portraits
-def CSPProcessing(XML1Num, XML2Num, XMLPath):
+def CSPProcessing(fullFileName, XML1Num, XML2Num, XMLPath):
     # Determine the portrait type
     portraitType = resources.select("What type of portrait is being used?", ["XML1-style","XML2-style"])
     # Filter based on portrait type
     if portraitType == "XML1-style":
         # XML1-style
         # Set up file names
-        XML1Name = XML1Num + "XX (Character Select Portrait).igb"
+        XML1Name = os.path.join(os.path.dirname(fullFileName), XML1Num + "XX (Character Select Portrait).igb")
         XML2Name = None
     else:
         # XML2-style
         # Set up file names
         XML1Name = None
-        XML2Name = XML2Num + "XX (Character Select Portrait).igb"
+        XML2Name = os.path.join(os.path.dirname(fullFileName), XML2Num + "XX (Character Select Portrait).igb")
     # #################################################################### #
     # ADDITION NEEDED - Need to verify that the file exists before copying #
     # #################################################################### #
@@ -598,7 +748,7 @@ def CSPProcessing(XML1Num, XML2Num, XMLPath):
         if (not(num == "") and not(name == None)):
             # Number and name aren't empty, need to copy
             # Perform the copying
-            shutil.copy("123XX (Character Select Portrait).igb", name)
+            shutil.copy(fullFileName, name)
     # Filter the remaining operations based on portrait type
     if portraitType == "XML1-style":
         # XML1-style
@@ -614,7 +764,7 @@ def CSPProcessing(XML1Num, XML2Num, XMLPath):
     deleteLingering(["123XX (Character Select Portrait).igb", XML1Name, XML2Name])
 
 # Define the function for processing other assets
-def otherProcessing(XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath, runAlchemyChoice):
+def otherProcessing(fullFileName, XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath, runAlchemyChoice):
     # Determine the texture size
     textureSize = resources.select("What is the original size of the main texture?", ["256x256 or less", "Over 256x256"])
     # Ask additional questions based on texture size
@@ -629,11 +779,10 @@ def otherProcessing(XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath, runAlc
     # Ask which texture format was used
     textureFormat = resources.select("What texture format was used for this asset?", textureFormatList)
     # Individually determine the file names through user input
-    genericName = otherModelNameInput("NA", "the general exported file")
-    XML1Name = otherModelNameInput(XML1Num, "XML1")
-    XML2Name = otherModelNameInput(XML2Num, "XML2")
-    MUA1Name = otherModelNameInput(MUA1Num, "MUA1")
-    MUA2Name = otherModelNameInput(MUA2Num, "MUA2")
+    XML1Name = otherModelNameInput(XML1Num, "XML1", fullFileName)
+    XML2Name = otherModelNameInput(XML2Num, "XML2", fullFileName)
+    MUA1Name = otherModelNameInput(MUA1Num, "MUA1", fullFileName)
+    MUA2Name = otherModelNameInput(MUA2Num, "MUA2", fullFileName)
     # #################################################################### #
     # ADDITION NEEDED - Need to verify that the file exists before copying #
     # #################################################################### #
@@ -646,7 +795,7 @@ def otherProcessing(XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath, runAlc
         if not(num == ""):
             # Number isn't empty, need to copy
             # Perform the copying
-            shutil.copy(genericName, name)
+            shutil.copy(fullFileName, name)
     # Filter remaining operations based on texture type
     if textureFormat == "PC, PS2, Xbox, and MUA1 360":
         # 256x256 or less, main texture, primary or secondary skin
@@ -725,7 +874,7 @@ def otherProcessing(XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath, runAlc
     deleteLingering([genericName, XML1Name, XML2Name, MUA1Name, MUA2Name])
 
 # Define the function for getting other model names
-def otherModelNameInput(charNum, gameName):
+def otherModelNameInput(charNum, gameName, fullFileName):
     # determine what to do based on whether or not the character number is defined.
     if charNum == "":
         # Not used with this game
@@ -738,7 +887,7 @@ def otherModelNameInput(charNum, gameName):
         # Ask the question
         fileName = resources.path(message, fileNameValidator)
         # add the file extension
-        fileName += ".igb"
+        fileName = os.path.join(os.path.dirname(fullFileName), fileName + ".igb")
     # return the collected value
     return fileName
 
@@ -788,16 +937,8 @@ def deleteLingering(fileList):
 # ############## #
 # Set the window title
 ctypes.windll.kernel32.SetConsoleTitleW("BaconWizard17's igb Finisher")
-# Display the title
-resources.printPlain("██╗ ██████╗ ██████╗ ███████╗██╗███╗   ██╗██╗███████╗██╗  ██╗███████╗██████╗ ")
-resources.printPlain("██║██╔════╝ ██╔══██╗██╔════╝██║████╗  ██║██║██╔════╝██║  ██║██╔════╝██╔══██╗")
-resources.printPlain("██║██║  ███╗██████╔╝█████╗  ██║██╔██╗ ██║██║███████╗███████║█████╗  ██████╔╝")
-resources.printPlain("██║██║   ██║██╔══██╗██╔══╝  ██║██║╚██╗██║██║╚════██║██╔══██║██╔══╝  ██╔══██╗")
-resources.printPlain("██║╚██████╔╝██████╔╝██║     ██║██║ ╚████║██║███████║██║  ██║███████╗██║  ██║")
-resources.printPlain("╚═╝ ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚═╝  ╚═══╝╚═╝╚══════╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝")
-# Print relevant info
-resources.printPlain("\nVersion 1.0.0")
-resources.printPlain("https://marvelmods.com/forum/index.php\n")
+# Print the welcome information
+displayInfo()
 # Print the welcome message
 resources.printImportant("Welcome to BaconWizard17's igb Finisher!\n")
 # Read the settings
@@ -821,64 +962,11 @@ if runAlchemyChoice == "True":
     # Alchemy operations are needed
     # Reset the Alchemy eval to avoid possible issues
     resources.resetAlchemy()
-# Determine the asset type
-(assetType, fileName) = resources.assetRecognition(XML1Num, XML2Num, MUA1Num, MUA2Num)
-# Determine if any asset type was picked
-if not(assetType == None):
-    # An asset was picked
-    # Determine if an XML-compatible asset is being used
-    if not(assetType == "Mannequin"):
-        # XML-compatible asset is being used
-        # Get the XML file path
-        XMLPath = getFilePath(XML1Num, XML2Num, "XML1", "XML2")
-    # Determine if an MUA-compatible asset is being used
-    if not((assetType == "Character Select Portrait") or (assetType == "3D Head")):
-        # MUA-compatible asset is being used
-        # Get the MUA file path
-        MUAPath = getFilePath(MUA1Num, MUA2Num, "MUA1", "MUA2")
-    # Begin processing
-    if assetType == "Skin":
-        # Skin
-        # Determine if the file name needs to be updated
-        if not(fileName == "Known"):
-            # Name unknown, need to update
-            os.rename(fileName, "igActor01_Animation01DB.igb")
-        # Call the skin processing function
-        skinProcessing(XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath, hexEditChoice, runAlchemyChoice)
-    elif assetType == "Mannequin":
-        # Mannequin
-        # Determine if the file name needs to be updated
-        if not(fileName == "Known"):
-            # Name unknown, need to update
-            os.rename(fileName, "123XX (Mannequin).igb")
-        # Call the mannequin processing function
-        mannequinProcessing(MUA1Num, MUA2Num, MUAPath, multiPose, hexEditChoice, runAlchemyChoice)
-    elif assetType == "3D Head":
-        # 3D Head
-        # Determine if the file name needs to be updated
-        if not(fileName == "Known"):
-            # Name unknown, need to update
-            os.rename(fileName, "123XX (3D Head).igb")
-        # Call the 3D head processing function
-        headProcessing(XML1Num, XML2Num, XMLPath, hexEditChoice)
-    elif assetType == "Conversation Portrait":
-        # Conversation portrait
-        # Determine if the file name needs to be updated
-        if not(fileName == "Known"):
-            # Name unknown, need to update
-            os.rename(fileName, "hud_head_123XX.igb")
-        # Call the conversation portrait processing function
-        convoProcessing(XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath)
-    elif assetType == "Character Select Portrait":
-        # Character select portrait
-        # Determine if the file name needs to be updated
-        if not(fileName == "Known"):
-            # Name unknown, need to update
-            os.rename(fileName, "123XX (Character Select Portrait).igb")
-        # Call the mannequin processing function
-        CSPProcessing(XML1Num, XML2Num, XMLPath)
-    else:
-        # Other models
-        otherProcessing(XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath, runAlchemyChoice)
+# Initialize the window
+window_dnd = initializeWindow()
+# Initialize the drop zone
+lbl_drop = initializeDropZone()
+# Start the window loop
+window_dnd.mainloop()
 # Add a "press any key to continue" prompt
 resources.pressAnyKey(None)

@@ -1,9 +1,11 @@
 @echo off
 echo Clearing existing folder...
-if exist output del /q output
+if exist dist del /q dist
 echo Copying resources...
-robocopy >nul Scripts output\Scripts
-if exist XVI32 robocopy >nul XVI32 output\XVI32
-copy >nul settings.ini output
-echo Running Auto Py To Exe...
-auto-py-to-exe -c build.json
+robocopy >nul Scripts dist\Scripts
+if exist XVI32 robocopy >nul XVI32 dist\XVI32
+copy >nul settings.ini dist
+echo Running pyInstaller...
+pyinstaller igbFinisher.py --onefile --additional-hooks-dir=. --icon=icon.ico --add-data "icon.ico:." --add-data "images/dropZone.png:images"
+echo Installation complete.
+pause
