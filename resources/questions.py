@@ -88,6 +88,19 @@ def select(question, options):
     # Return the collected value
     return answer
 
+# Define the function for choice-based questions
+def selectDefault(question, options, defaultChoice):
+    # Define the general form for asking questions
+    answer = questionary.select(
+        question,
+        choices = options,
+        pointer = ">",
+        default = defaultChoice,
+        style = questionStyle
+    ).ask()
+    # Return the collected value
+    return answer
+
 # Define the function for path-based questions
 def path(question, validator):
     # Define the general form for asking questions

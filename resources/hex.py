@@ -119,7 +119,24 @@ def getHexString(num, assetType):
         # Set the hex script name
         hexScript = "hexMannOrHead"
     elif assetType == "Conversation Portrait":
-        print("Do something here")
+        # Conversation portait
+        # Set the pre-determined values
+        hex12301_conversationpng = "31 32 33 30 31 5F 63 6F 6E 76 65 72 73 61 74 69 6F 6E 2E 70 6E 67"
+        # Determine the length of the character number
+        if len(num) == 2:
+            # 2-digit character number
+            # Establish hex editing values
+            hexNum_conversationpng = "3" + num[0] + " 3" + num[1] + " 30 31 5F 63 6F 6E 76 65 72 73 61 74 69 6F 6E 2E 70 6E 67 00"
+        else:
+            # 3-digit character number
+            # Establish hex editing values
+            hexNum_conversationpng = "3" + num[0] + " 3" + num[1] + " 3" + num[2] + " 30 31 5F 63 6F 6E 76 65 72 73 61 74 69 6F 6E 2E 70 6E 67"
+        # Loop through the values
+        for hexItem in [hex12301_conversationpng, hexNum_conversationpng]:
+            # Add to the hex string
+            hexString += ("\"" + hexItem + "\" ")
+        # Set the hex script name
+        hexScript = "hexConvo"
     return hexString, hexScript
 
 # Define the function for hex editing

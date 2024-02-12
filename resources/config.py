@@ -28,7 +28,7 @@ def parseConfig():
         number = characterNumberGetter(game)
         settings.append(number)
     # Get the other settings
-    for settingName in ["hexEditChoice","runAlchemyChoice","multiPose"]:
+    for settingName in ["pconly","hexEditChoice","runAlchemyChoice","multiPose"]:
         setting = settingsGetter(settingName)
         settings.append(setting)
     # Return the collected data
@@ -117,5 +117,14 @@ def settingsGetter(settingName):
     # Write the new value to the settings
     with open('settings.ini', 'w') as configfile:
         config.write(configfile)
+    # Determine what the setting is
+    if setting == "True":
+        # True as a string
+        # Set as a bool
+        settingBool = True
+    else:
+        # False as a string
+        # Set as a bool
+        settingBool = False
     # Return the collected value
-    return setting
+    return settingBool

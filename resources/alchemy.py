@@ -39,7 +39,7 @@ def resetAlchemy():
 # Define the function for performing Alchemy operations
 def callAlchemy(fileName, iniName, runAlchemyChoice):
     # Determine if the operation should be run
-    if runAlchemyChoice == "True":
+    if runAlchemyChoice == True:
         # Need to run Alchemy
         # Determine if the file actually exists
         if not(fileName == None):
