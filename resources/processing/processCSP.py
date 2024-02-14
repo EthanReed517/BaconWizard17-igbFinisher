@@ -50,9 +50,9 @@ def processCSP(textureFormat, XML1Name, XML2Name, XMLPath, portraitType):
     return complete
 
 # Define the function to process conversation portraits
-def CSPProcessing(fullFileName, XML1Num, XML2Num, XMLPath, pcOnly):
+def CSPProcessing(fullFileName, settings, XMLPath):
     # Determine the texture format
-    (textureFormat, portraitType) = resources.getCSPTextureFormat(XML1Num, XML2Num, pcOnly)
+    (textureFormat, portraitType) = resources.getCSPTextureFormat(settings)
     # Confirm that a texture format was chosen
     if not(textureFormat == None):
         # A texture format was chosen
@@ -60,15 +60,15 @@ def CSPProcessing(fullFileName, XML1Num, XML2Num, XMLPath, pcOnly):
         if portraitType == "XML1":
             # XML1 portrait
             # Set up file names
-            XML1Name = os.path.join(os.path.dirname(fullFileName), XML1Num + "XX (Character Select Portrait).igb")
+            XML1Name = os.path.join(os.path.dirname(fullFileName), settings["XML1Num"] + "XX (Character Select Portrait).igb")
             XML2Name = None
         else:
             # XML2 portrait
             # Set up file names
             XML1Name = None
-            XML2Name = os.path.join(os.path.dirname(fullFileName), XML2Num + "XX (Character Select Portrait).igb")
+            XML2Name = os.path.join(os.path.dirname(fullFileName), settings["XML2Num"] + "XX (Character Select Portrait).igb")
         # Copy the files
-        for num, name in zip([XML1Num, XML2Num], [XML1Name, XML2Name]):
+        for num, name in zip([settings["XML1Num"], settings["XML2Num"]], [XML1Name, XML2Name]):
             # Determine if the number is used
             if (not(num == "") and not(name == None) and not(os.path.exists(name))):
                 # Number isn't empty, need to copy

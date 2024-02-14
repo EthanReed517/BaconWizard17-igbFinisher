@@ -14,7 +14,7 @@ import resources
 # FUNCTIONS #
 # ######### #
 # Define the function to get texture formats for 3D assets
-def getConvoTextureFormat(assetType, XML2Num, MUA1Num, MUA2Num, pcOnly):
+def getConvoTextureFormat(settings):
     # Determine if any transparency was used
     portraitType = resources.select("What type of portrait is this?", ["Standard Style", "MUA1 Next-Gen Style"])
     # Determine the texture size
@@ -26,12 +26,12 @@ def getConvoTextureFormat(assetType, XML2Num, MUA1Num, MUA2Num, pcOnly):
         if textureSize == "64x64":
             # Console resolution
             # Determine which consoles are in use
-            if pcOnly == False:
+            if settings["pcOnly"] == False:
                 # All consoles
                 # Create the list
                 textureFormatList = ["Main"]
                 # Determine if the MUA-specific format should be used
-                if (not(MUA1Num == "") or not(MUA2Num == "")):
+                if (not(settings["MUA1Num"] == "") or not(settings["MUA2Num"] == "")):
                     # MUA is in use
                     # Add the format
                     textureFormatList.append("Wii")
@@ -40,24 +40,24 @@ def getConvoTextureFormat(assetType, XML2Num, MUA1Num, MUA2Num, pcOnly):
                 # Create the list
                 textureFormatList = []
                 # Determine if XML2 PC and MUA1 PC are in use
-                if (not(XML2Num == "") or not(MUA1Num == "")):
+                if (not(settings["XML2Num"] == "") or not(settings["MUA1Num"] == "")):
                     # A PC-compatible console is in use
                     # Add the format
                     textureFormatList.append("PC")
                 # Determine if MUA1 is in use
-                if not(MUA1Num == ""):
+                if not(settings["MUA1Num"] == ""):
                     # MUA1 is in use
                     # Add the Steam format
                     textureFormatList.append("Steam")
         elif textureSize == "128x128":
             # SD resolution
             # Determine which consoles are in use
-            if pcOnly == False:
+            if settings["pcOnly"] == False:
                 # All consoles
                 # Create the list
                 textureFormatList = ["Main except PSP"]
                 # Determine if the MUA-specific format should be used
-                if (not(MUA1Num == "") or not(MUA2Num == "")):
+                if (not(settings["MUA1Num"] == "") or not(settings["MUA2Num"] == "")):
                     # MUA is in use
                     # Add the formats
                     textureFormatList.extend(["Wii", "PSP"])
@@ -66,12 +66,12 @@ def getConvoTextureFormat(assetType, XML2Num, MUA1Num, MUA2Num, pcOnly):
                 # Create the list
                 textureFormatList = []
                 # Determine if XML2 PC and MUA1 PC are in use
-                if (not(XML2Num == "") or not(MUA1Num == "")):
+                if (not(settings["XML2Num"] == "") or not(settings["MUA1Num"] == "")):
                     # A PC-compatible console is in use
                     # Add the format
                     textureFormatList.append("PC")
                 # Determine if MUA1 is in use
-                if not(MUA1Num == ""):
+                if not(settings["MUA1Num"] == ""):
                     # MUA1 is in use
                     # Add the Steam format
                     textureFormatList.append("Steam")   
@@ -80,20 +80,20 @@ def getConvoTextureFormat(assetType, XML2Num, MUA1Num, MUA2Num, pcOnly):
             # Initialize the list
             textureFormatList = []
             # Determine if the XML2-specific format is needed
-            if not(XML2Num == ""):
+            if not(settings["XML2Num"] == ""):
                 # XML2 is in use
                 # Add the format
                 textureFormatList.append("XML2 PC")
             # Determine which consoles are in use
-            if pcOnly == False:
+            if settings["pcOnly"] == False:
                 # All consoles
                 # Determine if the MUA1-specific format is needed
-                if not(MUA1Num == ""):
+                if not(settings["MUA1Num"] == ""):
                     # MUA1 is in use
                     # Add the format
                     textureFormatList.append("MUA1 PC and Next-Gen")
                 # Determine if the MUA-specific format is needed
-                if (not(MUA1Num == "") or not(MUA2Num == "")):
+                if (not(settings["MUA1Num"] == "") or not(settings["MUA2Num"] == "")):
                     # MUA is in use
                     # Add the formats
                     textureFormatList.append("Wii")
@@ -102,7 +102,7 @@ def getConvoTextureFormat(assetType, XML2Num, MUA1Num, MUA2Num, pcOnly):
             else:
                 # PC only
                 # Determine if the MUA1-specific format is needed
-                if not(MUA1Num == ""):
+                if not(settings["MUA1Num"] == ""):
                     # MUA1 is in use
                     # Add the format
                     textureFormatList.append("MUA1 PC and Steam")
@@ -112,7 +112,7 @@ def getConvoTextureFormat(assetType, XML2Num, MUA1Num, MUA2Num, pcOnly):
         if textureSize == "64x64":
             # Console resolution
             # Determine which consoles are in use
-            if pcOnly == False:
+            if settings["pcOnly"] == False:
                 # All consoles
                 # Create the list
                 textureFormatList = ["All"]
@@ -121,19 +121,19 @@ def getConvoTextureFormat(assetType, XML2Num, MUA1Num, MUA2Num, pcOnly):
                 # Create the list
                 textureFormatList = []
                 # Determine if XML2 PC and MUA1 PC are in use
-                if (not(XML2Num == "") or not(MUA1Num == "")):
+                if (not(settings["XML2Num"] == "") or not(settings["MUA1Num"] == "")):
                     # A PC-compatible console is in use
                     # Add the format
                     textureFormatList.append("PC and Steam")
         elif textureSize == "128x128":
             # SD resolution
             # Determine which consoles are in use
-            if pcOnly == False:
+            if settings["pcOnly"] == False:
                 # All consoles
                 # Create the list
                 textureFormatList = ["All except PSP"]
                 # Determine if the MUA-specific format is needed
-                if (not(MUA1Num == "") or not(MUA2Num == "")):
+                if (not(settings["MUA1Num"] == "") or not(settings["MUA2Num"] == "")):
                     # MUA is in use
                     # Add the formats
                     textureFormatList.append("PSP")
@@ -142,25 +142,25 @@ def getConvoTextureFormat(assetType, XML2Num, MUA1Num, MUA2Num, pcOnly):
                 # Create the list
                 textureFormatList = []
                 # Determine if XML2 PC and MUA1 PC are in use
-                if (not(XML2Num == "") or not(MUA1Num == "")):
+                if (not(settings["XML2Num"] == "") or not(settings["MUA1Num"] == "")):
                     # A PC-compatible console is in use
                     # Add the format
                     textureFormatList.append("PC and Steam")
         else:
             # HD resolution and above
             # Determine which consoles are in use
-            if pcOnly == False:
+            if settings["pcOnly"] == False:
                 # Create the list
                 textureFormatList = []
                 # Determine if XML2 PC and MUA1 PC are in use
-                if (not(XML2Num == "") or not(MUA1Num == "")):
+                if (not(settings["XML2Num"] == "") or not(settings["MUA1Num"] == "")):
                     # A PC-compatible console is in use
                     # Add the format
                     textureFormatList.append("PC and Next-Gen")
                 # Add the common format
                 textureFormatList.append("Last-Gen")
                 # Determine if the MUA-specific format is needed
-                if (not(MUA1Num == "") or not(MUA2Num == "")):
+                if (not(settings["MUA1Num"] == "") or not(settings["MUA2Num"] == "")):
                     # MUA is in use
                     # Add the formats
                     textureFormatList.append("PSP")
@@ -169,7 +169,7 @@ def getConvoTextureFormat(assetType, XML2Num, MUA1Num, MUA2Num, pcOnly):
                 # Create the list
                 textureFormatList = []
                 # Determine if XML2 PC and MUA1 PC are in use
-                if (not(XML2Num == "") or not(MUA1Num == "")):
+                if (not(settings["XML2Num"] == "") or not(settings["MUA1Num"] == "")):
                     # A PC-compatible console is in use
                     # Add the format
                     textureFormatList.append("PC and Steam")

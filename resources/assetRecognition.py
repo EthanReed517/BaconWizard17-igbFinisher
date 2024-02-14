@@ -29,21 +29,21 @@ def fileNameValidatorStart(fileName):
         return True
 
 # Define the function to get asset choice options
-def getAssetChoices(XML1Num, XML2Num, MUA1Num, MUA2Num):
+def getAssetChoices(settings):
     # Initialize the file name variable
     fileName = "Known"
     # Skins are present in every game
     assetChoices = ["Skin"]
     # Include mannequins if an MUA1 or MUA2 number is present
-    if (not(MUA1Num == "")) or (not(MUA2Num == "")):
+    if (not(settings["MUA1Num"] == "")) or (not(settings["MUA2Num"] == "")):
         assetChoices.append("Mannequin")
     # Include 3D heads if an XML1 or XML2 number is present
-    if (not(XML1Num == "")) or (not(XML2Num == "")):
+    if (not(settings["XML1Num"] == "")) or (not(settings["XML2Num"] == "")):
         assetChoices.append("3D Head")
     # Conversation portraits are present in every game
     assetChoices.append("Conversation Portrait")
     # Include CSPs if an XML1 or XML2 number is present
-    if (not(XML1Num == "")) or (not(XML2Num == "")):
+    if (not(settings["XML1Num"] == "")) or (not(settings["XML2Num"] == "")):
         assetChoices.append("Character Select Portrait")
     # Other models are present in every game
     assetChoices.append("Other")
@@ -53,7 +53,7 @@ def getAssetChoices(XML1Num, XML2Num, MUA1Num, MUA2Num):
     return assetType
 
 # Define the function for getting the asset type from the file name
-def assetRecognition(inputFileName, fullFileName, XML1Num, XML2Num, MUA1Num, MUA2Num):
+def assetRecognition(inputFileName, fullFileName, settings):
     # Create the list of possible file names
     fileNameList = ["igActor01_Animation01DB.igb", "123XX (Mannequin).igb", "123XX (3D Head).igb", "hud_head_123XX.igb", "123XX (Character Select Portrait).igb"]
     # Create the list of asset types
@@ -74,7 +74,7 @@ def assetRecognition(inputFileName, fullFileName, XML1Num, XML2Num, MUA1Num, MUA
         # Print a warning message
         resources.printWarning("WARNING: The asset type for " + inputFileName + " could not be identified from the file name. Please choose the asset type.")
         # Check which assets should be asked about
-        assetType = getAssetChoices(XML1Num, XML2Num, MUA1Num, MUA2Num)
+        assetType = getAssetChoices(settings)
         # Set the file name
         fileName = fullFileName
     else:

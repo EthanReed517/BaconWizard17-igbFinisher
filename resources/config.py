@@ -22,15 +22,15 @@ def parseConfig():
     # Check if the config file exists
     verifyConfigExistence()
     # Start a list to store the settings
-    settings = []
+    settings = {}
     # Get the character numbers
     for game in ["XML1", "XML2", "MUA1", "MUA2"]:
         number = characterNumberGetter(game)
-        settings.append(number)
+        settings[game + "Num"] = number
     # Get the other settings
-    for settingName in ["pconly","hexEditChoice","runAlchemyChoice","multiPose"]:
+    for settingName in ["pcOnly","hexEditChoice","runAlchemyChoice","multiPose"]:
         setting = settingsGetter(settingName)
-        settings.append(setting)
+        settings[settingName] = setting
     # Return the collected data
     return settings
 

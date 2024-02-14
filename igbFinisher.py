@@ -107,12 +107,12 @@ def fileDrop(fullFileName):
     # Get the file name
     inputFileName = os.path.basename(fullFileName)
     # Determine the asset type
-    (assetType, fileName) = resources.assetRecognition(inputFileName, fullFileName, XML1Num, XML2Num, MUA1Num, MUA2Num)
+    (assetType, fileName) = resources.assetRecognition(inputFileName, fullFileName, settings)
     # Determine if an XML-compatible asset is being used
     if not(assetType == "Mannequin"):
         # XML-compatible asset is being used
         # Get the XML file path
-        XMLPath = getFilePath(XML1Num, XML2Num, "XML1", "XML2")
+        XMLPath = getFilePath(settings, "XML1", "XML2")
     else:
         # Not XML-compatible (mannequin)
         # Set the path to none
@@ -121,7 +121,7 @@ def fileDrop(fullFileName):
     if not((assetType == "Character Select Portrait") or (assetType == "3D Head")):
         # MUA-compatible asset is being used
         # Get the MUA file path
-        MUAPath = getFilePath(MUA1Num, MUA2Num, "MUA1", "MUA2")
+        MUAPath = getFilePath(settings, "MUA1", "MUA2")
     else:
         # Not MUA-compatible (CSP or 3D Head)
         # Set the path to none
@@ -134,26 +134,26 @@ def fileDrop(fullFileName):
     if assetType == "Skin":
         # Skin
         # Call the skin processing function
-        complete = resources.skinProcessing(assetType, fullFileName, XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath, pcOnly, hexEditChoice, runAlchemyChoice)
+        complete = resources.skinProcessing(fullFileName, settings, XMLPath, MUAPath)
     elif assetType == "Mannequin":
         # Mannequin
         # Call the mannequin processing function
-        complete = resources.mannProcessing(assetType, fullFileName, XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath, pcOnly, hexEditChoice, runAlchemyChoice, multiPose)
+        complete = resources.mannProcessing(fullFileName, settings, XMLPath, MUAPath)
     elif assetType == "3D Head":
         # 3D Head
         # Call the 3D head processing function
-        complete = resources.headProcessing(assetType, fullFileName, XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath, pcOnly, hexEditChoice, runAlchemyChoice)
+        complete = resources.headProcessing(fullFileName, settings, XMLPath, MUAPath)
     elif assetType == "Conversation Portrait":
         # Conversation portrait
         # Call the conversation portrait processing function
-        complete = resources.convoProcessing(assetType, fullFileName, XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath, pcOnly, hexEditChoice, runAlchemyChoice)
+        complete = resources.convoProcessing(fullFileName, settings, XMLPath, MUAPath)
     elif assetType == "Character Select Portrait":
         # Character select portrait
         # Call the mannequin processing function
-        complete = resources.CSPProcessing(fullFileName, XML1Num, XML2Num, XMLPath, pcOnly)
+        complete = resources.CSPProcessing(fullFileName, settings, XMLPath)
     else:
         # Other models
-        complete = resources.otherProcessing(assetType, fullFileName, XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath, pcOnly, hexEditChoice, runAlchemyChoice)
+        complete = resources.otherProcessing(fullFileName, settings, XMLPath, MUAPath)
     # Clear the screen from the previous run
     os.system("cls")
     # Print the welcome information
@@ -169,7 +169,10 @@ def fileDrop(fullFileName):
         resources.printError(assetType + " " + inputFileName + "was not able to be processed.")
 
 # Define the function to get the file path
-def getFilePath(Game1Num, Game2Num, Game1Name, Game2Name):
+def getFilePath(settings, Game1Name, Game2Name):
+    # Set up the numbers
+    Game1Num = settings[Game1Name + "Num"]
+    Game2Num = settings[Game2Name + "Num"]
     # Determine which games are in use
     if (Game1Num == "") and (Game2Num == ""):
         # Neither game is in use
@@ -235,23 +238,13 @@ displayInfo()
 resources.printImportant("Welcome to BaconWizard17's igb Finisher!\n")
 # Read the settings
 settings = resources.parseConfig()
-# Get the character numbers
-XML1Num = settings[0]
-XML2Num = settings[1]
-MUA1Num = settings[2]
-MUA2Num = settings[3]
-# Get the other settings
-pcOnly = settings[4]
-hexEditChoice = settings[5]
-runAlchemyChoice = settings[6]
-multiPose = settings[7]
 # Determine if hex editing is needed
-if hexEditChoice == True:
+if settings["hexEditChoice"] == True:
     # Hex editing is needed
     # Verify existence of XVI32
     resources.verifyXVI32Existence()
 # Determine if alchemy operations are needed
-if runAlchemyChoice == True:
+if settings["runAlchemyChoice"] == True:
     # Alchemy operations are needed
     # Reset the Alchemy eval to avoid possible issues
     resources.resetAlchemy()

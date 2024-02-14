@@ -18,42 +18,42 @@ import shutil
 # FUNCTIONS #
 # ######### #
 # Define the function to process skins
-def mannProcessing(assetType, fullFileName, XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath, pcOnly, hexEditChoice, runAlchemyChoice, multiPose):
+def mannProcessing(fullFileName, settings, XMLPath, MUAPath):
     # Determine the texture format
-    textureFormat = resources.get3DTextureFormat(assetType, XML2Num, MUA1Num, MUA2Num, pcOnly)
+    textureFormat = resources.get3DTextureFormat("Mannequin", settings)
     # Confirm that a texture format was chosen
     if not(textureFormat == None):
         # A texture format was chosen
         # Filter names based on whether or not the character uses multiple mannequin poses
-        if multiPose == True:
+        if settings["multiPose"] == True:
             # Character uses multiple poses
             # determine the pose name
             mannequinPose = resources.select("Which mannequin pose is being used?", ["MUA1 Pose", "MUA1 Last-Gen Pose", "MUA1 Next-Gen Pose", "MUA2 Pose", "OCP Pose", "Custom Pose"])
             # Set up file names
-            MUA1Name = os.path.join(os.path.dirname(fullFileName), MUA1Num + "XX (Mannequin - " + mannequinPose + ").igb")
-            MUA2Name = os.path.join(os.path.dirname(fullFileName), MUA2Num + "XX (Mannequin - " + mannequinPose + ").igb")
+            MUA1Name = os.path.join(os.path.dirname(fullFileName), settings["MUA1Num"] + "XX (Mannequin - " + mannequinPose + ").igb")
+            MUA2Name = os.path.join(os.path.dirname(fullFileName), settings["MUA2Num"] + "XX (Mannequin - " + mannequinPose + ").igb")
         else:
             # Character uses one pose
             # set up file names
-            MUA1Name = os.path.join(os.path.dirname(fullFileName), MUA1Num + "XX (Mannequin).igb")
-            MUA2Name = os.path.join(os.path.dirname(fullFileName), MUA2Num + "XX (Mannequin).igb")
+            MUA1Name = os.path.join(os.path.dirname(fullFileName), settings["MUA1Num"] + "XX (Mannequin).igb")
+            MUA2Name = os.path.join(os.path.dirname(fullFileName), settings["MUA2Num"] + "XX (Mannequin).igb")
         # Set the XML1/XML2 names
         XML1Name = None
         XML2Name = None
         # Copy the files
-        for num, name in zip([XML1Num, XML2Num, MUA1Num, MUA2Num], [XML1Name, XML2Name, MUA1Name, MUA2Name]):
+        for num, name in zip([settings["XML1Num"], settings["XML2Num"], settings["MUA1Num"], settings["MUA2Num"]], [XML1Name, XML2Name, MUA1Name, MUA2Name]):
             # Determine if the number is used
             if (not(num == "") and not(name == None) and not(os.path.exists(name))):
                 # Number isn't empty, need to copy
                 # Perform the copying
                 shutil.copy(fullFileName, name)
         # Determine if hex editing is needed
-        if hexEditChoice == True:
+        if settings["hexEditChoice"] == True:
             # Hex editing is needed
             # Perform the hex editing
-            resources.hexEdit([XML1Num, XML2Num, MUA1Num, MUA2Num], [XML1Name, XML2Name, MUA1Name, MUA2Name], assetType)
+            resources.hexEdit([settings["XML1Num"], settings["XML2Num"], settings["MUA1Num"], settings["MUA2Num"]], [XML1Name, XML2Name, MUA1Name, MUA2Name], "Mannequin")
         # Process the file
-        complete = resources.process3D(assetType, textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name, MUA1Num, MUA2Num, XMLPath, MUAPath, runAlchemyChoice)
+        complete = resources.process3D("Mannequin", textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name, XMLPath, MUAPath, settings)
     else:
         # A texture format was not chosen
         complete = false

@@ -45,9 +45,9 @@ def fileNameValidator(fileName):
         return True
 
 # Define the function to process skins
-def otherProcessing(assetType, fullFileName, XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath, pcOnly, hexEditChoice, runAlchemyChoice):
+def otherProcessing(fullFileName, settings, XMLPath, MUAPath):
     # Determine the texture format
-    textureFormat = resources.get3DTextureFormat(assetType, XML2Num, MUA1Num, MUA2Num, pcOnly)
+    textureFormat = resources.get3DTextureFormat("Other", settings)
     # Confirm that a texture format was chosen
     if not(textureFormat == None):
         # A texture format was chosen
@@ -68,8 +68,8 @@ def otherProcessing(assetType, fullFileName, XML1Num, XML2Num, MUA1Num, MUA2Num,
         if celChoice == True:
             # cel shading is used
             # Set up file names
-            XML1Name = otherModelNameInput(XML1Num, "XML1", fullFileName, "")
-            XML2Name = otherModelNameInput(XML2Num, "XML2", fullFileName, "")
+            XML1Name = otherModelNameInput(settings["XML1Num"], "XML1", fullFileName, "")
+            XML2Name = otherModelNameInput(settings["XML2Num"], "XML2", fullFileName, "")
             MUA1Name = None
             MUA2Name = None
         else:
@@ -78,24 +78,24 @@ def otherProcessing(assetType, fullFileName, XML1Num, XML2Num, MUA1Num, MUA2Num,
             if celAny == True:
                 # There will be a version with cel shading
                 # set up file names
-                XML1Name = otherModelNameInput(XML1Num, "XML1", fullFileName, " (No Cel)")
-                XML2Name = otherModelNameInput(XML2Num, "XML2", fullFileName, " (No Cel)")
+                XML1Name = otherModelNameInput(settings["XML1Num"], "XML1", fullFileName, " (No Cel)")
+                XML2Name = otherModelNameInput(settings["XML2Num"], "XML2", fullFileName, " (No Cel)")
             else:
                 # There will not be a version with cel shading
-                XML1Name = otherModelNameInput(XML1Num, "XML1", fullFileName, "")
-                XML2Name = otherModelNameInput(XML2Num, "XML2", fullFileName, "")
+                XML1Name = otherModelNameInput(settings["XML1Num"], "XML1", fullFileName, "")
+                XML2Name = otherModelNameInput(settings["XML2Num"], "XML2", fullFileName, "")
             # Set up the other file names
-            MUA1Name = otherModelNameInput(MUA1Num, "MUA1", fullFileName, "")
-            MUA2Name = otherModelNameInput(MUA2Num, "MUA2", fullFileName, "")
+            MUA1Name = otherModelNameInput(settings["MUA1Num"], "MUA1", fullFileName, "")
+            MUA2Name = otherModelNameInput(settings["MUA2Num"], "MUA2", fullFileName, "")
         # Copy the files
-        for num, name in zip([XML1Num, XML2Num, MUA1Num, MUA2Num], [XML1Name, XML2Name, MUA1Name, MUA2Name]):
+        for num, name in zip([settings["XML1Num"], settings["XML2Num"], settings["MUA1Num"], settings["MUA2Num"]], [XML1Name, XML2Name, MUA1Name, MUA2Name]):
             # Determine if the number is used and the file doesn't exist
             if (not(num == "") and not(name == None) and not(os.path.exists(name))):
                 # Number isn't empty, need to copy
                 # Perform the copying
                 shutil.copy(fullFileName, name)
         # Process the file
-        complete = resources.process3D(assetType, textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name, MUA1Num, MUA2Num, XMLPath, MUAPath, runAlchemyChoice)
+        complete = resources.process3D("Other", textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name, XMLPath, MUAPath, settings)
     else:
         # A texture format was not chosen
         complete = false

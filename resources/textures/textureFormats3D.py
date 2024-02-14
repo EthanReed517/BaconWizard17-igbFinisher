@@ -14,7 +14,7 @@ import resources
 # FUNCTIONS #
 # ######### #
 # Define the function to get texture formats for 3D assets
-def get3DTextureFormat(assetType, XML2Num, MUA1Num, MUA2Num, pcOnly):
+def get3DTextureFormat(assetType, settings):
     # Determine the texture size
     textureSize = resources.select("What is the original size of the .xcf file of the main texture?", ["256x256 or less", "Over 256x256"])
     # Determine if any transparency was used
@@ -31,7 +31,7 @@ def get3DTextureFormat(assetType, XML2Num, MUA1Num, MUA2Num, pcOnly):
         # Set the transparent variable
         transparent = False
     # Determine if this is transparent and oversized
-    if ((textureSize == "Over 256x256") and (transparent == True) and (pcOnly == False)):
+    if ((textureSize == "Over 256x256") and (transparent == True) and (settings["pcOnly"] == False)):
         # Oversized and transparent
         # Determine if this is a big character
         bigChar = resources.confirm("Is this a large character?", False)
@@ -42,7 +42,7 @@ def get3DTextureFormat(assetType, XML2Num, MUA1Num, MUA2Num, pcOnly):
     # Determine if transparency was used
     envMaps = resources.confirm("Were environment maps used?", False)
     # Determine if it's necessary to ask about secondary skins
-    if ((textureSize == "256x256 or less") and (pcOnly == False) and not(assetType == "Other")):
+    if ((textureSize == "256x256 or less") and (settings["pcOnly"] == False) and not(assetType == "Other")):
         # Need to ask about secondary skins
         # Determine if this is a primary or secondary skin
         skinType = resources.select("Is this for a primary skin or secondary skin?", ["Primary skin", "Secondary skin"])
@@ -63,12 +63,12 @@ def get3DTextureFormat(assetType, XML2Num, MUA1Num, MUA2Num, pcOnly):
                 if envMaps == False:
                     # No environment maps
                     # Determine if this is for PC or no
-                    if pcOnly == False:
+                    if settings["pcOnly"] == False:
                         # For all consoles
                         # Initialize the list with the main format
                         textureFormatList = ["PC, PS2, Xbox, and MUA1 360"]
                         # Determine if MUA1/MUA2-specific format is needed
-                        if ((not(MUA1Num == "") or not(MUA2Num == "")) and not(assetType == "3D Head")):
+                        if ((not(settings["MUA1Num"] == "") or not(settings["MUA2Num"] == "")) and not(assetType == "3D Head")):
                             # MUA1 or MUA2 are in use
                             # Add the texture option
                             textureFormatList.append("Wii")
@@ -77,7 +77,7 @@ def get3DTextureFormat(assetType, XML2Num, MUA1Num, MUA2Num, pcOnly):
                     else:
                         # For PC only
                         # Determine if XML2 PC and MUA1 PC are in use
-                        if (not(XML2Num == "") or not(MUA1Num == "")):
+                        if (not(settings["XML2Num"] == "") or not(settings["MUA1Num"] == "")):
                             # A PC-compatible console is in use
                             # Initialize the list with the main format
                             textureFormatList = ["PC"]
@@ -87,7 +87,7 @@ def get3DTextureFormat(assetType, XML2Num, MUA1Num, MUA2Num, pcOnly):
                 else:
                     # Has environment maps
                     # Determine if this is for PC or no
-                    if pcOnly == False:
+                    if settings["pcOnly"] == False:
                         # For all consoles
                         # Initialize the list with the main format
                         textureFormatList = ["Main texture: PC, PS2, Xbox, and MUA1 360 / Environment Texture: PC and MUA1 360"]
@@ -96,7 +96,7 @@ def get3DTextureFormat(assetType, XML2Num, MUA1Num, MUA2Num, pcOnly):
                         # Add the PS2-specific format
                         textureFormatList.append("Main texture: PC, PS2, Xbox, and MUA1 360 / Environment Texture: PS2")
                         # Determine if MUA1/MUA2-specific format is needed
-                        if ((not(MUA1Num == "") or not(MUA2Num == "")) and not(assetType == "3D Head")):
+                        if ((not(settings["MUA1Num"] == "") or not(settings["MUA2Num"] == "")) and not(assetType == "3D Head")):
                             # MUA1 or MUA2 are in use
                             # Add the texture option
                             textureFormatList.append("Main texture: Wii / Environment Texture: Wii")
@@ -105,7 +105,7 @@ def get3DTextureFormat(assetType, XML2Num, MUA1Num, MUA2Num, pcOnly):
                     else:
                         # For PC only
                         # Determine if XML2 PC and MUA1 PC are in use
-                        if (not(XML2Num == "") or not(MUA1Num == "")):
+                        if (not(settings["XML2Num"] == "") or not(settings["MUA1Num"] == "")):
                             # A PC-compatible console is in use
                             # Initialize the list with the main format
                             textureFormatList = ["Main texture: PC / Environment Texture: PC"]
@@ -118,14 +118,14 @@ def get3DTextureFormat(assetType, XML2Num, MUA1Num, MUA2Num, pcOnly):
                 if envMaps == False:
                     # No environment maps
                     # Determine if this is for PC or no
-                    if pcOnly == False:
+                    if settings["pcOnly"] == False:
                         # For all consoles
                         # Initialize the list with the two formats
                         textureFormatList = ["PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360", "GameCube, PSP, and MUA2 PS2"]
                     else:
                         # For PC only
                         # Determine if XML2 PC and MUA1 PC are in use
-                        if (not(XML2Num == "") or not(MUA1Num == "")):
+                        if (not(settings["XML2Num"] == "") or not(settings["MUA1Num"] == "")):
                             # A PC-compatible console is in use
                             # Initialize the list with the main format
                             textureFormatList = ["PC and MUA1 Steam"]
@@ -135,7 +135,7 @@ def get3DTextureFormat(assetType, XML2Num, MUA1Num, MUA2Num, pcOnly):
                 else:
                     # Has environment maps
                     # Determine if this is for PC or no
-                    if pcOnly == False:
+                    if settings["pcOnly"] == False:
                         # For all consoles
                         # Initialize the list with the main format
                         textureFormatList = ["Main texture: PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360 / Environment Texture: PC and MUA1 360"]
@@ -144,7 +144,7 @@ def get3DTextureFormat(assetType, XML2Num, MUA1Num, MUA2Num, pcOnly):
                         # Add the PS2-specific format
                         textureFormatList.append("Main texture: PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360 / Environment Texture: PS2")
                         # Determine if MUA1/MUA2-specific format is needed
-                        if ((not(MUA1Num == "") or not(MUA2Num == "")) and not(assetType == "3D Head")):
+                        if ((not(settings["MUA1Num"] == "") or not(settings["MUA2Num"] == "")) and not(assetType == "3D Head")):
                             # MUA1 or MUA2 are in use
                             # Add the texture option
                             textureFormatList.append("Main texture: PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360 / Environment Texture: Wii")
@@ -153,7 +153,7 @@ def get3DTextureFormat(assetType, XML2Num, MUA1Num, MUA2Num, pcOnly):
                     else:
                         # For PC only
                         # Determine if XML2 PC and MUA1 PC are in use
-                        if (not(XML2Num == "") or not(MUA1Num == "")):
+                        if (not(settings["XML2Num"] == "") or not(settings["MUA1Num"] == "")):
                             # A PC-compatible console is in use
                             # Initialize the list with the main format
                             textureFormatList = ["Main texture: PC and MUA1 Steam / Environment Texture: PC"]
@@ -169,12 +169,12 @@ def get3DTextureFormat(assetType, XML2Num, MUA1Num, MUA2Num, pcOnly):
                 if envMaps == False:
                     # No environment maps
                     # Determine if this is for PC or no
-                    if pcOnly == False:
+                    if settings["pcOnly"] == False:
                         # For all consoles
                         # Start with an empty list
                         textureFormatList = []
                         # Check if MUA1-Specific format is needed
-                        if (not(MUA1Num == "") and not(assetType == "3D Head")):
+                        if (not(settings["MUA1Num"] == "") and not(assetType == "3D Head")):
                             # MUA1 is in use
                             # Append the texture option
                             textureFormatList.append("MUA1 PC, Steam, 360, and PS3")
@@ -185,36 +185,36 @@ def get3DTextureFormat(assetType, XML2Num, MUA1Num, MUA2Num, pcOnly):
                         # Start with an empty list
                         textureFormatList = []
                         # Check if MUA1-Specific format is needed
-                        if (not(MUA1Num == "") and not(assetType == "3D Head")):
+                        if (not(settings["MUA1Num"] == "") and not(assetType == "3D Head")):
                             # MUA1 is in use
                             # Append the texture option
                             textureFormatList.append("MUA1 PC and Steam")
                         # Check if the XML2-specific format is needed
-                        if (not(XML2Num == "") and not(assetType == "Mannequin")):
+                        if (not(settings["XML2Num"] == "") and not(assetType == "Mannequin")):
                             # XML2 is in use
                             # Append the texture option
                             textureFormatList.append("XML2 PC")
                 else:
                     # Has environment maps
                     # Determine if this is for PC or no
-                    if pcOnly == False:
+                    if settings["pcOnly"] == False:
                         # For all consoles
                         # Start with an empty list
                         textureFormatList = []
                         # Check if MUA1-Specific format is needed
-                        if (not(MUA1Num == "") and not(assetType == "3D Head")):
+                        if (not(settings["MUA1Num"] == "") and not(assetType == "3D Head")):
                             # MUA1 is in use
                             # Append the texture option
                             textureFormatList.append("Main texture: MUA1 PC, Steam, 360, and PS3 / Environment Texture: PC and MUA1 360")
                         # Check if the XML2 PC-specific option is needed
-                        if (not(XML2Num == "") and not(assetType == "Mannequin")):
+                        if (not(settings["XML2Num"] == "") and not(assetType == "Mannequin")):
                             # XML2 PC is in use
                             # Add the XML2 PC option
                             textureFormatList.append("Main texture: XML2 PC, Xbox, and Wii / Environment Texture: PC and MUA1 360")
                         # Add the Xbox option
                         textureFormatList.append("Main texture: XML2 PC, Xbox, and Wii / Environment Texture: Xbox")
                         # Check if Wii-Specific format is needed
-                        if ((not(MUA1Num == "") or not(MUA2Num == "")) and not(assetType == "3D Head")):
+                        if ((not(settings["MUA1Num"] == "") or not(settings["MUA2Num"] == "")) and not(assetType == "3D Head")):
                             # Wii is in use
                             # Add the Wii option
                             textureFormatList.append("Main texture: XML2 PC, Xbox, and Wii / Environment Texture: Wii")
@@ -227,12 +227,12 @@ def get3DTextureFormat(assetType, XML2Num, MUA1Num, MUA2Num, pcOnly):
                         # Start with an empty list
                         textureFormatList = []
                         # Check if MUA1-Specific format is needed
-                        if (not(MUA1Num == "") and not(assetType == "3D Head")):
+                        if (not(settings["MUA1Num"] == "") and not(assetType == "3D Head")):
                             # MUA1 is in use
                             # Append the texture option
                             textureFormatList.append("Main texture: MUA1 PC and Steam / Environment Texture: PC and MUA1 360")
                         # Check if the XML2-specific format is needed
-                        if (not(XML2Num == "") and not(assetType == "Mannequin")):
+                        if (not(settings["XML2Num"] == "") and not(assetType == "Mannequin")):
                             # XML2 is in use
                             # Append the texture option
                             textureFormatList.append("Main texture: XML2 PC / Environment Texture: PC and MUA1 360")
@@ -242,7 +242,7 @@ def get3DTextureFormat(assetType, XML2Num, MUA1Num, MUA2Num, pcOnly):
                 if envMaps == False:
                     # No environment maps
                     # Determine if this is for PC or no
-                    if pcOnly == False:
+                    if settings["pcOnly"] == False:
                         # For all consoles
                         # Determine if this is a big character
                         if bigChar == False:
@@ -258,7 +258,7 @@ def get3DTextureFormat(assetType, XML2Num, MUA1Num, MUA2Num, pcOnly):
                     else:
                         # For PC only
                         # Determine if XML2 PC and MUA1 PC are in use
-                        if (not(XML2Num == "") or not(MUA1Num == "")):
+                        if (not(settings["XML2Num"] == "") or not(settings["MUA1Num"] == "")):
                             # A PC-compatible console is in use
                             # Create the list
                             textureFormatList = ["PC and MUA1 Steam"]
@@ -268,7 +268,7 @@ def get3DTextureFormat(assetType, XML2Num, MUA1Num, MUA2Num, pcOnly):
                 else:
                     # Has environment maps
                     # Determine if this is for PC or no
-                    if pcOnly == False:
+                    if settings["pcOnly"] == False:
                         # For all consoles
                         # Determine if this is a big character
                         if bigChar == False:
@@ -276,7 +276,7 @@ def get3DTextureFormat(assetType, XML2Num, MUA1Num, MUA2Num, pcOnly):
                             # Initialize the list
                             textureFormatList = ["Main Texture: PC, Wii, Xbox, MUA1 Steam, PS3, and 360 / Environment Texture: PC and MUA1 360"]
                             # Determine if the wii-specific format is needed
-                            if ((not(MUA1Num == "") or not(MUA2Num == "")) and not(assetType == "3D Head")):
+                            if ((not(settings["MUA1Num"] == "") or not(settings["MUA2Num"] == "")) and not(assetType == "3D Head")):
                                 # Wii is needed
                                 # Add Wii
                                 textureFormatList.append("Main Texture: PC, Wii, Xbox, MUA1 Steam, PS3, and 360 / Environment Texture: Wii")
@@ -289,7 +289,7 @@ def get3DTextureFormat(assetType, XML2Num, MUA1Num, MUA2Num, pcOnly):
                             # Initialize the list
                             textureFormatList = ["Main Texture: PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360 / Environment Texture: PC and MUA1 360"]
                             # Determine if the wii-specific format is needed
-                            if ((not(MUA1Num == "") or not(MUA2Num == "")) and not(assetType == "3D Head")):
+                            if ((not(settings["MUA1Num"] == "") or not(settings["MUA2Num"] == "")) and not(assetType == "3D Head")):
                                 # Wii is needed
                                 # Add Wii
                                 textureFormatList.append("Main Texture: PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360 / Environment Texture: Wii")
@@ -303,7 +303,7 @@ def get3DTextureFormat(assetType, XML2Num, MUA1Num, MUA2Num, pcOnly):
                         # For PC only
                         # For PC only
                         # Determine if XML2 PC and MUA1 PC are in use
-                        if (not(XML2Num == "") or not(MUA1Num == "")):
+                        if (not(settings["XML2Num"] == "") or not(settings["MUA1Num"] == "")):
                             # A PC-compatible console is in use
                             # Create the list
                             textureFormatList = ["Main texture: PC and MUA1 Steam / Environment Texture: PC and MUA1 360"]
@@ -321,7 +321,7 @@ def get3DTextureFormat(assetType, XML2Num, MUA1Num, MUA2Num, pcOnly):
                 # Initialize the list with the main format
                 textureFormatList = ["PC, Xbox, and MUA1 360"]
                 # Determine if MUA1/MUA2-specific format is needed
-                if ((not(MUA1Num == "") or not(MUA2Num == "")) and not(assetType == "3D Head")):
+                if ((not(settings["MUA1Num"] == "") or not(settings["MUA2Num"] == "")) and not(assetType == "3D Head")):
                     # MUA1 or MUA2 are in use
                     # Add the texture option
                     textureFormatList.append("Wii")
@@ -332,14 +332,14 @@ def get3DTextureFormat(assetType, XML2Num, MUA1Num, MUA2Num, pcOnly):
             else:
                 # Has environment maps
                 # Determine if this is for PC or no
-                if pcOnly == False:
+                if settings["pcOnly"] == False:
                     # For all consoles
                     # Initialize the list with the main format
                     textureFormatList = ["Main texture: PC, Xbox, and MUA1 360 / Environment Texture: PC and MUA1 360"]
                     # Add the Xbox-specific format
                     textureFormatList.append("Main texture: PC, Xbox, and MUA1 360 / Environment Texture: Xbox")
                     # Determine if MUA1/MUA2-specific format is needed
-                    if ((not(MUA1Num == "") or not(MUA2Num == "")) and not(assetType == "3D Head")):
+                    if ((not(settings["MUA1Num"] == "") or not(settings["MUA2Num"] == "")) and not(assetType == "3D Head")):
                         # MUA1 or MUA2 are in use
                         # Add the texture option
                         textureFormatList.append("Main texture: Wii / Environment Texture: Wii")
@@ -361,7 +361,7 @@ def get3DTextureFormat(assetType, XML2Num, MUA1Num, MUA2Num, pcOnly):
                 # Add the Xbox-specific format
                 textureFormatList.append("Main texture: PC, Wii, Xbox, MUA1 Steam, PS3, and 360 / Environment Texture: Xbox")
                 # Determine if MUA1/MUA2-specific format is needed
-                if ((not(MUA1Num == "") or not(MUA2Num == "")) and not(assetType == "3D Head")):
+                if ((not(settings["MUA1Num"] == "") or not(settings["MUA2Num"] == "")) and not(assetType == "3D Head")):
                     # MUA1 or MUA2 are in use
                     # Add the texture option
                     textureFormatList.append("Main texture: PC, Wii, Xbox, MUA1 Steam, PS3, and 360 / Environment Texture: Wii")

@@ -14,7 +14,7 @@ import resources
 # FUNCTIONS #
 # ######### #
 # Define the function to get texture formats for 3D assets
-def getCSPTextureFormat(XML1Num, XML2Num, pcOnly):
+def getCSPTextureFormat(settings):
     # Determine if any transparency was used
     portraitType = resources.select("What game is the portrait for?", ["XML1", "XML2"])
     # Determine the texture size
@@ -23,7 +23,7 @@ def getCSPTextureFormat(XML1Num, XML2Num, pcOnly):
     if portraitType == "XML1":
         # XML1
         # Determine if this is PC only and if an XML1 number is present
-        if ((pcOnly == False) and not(XML1Num == "")):
+        if ((settings["pcOnly"] == False) and not(settings["XML1Num"] == "")):
             # Not PC only and XML1 is in use
             # Create the list
             textureFormatList = ["All"]
@@ -34,13 +34,13 @@ def getCSPTextureFormat(XML1Num, XML2Num, pcOnly):
     else:
         # XML2
         # Make sure that there's an XML2 number
-        if not(XML2Num == ""):
+        if not(settings["XML2Num"] == ""):
             # XML2 is in use
             # Filter by texture size
             if ((textureSize == "64x64") or (textureSize == "128x128")):
                 # Console or SD resolution
                 # Determine the console
-                if pcOnly == False:
+                if settings["pcOnly"] == False:
                     # All consoles
                     # Create the list
                     textureFormatList = ["All"]
@@ -53,7 +53,7 @@ def getCSPTextureFormat(XML1Num, XML2Num, pcOnly):
                 # Create the list
                 textureFormatList = ["PC"]
                 # Determine the console
-                if pcOnly == False:
+                if settings["pcOnly"] == False:
                     # All consoles
                     textureFormatList.append("Consoles")
         else:

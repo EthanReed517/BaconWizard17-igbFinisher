@@ -18,7 +18,7 @@ import shutil
 # FUNCTIONS #
 # ######### #
 # Define the function to export the portraits
-def processConvo(textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name, MUA1Num, MUA2Num, XMLPath, MUAPath, runAlchemyChoice, portraitType):
+def processConvo(settings, textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name, XMLPath, MUAPath, portraitType):
     # Initialize the completion variable
     complete = True
     # Filter by texture type
@@ -35,7 +35,7 @@ def processConvo(textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name, MUA1Num,
         if portraitType == "MUA1 Next-Gen Style":
             # Next-gen style
             # Determine if the numbers are the same
-            if MUA1Num == MUA2Num:
+            if settings["MUA1Num"] == settings["MUA2Num"]:
                 # MUA1 and MUA2 are the same
                 # Copy the files
                 resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (Wii) and MUA2 (Wii)")
@@ -45,18 +45,18 @@ def processConvo(textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name, MUA1Num,
                 resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (Wii)")
                 resources.copyToDestination(MUA2Name, MUAPath, "for MUA2 (Wii)")
         # Perform the first Alchemy operation
-        resources.callAlchemy(MUA1Name, "stat1-1.ini", runAlchemyChoice)
+        resources.callAlchemy(MUA1Name, "stat1-1.ini", settings["runAlchemyChoice"])
         # Copy the first optimized alchemy file
         resources.resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PC and 360)")
         # Perform the second Alchemy operation
-        resources.callAlchemy(MUA1Name, "stat1-2.ini", runAlchemyChoice)
+        resources.callAlchemy(MUA1Name, "stat1-2.ini", settings["runAlchemyChoice"])
         # Copy the second optimized alchemy file
         resources.resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (Steam and PS3)")
         # Determine if PSP should be included
         if not("except PSP" in textureFormat):
             # Include PSP
             # List the files to delete and recreate
-            for num, name in zip([MUA1Num, MUA2Num], [MUA1Name, MUA2Name]):
+            for num, name in zip([settings["MUA1Num"], settings["MUA2Num"]], [MUA1Name, MUA2Name]):
                 # Determine if the file exists
                 if os.path.isfile(name):
                     # File exists
@@ -68,23 +68,23 @@ def processConvo(textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name, MUA1Num,
                     # Perform the copying
                     shutil.copy(fullFileName, name)
             # Determine if the MUA1 and MUA2 numbers are the same
-            if MUA1Num == MUA2Num:
+            if settings["MUA1Num"] == settings["MUA2Num"]:
                 # MUA1 and MUA2 are the same
                 # Run alchemy
-                resources.callAlchemy(MUA1Name, "stat3.ini", runAlchemyChoice)
+                resources.callAlchemy(MUA1Name, "stat3.ini", settings["runAlchemyChoice"])
                 # Copy the files
                 resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PSP) and MUA2 (PSP)")
             else:
                 # MUA1 and MUA2 are not the same
-                resources.callAlchemy(MUA1Name, "stat3.ini", runAlchemyChoice)
-                resources.callAlchemy(MUA2Name, "stat3.ini", runAlchemyChoice)
+                resources.callAlchemy(MUA1Name, "stat3.ini", settings["runAlchemyChoice"])
+                resources.callAlchemy(MUA2Name, "stat3.ini", settings["runAlchemyChoice"])
                 # Copy the files
                 resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PSP)")
                 resources.copyToDestination(MUA2Name, MUAPath, "for MUA2 (PSP)")
     elif textureFormat == "Wii":
         # Wii only format
         # Determine if the numbers are the same
-        if MUA1Num == MUA2Num:
+        if settings["MUA1Num"] == settings["MUA2Num"]:
             # MUA1 and MUA2 are the same
             # Copy the files
             resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (Wii) and MUA2 (Wii)")
@@ -96,16 +96,16 @@ def processConvo(textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name, MUA1Num,
     elif textureFormat == "PSP":
         # PSP only format
         # Determine if the MUA1 and MUA2 numbers are the same
-        if MUA1Num == MUA2Num:
+        if settings["MUA1Num"] == settings["MUA2Num"]:
             # MUA1 and MUA2 are the same
             # Run alchemy
-            resources.callAlchemy(MUA1Name, "stat3.ini", runAlchemyChoice)
+            resources.callAlchemy(MUA1Name, "stat3.ini", settings["runAlchemyChoice"])
             # Copy the files
             resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PSP) and MUA2 (PSP)")
         else:
             # MUA1 and MUA2 are not the same
-            resources.callAlchemy(MUA1Name, "stat3.ini", runAlchemyChoice)
-            resources.callAlchemy(MUA2Name, "stat3.ini", runAlchemyChoice)
+            resources.callAlchemy(MUA1Name, "stat3.ini", settings["runAlchemyChoice"])
+            resources.callAlchemy(MUA2Name, "stat3.ini", settings["runAlchemyChoice"])
             # Copy the files
             resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PSP)")
             resources.copyToDestination(MUA2Name, MUAPath, "for MUA2 (PSP)")
@@ -122,7 +122,7 @@ def processConvo(textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name, MUA1Num,
         if textureFormat == "Last Gen":
             # Wii is needed
             # Determine if the numbers are the same
-            if MUA1Num == MUA2Num:
+            if settings["MUA1Num"] == settings["MUA2Num"]:
                 # MUA1 and MUA2 are the same
                 # Copy the files
                 resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (Wii) and MUA2 (Wii)")
@@ -143,7 +143,7 @@ def processConvo(textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name, MUA1Num,
             # Copy the XML2 file
             resources.copyToDestination(XML2Name, XMLPath, "for XML2 (PC)")
         # Perform the Alchemy operation
-        resources.callAlchemy(MUA1Name, "stat1-1.ini", runAlchemyChoice)
+        resources.callAlchemy(MUA1Name, "stat1-1.ini", settings["runAlchemyChoice"])
         # Copy the optimized alchemy file
         resources.resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PC, Steam, PS3, and 360)")
     elif textureFormat == "PC":
@@ -151,11 +151,11 @@ def processConvo(textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name, MUA1Num,
         # Copy the XML2 file
         resources.copyToDestination(XML2Name, XMLPath, "for XML2 (PC)")     
         # Perform the first Alchemy operation
-        resources.callAlchemy(MUA1Name, "stat1-1.ini", runAlchemyChoice)
+        resources.callAlchemy(MUA1Name, "stat1-1.ini", settings["runAlchemyChoice"])
         # Copy the first optimized alchemy file
         resources.resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PC)")
         # Perform the second Alchemy operation
-        resources.callAlchemy(MUA1Name, "stat1-2.ini", runAlchemyChoice)
+        resources.callAlchemy(MUA1Name, "stat1-2.ini", settings["runAlchemyChoice"])
         # Copy the second optimized alchemy file
         resources.resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (Steam)")
     elif "PC and Steam" in textureFormat:
@@ -163,7 +163,7 @@ def processConvo(textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name, MUA1Num,
         # Copy the XML2 file
         resources.copyToDestination(XML2Name, XMLPath, "for XML2 (PC)")
         # Perform the Alchemy operation
-        resources.callAlchemy(MUA1Name, "stat1-1.ini", runAlchemyChoice)
+        resources.callAlchemy(MUA1Name, "stat1-1.ini", settings["runAlchemyChoice"])
         # Copy the optimized alchemy file
         resources.resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PC and Steam)")   
     else:
@@ -178,9 +178,9 @@ def processConvo(textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name, MUA1Num,
     return complete
 
 # Define the function to process conversation portraits
-def convoProcessing(assetType, fullFileName, XML1Num, XML2Num, MUA1Num, MUA2Num, XMLPath, MUAPath, pcOnly, hexEditChoice, runAlchemyChoice):
+def convoProcessing(fullFileName, settings, XMLPath, MUAPath):
     # Determine the texture format
-    (textureFormat, portraitType) = resources.getConvoTextureFormat(assetType, XML2Num, MUA1Num, MUA2Num, pcOnly)
+    (textureFormat, portraitType) = resources.getConvoTextureFormat(settings)
     # Confirm that a texture format was chosen
     if not(textureFormat == None):
         # A texture format was chosen
@@ -205,24 +205,24 @@ def convoProcessing(assetType, fullFileName, XML1Num, XML2Num, MUA1Num, MUA2Num,
             # Set up the suffix
             suffix = " (Next-Gen Style)"
         # Set up the file names
-        XML1Name = os.path.join(os.path.dirname(fullFileName), "hud_head_" + XML1Num + "XX" + suffix + ".igb")
-        XML2Name = os.path.join(os.path.dirname(fullFileName), "hud_head_" + XML2Num + "XX" + suffix + ".igb")
-        MUA1Name = os.path.join(os.path.dirname(fullFileName), "hud_head_" + MUA1Num + "XX" + suffix + ".igb")
-        MUA2Name = os.path.join(os.path.dirname(fullFileName), "hud_head_" + MUA2Num + "XX" + suffix + ".igb")
+        XML1Name = os.path.join(os.path.dirname(fullFileName), "hud_head_" + settings["XML1Num"] + "XX" + suffix + ".igb")
+        XML2Name = os.path.join(os.path.dirname(fullFileName), "hud_head_" + settings["XML2Num"] + "XX" + suffix + ".igb")
+        MUA1Name = os.path.join(os.path.dirname(fullFileName), "hud_head_" + settings["MUA1Num"] + "XX" + suffix + ".igb")
+        MUA2Name = os.path.join(os.path.dirname(fullFileName), "hud_head_" + settings["MUA2Num"] + "XX" + suffix + ".igb")
         # Copy the files
-        for num, name in zip([XML1Num, XML2Num, MUA1Num, MUA2Num], [XML1Name, XML2Name, MUA1Name, MUA2Name]):
+        for num, name in zip([settings["XML1Num"], settings["XML2Num"], settings["MUA1Num"], settings["MUA2Num"]], [XML1Name, XML2Name, MUA1Name, MUA2Name]):
             # Determine if the number is used
             if (not(num == "") and not(name == None) and not(os.path.exists(name))):
                 # Number isn't empty, need to copy
                 # Perform the copying
                 shutil.copy(fullFileName, name)
         # Determine if hex editing is needed
-        if hexEditChoice == True:
+        if settings["hexEditChoice"] == True:
             # Hex editing is needed
             # Perform the hex editing
-            resources.hexEdit([XML1Num, XML2Num, MUA1Num, MUA2Num], [XML1Name, XML2Name, MUA1Name, MUA2Name], assetType)
+            resources.hexEdit([settings["XML1Num"], settings["XML2Num"], settings["MUA1Num"], settings["MUA2Num"]], [XML1Name, XML2Name, MUA1Name, MUA2Name], "Conversation Portrait")
         # Process the file
-        complete = processConvo(textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name, MUA1Num, MUA2Num, XMLPath, MUAPath, runAlchemyChoice, portraitType)
+        complete = processConvo(settings, textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name, XMLPath, MUAPath, portraitType)
     else:
         # A texture format was not chosen
         complete = false
