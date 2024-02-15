@@ -49,7 +49,7 @@ def displayInfo():
     resources.printPlain("╚═╝ ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚═╝  ╚═══╝╚═╝╚══════╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝")
     # Print relevant info
     resources.printPlain("\nVersion 1.0.0")
-    resources.printPlain("https://marvelmods.com/forum/index.php\n")
+    resources.printPlain("https://marvelmods.com/forum/index.php/topic,11440.0.html\n")
 
 # Define the function to initialize the window
 def initializeWindow():
