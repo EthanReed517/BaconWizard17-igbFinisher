@@ -194,8 +194,8 @@ def getFilePath(settings, Game1Name, Game2Name):
         message = "Enter the path to the folder for the " + games + " release:"
         # Ask the question
         filePath = resources.path(message, pathValidator)
-    # Replace any incorrect slashes
-    filePath = filePath.replace("\\", "/")
+        # Replace any incorrect slashes
+        filePath = filePath.replace("\\", "/")
     # Return the path
     return filePath
 
