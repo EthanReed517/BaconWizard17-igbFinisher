@@ -238,11 +238,6 @@ displayInfo()
 resources.printImportant("Welcome to BaconWizard17's igb Finisher!\n")
 # Read the settings
 settings = resources.parseConfig()
-# Determine if hex editing is needed
-if settings["hexEditChoice"] == True:
-    # Hex editing is needed
-    # Verify existence of XVI32
-    resources.verifyXVI32Existence()
 # Determine if alchemy operations are needed
 if settings["runAlchemyChoice"] == True:
     # Alchemy operations are needed

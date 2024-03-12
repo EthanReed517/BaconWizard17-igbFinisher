@@ -4,6 +4,5 @@ dist
 resources\__pycache__
 resources\processing\__pycache__
 resources\textures\__pycache__
-XVI32
 example.py
 igbFinisher.spec
