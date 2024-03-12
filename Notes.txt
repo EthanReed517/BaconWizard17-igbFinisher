@@ -1,4 +1,0 @@
-Can hex editing be done in Python directly?
-Change the read settings into a dict rather than a list
-Since MUA2 PS2 is always going to have separate portraits from PSP, separate 3D assets as well?
-Questions with default options highlight, which I don't really like. See if that can be changed.

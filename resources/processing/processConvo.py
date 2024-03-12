@@ -8,10 +8,12 @@
 # ####### #
 # Resources for this program
 import resources
-# To be able to perform os operations
-import os
-# To be able to perform shell operations
-import shutil
+# To be able to manipulate paths
+import os.path
+# To be able to 
+from os import remove
+# To be able to copy files
+from shutil import copy
 
 
 # ######### #
@@ -61,12 +63,12 @@ def processConvo(settings, textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name
                 if os.path.isfile(name):
                     # File exists
                     # Delete it
-                    os.remove(name)
+                    remove(name)
                 # Determine if the number is used
                 if (not(num == "") and not(name == None) and not(os.path.exists(name))):
                     # Number isn't empty, need to copy
                     # Perform the copying
-                    shutil.copy(fullFileName, name)
+                    copy(fullFileName, name)
             # Determine if the MUA1 and MUA2 numbers are the same
             if settings["MUA1Num"] == settings["MUA2Num"]:
                 # MUA1 and MUA2 are the same
@@ -215,7 +217,7 @@ def convoProcessing(fullFileName, settings, XMLPath, MUAPath):
             if (not(num == "") and not(name == None) and not(os.path.exists(name))):
                 # Number isn't empty, need to copy
                 # Perform the copying
-                shutil.copy(fullFileName, name)
+                copy(fullFileName, name)
         # Determine if hex editing is needed
         if settings["hexEditChoice"] == True:
             # Hex editing is needed

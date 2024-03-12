@@ -8,10 +8,6 @@
 # ####### #
 # Resources for this program
 import resources
-# To be able to perform os operations
-import os
-# To be able to perform shell operations
-import shutil
 
 
 # ######### #

@@ -8,10 +8,12 @@
 # ####### #
 # Resources for this program
 import resources
-# To be able to perform os operations
-import os
+# To be able to manipulate paths
+import os.path
+# To be able to make folders and delete files
+from os import mkdir, remove
 # To be able to perform shell operations
-import shutil
+from shutil import copy
 
 
 # ######### #
@@ -31,9 +33,9 @@ def copyToDestination(fileName, releasePath, folderName):
             if not(os.path.exists(gamePath)):
                 # Folder does not yet exist
                 # Create the folder
-                os.mkdir(gamePath)
+                mkdir(gamePath)
             # Copy the file
-            shutil.copy(fileName, gamePath)
+            copy(fileName, gamePath)
 
 # Define the function to delete lingering igb files
 def deleteLingering(fileList):
@@ -46,4 +48,4 @@ def deleteLingering(fileList):
             if os.path.isfile(file):
                 # File exists
                 # Delete the file
-                os.remove(file)
+                remove(file)

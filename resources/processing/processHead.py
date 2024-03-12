@@ -8,10 +8,10 @@
 # ####### #
 # Resources for this program
 import resources
-# To be able to perform os operations
-import os
-# To be able to perform shell operations
-import shutil
+# To be able to manipulate paths
+import os.path
+# To be able to copy files
+from shutil import copy
 
 
 # ######### #
@@ -35,7 +35,7 @@ def headProcessing(fullFileName, settings, XMLPath, MUAPath):
             if (not(num == "") and not(name == None) and not(os.path.exists(name))):
                 # Number isn't empty, need to copy
                 # Perform the copying
-                shutil.copy(fullFileName, name)
+                copy(fullFileName, name)
         # Determine if hex editing is needed
         if settings["hexEditChoice"] == True:
             # Hex editing is needed

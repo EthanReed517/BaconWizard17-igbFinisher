@@ -9,9 +9,9 @@
 # Resources for this program
 import resources
 # To be able to copy and move files
-import os
+import os.path
 # To be able to parse the ini file
-import configparser
+from configparser import ConfigParser
 
 
 # ######### #
@@ -55,7 +55,7 @@ def characterNumberGetter(game):
     # Get the name of the setting to look for
     setting = game + "Num"
     # Prepare to parse the settings
-    config = configparser.ConfigParser()
+    config = ConfigParser()
     # Read the settings
     config.read('settings.ini')
     # Get the number
@@ -95,7 +95,7 @@ def characterNumberGetter(game):
 # Define the function to get the other settings
 def settingsGetter(settingName):
     # Prepare to parse the settings
-    config = configparser.ConfigParser()
+    config = ConfigParser()
     # Read the settings
     config.read('settings.ini')
     # Get the general settings

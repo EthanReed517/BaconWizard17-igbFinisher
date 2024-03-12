@@ -8,10 +8,12 @@
 # ####### #
 # Resources for this program
 import resources
-# To be able to copy and move files
-import os
+# To be able to manipulate paths
+import os.path
+# To be able to delete files and call command prompts
+from os import remove, system
 # To be able to copy files
-import shutil
+from shutil import copy
 # To be able to edit the registry
 from winreg import *
 
@@ -45,11 +47,11 @@ def callAlchemy(fileName, iniName, runAlchemyChoice):
         if not(fileName == None):
             # There is a file
             # Copy the Alchemy ini file
-            shutil.copy("Scripts/" + iniName, "./")
+            copy("Scripts/" + iniName, "./")
             # Call the operation
-            os.system("%IG_ROOT%\\bin\\sgOptimizer.exe \"" + fileName + "\" \"" + fileName + "\" " + iniName)
+            system("%IG_ROOT%\\bin\\sgOptimizer.exe \"" + fileName + "\" \"" + fileName + "\" " + iniName)
             # Make sure that the ini file still exists
             if os.path.isfile(iniName):
                 # The file exists
                 # Delete it
-                os.remove(iniName)
+                remove(iniName)

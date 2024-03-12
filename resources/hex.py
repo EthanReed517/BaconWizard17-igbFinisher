@@ -9,7 +9,7 @@
 # Resources for this program
 import resources
 # To be able to copy and move files
-import os
+import os.path
 
 
 # ######### #

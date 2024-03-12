@@ -8,12 +8,10 @@
 # ####### #
 # Resources for this program
 import resources
-# To be able to set the title
-import ctypes
-# To be able to copy and move files
-import os
-# To be able to copy files
-import shutil
+# To be able to manipulate paths
+import os.path
+# To be able to rename files and call command prompts
+from os import rename, system
 # To be able to set up UIs
 import tkinter as tk
 # For stylized UIs
@@ -99,7 +97,7 @@ def initializeDropZone():
 # Define the function that will occur when a file is dropped
 def fileDrop(fullFileName):
     # Clear the screen from the previous run
-    os.system("cls")
+    system("cls")
     # Print the welcome information
     displayInfo()
     # Trim the curly brackets off the file name
@@ -155,7 +153,7 @@ def fileDrop(fullFileName):
         # Other models
         complete = resources.otherProcessing(fullFileName, settings, XMLPath, MUAPath)
     # Clear the screen from the previous run
-    os.system("cls")
+    system("cls")
     # Print the welcome information
     displayInfo()
     # Determine if the process was complete
@@ -220,7 +218,7 @@ def fileNameCorrection(fullFileName, assetType):
         if asset == assetType:
             # Assets match
             # Update the name
-            os.rename(fullFileName, os.path.join(os.path.dirname(fullFileName), fileName))
+            rename(fullFileName, os.path.join(os.path.dirname(fullFileName), fileName))
             # Set the new file name
             fullFileName = os.path.join(os.path.dirname(fullFileName), fileName)
     # Return the corrected file name
@@ -231,7 +229,7 @@ def fileNameCorrection(fullFileName, assetType):
 # MAIN EXECUTION #
 # ############## #
 # Set the window title
-ctypes.windll.kernel32.SetConsoleTitleW("BaconWizard17's igb Finisher")
+system("title BaconWizard17's igb Finisher")
 # Print the welcome information
 displayInfo()
 # Print the welcome message

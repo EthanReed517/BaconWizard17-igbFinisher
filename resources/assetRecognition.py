@@ -8,10 +8,8 @@
 # ####### #
 # Resources for this program
 import resources
-# To be able to copy and move files
-import os
-# To be able to search for file names
-import glob
+# To be able to manipulate paths
+import os.path
 
 
 # ######### #

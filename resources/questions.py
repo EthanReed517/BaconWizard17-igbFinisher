@@ -8,8 +8,8 @@
 # ####### #
 # To be able to create command line list questions
 import questionary
-# To be able to validate answers
-from questionary import Validator, ValidationError, prompt, Style
+# Necessary functions for asking questions
+from questionary import prompt, Style, Validator, ValidationError
 
 
 # ###### #
