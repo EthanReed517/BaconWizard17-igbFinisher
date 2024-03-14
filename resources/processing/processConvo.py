@@ -20,7 +20,7 @@ from shutil import copy
 # FUNCTIONS #
 # ######### #
 # Define the function to export the portraits
-def processConvo(settings, textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name, XMLPath, MUAPath, portraitType):
+def processConvo(settings, textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name, XMLPath, MUAPath, suffix):
     # Initialize the completion variable
     complete = True
     # Filter by texture type
@@ -34,7 +34,7 @@ def processConvo(settings, textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name
         resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PS2 and Xbox)")
         resources.copyToDestination(MUA2Name, MUAPath, "for MUA2 (PS2)")
         # Determine if next-gen Wii portraits are needed
-        if portraitType == "MUA1 Next-Gen Style":
+        if suffix == " (Next-Gen Style)":
             # Next-gen style
             # Determine if the numbers are the same
             if settings["MUA1Num"] == settings["MUA2Num"]:
@@ -171,7 +171,7 @@ def processConvo(settings, textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name
     else:
         # None of the above
         # Display an error message
-        resources.printError("Choice of texture format did not line up with an existing operation. Please contact the program author. Selected texture format: " + textureFormat, True)
+        resources.printError("Choice of texture format did not line up with an existing operation. Selected texture format: " + textureFormat, True)
         # Set the completion status
         complete = False
         # Wait for the user to acknowledge the error
@@ -182,30 +182,10 @@ def processConvo(settings, textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name
 # Define the function to process conversation portraits
 def convoProcessing(fullFileName, settings, XMLPath, MUAPath):
     # Determine the texture format
-    (textureFormat, portraitType) = resources.getConvoTextureFormat(settings)
+    (textureFormat, suffix) = resources.getConvoTextureFormat(settings, fullFileName)
     # Confirm that a texture format was chosen
     if not(textureFormat == None):
         # A texture format was chosen
-        # Determine the portrait type
-        if portraitType == "Standard Style":
-            # Standard portrait
-            # Set up the list of outline types
-            outlineTypeList = ["No Outline", "Blue Hero Outline", "Red Villain Outline", "Green Villain Outline"]
-            # Set up the list of file name suffixes
-            nameSuffixList = ["", " (Hero)", " (Villain)", " (Villain/Possessed)"]
-            # Ask about the outline type
-            outlineType = resources.selectDefault("What type of outline does the portrait have?", outlineTypeList, "Blue Hero Outline")
-            # Go through the outline types and name suffixes
-            for outline, name in zip(outlineTypeList, nameSuffixList):
-                # Determine if the outline matches with the selection
-                if outlineType == outline:
-                    # The selections match
-                    # Set up the suffix
-                    suffix = name
-        else:
-            # Next-Gen portrait
-            # Set up the suffix
-            suffix = " (Next-Gen Style)"
         # Set up the file names
         XML1Name = os.path.join(os.path.dirname(fullFileName), "hud_head_" + settings["XML1Num"] + "XX" + suffix + ".igb")
         XML2Name = os.path.join(os.path.dirname(fullFileName), "hud_head_" + settings["XML2Num"] + "XX" + suffix + ".igb")
@@ -224,7 +204,7 @@ def convoProcessing(fullFileName, settings, XMLPath, MUAPath):
             # Perform the hex editing
             resources.hexEdit([settings["XML1Num"], settings["XML2Num"], settings["MUA1Num"], settings["MUA2Num"]], [XML1Name, XML2Name, MUA1Name, MUA2Name], "Conversation Portrait")
         # Process the file
-        complete = processConvo(settings, textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name, XMLPath, MUAPath, portraitType)
+        complete = processConvo(settings, textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name, XMLPath, MUAPath, suffix)
     else:
         # A texture format was not chosen
         complete = false

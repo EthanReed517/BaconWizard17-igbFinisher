@@ -11,6 +11,8 @@ import resources
 import os
 # To be able to edit the registry
 from winreg import *
+# To be able to run the Alchemy processes to completion
+import subprocess
 
 # Global variables
 sgOptimizer = '%IG_ROOT%\\bin\\sgOptimizer.exe'
@@ -64,4 +66,4 @@ def callAlchemy(file_name, ini_name, run_alchemy_choice):
             ini_file = os.path.abspath("Scripts/" + ini_name)
             cmd = f'"{sgOptimizer}" "{file_name}" "{file_name}" "{ini_file}"'
             # Call the operation
-            os.popen(cmd)
+            subprocess.run(cmd, shell=True, stdout=subprocess.DEVNULL)

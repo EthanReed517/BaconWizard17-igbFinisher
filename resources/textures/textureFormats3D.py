@@ -34,35 +34,35 @@ def recognize3DTextureFormat(texPathList, texFormatList):
             # Get the name of the folder that the texture is stored in. This is the second to last element in the path.
             texFolder = path.split("\\")[-2]
         # When there are multiple formats of different lengths, there will be spaces added after them to keep them the same length for Alchemy's list. This removes the spaces to make sure that the same information is always presented.
-        texFormat = format.replace(" ", "")
+        texFormat = format.rstrip()
         # Begin checking if the current format matches with any of the allowed format.
-        if texFormat == "IG_GFX_TEXTURE_FORMAT_X_8(65536)":
+        if texFormat == "IG_GFX_TEXTURE_FORMAT_X_8 (65536)":
             # This format is a png file with PNG8 compression.
             # Increment the counter for PNG8 formats.
             png8Counter += 1
-        elif texFormat == "IG_GFX_TEXTURE_FORMAT_RGBA_DXT1(14)":
+        elif texFormat == "IG_GFX_TEXTURE_FORMAT_RGBA_DXT1 (14)":
             # This format is a dds file with DXT1 compression.
             # Increment the counter for DXT1 formats.
             dxt1Counter += 1
-        elif texFormat == "IG_GFX_TEXTURE_FORMAT_RGBA_8888_32(7)":
+        elif texFormat == "IG_GFX_TEXTURE_FORMAT_RGBA_8888_32 (7)":
             # This format is a png file with no compression.
             # Display a warning. igbFinisher doesn't perform operations for transparency because there's no way to know if it's necessary or not (only certain types of transparency need it). This warning lets the user know that.
             resources.printWarning("This model uses a plain png texture with transparency. If the texture has full transparency, you will need to convert igBlend to igAlpha prior to running the model through igbFinisher.")
             # Increment the counter for plain png textures.
             plainPngCounter += 1
-        elif texFormat == "IG_GFX_TEXTURE_FORMAT_X_4(65537)":
+        elif texFormat == "IG_GFX_TEXTURE_FORMAT_X_4 (65537)":
             # This format is a png file with PNG4 compression, which is not supported. 
             # Give an error to let the user know that this format isn't allowed. It's not supported because PNG4 is only used on the PSP and only for some assets; taking out PNG4 compatibility reduces the number of texture options and makes processing easier.
             resources.printError("This model uses a png texture that's in PNG4 format. This texture format is not supported by igbFinisher. Please choose a different texture.", False)
-        elif texFormat == "IG_GFX_TEXTURE_FORMAT_RGB_888_24(5)":
+        elif texFormat == "IG_GFX_TEXTURE_FORMAT_RGB_888_24 (5)":
             # This format is a png file with no compression but no alpha channel, which is not supported.
             # Give an error to let the user know that this format isn't allowed. It's not supported because uncompressed png files bring up file sizes significantly with no benefits to the texture (since there's no alpha channel, they can't even have transparency).
             resources.printError("This model uses a png texture that's uncompressed without an alpha channel (no transparency). This texture format is not supported by igbFinisher. Please choose a different texture.", False)
-        elif texFormat == "IG_GFX_TEXTURE_FORMAT_RGBA_DXT3(15)":
+        elif texFormat == "IG_GFX_TEXTURE_FORMAT_RGBA_DXT3 (15)":
             # This format is a dds file with DXT3 compression, which is not supported.
             # Give an error to let the user know that this format isn't allowed. It's not supported because DXT3 is compatible with fewer consoles; the Marvel Mods GIMP scripts don't even export with it for that reason, so there's no reason that it would show up here.
             resources.printError("This model uses a dds texture that's in DXT3 format. This texture format is not supported by igbFinisher. Please choose a different texture.", False)
-        elif texFormat == "IG_GFX_TEXTURE_FORMAT_RGBA_DXT5(16)":
+        elif texFormat == "IG_GFX_TEXTURE_FORMAT_RGBA_DXT5 (16)":
             # This format is a dds file with DXT5 compression, which is not supported.
             # Give an error to let the user know that this format isn't allowed. It's not supported because DXT5 is compatible with fewer consoles; the Marvel Mods GIMP scripts don't even export with it for that reason, so there's no reason that it would show up here.
             resources.printError("This model uses a dds texture that's in DXT5 format. This texture format is not supported by igbFinisher. Please choose a different texture.", False)
@@ -456,6 +456,7 @@ def get3DTextureFormat(assetType, settings, fullFileName):
         resources.printError("No textures were found in the model. Please try again.", False)
     else:
         # There are one or more textures.
+        # Determine which texture formats are being used.
         (png8Counter, dxt1Counter, plainPngCounter, texFolderList) = recognize3DTextureFormat(texPathList, texFormatList)
         # Determine if all formats are acceptable. The number of formats detected should be equal to the length of the list of texture formats.
         if (png8Counter + dxt1Counter + plainPngCounter) == len(texFormatList):
