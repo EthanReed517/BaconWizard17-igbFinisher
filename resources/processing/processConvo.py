@@ -204,7 +204,7 @@ def convoProcessing(fullFileName, settings, XMLPath, MUAPath):
         complete = processConvo(settings, textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name, XMLPath, MUAPath, suffix)
     else:
         # A texture format was not chosen
-        complete = false
+        complete = False
     # Delete the lingering files
     resources.deleteLingering([XML1Name, XML2Name, MUA1Name, MUA2Name])
     # Return the collected value

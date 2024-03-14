@@ -42,7 +42,7 @@ def headProcessing(fullFileName, settings, XMLPath, MUAPath):
         complete = resources.process3D("3D Head", textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name, XMLPath, MUAPath, settings)
     else:
         # A texture format was not chosen
-        complete = false
+        complete = False
     # Delete the lingering files
     resources.deleteLingering([XML1Name, XML2Name, MUA1Name, MUA2Name])
     # Return the collected value

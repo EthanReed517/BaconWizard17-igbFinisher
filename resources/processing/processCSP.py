@@ -78,7 +78,7 @@ def CSPProcessing(fullFileName, settings, XMLPath):
         complete = processCSP(textureFormat, XML1Name, XML2Name, XMLPath, portraitType)
     else:
         # A texture format was not chosen
-        complete = false
+        complete = False
     # Delete the lingering files
     resources.deleteLingering([XML1Name, XML2Name])
     # Return the collected value

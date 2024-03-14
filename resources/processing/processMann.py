@@ -24,19 +24,11 @@ def mannProcessing(fullFileName, settings, XMLPath, MUAPath):
     # Confirm that a texture format was chosen
     if not(textureFormat == None):
         # A texture format was chosen
-        # Filter names based on whether or not the character uses multiple mannequin poses
-        if settings["multiPose"] == True:
-            # Character uses multiple poses
-            # determine the pose name
-            mannequinPose = resources.select("Which mannequin pose is being used?", ["MUA1 Pose", "MUA1 Last-Gen Pose", "MUA1 Next-Gen Pose", "MUA2 Pose", "OCP Pose", "Custom Pose"])
-            # Set up file names
-            MUA1Name = os.path.join(os.path.dirname(fullFileName), settings["MUA1Num"] + "XX (Mannequin - " + mannequinPose + ").igb")
-            MUA2Name = os.path.join(os.path.dirname(fullFileName), settings["MUA2Num"] + "XX (Mannequin - " + mannequinPose + ").igb")
-        else:
-            # Character uses one pose
-            # set up file names
-            MUA1Name = os.path.join(os.path.dirname(fullFileName), settings["MUA1Num"] + "XX (Mannequin).igb")
-            MUA2Name = os.path.join(os.path.dirname(fullFileName), settings["MUA2Num"] + "XX (Mannequin).igb")
+        # Get the suffix for the model
+        suffix = os.path.basename(fullFileName).split("XX")[1]
+        # Set up file names
+        MUA1Name = os.path.join(os.path.dirname(fullFileName), settings["MUA1Num"] + "XX" + suffix)
+        MUA2Name = os.path.join(os.path.dirname(fullFileName), settings["MUA2Num"] + "XX" + suffix)
         # Set the XML1/XML2 names
         XML1Name = None
         XML2Name = None
@@ -53,7 +45,7 @@ def mannProcessing(fullFileName, settings, XMLPath, MUAPath):
         complete = resources.process3D("Mannequin", textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name, XMLPath, MUAPath, settings)
     else:
         # A texture format was not chosen
-        complete = false
+        complete = False
     # Delete the lingering files
     resources.deleteLingering([XML1Name, XML2Name, MUA1Name, MUA2Name])
     # Return the collected value

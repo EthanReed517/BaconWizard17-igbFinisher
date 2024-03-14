@@ -46,14 +46,14 @@ def getAssetChoices(settings):
     # Other models are present in every game
     assetChoices.append("Other")
     # Get the asset type
-    assetType = resources.select("Which asset type are you finishing?", assetChoices)
+    assetType = resources.selectDefault("Which asset type are you finishing?", assetChoices, "Other")
     # Determine if the asset is not "Other"
     return assetType
 
 # Define the function for getting the asset type from the file name
 def assetRecognition(inputFileName, fullFileName, settings):
     # Create the list of possible file names
-    fileNameList = ["igActor01_Animation01DB.igb", "123XX (Mannequin).igb", "123XX (3D Head).igb", "hud_head_123XX.igb", "123XX (Character Select Portrait).igb"]
+    fileNameList = ["igActor01_Animation01DB.igb", "123XX (Mannequin", "123XX (3D Head).igb", "hud_head_123XX.igb", "123XX (Character Select Portrait).igb"]
     # Create the list of asset types
     assetTypeList = ["Skin", "Mannequin", "3D Head", "Conversation Portrait", "Character Select Portrait"]
     # Initialize the return variable for the asset type
@@ -63,7 +63,7 @@ def assetRecognition(inputFileName, fullFileName, settings):
     # Compare the file name and asset type lists
     for fileNameOption, assetTypeOption in zip(fileNameList, assetTypeList):
         # Determine if the file names match
-        if inputFileName == fileNameOption:
+        if fileNameOption in inputFileName:
             # File names match
             assetType = assetTypeOption
     # Determine if a valid name was found
