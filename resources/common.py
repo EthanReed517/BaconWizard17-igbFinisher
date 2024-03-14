@@ -42,15 +42,18 @@ def copyToDestination(fileName, releasePath, folderName):
         # Verify that the file exists before copying
         if os.path.isfile(fileName):
             # The file exists
-            # Create the path to the game-specific release folder
-            gamePath = os.path.join(releasePath, folderName)
-            # Verify if the folder already exists
-            if not(os.path.exists(gamePath)):
-                # Folder does not yet exist
-                # Create the folder
-                mkdir(gamePath)
-            # Copy the file
-            copy(fileName, gamePath)
+            # Verify that the file path is populated
+            if not(releasePath == None):
+                # The path is populated
+                # Create the path to the game-specific release folder
+                gamePath = os.path.join(releasePath, folderName)
+                # Verify if the folder already exists
+                if not(os.path.exists(gamePath)):
+                    # Folder does not yet exist
+                    # Create the folder
+                    mkdir(gamePath)
+                # Copy the file
+                copy(fileName, gamePath)
 
 # Define the function to delete lingering igb files
 def deleteLingering(fileList):

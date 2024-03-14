@@ -114,7 +114,7 @@ def fileDrop(fullFileName):
     if not(assetType == "Mannequin"):
         # XML-compatible asset is being used
         # Get the XML file path
-        XMLPath = getFilePath(settings, "XML1", "XML2")
+        XMLPath = getFilePath(settings, "XML", "XML1", "XML2")
     else:
         # Not XML-compatible (mannequin)
         # Set the path to none
@@ -123,7 +123,7 @@ def fileDrop(fullFileName):
     if not((assetType == "Character Select Portrait") or (assetType == "3D Head")):
         # MUA-compatible asset is being used
         # Get the MUA file path
-        MUAPath = getFilePath(settings, "MUA1", "MUA2")
+        MUAPath = getFilePath(settings, "MUA", "MUA1", "MUA2")
     else:
         # Not MUA-compatible (CSP or 3D Head)
         # Set the path to none
@@ -183,33 +183,42 @@ def getNumbers(settings):
     return settings
 
 # Define the function to get the file path
-def getFilePath(settings, Game1Name, Game2Name):
+def getFilePath(settings, series, game1Name, game2Name):
     # Set up the numbers
-    Game1Num = settings[Game1Name + "Num"]
-    Game2Num = settings[Game2Name + "Num"]
-    # Determine which games are in use
-    if (Game1Num == None) and (Game2Num == None):
-        # Neither game is in use
+    game1Num = settings[game1Name + "Num"]
+    game2Num = settings[game2Name + "Num"]
+    # Determine if a path should be collected
+    if settings[series + "Path"] == None:
+        # No path, so just set it to none
         filePath = None
-    else:
-        # At least one game is in use
-        if not(Game1Num == None):
-            # Game 1 is in use
-            if not(Game2Num == None):
-                # Game 1 and Game 2 are in use
-                games = Game1Name + "/" + Game2Name
-            else:
-                # Only Game 1 is in use
-                games = Game1Name
+    elif settings[series + "Path"] == "Ask":
+        # Need to ask about the path
+        # Determine which games are in use
+        if (game1Num == None) and (game2Num == None):
+            # Neither game is in use
+            filePath = None
         else:
-            # Only Game 2 is in use
-            games = Game2Name
-        # Create the message for the prompt
-        message = "Enter the path to the folder for the " + games + " release:"
-        # Ask the question
-        filePath = resources.path(message, resources.pathValidator)
-        # Replace any incorrect slashes
-        filePath = filePath.replace("\\", "/")
+            # At least one game is in use
+            if not(game1Num == None):
+                # game 1 is in use
+                if not(game2Num == None):
+                    # game 1 and game 2 are in use
+                    games = game1Name + "/" + game2Name
+                else:
+                    # Only game 1 is in use
+                    games = game1Name
+            else:
+                # Only game 2 is in use
+                games = game2Name
+            # Create the message for the prompt
+            message = "Enter the path to the folder for the " + games + " release:"
+            # Ask the question
+            filePath = resources.path(message, resources.pathValidator)
+            # Replace any incorrect slashes
+            filePath = filePath.replace("\\", "/")
+    else:
+        # The path is already in the settings
+        filePath = settings[series + "Path"]
     # Return the path
     return filePath
 

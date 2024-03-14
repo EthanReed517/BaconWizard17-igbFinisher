@@ -27,6 +27,10 @@ def parseConfig():
     for game in ["XML1", "XML2", "MUA1", "MUA2"]:
         number = characterNumberGetter(game)
         settings[game + "Num"] = number
+    # Get the path settings
+    for series, gameNames in zip(["XML", "MUA"], [("XML1", "XML2"), ("MUA1", "MUA2")]):
+        path = pathGetter(series, gameNames[0], gameNames[1])
+        settings[series + "Path"] = path
     # Get the other settings
     setting = settingsGetter("pcOnly")
     settings["pcOnly"] = setting
@@ -109,6 +113,88 @@ def characterNumberGetter(game):
         number = None
     # Return the collected value
     return number
+
+# Define the function for getting path settings
+def pathGetter(series, game1Name, game2Name):
+    # Get the name of the setting to look for
+    setting = series + "Path"
+    # Prepare to parse the settings
+    config = ConfigParser()
+    # Read the settings
+    config.read('settings.ini')
+    # Get the path
+    path = config['Settings'][setting]
+    # Get the numbers
+    game1Num = config['Settings'][game1Name + "Num"]
+    game2Num = config['Settings'][game2Name + "Num"]
+    # Determine which games are in use
+    if (game1Num == "None") and (game2Num == "None"):
+        # Neither game is in use
+        path = "None"
+    else:
+        # At least one game is in use
+        if not(game1Num == None):
+            # Game 1 is in use
+            if not(game2Num == None):
+                # Game 1 and Game 2 are in use
+                games = game1Name + "/" + game2Name
+            else:
+                # Only Game 1 is in use
+                games = game1Name
+        else:
+            # Only Game 2 is in use
+            games = game2Name
+        # Check if the path is acceptable
+        # Eternal loop until broken
+        while True:
+            try:
+                # Check if the path exists
+                assert os.path.exists(path)
+                # If there are no errors, break out of the loop.
+                break            
+            except AssertionError:
+                # The AssertionError happens because the earlier "assert" statement failed, meaning that the path doesn't exist.
+                # Check if the option is "Ask", which is also allowed.
+                if ((path == "Ask") or (path == "None")):
+                    # The value is ask, which is also acceptable.
+                    # Break out of the loop.
+                    break
+                else:
+                    # The value is not ask or an existing file path, so something went wrong.
+                    resources.printError("The value for the path for " + games + " is set to " + path + ", which is not an acceptable value. Please decide what you'd like the value to be.", False)
+                    # Find out what the user wants in their settings.
+                    valueType = resources.select("What setting do you want to use for the path for " + games + "?", ["Update the settings with a permanent path", "Don't enter a number (the character is not in " + games + ")", "Ask each time an asset is processed"])
+                    if valueType == "Update the settings with a permanent path":
+                        # The user wants to write a new path to the settings.
+                        # Create the message for the prompt
+                        message = "Enter the path to the folder for the " + games + " release:"
+                        # Ask the question
+                        path = resources.path(message, resources.pathValidator)
+                    elif valueType == "Don't enter a number (the character is not in " + games + ")":
+                        # The user wants to skip this series.
+                        # Set the setting.
+                        path = "None"
+                    else:
+                        # The user wants to be asked each time.
+                        # Set the setting.
+                        path = "Ask"
+        # Determine if a path was entered
+        if (not(path == "None") or not(path == "Ask")):
+            # A path was entered
+            # Replace any incorrect slashes
+            path = path.replace("\\", "/")
+        # Update the path in the settings
+        config['Settings'][setting] = path
+        # Write the new value to the settings
+        with open('settings.ini', 'w') as configfile:
+            config.write(configfile)
+    # Check if the number value is "None"
+    if path == "None":
+        # The number is "None"
+        # Update this to a None type
+        path = None
+    # Return the collected value
+    return path    
 
 # Define the function to get the other settings
 def settingsGetter(settingName):
