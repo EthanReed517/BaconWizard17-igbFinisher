@@ -100,10 +100,14 @@ def fileDrop(fullFileName):
     system("cls")
     # Print the welcome information
     displayInfo()
+    # Restore the settings from the ini file
+    settings = resources.parseConfig()
     # Trim the curly brackets off the file name
     fullFileName = fullFileName.data[1:-1]
     # Get the file name
     inputFileName = os.path.basename(fullFileName)
+    # Determine the numbers
+    settings = getNumbers(settings)
     # Determine the asset type
     (assetType, fileName) = resources.assetRecognition(inputFileName, fullFileName, settings)
     # Determine if an XML-compatible asset is being used
@@ -166,20 +170,32 @@ def fileDrop(fullFileName):
         # Print the error message
         resources.printError(assetType + " " + inputFileName + "was not able to be processed.", False)
 
+# Define the function to get the character numbers
+def getNumbers(settings):
+    # Go through the different games.
+    for game in ["XML1", "XML2", "MUA1", "MUA2"]:
+        # Determine if the character number for that game needs to be asked about.s
+        if settings[game + "Num"] == "Ask":
+            # Need to ask about the character number.
+            # Ask the user.
+            settings[game + "Num"] = resources.textInput("Enter the 2 or 3 digit character number for " + game + ":", resources.characterNumberValidator)
+    # Return the updated settings.
+    return settings
+
 # Define the function to get the file path
 def getFilePath(settings, Game1Name, Game2Name):
     # Set up the numbers
     Game1Num = settings[Game1Name + "Num"]
     Game2Num = settings[Game2Name + "Num"]
     # Determine which games are in use
-    if (Game1Num == "") and (Game2Num == ""):
+    if (Game1Num == None) and (Game2Num == None):
         # Neither game is in use
         filePath = None
     else:
         # At least one game is in use
-        if not(Game1Num == ""):
+        if not(Game1Num == None):
             # Game 1 is in use
-            if not(Game2Num == ""):
+            if not(Game2Num == None):
                 # Game 1 and Game 2 are in use
                 games = Game1Name + "/" + Game2Name
             else:
@@ -191,20 +207,11 @@ def getFilePath(settings, Game1Name, Game2Name):
         # Create the message for the prompt
         message = "Enter the path to the folder for the " + games + " release:"
         # Ask the question
-        filePath = resources.path(message, pathValidator)
+        filePath = resources.path(message, resources.pathValidator)
         # Replace any incorrect slashes
         filePath = filePath.replace("\\", "/")
     # Return the path
     return filePath
-
-# Define the validator for the file path
-def pathValidator(path):
-    if len(path) == 0:
-        return "Please enter a file path."
-    elif os.path.exists(path) == False:
-        return "Path does not exist"
-    else:
-        return True
 
 # Define the function to correct the file name
 def fileNameCorrection(fullFileName, assetType):

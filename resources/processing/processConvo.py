@@ -65,7 +65,7 @@ def processConvo(settings, textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name
                     # Delete it
                     remove(name)
                 # Determine if the number is used
-                if (not(num == "") and not(name == None) and not(os.path.exists(name))):
+                if (not(num == None) and not(name == None) and not(os.path.exists(name))):
                     # Number isn't empty, need to copy
                     # Perform the copying
                     copy(fullFileName, name)
@@ -187,14 +187,14 @@ def convoProcessing(fullFileName, settings, XMLPath, MUAPath):
     if not(textureFormat == None):
         # A texture format was chosen
         # Set up the file names
-        XML1Name = os.path.join(os.path.dirname(fullFileName), "hud_head_" + settings["XML1Num"] + "XX" + suffix + ".igb")
-        XML2Name = os.path.join(os.path.dirname(fullFileName), "hud_head_" + settings["XML2Num"] + "XX" + suffix + ".igb")
-        MUA1Name = os.path.join(os.path.dirname(fullFileName), "hud_head_" + settings["MUA1Num"] + "XX" + suffix + ".igb")
-        MUA2Name = os.path.join(os.path.dirname(fullFileName), "hud_head_" + settings["MUA2Num"] + "XX" + suffix + ".igb")
+        XML1Name = resources.setUpFileName(fullFileName, "hud_head_", settings["XML1Num"], "XX" + suffix + ".igb")
+        XML2Name = resources.setUpFileName(fullFileName, "hud_head_", settings["XML2Num"], "XX" + suffix + ".igb")
+        MUA1Name = resources.setUpFileName(fullFileName, "hud_head_", settings["MUA1Num"], "XX" + suffix + ".igb")
+        MUA2Name = resources.setUpFileName(fullFileName, "hud_head_", settings["MUA2Num"], "XX" + suffix + ".igb")
         # Copy the files
         for num, name in zip([settings["XML1Num"], settings["XML2Num"], settings["MUA1Num"], settings["MUA2Num"]], [XML1Name, XML2Name, MUA1Name, MUA2Name]):
             # Determine if the number is used
-            if (not(num == "") and not(name == None) and not(os.path.exists(name))):
+            if (not(num == None) and not(name == None) and not(os.path.exists(name))):
                 # Number isn't empty, need to copy
                 # Perform the copying
                 copy(fullFileName, name)

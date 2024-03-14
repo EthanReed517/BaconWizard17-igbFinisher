@@ -63,31 +63,50 @@ def characterNumberGetter(game):
     # Eternal loop until broken
     while True:
         try:
-            # Check the acceptance criteria
+            # Check if the number is an acceptable number (between 0 and 255)
             assert 0 <= int(number) <= 255
-            # break out of the loop if there are no errors
+            # If there are no errors, break out of the loop.
             break
         except ValueError:
-            # The value is not a number
+            # The ValueError occurs because the input is not a number.
             # Check if the value is blank
-            if number == "":
-                # The value is blank, which is allowed.
+            if ((number == "None") or (number == "Ask")):
+                # The value is None or Asl, which is allowed.
                 # Break out of the while statement
                 break
             else:
-                # The value is not blank
-                # Get a new use input
-                resources.printError("Character number for " + str(game) + " is set to " + str(number) + ", which is not a number. Please enter a number.", False)
-                number = input("Enter a new value: ")
+                # The value is not a number, not "None", or not "Ask"
+                # Display an error to the user so that they know that their input is not acceptable.
+                resources.printError("Character number for " + str(game) + " is set to " + str(number) + ", which is not an acceptable value. Please enter an acceptable value.", False)
+                # Find out what the user wants in their settings.
+                valueType = resources.select("What setting do you want to use for the " + game + "number?", ["Update the settings with a permanent number", "Don't enter a number (the character is not in " + game + ")", "Ask each time an asset is processed"])
+                # Determine what to do based on the settings.
+                if valueType == "Update the settings with a permanent number":
+                    # The user wants to enter a number.
+                    # Ask the user for a number.
+                    number = resources.textInput("Enter a 2 or 3 digit character number.", resources.characterNumberValidator)
+                elif valueType == "Don't enter a number (the character is not in " + game + ")":
+                    # The user wants to skip this number.
+                    # Set the setting.
+                    number = "None"
+                else:
+                    # The user wants to be asked each time the asset is processed.
+                    # Set the setting.
+                    number = "Ask"
         except AssertionError:
-            # The number is not within the accepted range (assertion failed)
+            # The AssertionError happens because the earlier "assert" statement failed, meaning that the value is a number but not within the acceptable range.
             resources.printError("Character number for " + str(game) + " is set to " + str(number) + ", which is not within the acceptable range (0-255). Please enter a number.", False)
-            number = input("Enter a new value: ")
+            number = resources.textInput("Enter a 2 or 3 digit character number:", resources.characterNumberValidator)
     # Update the number in the settings
     config['Settings'][setting] = number
     # Write the new value to the settings
     with open('settings.ini', 'w') as configfile:
         config.write(configfile)
+    # Check if the number value is "None"
+    if number == "None":
+        # The number is "None"
+        # Update this to a None type
+        number = None
     # Return the collected value
     return number
 
@@ -108,9 +127,19 @@ def settingsGetter(settingName):
             # break out of the loop if there are no errors
             break
         except (ValueError, AssertionError):
-            # The value is not acceptable
+            # The value is not acceptable. Print an error
             resources.printError("The value for setting " + str(settingName) + " is set to " + str(setting) + ", which is not an acceptable value. It must be True or False. Please enter an acceptable value.", False)
-            setting = input("Enter a new value: ")
+            # Let the user pick the new option.
+            choice = resources.select("Which console are you processing for?", ["All consoles", "PC only"])
+            # Determine which option was picked
+            if choice == "All consoles":
+                # This is for all consoles
+                # Set the setting to False (have to do as strings because otherwise it can't write to the ini)
+                setting = "False"
+            else:
+                # This is for PC only
+                # Set the setting to True (have to do as strings because otherwise it can't write to the ini)
+                setting = "True"
     # Update the setting in the settings
     config['Settings'][settingName] = setting
     # Write the new value to the settings

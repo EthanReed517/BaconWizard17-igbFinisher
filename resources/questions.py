@@ -11,6 +11,8 @@
 import questionary
 # Necessary functions for asking questions
 from questionary import prompt, Style, Validator, ValidationError
+# To be able to validate paths
+import os.path
 
 
 # ###### #
@@ -134,6 +136,17 @@ def selectDefault(question, options, defaultChoice):
     return answer
 
 # Define the function for asking questions to get a file path.
+def textInput(question, validator):
+    # Pose the question to the user.
+    answer = questionary.text(
+        question,
+        validate = validator,
+        style = questionStyle
+    ).ask()
+    # Return the collected answer.
+    return answer
+
+# Define the function for asking questions to get a file path.
 def path(question, validator):
     # Pose the question to the user.
     answer = questionary.path(
@@ -166,6 +179,19 @@ def confirm(question, defaultChoice):
     ).ask()
     # Return the collected answer.
     return answer
+
+# Define the question validator for getting a character number.
+def characterNumberValidator(number):
+    if len(number) == 0:
+        return "Please enter a number."
+    elif number.isnumeric() == False:
+        return "The input must be a number."
+    elif ((len(number) > 3) or (len(number) == 1)):
+        return "Character numbers must be 2 or 3 digits long."
+    elif not(0 <= int(number) <= 255):
+        return "Character numbers must be between 00 and 255 (inclusive)."
+    else:
+        return True
 
 # Define the validator for the file name of assets that aren't recognized by igbFinisher.
 def fileNameValidatorStart(fileName):

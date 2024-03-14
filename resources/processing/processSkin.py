@@ -39,21 +39,21 @@ def skinProcessing(fullFileName, settings, XMLPath, MUAPath):
         if celChoice == True:
             # cel shading is used
             # Set up file names
-            XML1Name = os.path.join(os.path.dirname(fullFileName), settings["XML1Num"] + "XX (Skin).igb")
-            XML2Name = os.path.join(os.path.dirname(fullFileName), settings["XML2Num"] + "XX (Skin).igb")
+            XML1Name = resources.setUpFileName(fullFileName, "", settings["XML1Num"], "XX (Skin).igb")
+            XML2Name = resources.setUpFileName(fullFileName, "", settings["XML2Num"], "XX (Skin).igb")
             MUA1Name = None
             MUA2Name = None
         else:
             # cel shading is not used
             # set up file names
-            XML1Name = os.path.join(os.path.dirname(fullFileName), settings["XML1Num"] + "XX (Skin - No Cel).igb")
-            XML2Name = os.path.join(os.path.dirname(fullFileName), settings["XML2Num"] + "XX (Skin - No Cel).igb")
-            MUA1Name = os.path.join(os.path.dirname(fullFileName), settings["MUA1Num"] + "XX (Skin).igb")
-            MUA2Name = os.path.join(os.path.dirname(fullFileName), settings["MUA2Num"] + "XX (Skin).igb")
+            XML1Name = resources.setUpFileName(fullFileName, "", settings["XML1Num"], "XX (Skin - No Cel).igb")
+            XML2Name = resources.setUpFileName(fullFileName, "", settings["XML2Num"], "XX (Skin - No Cel).igb")
+            MUA1Name = resources.setUpFileName(fullFileName, "", settings["MUA1Num"], "XX (Skin).igb")
+            MUA2Name = resources.setUpFileName(fullFileName, "", settings["MUA2Num"], "XX (Skin).igb")
         # Copy the files
         for num, name in zip([settings["XML1Num"], settings["XML2Num"], settings["MUA1Num"], settings["MUA2Num"]], [XML1Name, XML2Name, MUA1Name, MUA2Name]):
             # Determine if the number is used
-            if (not(num == "") and not(name == None) and not(os.path.exists(name))):
+            if (not(num == None) and not(name == None) and not(os.path.exists(name))):
                 # Number isn't empty, need to copy
                 # Perform the copying
                 copy(fullFileName, name)

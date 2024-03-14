@@ -60,17 +60,17 @@ def CSPProcessing(fullFileName, settings, XMLPath):
         if portraitType == "XML1":
             # XML1 portrait
             # Set up file names
-            XML1Name = os.path.join(os.path.dirname(fullFileName), settings["XML1Num"] + "XX (Character Select Portrait).igb")
+            XML1Name = resources.setUpFileName(fullFileName, "", settings["XML1Num"], "XX (Character Select Portrait).igb")
             XML2Name = None
         else:
             # XML2 portrait
             # Set up file names
             XML1Name = None
-            XML2Name = os.path.join(os.path.dirname(fullFileName), settings["XML2Num"] + "XX (Character Select Portrait).igb")
+            XML2Name = resources.setUpFileName(fullFileName, "", settings["XML2Num"], "XX (Character Select Portrait).igb")
         # Copy the files
         for num, name in zip([settings["XML1Num"], settings["XML2Num"]], [XML1Name, XML2Name]):
             # Determine if the number is used
-            if (not(num == "") and not(name == None) and not(os.path.exists(name))):
+            if (not(num == None) and not(name == None) and not(os.path.exists(name))):
                 # Number isn't empty, need to copy
                 # Perform the copying
                 copy(fullFileName, name)

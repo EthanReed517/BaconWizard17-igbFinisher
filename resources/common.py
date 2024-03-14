@@ -19,6 +19,21 @@ from shutil import copy
 # ######### #
 # FUNCTIONS #
 # ######### #
+# Define the function to set up file names
+def setUpFileName(fullFileName, prefix, gameNum, suffix):
+    # Determine if the character number is None, meaning that the character is not used in this game and the name is not needed
+    if gameNum == None:
+        # The character number is None, so no name is needed
+        # set the file name to None
+        gameName = None
+    else:
+        # The character number is not None, so the file name needs to get set up
+        # Set up the file name accordingly
+        gameName = os.path.join(os.path.dirname(fullFileName), prefix + gameNum + suffix)
+    # Return the collected file name
+    return gameName
+
+
 # Define the function to copy files to the necessary destination
 def copyToDestination(fileName, releasePath, folderName):
     # Verify that the file name is not a None

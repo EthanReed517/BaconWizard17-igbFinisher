@@ -22,7 +22,7 @@ from pathlib import Path
 # Define the function for getting other model names
 def otherModelNameInput(charNum, gameName, fullFileName, celExt):
     # determine what to do based on whether or not the character number is defined.
-    if charNum == "":
+    if charNum == None:
         # Not used with this game
         # no file name is needed
         fileName = None
@@ -95,7 +95,7 @@ def otherProcessing(fullFileName, settings, XMLPath, MUAPath):
         # Copy the files
         for num, name in zip([settings["XML1Num"], settings["XML2Num"], settings["MUA1Num"], settings["MUA2Num"]], [XML1Name, XML2Name, MUA1Name, MUA2Name]):
             # Determine if the number is used and the file doesn't exist
-            if (not(num == "") and not(name == None) and not(os.path.exists(name))):
+            if (not(num == None) and not(name == None) and not(os.path.exists(name))):
                 # Number isn't empty, need to copy
                 # Perform the copying
                 copy(fullFileName, name)

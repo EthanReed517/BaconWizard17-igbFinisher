@@ -27,15 +27,15 @@ def mannProcessing(fullFileName, settings, XMLPath, MUAPath):
         # Get the suffix for the model
         suffix = os.path.basename(fullFileName).split("XX")[1]
         # Set up file names
-        MUA1Name = os.path.join(os.path.dirname(fullFileName), settings["MUA1Num"] + "XX" + suffix)
-        MUA2Name = os.path.join(os.path.dirname(fullFileName), settings["MUA2Num"] + "XX" + suffix)
+        MUA1Name = resources.setUpFileName(fullFileName, "", settings["MUA1Num"], "XX" + suffix)
+        MUA2Name = resources.setUpFileName(fullFileName, "", settings["MUA2Num"], "XX" + suffix)
         # Set the XML1/XML2 names
         XML1Name = None
         XML2Name = None
         # Copy the files
         for num, name in zip([settings["XML1Num"], settings["XML2Num"], settings["MUA1Num"], settings["MUA2Num"]], [XML1Name, XML2Name, MUA1Name, MUA2Name]):
             # Determine if the number is used
-            if (not(num == "") and not(name == None) and not(os.path.exists(name))):
+            if (not(num == None) and not(name == None) and not(os.path.exists(name))):
                 # Number isn't empty, need to copy
                 # Perform the copying
                 copy(fullFileName, name)
