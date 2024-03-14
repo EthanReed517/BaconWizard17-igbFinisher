@@ -51,19 +51,17 @@ def otherProcessing(fullFileName, settings, XMLPath, MUAPath):
     # Confirm that a texture format was chosen
     if not(textureFormat == None):
         # A texture format was chosen
-        # Determine if cel shading needs to be asked about
-        if ((textureFormat == "Wii") or ("Environment Texture: Wii" in textureFormat) or ("MUA1 PC" in textureFormat)):
-            # Texture format that would not use cel shading
-            celChoice = False
-        else:
-            # Texture format that could be with a cel shaded skin
-            # Determine if the skin has cel shading or not
-            celChoice = resources.confirm("Does the model use cel shading?", False)
-            # Determine if there will be a version with cel shading if this doesn't
-            if celChoice == False:
-                # Doesn't use cel shading
-                # Ask if any version will
-                celAny = resources.confirm("Will there be a version with cel shading?", False)
+        # Get the geometry names from the file
+        geomNames = resources.GetModelStats(fullFileName)
+        # Set the cel shading option to False initially. It could be updated to True if cel shading is detected.
+        celChoice = False
+        # Loop through the geometry names.
+        for name in geomNames:
+            # Determine if the geometry name has "_outline" in it
+            if "_outline" in name:
+                # "_outline" is in a geometry name, meaning that this skin has cel shading.
+                # Since cel shading was detected, set the cel shading choice to True.
+                celChoice = True
         # Filter based on cel shading choice
         if celChoice == True:
             # cel shading is used
@@ -75,7 +73,7 @@ def otherProcessing(fullFileName, settings, XMLPath, MUAPath):
         else:
             # cel shading is not used
             # Determine if there will be any cel shaded assets
-            if celAny == True:
+            if "No Cel" in fullFileName:
                 # There will be a version with cel shading
                 # set up file names
                 XML1Name = otherModelNameInput(settings["XML1Num"], "XML1", fullFileName, " (No Cel)")
@@ -98,7 +96,7 @@ def otherProcessing(fullFileName, settings, XMLPath, MUAPath):
         complete = resources.process3D("Other", textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name, XMLPath, MUAPath, settings)
     else:
         # A texture format was not chosen
-        complete = false
+        complete = False
     # Delete the lingering files
     resources.deleteLingering([XML1Name, XML2Name, MUA1Name, MUA2Name])
     # Return the collected value

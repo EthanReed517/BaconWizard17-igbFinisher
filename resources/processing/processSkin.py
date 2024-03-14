@@ -24,14 +24,17 @@ def skinProcessing(fullFileName, settings, XMLPath, MUAPath):
     # Confirm that a texture format was chosen
     if not(textureFormat == None):
         # A texture format was chosen
-        # Determine if cel shading needs to be asked about
-        if ((textureFormat == "Wii") or ("Environment Texture: Wii" in textureFormat) or ("MUA1 PC" in textureFormat)):
-            # Texture format that would not use cel shading
-            celChoice = False
-        else:
-            # Texture format that could be with a cel shaded skin
-            # Determine if the skin has cel shading or not
-            celChoice = resources.confirm("Does the skin use cel shading?", False)
+        # Get the geometry names from the file
+        geomNames = resources.GetModelStats(fullFileName)
+        # Set the cel shading option to False initially. It could be updated to True if cel shading is detected.
+        celChoice = False
+        # Loop through the geometry names.
+        for name in geomNames:
+            # Determine if the geometry name has "_outline" in it
+            if "_outline" in name:
+                # "_outline" is in a geometry name, meaning that this skin has cel shading.
+                # Since cel shading was detected, set the cel shading choice to True.
+                celChoice = True
         # Filter based on cel shading choice
         if celChoice == True:
             # cel shading is used

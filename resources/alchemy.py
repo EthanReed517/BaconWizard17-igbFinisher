@@ -54,6 +54,22 @@ def GetTexPath(file_name) -> list:
     # Return all found texture paths
     return texturePaths, textureFormats
 
+def GetModelStats(file_name) -> list:
+    # Define the Alchemy ini file & command
+    ini_file = os.path.abspath("Scripts/statsM.ini")
+    cmd = f'"{sgOptimizer}" "{file_name}" "%temp%\\temp.igb" "{ini_file}"'
+    output = os.popen(cmd).read()
+    # Initialize the return list as an empty list
+    geometryNames = []
+    # Run the optimization and isolate the model names
+    for l in output.split('\n'):
+        if l.find('igGeometryAttr') > 0:
+            # If a model exists, it's listed with a model type
+            # Append the path from the same line (first listed)
+            geometryNames.append((l.split('^|'))[0])
+    # Return all found texture paths
+    return geometryNames
+
 # Define the function for performing Alchemy operations
 def callAlchemy(file_name, ini_name):
     # Determine if the file actually exists

@@ -1,4 +1,0 @@
-REM Go to the beginning of the file
-ADR 0
-REM Replace the generic skin number to the actual skin number
-REPLACEALL %1 by %2
