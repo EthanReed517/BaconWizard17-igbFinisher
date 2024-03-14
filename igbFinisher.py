@@ -164,7 +164,7 @@ def fileDrop(fullFileName):
     else:
         # The process was not completed
         # Print the error message
-        resources.printError(assetType + " " + inputFileName + "was not able to be processed.")
+        resources.printError(assetType + " " + inputFileName + "was not able to be processed.", False)
 
 # Define the function to get the file path
 def getFilePath(settings, Game1Name, Game2Name):

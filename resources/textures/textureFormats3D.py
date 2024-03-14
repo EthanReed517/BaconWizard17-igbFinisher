@@ -47,29 +47,29 @@ def recognize3DTextureFormat(texPathList, texFormatList):
         elif texFormat == "IG_GFX_TEXTURE_FORMAT_RGBA_8888_32(7)":
             # This format is a png file with no compression.
             # Display a warning. igbFinisher doesn't perform operations for transparency because there's no way to know if it's necessary or not (only certain types of transparency need it). This warning lets the user know that.
-            resources.printWarning("WARNING: This model uses a plain png texture with transparency. If the texture has full transparency, you will need to convert igBlend to igAlpha prior to running the model through igbFinisher.")
+            resources.printWarning("This model uses a plain png texture with transparency. If the texture has full transparency, you will need to convert igBlend to igAlpha prior to running the model through igbFinisher.")
             # Increment the counter for plain png textures.
             plainPngCounter += 1
         elif texFormat == "IG_GFX_TEXTURE_FORMAT_X_4(65537)":
             # This format is a png file with PNG4 compression, which is not supported. 
             # Give an error to let the user know that this format isn't allowed. It's not supported because PNG4 is only used on the PSP and only for some assets; taking out PNG4 compatibility reduces the number of texture options and makes processing easier.
-            resources.printError("ERROR: This model uses a png texture that's in PNG4 format. This texture format is not supported by igbFinisher. Please choose a different texture.")
+            resources.printError("This model uses a png texture that's in PNG4 format. This texture format is not supported by igbFinisher. Please choose a different texture.", False)
         elif texFormat == "IG_GFX_TEXTURE_FORMAT_RGB_888_24(5)":
             # This format is a png file with no compression but no alpha channel, which is not supported.
             # Give an error to let the user know that this format isn't allowed. It's not supported because uncompressed png files bring up file sizes significantly with no benefits to the texture (since there's no alpha channel, they can't even have transparency).
-            resources.printError("ERROR: This model uses a png texture that's uncompressed without an alpha channel (no transparency). This texture format is not supported by igbFinisher. Please choose a different texture.")
+            resources.printError("This model uses a png texture that's uncompressed without an alpha channel (no transparency). This texture format is not supported by igbFinisher. Please choose a different texture.", False)
         elif texFormat == "IG_GFX_TEXTURE_FORMAT_RGBA_DXT3(15)":
             # This format is a dds file with DXT3 compression, which is not supported.
             # Give an error to let the user know that this format isn't allowed. It's not supported because DXT3 is compatible with fewer consoles; the Marvel Mods GIMP scripts don't even export with it for that reason, so there's no reason that it would show up here.
-            resources.printError("ERROR: This model uses a dds texture that's in DXT3 format. This texture format is not supported by igbFinisher. Please choose a different texture.")
+            resources.printError("This model uses a dds texture that's in DXT3 format. This texture format is not supported by igbFinisher. Please choose a different texture.", False)
         elif texFormat == "IG_GFX_TEXTURE_FORMAT_RGBA_DXT5(16)":
             # This format is a dds file with DXT5 compression, which is not supported.
             # Give an error to let the user know that this format isn't allowed. It's not supported because DXT5 is compatible with fewer consoles; the Marvel Mods GIMP scripts don't even export with it for that reason, so there's no reason that it would show up here.
-            resources.printError("ERROR: This model uses a dds texture that's in DXT5 format. This texture format is not supported by igbFinisher. Please choose a different texture.")
+            resources.printError("This model uses a dds texture that's in DXT5 format. This texture format is not supported by igbFinisher. Please choose a different texture.", False)
         else:
             # The format was not recognized at all.
             # Give an error to let the user know. This technically shouldn't happen because the previous options cover all the common formats, but there are some fringe formats that can be exported if you know how to do it.
-            resources.printError("ERROR: A texture format used by this model is not recognized. Please choose a different texture.\nTexture format \"" + texFormat + "\".")
+            resources.printError("A texture format used by this model is not recognized. Please choose a different texture.\nTexture format \"" + texFormat + "\".", False)
         # Add the texture folder to the list of texture formats.
         texFolderList.append(texFolder)
     # Return the collected variables: the number of PNG8 textures found in the model, the number of DXT1 textures found in the model, the number of plain png textures found in the model, and the list of texture formats.
@@ -131,7 +131,7 @@ def oneFormatOneFolder(png8Counter, dxt1Counter, plainPngCounter, texFolderList,
     else:
         # No format counter is the same as the length of the texture format list.
         # Notify the user of the error. There's really no way this should happen unless there's something super weird going on, but I'm adding it for extra error security.
-        resources.printError("ERROR: igbFinisher determined that the model only uses one texture format and one texture folder, but no texture format counter is the same as the length of the texture format list. Please contact the program creator to report this error.")
+        resources.printError("igbFinisher determined that the model only uses one texture format and one texture folder, but no texture format counter is the same as the length of the texture format list.", True)
     # Determine if the texture folder can be found in the list of texture folders that was created earlier. Since all folders are the same, the first item from the list is taken.
     if texFolderList[0] in textureFolderList:
         # The texture folder used by the model can be found in the list of texture folders that was created earlier.
@@ -142,7 +142,7 @@ def oneFormatOneFolder(png8Counter, dxt1Counter, plainPngCounter, texFolderList,
     else:
         # The texture folder used by the model can't be found in the list of texture folders that was created earlier.
         # Print the error to inform the user that the texture folder couldn't be matched to an acceptable format. This can happen if they exported without using the Marvel Mods GIMP Scripts or if they dropped the textures from outside of the VM.
-        resources.printError("ERROR: The texture folder, " + texFolderList[0] + ", could not be recognized. Make sure that you're exporting your textures with the Marvel Mods GIMP Scripts and adding the textures from within the VM. Please try again.")
+        resources.printError("The texture folder, " + texFolderList[0] + ", could not be recognized. Make sure that you're exporting your textures with the Marvel Mods GIMP Scripts and adding the textures from within the VM. Please try again.", False)
         # In order to have a return variable for this case, set the texture format to "None" again.
         textureFormat = None
     # Return the collected texture format for further processing.
@@ -176,13 +176,13 @@ def oneFormatEnvironmentMaps(png8Counter, dxt1Counter, plainPngCounter, texFolde
     elif plainPngCounter == len(texFolderList):
         # This is plain png format, which isn't allowed. Environment maps can't be in plain png format.
         # Print an error to let the user know.
-        resources.printError("ERROR: igbFinisher determined that a plain png diffuse texture is being used with plain png environment maps. Plain png environment maps are not supported.")
+        resources.printError("igbFinisher determined that a plain png diffuse texture is being used with plain png environment maps. Plain png environment maps are not supported.", False)
         # Create a blank list to avoid any errors.
         textureFolderList = []
     else:
         # No format counter is the same as the length of the texture format list.
         # Notify the user of the error. There's really no way this should happen unless there's something super weird going on, but I'm adding it for extra error security.
-        resources.printError("ERROR: igbFinisher determined that the model only uses one texture format and uses environment maps, but no texture format counter is the same as the length of the texture format list. Please contact the program creator to report this error.")
+        resources.printError("igbFinisher determined that the model only uses one texture format and uses environment maps, but no texture format counter is the same as the length of the texture format list.", True)
         # Create a blank list to avoid any errors.
         textureFolderList = []
     # Initiate a counter to keep track of whether or not a folder option is found in the model's list of folders
@@ -207,7 +207,7 @@ def oneFormatEnvironmentMaps(png8Counter, dxt1Counter, plainPngCounter, texFolde
     elif folderFound == 0:
         # No folder was found, so an acceptable folder is not in use.
         # Initialize a string to let the user know about the error.
-        errorString = "ERROR: The texture folders could not be recognized.\nDetected texture folders: "
+        errorString = "The texture folders could not be recognized.\nDetected texture folders: "
         # Get a list of the unique folders in the model's list of texture folders. This is to ensure that no folders repeat in the error string.
         uniqueFolders = getUniqueFolders(texFolderList)
         # Loop through the list of unique folders to report which were identified.
@@ -215,12 +215,12 @@ def oneFormatEnvironmentMaps(png8Counter, dxt1Counter, plainPngCounter, texFolde
             # Add the folder to the error string.
             errorString += (folder + " / ")
         # Print the error so that the user can see which folders the model has.
-        resources.printError(errorString)
+        resources.printError(errorString, False)
         # In order to have a return variable for this case, set the texture format to "None" again.
         textureFormat = None
     else:
         # More than 1 folder was found, which shouldn't be possible. This is being added for extra error security.
-        resources.printError("ERROR: igbFinisher determined the texture folders used by the model match more than one texture folder option for this format. Please contact the program creator to report this error.")
+        resources.printError("igbFinisher determined the texture folders used by the model match more than one texture folder option for this format.", True)
         # In order to have a return variable for this case, set the texture format to "None" again.
         textureFormat = None
     # Return the collected texture format for further processing.
@@ -254,7 +254,7 @@ def transparentEnvironmentMaps(png8Counter, dxt1Counter, plainPngCounter, texFol
     else:
         # The environment maps use neither DXT1 nor PNG8 format, which shouldn't be possible.
         # Let the user know that this shouldn't be possible.
-        resources.printError("ERROR: igbFinisher determined that the model has a transparent diffuse texture with environment maps, but neither PNG8 nor DXT1 counters were more than 1. Please contact the program creator to report this error.")
+        resources.printError("igbFinisher determined that the model has a transparent diffuse texture with environment maps, but neither PNG8 nor DXT1 counters were more than 1.", True)
         # Create a blank list to avoid any errors.
         textureFolderList = []
     # Initiate a counter to keep track of whether or not a folder option is found in the model's list of folders
@@ -279,7 +279,7 @@ def transparentEnvironmentMaps(png8Counter, dxt1Counter, plainPngCounter, texFol
     elif folderFound == 0:
         # No folder was found, so an acceptable folder is not in use.
         # Initialize a string to let the user know about the error.
-        errorString = "ERROR: The texture folders could not be recognized.\nDetected texture folders: "
+        errorString = "The texture folders could not be recognized.\nDetected texture folders: "
         # Get a list of the unique folders in the model's list of texture folders. This is to ensure that no folders repeat in the error string.
         uniqueFolders = getUniqueFolders(texFolderList)
         # Loop through the list of unique folders to report which were identified.
@@ -287,12 +287,12 @@ def transparentEnvironmentMaps(png8Counter, dxt1Counter, plainPngCounter, texFol
             # Add the folder to the error string.
             errorString += (folder + " / ")
         # Print the error so that the user can see which folders the model has.
-        resources.printError(errorString)
+        resources.printError(errorString, False)
         # In order to have a return variable for this case, set the texture format to "None" again.
         textureFormat = None
     else:
         # More than 1 folder was found, which shouldn't be possible. This is being added for extra error security.
-        resources.printError("ERROR: igbFinisher determined the texture folders used by the model match more than one texture folder option for this format. Please contact the program creator to report this error.")
+        resources.printError("igbFinisher determined the texture folders used by the model match more than one texture folder option for this format.", True)
         # In order to have a return variable for this case, set the texture format to "None" again.
         textureFormat = None
     # Return the collected texture format for further processing.
@@ -326,7 +326,7 @@ def transparentAndOpaque(png8Counter, dxt1Counter, plainPngCounter, texFolderLis
     else:
         # The environment maps use neither DXT1 nor PNG8 format, which shouldn't be possible.
         # Let the user know that this shouldn't be possible.
-        resources.printError("ERROR: igbFinisher determined that the model has transparent and opaque diffuse textures with environment maps, but neither PNG8 nor DXT1 counters were more than 1. Please contact the program creator to report this error.")
+        resources.printError("igbFinisher determined that the model has transparent and opaque diffuse textures with environment maps, but neither PNG8 nor DXT1 counters were more than 1.", True)
         # Create a blank list to avoid any errors.
         textureFolderList = []
     # Initiate a counter to keep track of whether or not a folder option is found in the model's list of folders
@@ -351,7 +351,7 @@ def transparentAndOpaque(png8Counter, dxt1Counter, plainPngCounter, texFolderLis
     elif folderFound == 0:
         # No folder was found, so an acceptable folder is not in use.
         # Initialize a string to let the user know about the error.
-        errorString = "ERROR: The texture folders could not be recognized.\nDetected texture folders: "
+        errorString = "The texture folders could not be recognized.\nDetected texture folders: "
         # Get a list of the unique folders in the model's list of texture folders. This is to ensure that no folders repeat in the error string.
         uniqueFolders = getUniqueFolders(texFolderList)
         # Loop through the list of unique folders to report which were identified.
@@ -359,12 +359,12 @@ def transparentAndOpaque(png8Counter, dxt1Counter, plainPngCounter, texFolderLis
             # Add the folder to the error string.
             errorString += (folder + " / ")
         # Print the error so that the user can see which folders the model has.
-        resources.printError(errorString)
+        resources.printError(errorString, False)
         # In order to have a return variable for this case, set the texture format to "None" again.
         textureFormat = None
     else:
         # More than 1 folder was found, which shouldn't be possible. This is being added for extra error security.
-        resources.printError("ERROR: igbFinisher determined the texture folders used by the model match more than one texture folder option for this format. Please contact the program creator to report this error.")
+        resources.printError("igbFinisher determined the texture folders used by the model match more than one texture folder option for this format.", True)
         # In order to have a return variable for this case, set the texture format to "None" again.
         textureFormat = None
     # Return the collected texture format for further processing.
@@ -398,7 +398,7 @@ def tripleFormat(png8Counter, dxt1Counter, plainPngCounter, texFolderList, setti
     else:
         # The environment maps use neither DXT1 nor PNG8 format, which shouldn't be possible.
         # Let the user know that this shouldn't be possible.
-        resources.printError("ERROR: igbFinisher determined that the model has transparent and opaque diffuse textures with environment maps, but neither PNG8 nor DXT1 counters were more than 1. Please contact the program creator to report this error.")
+        resources.printError("igbFinisher determined that the model has transparent and opaque diffuse textures with environment maps, but neither PNG8 nor DXT1 counters were more than 1.", True)
         # Create a blank list to avoid any errors.
         textureFolderList = []
     # Initiate a counter to keep track of whether or not a folder option is found in the model's list of folders
@@ -424,7 +424,7 @@ def tripleFormat(png8Counter, dxt1Counter, plainPngCounter, texFolderList, setti
     elif folderFound == 0:
         # No folder was found, so an acceptable folder is not in use.
         # Initialize a string to let the user know about the error.
-        errorString = "ERROR: The texture folders could not be recognized.\nDetected texture folders: "
+        errorString = "The texture folders could not be recognized.\nDetected texture folders: "
         # Get a list of the unique folders in the model's list of texture folders. This is to ensure that no folders repeat in the error string.
         uniqueFolders = getUniqueFolders(texFolderList)
         # Loop through the list of unique folders to report which were identified.
@@ -432,12 +432,12 @@ def tripleFormat(png8Counter, dxt1Counter, plainPngCounter, texFolderList, setti
             # Add the folder to the error string.
             errorString += (folder + " / ")
         # Print the error so that the user can see which folders the model has.
-        resources.printError(errorString)
+        resources.printError(errorString, False)
         # In order to have a return variable for this case, set the texture format to "None" again.
         textureFormat = None
     else:
         # More than 1 folder was found, which shouldn't be possible. This is being added for extra error security.
-        resources.printError("ERROR: igbFinisher determined the texture folders used by the model match more than one texture folder option for this format. Please contact the program creator to report this error.")
+        resources.printError("igbFinisher determined the texture folders used by the model match more than one texture folder option for this format.", True)
         # In order to have a return variable for this case, set the texture format to "None" again.
         textureFormat = None
     # Return the collected texture format for further processing.
@@ -453,7 +453,7 @@ def get3DTextureFormat(assetType, settings, fullFileName):
     if len(texPathList) == 0:
         # No textures were found.
         # Give an error to let the user know. Textures are required for igbFinisher to work, so no other operations are performed.
-        resources.printError("ERROR: No textures were found in the model. Please try again.")
+        resources.printError("No textures were found in the model. Please try again.", False)
     else:
         # There are one or more textures.
         (png8Counter, dxt1Counter, plainPngCounter, texFolderList) = recognize3DTextureFormat(texPathList, texFormatList)
@@ -467,7 +467,7 @@ def get3DTextureFormat(assetType, settings, fullFileName):
                 if ((png8Counter > 0) and (dxt1Counter > 0)):
                     # There are both PNG8 and DXT1 textures. 
                     # Print an error to let the user know that this isn't allowed, because it makes optimization difficult and restricts compatibility. Using proper export settings with the GIMP scripts shouldn't allow this to happen.
-                    resources.printError("ERROR: This model uses both PNG8 and DXT1 textures. This isn't allowed because it limits compatibility. Please try again.")
+                    resources.printError("This model uses both PNG8 and DXT1 textures. This isn't allowed because it limits compatibility. Please try again.", True)
                 else:
                     # The model has at least one plain png texture, and the other texture(s) are PNG8 or DXT1, but not both.
                     # Determine if there is a "sphereImage" in the list of texture folders, which would indicate that there are environment maps in use.
@@ -487,14 +487,13 @@ def get3DTextureFormat(assetType, settings, fullFileName):
                         elif len(uniqueFolders) > 3:
                             # More than 3 unique folders were found, which means that the user set up the model incorrectly.
                             # Inform the user of this error so that they can reduce the number of different texture folders.
-                            resources.printError("ERROR: More than 3 texture folders were found. When using environment maps and transparent textures, a maximum of 3 folders is allowed: 1 for the transparent diffuse texture(s), 1 for the opaque diffuse texture(s) (if applicable), and 1 for the environment map(s).")
+                            resources.printError("More than 3 texture folders were found. When using environment maps and transparent textures, a maximum of 3 folders is allowed: 1 for the transparent diffuse texture(s), 1 for the opaque diffuse texture(s) (if applicable), and 1 for the environment map(s).", False)
                         else:
                             # 1 or fewer unique folders were found somehow. This shouldn't happen, and the user could only get here through some critical programming flaw.
                             # Print an error so that the user knows that this shouldn't happen and to report the issue.
-                            resources.printError("ERROR: igbFinisher determined that the model is using textures of different formats, and that it is using environment maps, but the number of unique formats was determined to be less than 2. Please contact the program creator to report this error.")
+                            resources.printError("igbFinisher determined that the model is using textures of different formats, and that it is using environment maps, but the number of unique formats was determined to be less than 2.", True)
                     else:
                         # There is no sphereImage, so environment maps are not in use. This means that there is an opaque texture (PNG8 or DXT1) is being used with a transparent texture (plain png).
-                        print("Mixed format no env")
                         # Get the list of unique texture folders from the model's list of texture folders.
                         uniqueFolders = getUniqueFolders(texFolderList)
                         # Determine the number of unique folders.
@@ -505,11 +504,11 @@ def get3DTextureFormat(assetType, settings, fullFileName):
                         elif len(uniqueFolders) > 2:
                             # More than 2 unique folders were found, which means that the user set up the model incorrectly.
                             # Inform the user of this error so that they can reduce the number of different texture folders.
-                            resources.printError("ERROR: More than 2 texture folders were found. When using opaque and transparent textures, a maximum of 2 folders is allowed: 1 for the transparent diffuse texture(s) and 1 for the opaque diffuse texture(s).")
+                            resources.printError("More than 2 texture folders were found. When using opaque and transparent textures, a maximum of 2 folders is allowed: 1 for the transparent diffuse texture(s) and 1 for the opaque diffuse texture(s).", False)
                         else:
                             # 1 or fewer unique folders were found somehow. This shouldn't happen, and the user could only get here through some critical programming flaw.
                             # Print an error so that the user knows that this shouldn't happen and to report the issue.
-                            resources.printError("ERROR: igbFinisher determined that the model is using textures of different formats without environment maps, but the number of unique formats was determined to be less than 2. Please contact the program creator to report this error.")                       
+                            resources.printError("igbFinisher determined that the model is using textures of different formats without environment maps, but the number of unique formats was determined to be less than 2.", True)                       
             else:
                 # All textures are the same texture format, which is preferred.
                 # Determine if all elements of the texture folder list are the same, which would indicate that only one texture folder was used.
@@ -535,17 +534,17 @@ def get3DTextureFormat(assetType, settings, fullFileName):
                             if len(uniqueFolders) > 2:
                                 # There are more than 2 folders, which can happen through user error (the user not picking the right folders)
                                 # Print an error to let the user know that this isn't allowed.
-                                resources.printError("ERROR: More than 2 texture folders were found. When using environment maps, only 2 texture folders can be used: 1 for the diffuse texture(s), and 1 for the environment map(s).")
+                                resources.printError("More than 2 texture folders were found. When using environment maps, only 2 texture folders can be used: 1 for the diffuse texture(s), and 1 for the environment map(s).", False)
                             else:
                                 # 0 (or even worse, negative) unique folders were found somehow. This shouldn't happen, and the user could only get here through some critical programming flaw.
                                 # Print an error so that the user knows that this shouldn't happen and to report the issue.
-                                resources.printError("ERROR: igbFinisher determined that the model is using all textures of the same format, and that it is using environment maps, but the number of unique formats was determined to be less than 1. Please contact the program creator to report this error.")
+                                resources.printError("igbFinisher determined that the model is using all textures of the same format, and that it is using environment maps, but the number of unique formats was determined to be less than 1.", True)
                     else:
                         # There is no sphereImage, so environment maps are not in use. As such, multiple folders are not allowed.
                         # Let the user know that they can't do this.
-                        resources.printError("ERROR: Textures from multiple folders were used. This is only allowed if environment maps are in use, and no environment maps were detected.")
+                        resources.printError("Textures from multiple folders were used. This is only allowed if environment maps are in use, and no environment maps were detected.", False)
         else:
             # Not all formats are acceptable
-            resources.printError("ERROR: One or more texture formats is not accepted. Please try again.")
+            resources.printError("One or more texture formats is not accepted. Please try again.", False)
     # Return the collected value
     return textureFormat

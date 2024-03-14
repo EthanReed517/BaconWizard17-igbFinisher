@@ -46,7 +46,7 @@ def verifyConfigExistence():
         except AssertionError:
             # The assertion failed (the file does not exist)
             # Print the error message
-            resources.printError("ERROR: settings.ini does not exist. Restore the file and try again.")
+            resources.printError("settings.ini does not exist. Restore the file and try again.", False)
             # Wait for user confirmation
             resources.pressAnyKey("Press any key to try again...")
 
@@ -78,11 +78,11 @@ def characterNumberGetter(game):
             else:
                 # The value is not blank
                 # Get a new use input
-                resources.printError("ERROR: Character number for " + str(game) + " is set to " + str(number) + ", which is not a number. Please enter a number.")
+                resources.printError("Character number for " + str(game) + " is set to " + str(number) + ", which is not a number. Please enter a number.", False)
                 number = input("Enter a new value: ")
         except AssertionError:
             # The number is not within the accepted range (assertion failed)
-            resources.printError("ERROR: Character number for " + str(game) + " is set to " + str(number) + ", which is not within the acceptable range (0-255). Please enter a number.")
+            resources.printError("Character number for " + str(game) + " is set to " + str(number) + ", which is not within the acceptable range (0-255). Please enter a number.", False)
             number = input("Enter a new value: ")
     # Update the number in the settings
     config['Settings'][setting] = number
@@ -110,7 +110,7 @@ def settingsGetter(settingName):
             break
         except (ValueError, AssertionError):
             # The value is not acceptable
-            resources.printError("ERROR: The value for setting " + str(settingName) + " is set to " + str(setting) + ", which is not an acceptable value. It must be True or False. Please enter an acceptable value.")
+            resources.printError("The value for setting " + str(settingName) + " is set to " + str(setting) + ", which is not an acceptable value. It must be True or False. Please enter an acceptable value.", False)
             setting = input("Enter a new value: ")
     # Update the setting in the settings
     config['Settings'][settingName] = setting

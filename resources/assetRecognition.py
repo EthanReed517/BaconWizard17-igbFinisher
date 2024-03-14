@@ -70,7 +70,7 @@ def assetRecognition(inputFileName, fullFileName, settings):
     if assetType == "Unknown":
         # The file does not have a known name
         # Print a warning message
-        resources.printWarning("WARNING: The asset type for " + inputFileName + " could not be identified from the file name. Please choose the asset type.")
+        resources.printWarning("The asset type for " + inputFileName + " could not be identified from the file name. Please choose the asset type.")
         # Check which assets should be asked about
         assetType = getAssetChoices(settings)
         # Set the file name

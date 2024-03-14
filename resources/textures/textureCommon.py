@@ -23,7 +23,7 @@ def getTextureFormatFromList(textureFormatList):
     elif len(textureFormatList) == 0:
         # No texture was chosen
         # Print an error message
-        resources.printError("ERROR: Choice of settings and assets did not produce a possible texture format. Please make sure the proper character numbers are filled out, double check your answers to the previous questions, and try again.")
+        resources.printError("Choice of settings and assets did not produce a possible texture format. Please make sure the proper character numbers are filled out, double check your answers to the previous questions, and try again.", False)
         # Set no texture format
         textureFormat = None
         # Wait for the user to acknowledge the error

@@ -41,7 +41,7 @@ def processCSP(textureFormat, XML1Name, XML2Name, XMLPath, portraitType):
     else:
         # None of the above
         # Display an error message
-        resources.printError("ERROR: Choice of texture format did not line up with an existing operation. Please contact the program author. Selected texture format: " + textureFormat)
+        resources.printError("Choice of texture format did not line up with an existing operation. Please contact the program author. Selected texture format: " + textureFormat, True)
         # Set the completion status
         complete = False
         # Wait for the user to acknowledge the error
