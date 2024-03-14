@@ -55,15 +55,12 @@ def GetTexPath(file_name) -> list:
     return texturePaths, textureFormats
 
 # Define the function for performing Alchemy operations
-def callAlchemy(file_name, ini_name, run_alchemy_choice):
-    # Determine if the operation should be run
-    if run_alchemy_choice == True:
-        # Need to run Alchemy
-        # Determine if the file actually exists
-        if not(file_name == None):
-            # There is a file
-            # Define the Alchemy ini file & command
-            ini_file = os.path.abspath("Scripts/" + ini_name)
-            cmd = f'"{sgOptimizer}" "{file_name}" "{file_name}" "{ini_file}"'
-            # Call the operation
-            subprocess.run(cmd, shell=True, stdout=subprocess.DEVNULL)
+def callAlchemy(file_name, ini_name):
+    # Determine if the file actually exists
+    if not(file_name == None):
+        # There is a file
+        # Define the Alchemy ini file & command
+        ini_file = os.path.abspath("Scripts/" + ini_name)
+        cmd = f'"{sgOptimizer}" "{file_name}" "{file_name}" "{ini_file}"'
+        # Call the operation
+        subprocess.run(cmd, shell=True, stdout=subprocess.DEVNULL)

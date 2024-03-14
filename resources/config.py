@@ -28,7 +28,7 @@ def parseConfig():
         number = characterNumberGetter(game)
         settings[game + "Num"] = number
     # Get the other settings
-    for settingName in ["pcOnly","hexEditChoice","runAlchemyChoice","multiPose"]:
+    for settingName in ["pcOnly","multiPose"]:
         setting = settingsGetter(settingName)
         settings[settingName] = setting
     # Return the collected data

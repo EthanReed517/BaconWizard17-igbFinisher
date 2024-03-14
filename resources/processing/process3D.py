@@ -46,11 +46,11 @@ def process3D(assetType, textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name, 
                 resources.copyToDestination(XML2Name, XMLPath, "for XML2 (PC and Xbox)")
                 resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (Xbox)")
             # Perform the first Alchemy operation
-            resources.callAlchemy(MUA1Name, iniPrefix + "1-1.ini", settings["runAlchemyChoice"])
+            resources.callAlchemy(MUA1Name, iniPrefix + "1-1.ini")
             # Copy the first optimized alchemy file
             resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PC and 360)")
             # Perform the second Alchemy operation
-            resources.callAlchemy(MUA1Name, iniPrefix + "1-2.ini", settings["runAlchemyChoice"])
+            resources.callAlchemy(MUA1Name, iniPrefix + "1-2.ini")
             # Copy the second optimized alchemy file
             resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (Steam and PS3)")
         else:
@@ -61,11 +61,11 @@ def process3D(assetType, textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name, 
                 # Copy the XML2 PC file
                 resources.copyToDestination(XML2Name, XMLPath, "for XML2 (PC)")
                 # Perform the first Alchemy operation
-                resources.callAlchemy(MUA1Name, iniPrefix + "1-1.ini", settings["runAlchemyChoice"])
+                resources.callAlchemy(MUA1Name, iniPrefix + "1-1.ini")
                 # Copy the first optimized alchemy file
                 resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PC and 360)")
                 # Perform the second Alchemy operation
-                resources.callAlchemy(MUA1Name, iniPrefix + "1-2.ini", settings["runAlchemyChoice"])
+                resources.callAlchemy(MUA1Name, iniPrefix + "1-2.ini")
                 # Copy the second optimized alchemy file
                 resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (Steam and PS3)")
             elif ("Environment Texture: Xbox" in textureFormat):
@@ -107,15 +107,15 @@ def process3D(assetType, textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name, 
         if settings["MUA1Num"] == settings["MUA2Num"]:
             # MUA1 and MUA2 are the same
             # Run alchemy
-            resources.callAlchemy(MUA1Name, iniPrefix + "3.ini", settings["runAlchemyChoice"])
+            resources.callAlchemy(MUA1Name, iniPrefix + "3.ini")
             # Copy the files
             resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PSP) and MUA2 (PSP)")
             resources.copyToDestination(MUA2Name, MUAPath, "for MUA2 (PS2)")
         else:
             # MUA1 and MUA2 are not the same
             # Run alchemy
-            resources.callAlchemy(MUA1Name, iniPrefix + "3.ini", settings["runAlchemyChoice"])
-            resources.callAlchemy(MUA2Name, iniPrefix + "3.ini", settings["runAlchemyChoice"])
+            resources.callAlchemy(MUA1Name, iniPrefix + "3.ini")
+            resources.callAlchemy(MUA2Name, iniPrefix + "3.ini")
             # Copy the files
             resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PSP)")
             resources.copyToDestination(MUA2Name, MUAPath, "for MUA2 (PSP)")
@@ -157,7 +157,7 @@ def process3D(assetType, textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name, 
                     resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (Wii and Xbox)")
                     resources.copyToDestination(MUA2Name, MUAPath, "for MUA2 (Wii)")
             # Perform the Alchemy operation
-            resources.callAlchemy(MUA1Name, iniPrefix + "1-1.ini", settings["runAlchemyChoice"])
+            resources.callAlchemy(MUA1Name, iniPrefix + "1-1.ini")
             # Copy the optimized file
             resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PC, Steam, PS3, and 360)")
         else:
@@ -168,7 +168,7 @@ def process3D(assetType, textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name, 
                 # Copy the XML2 PC file
                 resources.copyToDestination(XML2Name, XMLPath, "for XML2 (PC)")
                 # Perform the first Alchemy operation
-                resources.callAlchemy(MUA1Name, iniPrefix + "1-1.ini", settings["runAlchemyChoice"])
+                resources.callAlchemy(MUA1Name, iniPrefix + "1-1.ini")
                 # Copy the first optimized alchemy file
                 resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PC, Steam, PS3, and 360)")
             elif ("Environment Texture: Xbox" in textureFormat):
@@ -198,17 +198,17 @@ def process3D(assetType, textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name, 
     elif textureFormat == "MUA1 PC, Steam, 360, and PS3":
         # Oversized next-gen MUA1
         # Perform the first Alchemy operation
-        resources.callAlchemy(MUA1Name, iniPrefix + "1-1.ini", settings["runAlchemyChoice"])
+        resources.callAlchemy(MUA1Name, iniPrefix + "1-1.ini")
         # Copy the first optimized alchemy file
         resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PC, Steam, PS3, and 360)")
     elif textureFormat == "Main texture: MUA1 PC, Steam, 360, and PS3 / Environment Texture: PC and MUA1 360":
         # Oversized next-gen MUA1 with environment maps
         # Perform the first Alchemy operation
-        resources.callAlchemy(MUA1Name, iniPrefix + "1-1.ini", settings["runAlchemyChoice"])
+        resources.callAlchemy(MUA1Name, iniPrefix + "1-1.ini")
         # Copy the first optimized alchemy file
         resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PC and 360)")
         # Perform the second Alchemy operation
-        resources.callAlchemy(MUA1Name, iniPrefix + "1-2.ini", settings["runAlchemyChoice"])
+        resources.callAlchemy(MUA1Name, iniPrefix + "1-2.ini")
         # Copy the second optimized alchemy file
         resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (Steam and PS3)")
     elif textureFormat == "XML2 PC, Xbox, and Wii":
@@ -259,33 +259,33 @@ def process3D(assetType, textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name, 
         if not(textureFormat == "PC and MUA1 Steam"):
             # Not transparent, or has environment maps
             # Perform the first Alchemy operation
-            resources.callAlchemy(MUA1Name, iniPrefix + "1-1.ini", settings["runAlchemyChoice"])
+            resources.callAlchemy(MUA1Name, iniPrefix + "1-1.ini")
             # Copy the first optimized alchemy file
             resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PC)")
             # Perform the second Alchemy operation
-            resources.callAlchemy(MUA1Name, iniPrefix + "1-2.ini", settings["runAlchemyChoice"])
+            resources.callAlchemy(MUA1Name, iniPrefix + "1-2.ini")
             # Copy the second optimized alchemy file
             resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (Steam)")
         else:
             # Transparent
             # Perform the first Alchemy operation
-            resources.callAlchemy(MUA1Name, iniPrefix + "1-1.ini", settings["runAlchemyChoice"])
+            resources.callAlchemy(MUA1Name, iniPrefix + "1-1.ini")
             # Copy the first optimized alchemy file
             resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PC and Steam)")
     elif textureFormat == "MUA1 PC and Steam":
         # Oversized PC-only for MUA1
         # Perform the first Alchemy operation
-        resources.callAlchemy(MUA1Name, iniPrefix + "1-1.ini", settings["runAlchemyChoice"])
+        resources.callAlchemy(MUA1Name, iniPrefix + "1-1.ini")
         # Copy the first optimized alchemy file
         resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PC and Steam)")
     elif textureFormat == "Main texture: MUA1 PC and Steam / Environment Texture: PC and MUA1 360":
         # Oversized PC-only for MUA1 with environment maps
         # Perform the first Alchemy operation
-        resources.callAlchemy(MUA1Name, iniPrefix + "1-1.ini", settings["runAlchemyChoice"])
+        resources.callAlchemy(MUA1Name, iniPrefix + "1-1.ini")
         # Copy the first optimized alchemy file
         resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PC)")
         # Perform the second Alchemy operation
-        resources.callAlchemy(MUA1Name, iniPrefix + "1-2.ini", settings["runAlchemyChoice"])
+        resources.callAlchemy(MUA1Name, iniPrefix + "1-2.ini")
         # Copy the second optimized alchemy file
         resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (Steam)")
     elif ((textureFormat == "XML2 PC") or (textureFormat == "Main texture: XML2 PC / Environment Texture: PC and MUA1 360")):

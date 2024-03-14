@@ -236,11 +236,8 @@ displayInfo()
 resources.printImportant("Welcome to BaconWizard17's igb Finisher!\n")
 # Read the settings
 settings = resources.parseConfig()
-# Determine if alchemy operations are needed
-if settings["runAlchemyChoice"] == True:
-    # Alchemy operations are needed
-    # Reset the Alchemy eval to avoid possible issues
-    resources.resetAlchemy()
+# Reset the Alchemy eval to avoid possible issues
+resources.resetAlchemy()
 # Initialize the window
 window_dnd = initializeWindow()
 # Initialize the drop zone

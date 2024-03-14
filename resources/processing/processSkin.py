@@ -54,11 +54,8 @@ def skinProcessing(fullFileName, settings, XMLPath, MUAPath):
                 # Number isn't empty, need to copy
                 # Perform the copying
                 copy(fullFileName, name)
-        # Determine if hex editing is needed
-        if settings["hexEditChoice"] == True:
-            # Hex editing is needed
-            # Perform the hex editing
-            resources.hexEdit([settings["XML1Num"], settings["XML2Num"], settings["MUA1Num"], settings["MUA2Num"]], [XML1Name, XML2Name, MUA1Name, MUA2Name], "Skin")
+        # Perform the hex editing
+        resources.hexEdit([settings["XML1Num"], settings["XML2Num"], settings["MUA1Num"], settings["MUA2Num"]], [XML1Name, XML2Name, MUA1Name, MUA2Name], "Skin")
         # Process the file
         complete = resources.process3D("Skin", textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name, XMLPath, MUAPath, settings)
     else:
