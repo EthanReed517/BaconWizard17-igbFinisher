@@ -47,7 +47,7 @@ def fileNameValidator(fileName):
 # Define the function to process skins
 def otherProcessing(fullFileName, settings, XMLPath, MUAPath):
     # Determine the texture format
-    textureFormat = resources.get3DTextureFormat("Other", settings)
+    textureFormat = resources.get3DTextureFormat("Other", settings, fullFileName)
     # Confirm that a texture format was chosen
     if not(textureFormat == None):
         # A texture format was chosen

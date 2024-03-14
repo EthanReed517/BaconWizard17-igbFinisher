@@ -20,7 +20,7 @@ from shutil import copy
 # Define the function to process skins
 def headProcessing(fullFileName, settings, XMLPath, MUAPath):
     # Determine the texture format
-    textureFormat = resources.get3DTextureFormat("3D Head", settings)
+    textureFormat = resources.get3DTextureFormat("3D Head", settings, fullFileName)
     # Confirm that a texture format was chosen
     if not(textureFormat == None):
         # A texture format was chosen

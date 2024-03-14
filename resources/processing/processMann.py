@@ -20,7 +20,7 @@ from shutil import copy
 # Define the function to process skins
 def mannProcessing(fullFileName, settings, XMLPath, MUAPath):
     # Determine the texture format
-    textureFormat = resources.get3DTextureFormat("Mannequin", settings)
+    textureFormat = resources.get3DTextureFormat("Mannequin", settings, fullFileName)
     # Confirm that a texture format was chosen
     if not(textureFormat == None):
         # A texture format was chosen
