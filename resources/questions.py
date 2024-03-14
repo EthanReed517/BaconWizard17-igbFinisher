@@ -144,6 +144,18 @@ def path(question, validator):
     # Return the collected answer.
     return answer
 
+# Define the function for asking questions to get a file path.
+def pathDefault(question, validator, defaultChoice):
+    # Pose the question to the user.
+    answer = questionary.path(
+        question,
+        validate = validator,
+        default = defaultChoice,
+        style = questionStyle
+    ).ask()
+    # Return the collected answer.
+    return answer
+
 # Define the function for confirmation questions.
 def confirm(question, defaultChoice):
     # Pose the question to the user.

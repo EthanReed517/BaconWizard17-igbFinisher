@@ -12,6 +12,8 @@ import resources
 import os.path
 # To be able to copy files
 from shutil import copy
+# To be able to get the file name
+from pathlib import Path
 
 
 # ######### #
@@ -27,19 +29,24 @@ def otherModelNameInput(charNum, gameName, fullFileName, celExt):
     else:
         # used with this game
         # Create the question
-        prompt = "What is the name of this file for " + gameName + "? Do not include the file extension."
+        prompt = "What is the name of this file for " + gameName + "? Do not include the file extension. Enter a blank value if the model is not used with this game."
         # Ask the question
-        fileName = resources.path(prompt, fileNameValidator)
-        # add the file extension
-        fileName = os.path.join(os.path.dirname(fullFileName), fileName + celExt + ".igb")
+        fileName = resources.pathDefault(prompt, fileNameValidator, Path(fullFileName).stem)
+        # Determine if a value was entered
+        if fileName == "":
+            # No file name was entered
+            # Set the file name to None
+            fileName = None
+        else:
+            # Something was added
+            # add the file extension
+            fileName = os.path.join(os.path.dirname(fullFileName), fileName + celExt + ".igb")
     # return the collected value
     return fileName
 
 # Define the validator for the file name
 def fileNameValidator(fileName):
-    if len(fileName) == 0:
-        return "Please enter a file name."
-    elif ".igb" in fileName:
+    if ".igb" in fileName:
         return "Do not include the file extension."
     else:
         return True
