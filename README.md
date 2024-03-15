@@ -50,35 +50,38 @@ Because texture formats repeat across various consoles, one texture type can cov
 
 All assets must be exported with Alchemy 2.5 through 3ds Max 5 and should not have any post-processing done on them unless otherwise noted.
 
-#### Skins
-All skins should be exported with the console-compatible method. The default file name, `igActor01_Animation01DB.igb` should not be changed. The internal numbers for model portions should use the skin number "12301," regardless of the actual skin number. If the skin uses cel shading, the cel shading model's name must end in "_outline" for igbFinisher to automatically recognize that the model has cel shading. Otherwise, it will be processed as though it doesn't have cel shading.
+#### All 3D Models
+For all 3D models (skins, mannequins, 3D heads, and other models), igbFinisher supports regular diffuse textures, transparent diffuse textures, and any environment maps that were set up in 3ds Max. The texture formats must align for igbFinisher to be able to process them correctly. For an easy reference to the different folders that can be used together, check out the tables below:
+***PC ONLY***
+| Environment Map Folder | Opaque Diffuse Map Folder | Transparent Diffuse Map Folder |
+| ---------------------- | ------------------------- | ------------------------------ |
+| `PC` | `PC` | `PC and MUA1 Steam` |
+| `XML2 PC` | `XML2 PC` | `PC and MUA1 Steam` |
+| `MUA1 PC and Steam` | `MUA1 PC and Steam` | `PC and MUA1 Steam` |
 
-All texture formats from the skin exporter of the Marvel Mods GIMP Scripts are compatible with igbFinisher, and each will yield assets based on the folder names of the exported texture. However, the PSP textures should use PNG8 compression. PNG4, DXT3, and DXT5 are not supported. Any texture that's **only** for MUA1 Steam and/or PS3 can be skipped, because those assets can be created from the MUA1 PC/360 texture through Alchemy optimizations. Transparent textures are supported, but any transparency-specific post-processing (like converting igBlend to igAlpha) must be done prior to running the skin through igbFinisher. Environment maps that are set up within 3ds Max are also supported. 
-   + If mixing regular opaque diffuse textures, transparent diffuse textures, and/or environment maps, only one folder for each texture type must be used, and they must be compatible. The compatibility will be based on the folder with the least compatibility. Some examples:
-	 + Opaque diffuse with transparent diffuse example: `PC, PS2, Xbox, and MUA1 360` for the opaque diffuse texture, `PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360` for the transparent diffuse texture.
-     + Opaque diffuse with environment maps example: `PC, PS2, Xbox, and MUA1 360` for the diffuse texture, `PC and MUA1 360` for the environment maps.
-	 + Transparent diffuse with environment maps example: `PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360` for the transparent diffuse texture, `PC and MUA1 360` for the environment maps.
-	 + Opaque diffuse, transparent diffuse, and environment maps together: `PC, PS2, Xbox, and MUA1 360` for the opaque diffuse texture, `PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360` for the transparent diffuse texture, `PC and MUA1 360` for the environment maps.
+***ALL CONSOLES***
+| Environment Map Folder | Opaque Diffuse Map Folder | Transparent Diffuse Map Folder |
+| ---------------------- | ------------------------- | ------------------------------ |
+| `XML2 PC` | `XML2 PC, Xbox, and Wii` | `PC, PS2, Wii, Xbox, MUA1 Steam, PS3, and 360` ***OR*** `PC, Wii, Xbox, MUA1 Steam, PS3, and 360` |
+| `PC and MUA1 360` | `PC, PS2, Xbox, and MUA1 360` ***OR*** `PC, Xbox, and MUA1 360` | `PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360` ***OR*** `PC, Wii, Xbox, MUA1 Steam, PS3, and 360` |
+| `MUA1 PC, Steam, 360, and PS3` | `MUA1 PC, Steam, 360, and PS3` | `PC, Wii, Xbox, MUA1 Steam, PS3, and 36`0 |
+| `Xbox` | `PC, PS2, Xbox, and MUA1 360` ***OR*** `PC, Xbox, and MUA1 360` | `PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360` ***OR*** `PC, Wii, Xbox, MUA1 Steam, PS3, and 360` |
+| `Wii` | `Wii` | `PC, PS2, Wii, Xbox, MUA1 Steam, PS3, and 360` ***OR*** `PC, Wii, Xbox, MUA1 Steam, PS3, and 36`0 |
+| `Xbox and Wii` | `XML2 PC, Xbox, and Wii` ***OR*** `Wii` | `PC, PS2, Wii, Xbox, MUA1 Steam, PS3, and 360` ***OR*** `PC, Wii, Xbox, MUA1 Steam, PS3, and 360` |
+| `Xbox, Wii, and XML2 PC` | `XML2 PC, Xbox, and Wii` | `PC, PS2, Wii, Xbox, MUA1 Steam, PS3, and 360` ***OR*** `PC, Wii, Xbox, MUA1 Steam, PS3, and 360` |
+| `PS2` | `PC, PS2, Xbox, and MUA1 360` ***OR*** `PS2` | `PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360` ***OR*** `PS2` |
+| `GameCube, PSP, and MUA2 PS2` | `GameCube, PSP, and MUA2 PS2` | `GameCube, PSP, and MUA2 PS2` |
+
+Note that any folder that is only for MUA1 Steam and PS3 is skipped, because that format can be created with Alchemy optimizations from other textures. Additionally, the PSP must use PNG8 textures to be compatible. PNG4, DXT3, and DXT5 textures are not supported.
+
+#### Skins
+All skins should be exported with the console-compatible method. The default file name, `igActor01_Animation01DB.igb` should not be changed. The internal numbers for model portions should use the skin number "12301," regardless of the actual skin number. If the skin uses cel shading, the cel shading model's name must end in "_outline" for igbFinisher to automatically recognize that the model has cel shading. Otherwise, it will be processed as though it doesn't have cel shading. See the tables above for information on supported texture formats.
 
 #### Mannequins
-All mannequins should be exported with the file name `123XX (Mannequin).igb`. The internal numbers for model portions should use the skin number "12301," regardless of the actual skin number. If you want to have a custom pose name for your mannequin (for example, "OCP Pose"), you can export it with the name `123XX (Mannequin - OCP Pose).igb`, and the resulting file will have that pose name in its name.
-
-All texture formats from the skin exporter of the Marvel Mods GIMP Scripts are compatible with igbFinisher, and each will yield assets based on the folder names of the exported texture. However, the PSP textures should use PNG8 compression. PNG4, DXT3, and DXT5 are not supported. Any texture that's **only** for MUA1 Steam and/or PS3 can be skipped, because those assets can be created from the MUA1 PC/360 texture through Alchemy optimizations. Any texture format specific to XML1/XML2 can be skipped as well, since the XML games don't support mannequins. Transparent textures are supported, but any transparency-specific post-processing (like converting igBlend to igAlpha) must be done prior to running the mannequin through igbFinisher. Environment maps that are set up within 3ds Max are also supported.
-   + If mixing regular opaque diffuse textures, transparent diffuse textures, and/or environment maps, only one folder for each texture type must be used, and they must be compatible. The compatibility will be based on the folder with the least compatibility. Some examples:
-	 + Opaque diffuse with transparent diffuse example: `PC, PS2, Xbox, and MUA1 360` for the opaque diffuse texture, `PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360` for the transparent diffuse texture.
-     + Opaque diffuse with environment maps example: `PC, PS2, Xbox, and MUA1 360` for the diffuse texture, `PC and MUA1 360` for the environment maps.
-	 + Transparent diffuse with environment maps example: `PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360` for the transparent diffuse texture, `PC and MUA1 360` for the environment maps.
-	 + Opaque diffuse, transparent diffuse, and environment maps together: `PC, PS2, Xbox, and MUA1 360` for the opaque diffuse texture, `PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360` for the transparent diffuse texture, `PC and MUA1 360` for the environment maps.
+All mannequins should be exported with the file name `123XX (Mannequin).igb`. The internal numbers for model portions should use the skin number "12301," regardless of the actual skin number. If you want to have a custom pose name for your mannequin (for example, "OCP Pose"), you can export it with the name `123XX (Mannequin - OCP Pose).igb`, and the resulting file will have that pose name in its name. See the tables above for information on supported texture formats. For mannequins, any texture formats that are exclusive to XML2 can be skipped, since mannequins aren't used in XML2.
 
 #### 3D Heads
-All 3D Heads should be exported with the file name `123XX (3D Head).igb`. The internal numbers for model portions should use the skin number "12301," regardless of the actual skin number.
-
-All texture formats from the skin exporter of the Marvel Mods GIMP Scripts are compatible with igbFinisher, and each will yield assets based on the folder names of the exported texture. However, the PSP textures should use PNG8 compression. PNG4, DXT3, and DXT5 are not supported. Any texture format specific to MUA1/MUA2 can be skipped, since the MUA games don't use 3D heads. Transparent textures are supported, but any transparency-specific post-processing (like converting igBlend to igAlpha) must be done prior to running the mannequin through igbFinisher. Environment maps that are set up within 3ds Max are also supported.
-   + If mixing regular opaque diffuse textures, transparent diffuse textures, and/or environment maps, only one folder for each texture type must be used, and they must be compatible. The compatibility will be based on the folder with the least compatibility. Some examples:
-	 + Opaque diffuse with transparent diffuse example: `PC, PS2, Xbox, and MUA1 360` for the opaque diffuse texture, `PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360` for the transparent diffuse texture.
-     + Opaque diffuse with environment maps example: `PC, PS2, Xbox, and MUA1 360` for the diffuse texture, `PC and MUA1 360` for the environment maps.
-	 + Transparent diffuse with environment maps example: `PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360` for the transparent diffuse texture, `PC and MUA1 360` for the environment maps.
-	 + Opaque diffuse, transparent diffuse, and environment maps together: `PC, PS2, Xbox, and MUA1 360` for the opaque diffuse texture, `PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360` for the transparent diffuse texture, `PC and MUA1 360` for the environment maps.
+All 3D Heads should be exported with the file name `123XX (3D Head).igb`. The internal numbers for model portions should use the skin number "12301," regardless of the actual skin number. See the tables above for information on supported texture formats. For 3D heads, any texture formats that are exclusive to MUA1 can be skipped, since 3D heads aren't used in MUA1.
 
 #### Conversation Portraits (HUDs)
 All conversation portraits should be exported with the file name `hud_head_12301.igb`. The internal numbers for model portions should use the skin number "12301," regardless of the actual skin number.
@@ -91,14 +94,7 @@ All character select portraits should be exported with the file name `123XX (Cha
 All texture formats from the character select portrait portrait (CSP) exporter of the Marvel Mods GIMP Scripts are compatible with igbFinisher. 
 
 #### Other Models (BoltOns, power models, map models)
-All other models can be exported with any name. You will be asked for a file name during runtime. If the skin uses cel shading, the cel shading model's name must end in "_outline" for igbFinisher to automatically recognize that the model has cel shading. Otherwise, it will be processed as though it doesn't have cel shading. If there is a version with cel shading, the version without cel shading should be exported with the name `fileName (No Cel).igb`; this will prevent the no cel model from overwriting the model with cel shading. The skin exporter of the Marvel Mods GIMP scripts can be used to get textures for other models.
-
-All texture formats from the skin exporter of the Marvel Mods GIMP Scripts are compatible with igbFinisher, and each will yield assets based on the folder names of the exported texture. However, the PSP textures should use PNG8 compression. PNG4, DXT3, and DXT5 are not supported. Any texture that's **only** for MUA1 Steam and/or PS3 can be skipped, because those assets can be created from the MUA1 PC/360 texture through Alchemy optimizations. Transparent textures are supported, but any transparency-specific post-processing (like converting igBlend to igAlpha) must be done prior to running the model through igbFinisher. Environment maps that are set up within 3ds Max are also supported.
-   + If mixing regular opaque diffuse textures, transparent diffuse textures, and/or environment maps, only one folder for each texture type must be used, and they must be compatible. The compatibility will be based on the folder with the least compatibility. Some examples:
-	 + Opaque diffuse with transparent diffuse example: `PC, PS2, Xbox, and MUA1 360` for the opaque diffuse texture, `PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360` for the transparent diffuse texture.
-     + Opaque diffuse with environment maps example: `PC, PS2, Xbox, and MUA1 360` for the diffuse texture, `PC and MUA1 360` for the environment maps.
-	 + Transparent diffuse with environment maps example: `PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360` for the transparent diffuse texture, `PC and MUA1 360` for the environment maps.
-	 + Opaque diffuse, transparent diffuse, and environment maps together: `PC, PS2, Xbox, and MUA1 360` for the opaque diffuse texture, `PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360` for the transparent diffuse texture, `PC and MUA1 360` for the environment maps.
+All other models can be exported with any name. You will be asked for a file name during runtime. If the skin uses cel shading, the cel shading model's name must end in "_outline" for igbFinisher to automatically recognize that the model has cel shading. Otherwise, it will be processed as though it doesn't have cel shading. If there is a version with cel shading, the version without cel shading should be exported with the name `fileName (No Cel).igb`; this will prevent the no cel model from overwriting the model with cel shading. The skin exporter of the Marvel Mods GIMP scripts can be used to get textures for other models. See the tables above for information on supported texture formats.
 
 ### Asset Output
 Assets that are the same for different games will be placed into folders together for convenience. Each folder will be labeled based on the game and console that it supports. The assets will be appropriately named, and will also be hex edited and Alchemy optimized if applicable.
