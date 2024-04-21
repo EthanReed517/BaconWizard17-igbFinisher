@@ -33,36 +33,48 @@ def numCheck(num1, num2, numList, name1, name2, nameList):
     return numList, nameList
 
 # Define the function for getting the hex editing string
-def getReplaceList(num: str, assetType: str) -> list:
-    # Initialize the hex string
-    hexString = ""
-    # Set the pre-determined values
-    b_12301 = bytearray('12301', 'utf-8')
-    b_igActor01_Appearance = bytearray('igActor01Appearance', 'utf-8')
-    b_12301_outline = bytearray('12301_outline', 'utf-8')
-    b_12301_other = bytearray('12301_', 'utf-8')
-    b_12301_conversationpng = bytearray('12301_conversation.png', 'utf-8')
-    # Establish hex editing values
-    b_Num = bytearray((num + '01'), 'utf-8')
-    b_Appearance = b_Num
-    b_Outline = b_Num + bytearray('_outline', 'utf-8')
-    b_Other = b_Num + bytearray(('_' * (4 - len(num))), 'utf-8')
-    b_Num_conversationpng = b_Num + bytearray('_conversation.png', 'utf-8')
+def getReplaceList(num: str, assetType: str, geomNames: list) -> list:
     # Determine the asset type
-    # since Python 3.10 we can use the switch statement with match assetType: ... case "Skin":
-    if assetType == "Skin":
-        # Skin
-        # Build the list
-        b_List = [[b_igActor01_Appearance, b_Appearance], [b_12301_outline, b_Outline], [b_12301_other, b_Other], [b_12301, b_Num]]
-    elif (assetType == "Mannequin") or (assetType == "3D Head"):
-        # Mannequin or 3D Head
-        # Build the list
-        b_List = [[b_12301_other, b_Other], [b_12301, b_Num]]
-    elif assetType == "Conversation Portrait":
-        # Conversation portait
+    if assetType == "Conversation Portrait":
+        # Conversation portrait
+        # Set up the default string
+        b_12301_conversationpng = bytearray('12301_conversation.png', 'utf-8')
+        # Set up the new string
+        b_Num_conversationpng = b_Num + bytearray('_conversation.png', 'utf-8')
         # Build the list
         b_List = [[b_12301_conversationpng, b_Num_conversationpng]]
-
+    else:
+        # 3D asset
+        # Set the pre-determined value for the main geometry
+        b_12301 = bytearray('12301', 'utf-8')
+        # Set up the new value for the main geometry
+        b_Num = bytearray((num + '01'), 'utf-8')
+        # Initialize a list to hold the hex string pairs
+        b_List = []
+        # Loop through the remaining geometry names
+        for geomName in geomNames:
+            # Determine if the geometry has the character number in it.
+            if "12301" in geomName:
+                # The geometry has the character number in it.
+                # Verify that this is secondary geometry and not the main geometry. The strings for the main geometry have already been defined and need to be last in the list.
+                if not(geomName == "12301"):
+                    # This is secondary geometry.
+                    # Convert the geometry name to hex.
+                    b_12301_geom = bytearray(geomName, 'utf-8')
+                    # Replace the generic number with the character-specific number in the geometry name and convert it to hex.
+                    b_geom = bytearray(geomName.replace("123", num), 'utf-8')
+                    # Add the hex strings to the list of hex strings.
+                    b_List.append([b_12301_geom, b_geom])
+        # Determine if this is a skin
+        if assetType == "Skin":
+            # This is a skin.
+            # Set up the default appearance string.
+            b_igActor01_Appearance = bytearray('igActor01Appearance', 'utf-8')
+            # Add the appearance string to the list of hex strings, along with the character number (which will replace the appearance string).
+            b_List.append([b_igActor01_Appearance, b_Num])
+        # Append the hex strings for the main geometry.
+        b_List.append([b_12301, b_Num])
+    # Return the list of hex strings.
     return b_List
 
 def hexEditor(filename: str, replace: list):
@@ -102,5 +114,7 @@ def hexEdit(numList, nameList, assetType):
             # Determine if the file exists
             if os.path.exists(name):
                 # The file exists
+                # Get the geometry names from the file
+                geomNames = resources.GetModelStats(name)
                 # Perform the hex editing
-                hexEditor(name, getReplaceList(num, assetType))
+                hexEditor(name, getReplaceList(num, assetType, geomNames))
