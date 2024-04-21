@@ -452,8 +452,21 @@ def get3DTextureFormat(assetType, settings, fullFileName):
     # Determine the number of textures to ensure that there actually are textures.
     if len(texPathList) == 0:
         # No textures were found.
-        # Give an error to let the user know. Textures are required for igbFinisher to work, so no other operations are performed.
-        resources.printError("No textures were found in the model. Please try again.", False)
+        # Give a warning to let the user know. Textures are generally required for the program to work correctly.
+        resources.printWarning("No textures were found in the model.")
+        # Ask the user if the model is supposed to have textures.
+        needsTex = resources.confirm("Is this model supposed to have textures?", True)
+        # Determine what the user answered.
+        if needsTex == True:
+            # The model is supposed to have textures.
+            # Print an error to let the user know that they must try again with a texture applied.
+            resources.printError("The model is supposed to have textures, but none were detected. Please apply textures, re-export the model, and try again.", False)
+        else:
+            # The model is not supposed to have textures.
+            # Warn the user that this will go to every console.
+            resources.printWarning("If the model does not use textures and only uses plain colors, it will be exported for every console available.")
+            # Set the texture format
+            textureFormat = "No Texture"
     else:
         # There are one or more textures.
         # Determine which texture formats are being used.

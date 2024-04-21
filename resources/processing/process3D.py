@@ -8,6 +8,12 @@
 # ####### #
 # Resources for this program
 import resources
+# To be able to copy files
+from shutil import copy
+# To be able to manipulate paths
+import os.path
+# To be able to delete and rename files
+from os import remove, rename
 
 
 # ######### #
@@ -27,7 +33,50 @@ def process3D(assetType, textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name, 
     # Initialize the completion variable
     complete = True
     # Filter by texture type
-    if (("PC, PS2, Xbox, and MUA1 360" in textureFormat) or ("PC, Xbox, and MUA1 360" in textureFormat)):
+    if textureFormat == "No Texture":
+        # There is no texture (intentionally), so this will be exported for every console.
+        # Copy the files that don't need optimization.
+        resources.copyToDestination(XML1Name, XMLPath, "for XML1 (GC, PS2, and Xbox)")
+        resources.copyToDestination(XML2Name, XMLPath, "for XML2 (PC, GC, PS2, and Xbox)")
+        # Check if the MUA1 and MUA2 numbers are the same
+        if settings["MUA1Num"] == settings["MUA2Num"]:
+            # MUA1 and MUA2 are the same
+            # Copy the Wii files
+            resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PS2, Wii, and Xbox) and MUA2 (Wii)")
+        else:
+            # MUA1 and MUA2 are not the same
+            # Copy the Wii files
+            resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PS2, Wii, and Xbox)")
+            resources.copyToDestination(MUA2Name, MUAPath, "for MUA2 (Wii)")
+        # Determine if the MUA1 file exists
+        if os.path.exists(MUA1Name):
+            # The MUA1 file exists
+            # Make a temporary copy of the MUA1 file
+            copy(MUA1Name, MUA1Name + ".bak")
+            # Perform the Alchemy optimization for next-gen MUA1
+            resources.callAlchemy(MUA1Name, iniPrefix + "1-1.ini")
+            # Copy the next-gen MUA1 file
+            resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PC, Steam, PS3, and 360)")
+            # Delete the optimized MUA1 file
+            remove(MUA1Name)
+            # Rename the backup to the main file
+            rename(MUA1Name + ".bak", MUA1Name)
+        # Check if the MUA1 and MUA2 numbers are the same
+        if settings["MUA1Num"] == settings["MUA2Num"]:
+            # MUA1 and MUA2 are the same
+            # Run alchemy
+            resources.callAlchemy(MUA1Name, iniPrefix + "3.ini")
+            # Copy the files
+            resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PSP) and MUA2 (PS2 and PSP)")
+        else:
+            # MUA1 and MUA2 are not the same
+            # Run alchemy
+            resources.callAlchemy(MUA1Name, iniPrefix + "3.ini")
+            resources.callAlchemy(MUA2Name, iniPrefix + "3.ini")
+            # Copy the files
+            resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PSP)")
+            resources.copyToDestination(MUA2Name, MUAPath, "for MUA2 (PS2 and PSP)")
+    elif (("PC, PS2, Xbox, and MUA1 360" in textureFormat) or ("PC, Xbox, and MUA1 360" in textureFormat)):
         # The main texture type
         # Determine if environment maps are used
         if not("Environment Texture" in textureFormat):
