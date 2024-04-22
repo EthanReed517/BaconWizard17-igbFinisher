@@ -58,7 +58,7 @@ def processConvo(settings, textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name
         if not("except PSP" in textureFormat):
             # Include PSP
             # List the files to delete and recreate
-            for num, name in zip([settings["MUA1Num"], settings["MUA2Num"]], [MUA1Name, MUA2Name]):
+            for num, name in zip([settings["XML2Num"], settings["MUA1Num"], settings["MUA2Num"]], [XML2Name, MUA1Name, MUA2Name]):
                 # Determine if the file exists
                 if os.path.isfile(name):
                     # File exists
@@ -83,6 +83,10 @@ def processConvo(settings, textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name
                 # Copy the files
                 resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PSP)")
                 resources.copyToDestination(MUA2Name, MUAPath, "for MUA2 (PSP)")
+            # Optimize the file for XML2 PSP
+            resources.callAlchemy(XML2Name, "stat2.ini")
+            # Copy the file for XML2 PSP
+            resources.copyToDestination(XML2Name, XMLPath, "for XML2 (PSP)")
     elif textureFormat == "Wii":
         # Wii only format
         # Determine if the numbers are the same
@@ -111,6 +115,10 @@ def processConvo(settings, textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name
             # Copy the files
             resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PSP)")
             resources.copyToDestination(MUA2Name, MUAPath, "for MUA2 (PSP)")
+        # Optimize the file for XML2 PSP
+        resources.callAlchemy(XML2Name, "stat2.ini")
+        # Copy the file for XML2 PSP
+        resources.copyToDestination(XML2Name, XMLPath, "for XML2 (PSP)")
     elif ((textureFormat == "GC, PS2, and Xbox") or (textureFormat == "Last-Gen")):
         # Common last-gen format for HD
         # Copy any files that don't need optimization.

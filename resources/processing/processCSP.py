@@ -22,18 +22,31 @@ def processCSP(textureFormat, XML1Name, XML2Name, XMLPath, portraitType):
     # Initialize the completion variable
     complete = True
     # Filter by texture type
-    if textureFormat == "All":
+    if "All" in textureFormat:
         # Common format
         # Copy the files
         resources.copyToDestination(XML1Name, XMLPath, "for XML1 (GC)")
         resources.copyToDestination(XML1Name, XMLPath, "for XML1 (PS2 and Xbox)")
         resources.copyToDestination(XML2Name, XMLPath, "for XML2 (GC)")
         resources.copyToDestination(XML2Name, XMLPath, "for XML2 (PC, PS2, and Xbox)")
-    elif textureFormat == "Consoles":
+        # Determine if PSP is included
+        if not("except PSP" in textureFormat):
+            # PSP is included
+            # Optimize the file for XML2 PSP
+            resources.callAlchemy(XML2Name, "stat2.ini")
+            # Copy the file for XML2 PSP
+            resources.copyToDestination(XML2Name, XMLPath, "for XML2 (PSP)")            
+    elif textureFormat == "GC, PS2, and Xbox":
         # Console format for XML2 HD
         # Copy the files
         resources.copyToDestination(XML2Name, XMLPath, "for XML2 (GC)")
         resources.copyToDestination(XML2Name, XMLPath, "for XML2 (PS2 and Xbox)")
+    elif textureFormat == "PSP":
+        # PSP-only format
+        # Optimize the file for XML2 PSP
+        resources.callAlchemy(XML2Name, "stat2.ini")
+        # Copy the file for XML2 PSP
+        resources.copyToDestination(XML2Name, XMLPath, "for XML2 (PSP)")
     elif textureFormat == "PC":
         # PC only format
         # Copy the files

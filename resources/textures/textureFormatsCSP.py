@@ -119,7 +119,7 @@ def getCSPTextureFormat(settings, fullFileName):
                 if settings["pcOnly"] == False:
                     # The model is being processed for all consoles.
                     # Set up the texture folder list with PNG8 texture options that are compatible with all consoles.
-                    textureFolderList = ["All", "Consoles"]
+                    textureFolderList = ["All", "All Except PSP", "GC, PS2, and Xbox", "PSP"]
                 else:
                     # The model is being process for PC only.
                     # Set up the texture folder list with PNG8 texture options that are compatible with PC only.

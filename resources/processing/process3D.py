@@ -14,11 +14,76 @@ from shutil import copy
 import os.path
 # To be able to delete and rename files
 from os import remove, rename
+# To be able to parse the ini file
+from configparser import ConfigParser
 
 
 # ######### #
 # FUNCTIONS #
 # ######### #
+# Define the function to get local resources
+def resource_path(relative_path):
+    # Get absolute path to resource, works for dev and for PyInstaller
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+    # Return the collected value
+    return os.path.join(base_path, relative_path)
+
+# Define the function for updating the path for XML2 PSP optimizations
+def updateXML2PSPOptPath():
+    # Get the file path to the secondary alchemy optimization
+    skin2_2Path = resource_path("Scripts\\skin2-2.ini")
+    # Prepare to parse the optimization
+    config = ConfigParser()
+    # Make the config parser case sensitive
+    config.optionxform=str
+    # Read the optimization
+    config.read("Scripts/skin2-1.ini")
+    # Get the path
+    savedPath = config["OPTIMIZATION1"]["fileName"]
+    # Determine if the path matches
+    if not(savedPath == skin2_2Path):
+        # The paths do not match
+        # Update the path in the optimization
+        config["OPTIMIZATION1"]["fileName"] = skin2_2Path
+    # Write the new path to the optimization
+    with open("Scripts/skin2-1.ini", "w") as configfile:
+        config.write(configfile)
+
+# Define the function for exporting XML2 PSP Skins
+def exportXML2PSPSkin(XML2Name, MUA1Name, MUA2Name, XMLPath):
+    # Update the name to remove "No Cel"
+    XML2NamePSP = XML2Name.replace(" - No Cel", "")
+    # Determine if the XML2 file exists
+    if os.path.exists(XML2Name):
+        # The XML2 file exists
+        # Make a copy of the XML2 file specifically for PSP
+        copy(XML2Name, XML2NamePSP)
+    # Determine if the XML2 number is the same as the MUA1 number or MUA2 number
+    if ((XML2NamePSP == MUA1Name) or (XML2NamePSP == MUA2Name)):
+        # XML2 and MUA1 or MUA2 numbers match
+        # Make a backup copy of the file to allow further non-optimized files
+        copy(XML2NamePSP, XML2NamePSP + ".bak")
+    # Update the Alchemy optimization to reference the correct file path
+    updateXML2PSPOptPath()                
+    # Perform the Alchemy optimization for XML2 PSP
+    resources.callAlchemy(XML2NamePSP, "skin2-1.ini")
+    # Copy the XML2 PSP file
+    resources.copyToDestination(XML2NamePSP, XMLPath, "for XML2 (PSP)")
+    # Determine if a separate XML2 PSP file was made
+    if os.path.exists(XML2NamePSP):
+        # An XML2 PSP file was made
+        # Delete the optimized XML2 PSP file
+        remove(XML2NamePSP)
+    # Determine if the XML2 number is the same as the MUA1 number or MUA2 number
+    if ((XML2NamePSP == MUA1Name) or (XML2NamePSP == MUA2Name)):
+        # XML2 and MUA1 or MUA2 numbers match
+        # Restore the backup
+        rename(XML2NamePSP + ".bak", XML2NamePSP)
+
 # Define the function for processing assets
 def process3D(assetType, textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name, XMLPath, MUAPath, settings):
     # Determine the asset type
@@ -37,7 +102,20 @@ def process3D(assetType, textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name, 
         # There is no texture (intentionally), so this will be exported for every console.
         # Copy the files that don't need optimization.
         resources.copyToDestination(XML1Name, XMLPath, "for XML1 (GC, PS2, and Xbox)")
-        resources.copyToDestination(XML2Name, XMLPath, "for XML2 (PC, GC, PS2, and Xbox)")
+        # Determine if this is a skin. Skins need special operations for XML2 PSP.
+        if assetType == "Skin":
+            # This is a skin
+            # Determine if the skin has cel shading. XML2 PSP doesn't use cel shading on the skins, so the naming convention is more like MUA1/MUA2.
+            if "No Cel" in XML2Name:
+                # The skin does not have cel shading
+                # Export the skin for XML2 PSP
+                exportXML2PSPSkin(XML2Name, MUA1Name, MUA2Name, XMLPath)
+            # Copy the other XML2 files
+            resources.copyToDestination(XML2Name, XMLPath, "for XML2 (PC, GC, PS2, and Xbox)")
+        else:
+            # This is not a skin
+            # Copy the XML2 PSP file
+            resources.copyToDestination(XML2Name, XMLPath, "for XML2 (PC, GC, PS2, PSP, and Xbox)")
         # Check if the MUA1 and MUA2 numbers are the same
         if settings["MUA1Num"] == settings["MUA2Num"]:
             # MUA1 and MUA2 are the same
@@ -152,6 +230,18 @@ def process3D(assetType, textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name, 
         # Copy the files that don't need optimization
         resources.copyToDestination(XML1Name, XMLPath, "for XML1 (GC)")
         resources.copyToDestination(XML2Name, XMLPath, "for XML2 (GC)")
+        # Determine if this is a skin. Skins need special operations for XML2 PSP.
+        if assetType == "Skin":
+            # This is a skin
+            # Determine if the skin has cel shading. XML2 PSP doesn't use cel shading on the skins, so the naming convention is more like MUA1/MUA2.
+            if "No Cel" in XML2Name:
+                # The skin does not have cel shading
+                # Export the skin for XML2 PSP
+                exportXML2PSPSkin(XML2Name, MUA1Name, MUA2Name, XMLPath)
+        else:
+            # This is not a skin
+            # Copy the XML2 PSP file
+            resources.copyToDestination(XML2Name, XMLPath, "for XML2 (PSP)")
         # Check if the MUA1 and MUA2 numbers are the same
         if settings["MUA1Num"] == settings["MUA2Num"]:
             # MUA1 and MUA2 are the same

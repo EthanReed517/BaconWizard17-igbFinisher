@@ -34,6 +34,8 @@ def numCheck(num1, num2, numList, name1, name2, nameList):
 
 # Define the function for getting the hex editing string
 def getReplaceList(num: str, assetType: str, geomNames: list) -> list:
+    # Set up the new value for the new skin number
+    b_Num = bytearray((num + '01'), 'utf-8')
     # Determine the asset type
     if assetType == "Conversation Portrait":
         # Conversation portrait
@@ -47,8 +49,6 @@ def getReplaceList(num: str, assetType: str, geomNames: list) -> list:
         # 3D asset
         # Set the pre-determined value for the main geometry
         b_12301 = bytearray('12301', 'utf-8')
-        # Set up the new value for the main geometry
-        b_Num = bytearray((num + '01'), 'utf-8')
         # Initialize a list to hold the hex string pairs
         b_List = []
         # Loop through the remaining geometry names
