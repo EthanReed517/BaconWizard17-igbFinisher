@@ -178,7 +178,7 @@ def getNumbers(settings):
         if settings[game + "Num"] == "Ask":
             # Need to ask about the character number.
             # Ask the user.
-            settings[game + "Num"] = resources.textInput("Enter the 2 or 3 digit character number for " + game + ":", resources.characterNumberValidator)
+            settings[game + "Num"] = resources.textInput("Enter the 4 or 5 digit skin number for " + game + ":", resources.skinNumberValidator)
     # Return the updated settings.
     return settings
 

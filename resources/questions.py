@@ -193,6 +193,19 @@ def characterNumberValidator(number):
     else:
         return True
 
+# Define the question validator for getting a character number.
+def skinNumberValidator(number):
+    if len(number) == 0:
+        return "Please enter a number."
+    elif number.isnumeric() == False:
+        return "The input must be a number."
+    elif ((len(number) > 5) or (len(number) < 4)):
+        return "Skin numbers must be 4 or 5 digits long."        
+    elif not(0 <= int(number[0:-2]) <= 255):
+        return "The character number of the skin number (first 2-3 digits) must be between 00 and 255 (inclusive)."
+    else:
+        return True
+
 # Define the validator for the file name of assets that aren't recognized by igbFinisher.
 def fileNameValidatorStart(fileName):
     if len(fileName) == 0:

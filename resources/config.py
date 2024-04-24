@@ -63,32 +63,49 @@ def characterNumberGetter(game):
     config.read('settings.ini')
     # Get the number
     number = config['Settings'][setting]
-    # Check if the number is acceptable
     # Eternal loop until broken
     while True:
-        try:
-            # Check if the number is an acceptable number (between 0 and 255)
-            assert 0 <= int(number) <= 255
-            # If there are no errors, break out of the loop.
-            break
-        except ValueError:
-            # The ValueError occurs because the input is not a number.
-            # Check if the value is blank
+        # Check if the number is a number
+        if number.isnumeric() == True:
+            # The number is a number
+            # Check if the number is the correct length (4-5 digits in length)
+            if 4 <= len(number) <= 5:
+                # The number is the correct length
+                # Check if the character number is between 00 and 255
+                if ((0 <= int(number[0:-2])) and (int(number[0:-2]) <= 255)):
+                    # The character number is between 00 and 255
+                    # The skin number is acceptable, so break out of the loop.
+                    break
+                else:
+                    # The character number is not acceptable
+                    # Give the error to let the user know
+                    resources.printError("The skin number for " + str(game) + " is set to " + str(number) + ". The character number (first 2-3 digits) must be between 00 and 255. Please enter a new number.", False)
+                    # Get the user input
+                    number = resources.textInput("Enter a 4 or 5 digit skin number:", resources.skinNumberValidator)
+            else:
+                # The number is not the correct length
+                # Give the error to let the user know.
+                resources.printError("The skin number for " + str(game) + " is set to " + str(number) + ". Skin numbers must be 4 or 5 digits long. Please enter a new number.", False)
+                # Get the user input
+                number = resources.textInput("Enter a 4 or 5 digit skin number:", resources.skinNumberValidator)
+        else:
+            # The number is not a number
+            # Check if the value is one of the accepted non-numbers
             if ((number == "None") or (number == "Ask")):
-                # The value is None or Asl, which is allowed.
+                # The value is None or Ask, which is allowed.
                 # Break out of the while statement
                 break
             else:
-                # The value is not a number, not "None", or not "Ask"
+                # The value is not a number, "None", or "Ask".
                 # Display an error to the user so that they know that their input is not acceptable.
-                resources.printError("Character number for " + str(game) + " is set to " + str(number) + ", which is not an acceptable value. Please enter an acceptable value.", False)
+                resources.printError("The skin number for " + str(game) + " is set to " + str(number) + ", which is not an acceptable value. Please enter an acceptable value.", False)
                 # Find out what the user wants in their settings.
                 valueType = resources.select("What setting do you want to use for the " + game + "number?", ["Update the settings with a permanent number", "Don't enter a number (the character is not in " + game + ")", "Ask each time an asset is processed"])
                 # Determine what to do based on the settings.
                 if valueType == "Update the settings with a permanent number":
                     # The user wants to enter a number.
                     # Ask the user for a number.
-                    number = resources.textInput("Enter a 2 or 3 digit character number.", resources.characterNumberValidator)
+                    number = resources.textInput("Enter a 2 or 3 digit character number.", resources.skinNumberValidator)
                 elif valueType == "Don't enter a number (the character is not in " + game + ")":
                     # The user wants to skip this number.
                     # Set the setting.
@@ -97,10 +114,6 @@ def characterNumberGetter(game):
                     # The user wants to be asked each time the asset is processed.
                     # Set the setting.
                     number = "Ask"
-        except AssertionError:
-            # The AssertionError happens because the earlier "assert" statement failed, meaning that the value is a number but not within the acceptable range.
-            resources.printError("Character number for " + str(game) + " is set to " + str(number) + ", which is not within the acceptable range (0-255). Please enter a number.", False)
-            number = resources.textInput("Enter a 2 or 3 digit character number:", resources.characterNumberValidator)
     # Update the number in the settings
     config['Settings'][setting] = number
     # Write the new value to the settings

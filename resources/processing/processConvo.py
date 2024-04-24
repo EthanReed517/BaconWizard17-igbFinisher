@@ -19,8 +19,49 @@ from shutil import copy
 # ######### #
 # FUNCTIONS #
 # ######### #
+# Define the function for getting the file names
+def getFileNamesAndNumbers(settings, fullFileName, suffix):
+    # Initialize a list of names
+    nameList = []
+    # Cycle through the list of games
+    for game in ["XML1", "XML2", "MUA1", "MUA2"]:
+        # Determine if the game is in use
+        if not(settings[game + "Num"] == None):
+            # The game is in use
+            # Determine if the number ends in 01
+            if not(settings[game + "Num"][-2:] == "01"):
+                # The number does not end in 01
+                # Warn the user that this isn't recommended.
+                resources.printWarning("The skin number for " + str(game) + " is set to " + settings[game + "Num"] + ". It's recommended for the last two digits of the skin number to be 01 outside of special cases.")
+                # Ask the user what they want to do.
+                numChoice = resources.select("What do you want to do for the " + game + "number?", ["Update the number to " + settings[game + "Num"][0:-2] + "01 (does not overwrite settings.ini).", "Leave the number as-is. I want to use a specific skin number."])
+                if numChoice == "Update the number to " + settings[game + "Num"][0:-2] + "01 (does not overwrite settings.ini).":
+                    # The user wants to update the number
+                    # Update the number to end in 01
+                    settings[game + "Num"] = settings[game + "Num"][0:-2] + "01"
+            # Determine what the number is
+            if settings[game + "Num"][-2:] == "01":
+                # Standard numbering, can end the number in "XX"
+                # Set the file name
+                nameList.append(resources.setUpFileName(fullFileName, "hud_head_", settings[game + "Num"][0:-2] + "XX", suffix + ".igb"))
+            else:
+                # Non-standard file name
+                # Set the file name
+                nameList.append(resources.setUpFileName(fullFileName, "hud_head_", settings[game + "Num"], suffix + ".igb"))
+        else:
+            # The game is not not in use
+            # Set no name
+            nameList.append(None)
+    # Break out the list into the specific variables
+    XML1Name = nameList[0]
+    XML2Name = nameList[1]
+    MUA1Name = nameList[2]
+    MUA2Name = nameList[3]
+    # Return the collected values
+    return (XML1Name, XML2Name, MUA1Name, MUA2Name)
+
 # Define the function to export the portraits
-def processConvo(settings, textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name, XMLPath, MUAPath, suffix):
+def processConvo(settings, textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name, XMLPath, MUAPath, suffix, fullFileName):
     # Initialize the completion variable
     complete = True
     # Filter by texture type
@@ -195,10 +236,7 @@ def convoProcessing(fullFileName, settings, XMLPath, MUAPath):
     if not(textureFormat == None):
         # A texture format was chosen
         # Set up the file names
-        XML1Name = resources.setUpFileName(fullFileName, "hud_head_", settings["XML1Num"], "XX" + suffix + ".igb")
-        XML2Name = resources.setUpFileName(fullFileName, "hud_head_", settings["XML2Num"], "XX" + suffix + ".igb")
-        MUA1Name = resources.setUpFileName(fullFileName, "hud_head_", settings["MUA1Num"], "XX" + suffix + ".igb")
-        MUA2Name = resources.setUpFileName(fullFileName, "hud_head_", settings["MUA2Num"], "XX" + suffix + ".igb")
+        (XML1Name, XML2Name, MUA1Name, MUA2Name) = getFileNamesAndNumbers(settings, fullFileName, suffix)
         # Copy the files
         for num, name in zip([settings["XML1Num"], settings["XML2Num"], settings["MUA1Num"], settings["MUA2Num"]], [XML1Name, XML2Name, MUA1Name, MUA2Name]):
             # Determine if the number is used
@@ -209,11 +247,11 @@ def convoProcessing(fullFileName, settings, XMLPath, MUAPath):
         # Perform the hex editing
         resources.hexEdit([settings["XML1Num"], settings["XML2Num"], settings["MUA1Num"], settings["MUA2Num"]], [XML1Name, XML2Name, MUA1Name, MUA2Name], "Conversation Portrait")
         # Process the file
-        complete = processConvo(settings, textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name, XMLPath, MUAPath, suffix)
+        complete = processConvo(settings, textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name, XMLPath, MUAPath, suffix, fullFileName)
+        # Delete the lingering files
+        resources.deleteLingering([XML1Name, XML2Name, MUA1Name, MUA2Name])
     else:
         # A texture format was not chosen
         complete = False
-    # Delete the lingering files
-    resources.deleteLingering([XML1Name, XML2Name, MUA1Name, MUA2Name])
     # Return the collected value
     return complete

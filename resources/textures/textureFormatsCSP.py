@@ -73,7 +73,7 @@ def findFolder(texFolder, textureFolderList):
     else:
         # The texture folder used by the model can't be found in the list of texture folders that was created earlier.
         # Print the error to inform the user that the texture folder couldn't be matched to an acceptable format. This can happen if they exported without using the Marvel Mods GIMP Scripts or if they dropped the textures from outside of the VM.
-        resources.printError("The texture folder, " + texFolderList[0] + ", could not be recognized. Make sure that you're exporting your textures with the Marvel Mods GIMP Scripts and adding the textures from within the VM. Please try again.", False)
+        resources.printError("The texture folder, " + texFolder + ", could not be recognized. Make sure that you're exporting your textures with the Marvel Mods GIMP Scripts and adding the textures from within the VM. Please try again.", False)
         # In order to have a return variable for this case, set the texture format to "None" again.
         textureFormat = None
     # Return the collected texture format for further processing.
