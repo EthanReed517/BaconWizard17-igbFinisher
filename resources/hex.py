@@ -33,9 +33,22 @@ def numCheck(num1, num2, numList, name1, name2, nameList):
     return numList, nameList
 
 # Define the function for getting the hex editing string
-def getReplaceList(num: str, assetType: str, geomNames: list) -> list:
+def getReplaceList(num: str, assetType: str, geomNames: list, texPathList: list) -> list:
     # Set up the new value for the new skin number
     b_Num = bytearray(num, 'utf-8')
+    # Initialize a list to hold the hex string pairs
+    b_List = []
+    # Loop through the texture paths
+    for path in texPathList:
+        # Determine if the character name is in the texture path
+        if "12301" in path:
+            # The texture path has the character number in it
+            # Convert the texture path to hex
+            b_12301_tex = bytearray(path, 'utf-8')
+            # Replace the generic number with the character-specific number in the texture path and convert it to hex.
+            b_tex = bytearray(path.replace("12301", num), 'utf-8')
+            # Add the hex strings to the list of hex strings.
+            b_List.append([b_12301_tex, b_tex])
     # Determine the asset type
     if assetType == "Conversation Portrait":
         # Conversation portrait
@@ -44,13 +57,11 @@ def getReplaceList(num: str, assetType: str, geomNames: list) -> list:
         # Set up the new string
         b_Num_conversationpng = b_Num + bytearray('_conversation.png', 'utf-8')
         # Build the list
-        b_List = [[b_12301_conversationpng, b_Num_conversationpng]]
+        b_List.append([b_12301_conversationpng, b_Num_conversationpng])
     else:
         # 3D asset
         # Set the pre-determined value for the main geometry
         b_12301 = bytearray('12301', 'utf-8')
-        # Initialize a list to hold the hex string pairs
-        b_List = []
         # Loop through the remaining geometry names
         for geomName in geomNames:
             # Determine if the geometry has the character number in it.
@@ -114,7 +125,9 @@ def hexEdit(numList, nameList, assetType):
             # Determine if the file exists
             if os.path.exists(name):
                 # The file exists
-                # Get the geometry names from the file
+                # Get the geometry names from the file using Alchemy
                 geomNames = resources.GetModelStats(name)
+                # Get the texture paths from the file using Alchemy
+                (texPathList, texFormatList) = resources.GetTexPath(name)
                 # Perform the hex editing
-                hexEditor(name, getReplaceList(num, assetType, geomNames))
+                hexEditor(name, getReplaceList(num, assetType, geomNames, texPathList))
