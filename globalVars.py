@@ -1,0 +1,1 @@
+allowXML2PSPSkin = False

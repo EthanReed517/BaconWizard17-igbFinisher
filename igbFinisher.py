@@ -46,7 +46,7 @@ def displayInfo():
     resources.printPlain("██║╚██████╔╝██████╔╝██║     ██║██║ ╚████║██║███████║██║  ██║███████╗██║  ██║")
     resources.printPlain("╚═╝ ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚═╝  ╚═══╝╚═╝╚══════╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝")
     # Print relevant info
-    resources.printPlain("\nVersion 2.1.0")
+    resources.printPlain("\nVersion 2.0.2")
     resources.printPlain("https://marvelmods.com/forum/index.php/topic,11440.0.html\n")
 
 # Define the function to initialize the window
@@ -103,7 +103,7 @@ def fileDrop(fullFileName):
     # Restore the settings from the ini file
     settings = resources.parseConfig()
     # Trim the curly brackets off the file name
-    fullFileName = fullFileName.data[1:-1]
+    fullFileName = fullFileName.data.replace("{", "").replace("}", "")
     # Get the file name
     inputFileName = os.path.basename(fullFileName)
     # Determine the numbers

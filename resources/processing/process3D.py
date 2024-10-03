@@ -8,6 +8,7 @@
 # ####### #
 # Resources for this program
 import resources
+import globalVars
 # To be able to copy files
 from shutil import copy
 # To be able to manipulate paths
@@ -108,8 +109,9 @@ def process3D(assetType, textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name, 
             # Determine if the skin has cel shading. XML2 PSP doesn't use cel shading on the skins, so the naming convention is more like MUA1/MUA2.
             if "No Cel" in XML2Name:
                 # The skin does not have cel shading
-                # Export the skin for XML2 PSP
-                exportXML2PSPSkin(XML2Name, MUA1Name, MUA2Name, XMLPath)
+                if globalVars.allowXML2PSPSkin == True:
+                    # Export the skin for XML2 PSP
+                    exportXML2PSPSkin(XML2Name, MUA1Name, MUA2Name, XMLPath)
             # Copy the other XML2 files
             resources.copyToDestination(XML2Name, XMLPath, "for XML2 (PC, GC, PS2, and Xbox)")
         else:
