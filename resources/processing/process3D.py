@@ -128,19 +128,21 @@ def process3D(assetType, textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name, 
             # Copy the Wii files
             resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PS2, Wii, and Xbox)")
             resources.copyToDestination(MUA2Name, MUAPath, "for MUA2 (Wii)")
-        # Determine if the MUA1 file exists
-        if os.path.exists(MUA1Name):
-            # The MUA1 file exists
-            # Make a temporary copy of the MUA1 file
-            copy(MUA1Name, MUA1Name + ".bak")
-            # Perform the Alchemy optimization for next-gen MUA1
-            resources.callAlchemy(MUA1Name, iniPrefix + "1-1.ini")
-            # Copy the next-gen MUA1 file
-            resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PC, Steam, PS3, and 360)")
-            # Delete the optimized MUA1 file
-            remove(MUA1Name)
-            # Rename the backup to the main file
-            rename(MUA1Name + ".bak", MUA1Name)
+        # Verify that there is a file for MUA1
+        if not(MUA1Name == None):
+            # Determine if the MUA1 file exists
+            if os.path.exists(MUA1Name):
+                # The MUA1 file exists
+                # Make a temporary copy of the MUA1 file
+                copy(MUA1Name, MUA1Name + ".bak")
+                # Perform the Alchemy optimization for next-gen MUA1
+                resources.callAlchemy(MUA1Name, iniPrefix + "1-1.ini")
+                # Copy the next-gen MUA1 file
+                resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PC, Steam, PS3, and 360)")
+                # Delete the optimized MUA1 file
+                remove(MUA1Name)
+                # Rename the backup to the main file
+                rename(MUA1Name + ".bak", MUA1Name)
         # Check if the MUA1 and MUA2 numbers are the same
         if settings["MUA1Num"] == settings["MUA2Num"]:
             # MUA1 and MUA2 are the same
