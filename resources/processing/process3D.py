@@ -211,6 +211,18 @@ def process3D(assetType, textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name, 
                 resources.copyToDestination(XML1Name, XMLPath, "for XML1 (PS2)")
                 resources.copyToDestination(XML2Name, XMLPath, "for XML2 (PS2)")
                 resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PS2)")
+    elif textureFormat == "Main texture: Xbox / Environment Texture: Xbox":
+        # Xbox only environment maps
+        # Copy the files
+        resources.copyToDestination(XML1Name, XMLPath, "for XML1 (Xbox)")
+        resources.copyToDestination(XML2Name, XMLPath, "for XML2 (Xbox)")
+        resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (Xbox)")
+    elif textureFormat == "Main texture: PS2 / Environment Texture: PS2":
+        # PS2 only environment maps
+        # Copy the files
+        resources.copyToDestination(XML1Name, XMLPath, "for XML1 (PS2)")
+        resources.copyToDestination(XML2Name, XMLPath, "for XML2 (PS2)")
+        resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PS2)")
     elif ((textureFormat == "Wii") or ("Environment Texture: Wii" in textureFormat)):
         # Wii stuff
         # Check if the MUA1 and MUA2 numbers are the same

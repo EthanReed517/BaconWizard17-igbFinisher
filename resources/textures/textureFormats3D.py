@@ -157,7 +157,7 @@ def oneFormatEnvironmentMaps(png8Counter, dxt1Counter, plainPngCounter, texFolde
         if settings["pcOnly"] == False:
             # The model is being processed for all consoles.
             # Set up the texture folder list with PNG8 texture options that are compatible with all consoles.
-            textureFolderList = [("PC, PS2, Xbox, and MUA1 360", "PC and MUA1 360"), ("PC, PS2, Xbox, and MUA1 360", "Xbox"), ("PC, PS2, Xbox, and MUA1 360", "PS2"), ("PC, Xbox, and MUA1 360", "PC and MUA1 360"), ("PC, Xbox, and MUA1 360", "Xbox"), ("PS2", "PS2"), ("GameCube, PSP, and MUA2 PS2", "GameCube, PSP, and MUA2 PS2")]
+            textureFolderList = [("PC, PS2, Xbox, and MUA1 360", "PC and MUA1 360"), ("PC, PS2, Xbox, and MUA1 360", "Xbox"), ("PC, PS2, Xbox, and MUA1 360", "PS2"), ("PC, Xbox, and MUA1 360", "PC and MUA1 360"), ("PC, Xbox, and MUA1 360", "Xbox"), ("PS2", "PS2"), ("GameCube, PSP, and MUA2 PS2", "GameCube, PSP, and MUA2 PS2"), ("PC and MUA1 360", "PC and MUA1 360"), ("Xbox", "Xbox"), ("Wii", "Wii")]
         else:
             # The model is being process for PC only.
             # Set up the texture folder list with PNG8 texture options that are compatible with PC only.
