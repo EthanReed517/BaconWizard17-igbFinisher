@@ -6,9 +6,9 @@
 # ####### #
 # IMPORTS #
 # ####### #
-# Resources for this program
-import resources
-# To be able to manipulate paths
+# Modules from this program
+import questions
+# Other modules
 import os.path
 
 
@@ -46,7 +46,7 @@ def getAssetChoices(settings):
     # Other models are present in every game
     assetChoices.append("Other")
     # Get the asset type
-    assetType = resources.selectDefault("Which asset type are you finishing?", assetChoices, "Other")
+    assetType = questions.selectDefault("Which asset type are you finishing?", assetChoices, "Other")
     # Determine if the asset is not "Other"
     return assetType
 
@@ -70,7 +70,7 @@ def assetRecognition(inputFileName, fullFileName, settings):
     if assetType == "Unknown":
         # The file does not have a known name
         # Print a warning message
-        resources.printWarning("The asset type for " + inputFileName + " could not be identified from the file name. Please choose the asset type.")
+        questions.printWarning("The asset type for " + inputFileName + " could not be identified from the file name. Please choose the asset type.")
         # Check which assets should be asked about
         assetType = getAssetChoices(settings)
         # Set the file name
@@ -78,6 +78,6 @@ def assetRecognition(inputFileName, fullFileName, settings):
     else:
         # The file has a known name
         # Print success
-        resources.printSuccess(inputFileName + " was automatically identified as a " + assetType + ".\n")
+        questions.printSuccess(inputFileName + " was automatically identified as a " + assetType + ".\n")
     # return the collected values
     return assetType, fileName

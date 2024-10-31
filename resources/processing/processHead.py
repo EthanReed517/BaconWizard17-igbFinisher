@@ -6,7 +6,10 @@
 # ####### #
 # IMPORTS #
 # ####### #
+# Modules from this program
 import resources
+import questions
+# Other modules
 import os.path
 from shutil import copy
 
@@ -27,9 +30,9 @@ def getFileNamesAndNumbers(settings, fullFileName):
             if not(settings[game + "Num"][-2:] == "01"):
                 # The number does not end in 01
                 # Warn the user that this isn't recommended.
-                resources.printWarning("The skin number for " + str(game) + " is set to " + settings[game + "Num"] + ". It's recommended for the last two digits of the skin number to be 01 outside of special cases.")
+                questions.printWarning("The skin number for " + str(game) + " is set to " + settings[game + "Num"] + ". It's recommended for the last two digits of the skin number to be 01 outside of special cases.")
                 # Ask the user what they want to do.
-                numChoice = resources.select("What do you want to do for the " + game + "number?", ["Update the number to " + settings[game + "Num"][0:-2] + "01 (does not overwrite settings.ini).", "Leave the number as-is. I want to use a specific skin number."])
+                numChoice = questions.select("What do you want to do for the " + game + "number?", ["Update the number to " + settings[game + "Num"][0:-2] + "01 (does not overwrite settings.ini).", "Leave the number as-is. I want to use a specific skin number."])
                 if numChoice == "Update the number to " + settings[game + "Num"][0:-2] + "01 (does not overwrite settings.ini).":
                     # The user wants to update the number
                     # Update the number to end in 01

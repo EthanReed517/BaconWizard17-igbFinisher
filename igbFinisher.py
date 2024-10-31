@@ -9,6 +9,7 @@
 # Modules from this program
 import resources
 import alchemy
+import questions
 # Other modules
 import os.path
 from os import rename, system
@@ -35,15 +36,15 @@ def resource_path(relative_path):
 # Define the function to display the command prompt information
 def displayInfo():
     # Display the title
-    resources.printPlain("██╗ ██████╗ ██████╗ ███████╗██╗███╗   ██╗██╗███████╗██╗  ██╗███████╗██████╗ ")
-    resources.printPlain("██║██╔════╝ ██╔══██╗██╔════╝██║████╗  ██║██║██╔════╝██║  ██║██╔════╝██╔══██╗")
-    resources.printPlain("██║██║  ███╗██████╔╝█████╗  ██║██╔██╗ ██║██║███████╗███████║█████╗  ██████╔╝")
-    resources.printPlain("██║██║   ██║██╔══██╗██╔══╝  ██║██║╚██╗██║██║╚════██║██╔══██║██╔══╝  ██╔══██╗")
-    resources.printPlain("██║╚██████╔╝██████╔╝██║     ██║██║ ╚████║██║███████║██║  ██║███████╗██║  ██║")
-    resources.printPlain("╚═╝ ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚═╝  ╚═══╝╚═╝╚══════╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝")
+    questions.printPlain("██╗ ██████╗ ██████╗ ███████╗██╗███╗   ██╗██╗███████╗██╗  ██╗███████╗██████╗ ")
+    questions.printPlain("██║██╔════╝ ██╔══██╗██╔════╝██║████╗  ██║██║██╔════╝██║  ██║██╔════╝██╔══██╗")
+    questions.printPlain("██║██║  ███╗██████╔╝█████╗  ██║██╔██╗ ██║██║███████╗███████║█████╗  ██████╔╝")
+    questions.printPlain("██║██║   ██║██╔══██╗██╔══╝  ██║██║╚██╗██║██║╚════██║██╔══██║██╔══╝  ██╔══██╗")
+    questions.printPlain("██║╚██████╔╝██████╔╝██║     ██║██║ ╚████║██║███████║██║  ██║███████╗██║  ██║")
+    questions.printPlain("╚═╝ ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚═╝  ╚═══╝╚═╝╚══════╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝")
     # Print relevant info
-    resources.printPlain("\nVersion 2.1.1")
-    resources.printPlain("https://marvelmods.com/forum/index.php/topic,11440.0.html\n")
+    questions.printPlain("\nVersion 2.1.1")
+    questions.printPlain("https://marvelmods.com/forum/index.php/topic,11440.0.html\n")
 
 # Define the function to initialize the window
 def initializeWindow():
@@ -160,11 +161,11 @@ def fileDrop(fullFileName):
     if complete == True:
         # The process was completed
         # Print the completion message
-        resources.printSuccess(assetType + " " + inputFileName + " was successfully processed!")
+        questions.printSuccess(assetType + " " + inputFileName + " was successfully processed!")
     else:
         # The process was not completed
         # Print the error message
-        resources.printError(assetType + " " + inputFileName + "was not able to be processed.", False)
+        questions.printError(assetType + " " + inputFileName + "was not able to be processed.", False)
 
 # Define the function to get the character numbers
 def getNumbers(settings):
@@ -174,7 +175,7 @@ def getNumbers(settings):
         if settings[game + "Num"] == "Ask":
             # Need to ask about the character number.
             # Ask the user.
-            settings[game + "Num"] = resources.textInput("Enter the 4 or 5 digit skin number for " + game + ":", resources.skinNumberValidator)
+            settings[game + "Num"] = questions.textInput("Enter the 4 or 5 digit skin number for " + game + ":", questions.skinNumberValidator)
     # Return the updated settings.
     return settings
 
@@ -209,7 +210,7 @@ def getFilePath(settings, series, game1Name, game2Name):
             # Create the message for the prompt
             message = "Enter the path to the folder for the " + games + " release:"
             # Ask the question
-            filePath = resources.path(message, resources.pathValidator)
+            filePath = questions.path(message, questions.pathValidator)
             # Replace any incorrect slashes
             filePath = filePath.replace("\\", "/")
     else:
@@ -245,7 +246,7 @@ system("title BaconWizard17's igb Finisher")
 # Print the welcome information
 displayInfo()
 # Print the welcome message
-resources.printImportant("Welcome to BaconWizard17's igb Finisher!\n")
+questions.printImportant("Welcome to BaconWizard17's igb Finisher!\n")
 # Read the settings
 settings = resources.parseConfig()
 # Reset the Alchemy eval to avoid possible issues
@@ -257,4 +258,4 @@ lbl_drop = initializeDropZone()
 # Start the window loop
 window_dnd.mainloop()
 # Add a "press any key to continue" prompt
-resources.pressAnyKey(None)
+questions.pressAnyKey(None)

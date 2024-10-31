@@ -9,6 +9,7 @@
 # Modules from this program
 import resources
 import alchemy
+import questions
 # Other modules
 import os.path
 from shutil import copy
@@ -30,7 +31,7 @@ def otherModelNameInput(charNum, gameName, fullFileName, celExt):
         # Create the question
         prompt = "What is the name of this file for " + gameName + "? Do not include the file extension. Enter a blank value if the model is not used with this game."
         # Ask the question
-        fileName = resources.pathDefault(prompt, fileNameValidator, Path(fullFileName).stem)
+        fileName = questions.pathDefault(prompt, fileNameValidator, Path(fullFileName).stem)
         # Determine if a value was entered
         if fileName == "":
             # No file name was entered

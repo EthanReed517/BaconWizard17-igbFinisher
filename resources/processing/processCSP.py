@@ -9,6 +9,7 @@
 # Modules from this program
 import resources
 import alchemy
+import questions
 # Other modules
 import os.path
 from shutil import copy
@@ -54,11 +55,11 @@ def processCSP(textureFormat, XML1Name, XML2Name, XMLPath, portraitType):
     else:
         # None of the above
         # Display an error message
-        resources.printError("Choice of texture format did not line up with an existing operation. Selected texture format: " + textureFormat, True)
+        questions.printError("Choice of texture format did not line up with an existing operation. Selected texture format: " + textureFormat, True)
         # Set the completion status
         complete = False
         # Wait for the user to acknowledge the error
-        resources.pressAnyKey(None)
+        questions.pressAnyKey(None)
     # Return the completion variable
     return complete
 

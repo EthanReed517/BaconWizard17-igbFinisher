@@ -11,6 +11,7 @@ import resources
 import alchemy
 import globalVars
 import hex
+import questions
 # Other modules
 from shutil import copy
 from os import makedirs, rename, remove
@@ -116,7 +117,7 @@ def processNoTexFile(sourceFileName, assetType, nums, files, paths, prefix):
     # Set up the list of folder options
     folderOptions = ["Like a model with a 256x256 or less texture", "Like a model with a larger than 256x256 texture", "Using as few folders as possible"]
     # Determine how the user wants to process the file
-    folderOption = resources.select("What folder structure should be used?", folderOptions)
+    folderOption = questions.select("What folder structure should be used?", folderOptions)
     # Determine what the user picked
     if folderOption == folderOptions[0]:
         # Send out like a model with a 256x256 or less texture
@@ -378,7 +379,7 @@ def process3D(assetType, sourceFileName, textureFormat, numsDict, nameDict, path
     except KeyError:
         # The selected texture format doesn't have an entry in the dictionary
         # Print an error
-        resources.printError(f"Choice of texture format did not line up with an existing operation. Selected texture format: {textureFormat}", True)
+        questions.printError(f"Choice of texture format did not line up with an existing operation. Selected texture format: {textureFormat}", True)
         # Update the completion variable to indicate that nothing was processed
         complete = False
     # Return whether or not the processing was successfully completed

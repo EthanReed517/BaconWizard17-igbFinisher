@@ -9,6 +9,7 @@
 # Modules from this program
 import resources
 import alchemy
+import questions
 # Other modules
 import os.path
 from shutil import copy
@@ -52,9 +53,9 @@ def getFileNamesAndNumbers(settings, fullFileName):
             if not(settings[game + "Num"][-2:] == "01"):
                 # The last two digits are not 01.
                 # Warn the user that this isn't recommended.
-                resources.printWarning("The skin number for " + str(game) + " is set to " + settings[game + "Num"] + ". It's recommended for the last two digits of the skin number to be 01 outside of special cases.")
+                questions.printWarning("The skin number for " + str(game) + " is set to " + settings[game + "Num"] + ". It's recommended for the last two digits of the skin number to be 01 outside of special cases.")
                 # Ask the user what they want to do.
-                numChoice = resources.select("What do you want to do for the " + game + "number?", ["Update the number to " + settings[game + "Num"][0:-2] + "01 (does not overwrite settings.ini).", "Leave the number as-is. This is a special skin/animated bolton that needs a unique number and file name.", "Leave the number as-is. I want to use a specific skin number."])
+                numChoice = questions.select("What do you want to do for the " + game + "number?", ["Update the number to " + settings[game + "Num"][0:-2] + "01 (does not overwrite settings.ini).", "Leave the number as-is. This is a special skin/animated bolton that needs a unique number and file name.", "Leave the number as-is. I want to use a specific skin number."])
                 # Determine what the user picked.
                 if numChoice == "Update the number to " + settings[game + "Num"][0:-2] + "01 (does not overwrite settings.ini).":
                     # The user wanted to update the skin number to end in 01.
@@ -63,7 +64,7 @@ def getFileNamesAndNumbers(settings, fullFileName):
                 elif numChoice == "Leave the number as-is. This is a special skin/animated bolton that needs a unique number and file name.":
                     # The user wants to leave the number as-is, but this is a special model with a new name.
                     # Indicate that a special name is needed
-                    description = resources.textInput("Enter a descriptor for the file (i.e., \"Tail Bolton\", \"Wings\", or \"Left Arm\")", None)
+                    description = questions.textInput("Enter a descriptor for the file (i.e., \"Tail Bolton\", \"Wings\", or \"Left Arm\")", None)
             # Determine if cel shading is being used, or if this is an MUA game
             if ((celChoice == True) or ((celChoice == False) and (game[0] == "M"))):
                 # Cel shading is in use, or this is an MUA game

@@ -7,11 +7,9 @@
 # ####### #
 # IMPORTS #
 # ####### #
-# To be able to create command line list questions
+# Other modules
 import questionary
-# Necessary functions for asking questions
 from questionary import prompt, Style, Validator, ValidationError
-# To be able to validate paths
 import os.path
 
 

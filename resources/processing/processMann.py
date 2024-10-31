@@ -6,7 +6,10 @@
 # ####### #
 # IMPORTS #
 # ####### #
+# Modules from this program
 import resources
+import questions
+# Other modules
 import os.path
 from shutil import copy
 
@@ -29,7 +32,7 @@ def getFileNamesAndNumbers(settings, fullFileName):
             if not(settings[game + "Num"][-2:] == "01"):
                 # The number does not end in 01
                 # Warn the user that the number should end in 01
-                resources.printWarning("The skin number for " + str(game) + " is set to " + settings[game + "Num"] + ". The last two digits of a mannequin number should always be 01. " + settings[game + "Num"][0:-2] + "01 will be used as the number. settings.ini will not be updated.")
+                questions.printWarning("The skin number for " + str(game) + " is set to " + settings[game + "Num"] + ". The last two digits of a mannequin number should always be 01. " + settings[game + "Num"][0:-2] + "01 will be used as the number. settings.ini will not be updated.")
                 # Update the number to end in 01
                 settings[game + "Num"] = settings[game + "Num"][0:-2] + "01"
             # Add the new name to the list

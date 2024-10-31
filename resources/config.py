@@ -6,11 +6,11 @@
 # ####### #
 # IMPORTS #
 # ####### #
-# Resources for this program
+# Modules from this program
 import resources
-# To be able to copy and move files
+import questions
+# Other modules
 import os.path
-# To be able to parse the ini file
 from configparser import ConfigParser
 
 
@@ -49,9 +49,9 @@ def verifyConfigExistence():
         except AssertionError:
             # The assertion failed (the file does not exist)
             # Print the error message
-            resources.printError("settings.ini does not exist. Restore the file and try again.", False)
+            questions.printError("settings.ini does not exist. Restore the file and try again.", False)
             # Wait for user confirmation
-            resources.pressAnyKey("Press any key to try again...")
+            questions.pressAnyKey("Press any key to try again...")
 
 # Define the function to get the character numbers
 def characterNumberGetter(game):
@@ -79,15 +79,15 @@ def characterNumberGetter(game):
                 else:
                     # The character number is not acceptable
                     # Give the error to let the user know
-                    resources.printError("The skin number for " + str(game) + " is set to " + str(number) + ". The character number (first 2-3 digits) must be between 00 and 255. Please enter a new number.", False)
+                    questions.printError("The skin number for " + str(game) + " is set to " + str(number) + ". The character number (first 2-3 digits) must be between 00 and 255. Please enter a new number.", False)
                     # Get the user input
-                    number = resources.textInput("Enter a 4 or 5 digit skin number:", resources.skinNumberValidator)
+                    number = questions.textInput("Enter a 4 or 5 digit skin number:", questions.skinNumberValidator)
             else:
                 # The number is not the correct length
                 # Give the error to let the user know.
-                resources.printError("The skin number for " + str(game) + " is set to " + str(number) + ". Skin numbers must be 4 or 5 digits long. Please enter a new number.", False)
+                questions.printError("The skin number for " + str(game) + " is set to " + str(number) + ". Skin numbers must be 4 or 5 digits long. Please enter a new number.", False)
                 # Get the user input
-                number = resources.textInput("Enter a 4 or 5 digit skin number:", resources.skinNumberValidator)
+                number = questions.textInput("Enter a 4 or 5 digit skin number:", questions.skinNumberValidator)
         else:
             # The number is not a number
             # Check if the value is one of the accepted non-numbers
@@ -98,14 +98,14 @@ def characterNumberGetter(game):
             else:
                 # The value is not a number, "None", or "Ask".
                 # Display an error to the user so that they know that their input is not acceptable.
-                resources.printError("The skin number for " + str(game) + " is set to " + str(number) + ", which is not an acceptable value. Please enter an acceptable value.", False)
+                questions.printError("The skin number for " + str(game) + " is set to " + str(number) + ", which is not an acceptable value. Please enter an acceptable value.", False)
                 # Find out what the user wants in their settings.
-                valueType = resources.select("What setting do you want to use for the " + game + "number?", ["Update the settings with a permanent number", "Don't enter a number (the character is not in " + game + ")", "Ask each time an asset is processed"])
+                valueType = questions.select("What setting do you want to use for the " + game + "number?", ["Update the settings with a permanent number", "Don't enter a number (the character is not in " + game + ")", "Ask each time an asset is processed"])
                 # Determine what to do based on the settings.
                 if valueType == "Update the settings with a permanent number":
                     # The user wants to enter a number.
                     # Ask the user for a number.
-                    number = resources.textInput("Enter a 2 or 3 digit character number.", resources.skinNumberValidator)
+                    number = questions.textInput("Enter a 2 or 3 digit character number.", questions.skinNumberValidator)
                 elif valueType == "Don't enter a number (the character is not in " + game + ")":
                     # The user wants to skip this number.
                     # Set the setting.
@@ -174,15 +174,15 @@ def pathGetter(series, game1Name, game2Name):
                     break
                 else:
                     # The value is not ask or an existing file path, so something went wrong.
-                    resources.printError("The value for the path for " + games + " is set to " + path + ", which is not an acceptable value. Please decide what you'd like the value to be.", False)
+                    questions.printError("The value for the path for " + games + " is set to " + path + ", which is not an acceptable value. Please decide what you'd like the value to be.", False)
                     # Find out what the user wants in their settings.
-                    valueType = resources.select("What setting do you want to use for the path for " + games + "?", ["Update the settings with a permanent path", "Don't enter a number (the character is not in " + games + ")", "Ask each time an asset is processed"])
+                    valueType = questions.select("What setting do you want to use for the path for " + games + "?", ["Update the settings with a permanent path", "Don't enter a number (the character is not in " + games + ")", "Ask each time an asset is processed"])
                     if valueType == "Update the settings with a permanent path":
                         # The user wants to write a new path to the settings.
                         # Create the message for the prompt
                         message = "Enter the path to the folder for the " + games + " release:"
                         # Ask the question
-                        path = resources.path(message, resources.pathValidator)
+                        path = questions.path(message, questions.pathValidator)
                     elif valueType == "Don't enter a number (the character is not in " + games + ")":
                         # The user wants to skip this series.
                         # Set the setting.
@@ -227,9 +227,9 @@ def settingsGetter(settingName):
             break
         except (ValueError, AssertionError):
             # The value is not acceptable. Print an error
-            resources.printError("The value for setting " + str(settingName) + " is set to " + str(setting) + ", which is not an acceptable value. It must be True or False. Please enter an acceptable value.", False)
+            questions.printError("The value for setting " + str(settingName) + " is set to " + str(setting) + ", which is not an acceptable value. It must be True or False. Please enter an acceptable value.", False)
             # Let the user pick the new option.
-            choice = resources.select("Which console are you processing for?", ["All consoles", "PC only"])
+            choice = questions.select("Which console are you processing for?", ["All consoles", "PC only"])
             # Determine which option was picked
             if choice == "All consoles":
                 # This is for all consoles
