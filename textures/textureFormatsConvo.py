@@ -59,7 +59,7 @@ def recognizeHUDTextureFormat(texPathList, texFormatList):
     else:
         # The format was not recognized at all.
         # Give an error to let the user know. This technically shouldn't happen because the previous options cover all the common formats, but there are some fringe formats that can be exported if you know how to do it.
-        questions.printError("A texture format used by this model is not recognized. Please choose a different texture.\nTexture format \"" + texFormat + "\".", False)
+        questions.printError(f"A texture format used by this model is not recognized. Please choose a different texture.\nTexture format \"{texFormat}\".", False)
     # Return the collected variables: the number of PNG8 textures found in the model, the number of DXT1 textures found in the model, the number of plain png textures found in the model, and the texture folder and file name.
     return png8Counter, dxt1Counter, plainPngCounter, texFolder, texFile
 
@@ -71,11 +71,11 @@ def findFolder(texFolder, textureFolderList):
         # Set the format to be this folder.
         textureFormat = texFolder
         # Print a success message to inform the user that there is a match.
-        questions.printSuccess("The texture folder was automatically identified as " + textureFormat + ".")
+        questions.printSuccess(f"The texture folder was automatically identified as {textureFormat}.")
     else:
         # The texture folder used by the model can't be found in the list of texture folders that was created earlier.
         # Print the error to inform the user that the texture folder couldn't be matched to an acceptable format. This can happen if they exported without using the Marvel Mods GIMP Scripts or if they dropped the textures from outside of the VM.
-        questions.printError("The texture folder, " + texFolder + ", could not be recognized. Make sure that you're exporting your textures with the Marvel Mods GIMP Scripts and adding the textures from within the VM. Please try again.", False)
+        questions.printError(f"The texture folder, {texFolder}, could not be recognized. Make sure that you're exporting your textures with the Marvel Mods GIMP Scripts and adding the textures from within the VM. Please try again.", False)
         # In order to have a return variable for this case, set the texture format to "None" again.
         textureFormat = None
     # Return the collected texture format for further processing.

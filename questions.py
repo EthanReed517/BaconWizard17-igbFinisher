@@ -55,7 +55,7 @@ def printSuccess(message):
 # Define the function for printing a warning message.
 def printWarning(message):
     # Update the message string with a "Warning: " prefix so that I don't have to add this to every single warning prompt.
-    message = "Warning: " + message
+    message = f"Warning: {message}"
     # Print the message for the user to see.
     questionary.print(message, style = warningStyle)
     # Pause to allow the user to see the warning and acknowledge it.
@@ -64,7 +64,7 @@ def printWarning(message):
 # Define the function for printing an error message.
 def printError(message, contactCreator):
     # Update the message string with an "ERROR: " prefix so that I don't have to add this to every single warning prompt.
-    message = "ERROR: " + message
+    message = f"ERROR: {message}"
     # Determine if the user needs to contact me because of the error.
     if contactCreator == True:
         # The user needs to contact me because of the error.
@@ -210,7 +210,7 @@ def fileNameValidatorStart(fileName):
         return "Please enter a file name."
     elif ".igb" in fileName:
         return "Do not include the file extension."
-    elif not(os.path.exists(fileName + ".igb")):
+    elif not(os.path.exists(f"{fileName}.igb")):
         return "The file does not exist."
     else:
         return True

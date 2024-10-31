@@ -25,7 +25,7 @@ def setUpFileName(fullFileName, prefix, gameNum, suffix):
     else:
         # The character number is not None, so the file name needs to get set up
         # Set up the file name accordingly
-        gameName = os.path.join(os.path.dirname(fullFileName), prefix + gameNum + suffix)
+        gameName = os.path.join(os.path.dirname(fullFileName), f"{prefix}{gameNum}{suffix}")
     # Return the collected file name
     return gameName
 
@@ -39,7 +39,7 @@ def setUpFileName2(prefix, gameNum, suffix):
     else:
         # The character number is not None, so the file name needs to get set up
         # Set up the file name accordingly
-        gameName = prefix + gameNum + suffix
+        gameName = f"{prefix}{gameNum}{suffix}"
     # Return the collected file name
     return gameName
 

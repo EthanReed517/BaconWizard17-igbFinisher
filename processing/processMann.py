@@ -27,17 +27,17 @@ def getFileNamesAndNumbers(settings, fullFileName):
     # Cycle through the list of games
     for game in ["MUA1", "MUA2"]:
         # Determine if the game is in use
-        if not(settings[game + "Num"] == None):
+        if not(settings[f"{game}Num"] == None):
             # The game is in use
             # Determine if the number ends in 01
-            if not(settings[game + "Num"][-2:] == "01"):
+            if not(settings[f"{game}Num"][-2:] == "01"):
                 # The number does not end in 01
                 # Warn the user that the number should end in 01
-                questions.printWarning("The skin number for " + str(game) + " is set to " + settings[game + "Num"] + ". The last two digits of a mannequin number should always be 01. " + settings[game + "Num"][0:-2] + "01 will be used as the number. settings.ini will not be updated.")
+                questions.printWarning(f"The skin number for {game} is set to {settings[f'{game}Num']}. The last two digits of a mannequin number should always be 01. {settings[f'{game}Num'][0:-2]}01 will be used as the number. settings.ini will not be updated.")
                 # Update the number to end in 01
-                settings[game + "Num"] = settings[game + "Num"][0:-2] + "01"
+                settings[f"{game}Num"] = f"{settings[f'{game}Num'][0:-2]}01"
             # Add the new name to the list
-            nameList.append(common.setUpFileName2("", settings["MUA1Num"][0:-2] + "XX", suffix))
+            nameList.append(common.setUpFileName2("", f"{settings[f'{game}Num'][0:-2]}XX", suffix))
         else:
             # The game is not not in use
             # Set no name

@@ -163,34 +163,34 @@ def fileDrop(fullFileName):
     if complete == True:
         # The process was completed
         # Print the completion message
-        questions.printSuccess(assetType + " " + inputFileName + " was successfully processed!")
+        questions.printSuccess(f"{assetType} {inputFileName} was successfully processed!")
     else:
         # The process was not completed
         # Print the error message
-        questions.printError(assetType + " " + inputFileName + "was not able to be processed.", False)
+        questions.printError(f"{assetType} {inputFileName} was not able to be processed.", False)
 
 # Define the function to get the character numbers
 def getNumbers(settings):
     # Go through the different games.
     for game in ["XML1", "XML2", "MUA1", "MUA2"]:
         # Determine if the character number for that game needs to be asked about.s
-        if settings[game + "Num"] == "Ask":
+        if settings[f"{game}Num"] == "Ask":
             # Need to ask about the character number.
             # Ask the user.
-            settings[game + "Num"] = questions.textInput("Enter the 4 or 5 digit skin number for " + game + ":", questions.skinNumberValidator)
+            settings[f"{game}Num"] = questions.textInput(f"Enter the 4 or 5 digit skin number for {game}:", questions.skinNumberValidator)
     # Return the updated settings.
     return settings
 
 # Define the function to get the file path
 def getFilePath(settings, series, game1Name, game2Name):
     # Set up the numbers
-    game1Num = settings[game1Name + "Num"]
-    game2Num = settings[game2Name + "Num"]
+    game1Num = settings[f"{game}Num"]
+    game2Num = settings[f"{game}Num"]
     # Determine if a path should be collected
-    if settings[series + "Path"] == None:
+    if settings[f"{series}Path"] == None:
         # No path, so just set it to none
         filePath = None
-    elif settings[series + "Path"] == "Ask":
+    elif settings[f"{series}Path"] == "Ask":
         # Need to ask about the path
         # Determine which games are in use
         if (game1Num == None) and (game2Num == None):
@@ -202,7 +202,7 @@ def getFilePath(settings, series, game1Name, game2Name):
                 # game 1 is in use
                 if not(game2Num == None):
                     # game 1 and game 2 are in use
-                    games = game1Name + "/" + game2Name
+                    games = f"{game1Name}/{game2Name}"
                 else:
                     # Only game 1 is in use
                     games = game1Name
@@ -210,14 +210,14 @@ def getFilePath(settings, series, game1Name, game2Name):
                 # Only game 2 is in use
                 games = game2Name
             # Create the message for the prompt
-            message = "Enter the path to the folder for the " + games + " release:"
+            message = f"Enter the path to the folder for the {games} release:"
             # Ask the question
             filePath = questions.path(message, questions.pathValidator)
             # Replace any incorrect slashes
             filePath = filePath.replace("\\", "/")
     else:
         # The path is already in the settings
-        filePath = settings[series + "Path"]
+        filePath = settings[f"{series}Path"]
     # Return the path
     return filePath
 

@@ -70,7 +70,7 @@ def recognize3DTextureFormat(texPathList, texFormatList):
         else:
             # The format was not recognized at all.
             # Give an error to let the user know. This technically shouldn't happen because the previous options cover all the common formats, but there are some fringe formats that can be exported if you know how to do it.
-            questions.printError("A texture format used by this model is not recognized. Please choose a different texture.\nTexture format \"" + texFormat + "\".", False)
+            questions.printError(f"A texture format used by this model is not recognized. Please choose a different texture.\nTexture format \"{texFormat}\".", False)
         # Add the texture folder to the list of texture formats.
         texFolderList.append(texFolder)
     # Return the collected variables: the number of PNG8 textures found in the model, the number of DXT1 textures found in the model, the number of plain png textures found in the model, and the list of texture formats.
@@ -139,11 +139,11 @@ def oneFormatOneFolder(png8Counter, dxt1Counter, plainPngCounter, texFolderList,
         # Set the format to be this folder.
         textureFormat = texFolderList[0]
         # Print a success message to inform the user that there is a match.
-        questions.printSuccess("The texture folder was automatically identified as " + textureFormat + ".")
+        questions.printSuccess(f"The texture folder was automatically identified as {textureFormat}.")
     else:
         # The texture folder used by the model can't be found in the list of texture folders that was created earlier.
         # Print the error to inform the user that the texture folder couldn't be matched to an acceptable format. This can happen if they exported without using the Marvel Mods GIMP Scripts or if they dropped the textures from outside of the VM.
-        questions.printError("The texture folder, " + texFolderList[0] + ", could not be recognized. Make sure that you're exporting your textures with the Marvel Mods GIMP Scripts and adding the textures from within the VM. Please try again.", False)
+        questions.printError(f"The texture folder, {texFolderList[0]}, could not be recognized. Make sure that you're exporting your textures with the Marvel Mods GIMP Scripts and adding the textures from within the VM. Please try again.", False)
         # In order to have a return variable for this case, set the texture format to "None" again.
         textureFormat = None
     # Return the collected texture format for further processing.
@@ -202,9 +202,9 @@ def oneFormatEnvironmentMaps(png8Counter, dxt1Counter, plainPngCounter, texFolde
     if folderFound == 1:
         # A texture folder was found, meaning that the folder was recognized.
         # Set up the texture format using the folders found earlier.
-        textureFormat = "Main texture: " + diffuseFolder + " / Environment texture: " + envFolder
+        textureFormat = f"Main texture: {diffuseFolder} / Environment texture: {envFolder}"
         # Print a success message to let the user know that the folder was identified.
-        questions.printSuccess("The diffuse texture folder was automatically identified as " + diffuseFolder + ". The environment map folder was automatically identified as " + envFolder + ".")
+        questions.printSuccess(f"The diffuse texture folder was automatically identified as {diffuseFolder}. The environment map folder was automatically identified as {envFolder}.")
     elif folderFound == 0:
         # No folder was found, so an acceptable folder is not in use.
         # Initialize a string to let the user know about the error.
@@ -214,7 +214,7 @@ def oneFormatEnvironmentMaps(png8Counter, dxt1Counter, plainPngCounter, texFolde
         # Loop through the list of unique folders to report which were identified.
         for folder in uniqueFolders:
             # Add the folder to the error string.
-            errorString += (folder + " / ")
+            errorString += (f"{folder} / ")
         # Print the error so that the user can see which folders the model has.
         questions.printError(errorString, False)
         # In order to have a return variable for this case, set the texture format to "None" again.
@@ -274,9 +274,9 @@ def transparentEnvironmentMaps(png8Counter, dxt1Counter, plainPngCounter, texFol
     if folderFound == 1:
         # A texture folder was found, meaning that the folder was recognized.
         # Set up the texture format using the folders found earlier.
-        textureFormat = "Main texture: " + diffuseFolder + " / Environment Texture: " + envFolder
+        textureFormat = f"Main texture: {diffuseFolder} / Environment Texture: {envFolder}"
         # Print a success message to let the user know that the folder was identified.
-        questions.printSuccess("The diffuse texture folder was automatically identified as " + diffuseFolder + ". The environment map folder was automatically identified as " + envFolder + ".")
+        questions.printSuccess(f"The diffuse texture folder was automatically identified as {diffuseFolder}. The environment map folder was automatically identified as {envFolder}.")
     elif folderFound == 0:
         # No folder was found, so an acceptable folder is not in use.
         # Initialize a string to let the user know about the error.
@@ -286,7 +286,7 @@ def transparentEnvironmentMaps(png8Counter, dxt1Counter, plainPngCounter, texFol
         # Loop through the list of unique folders to report which were identified.
         for folder in uniqueFolders:
             # Add the folder to the error string.
-            errorString += (folder + " / ")
+            errorString += (f"{folder} / ")
         # Print the error so that the user can see which folders the model has.
         questions.printError(errorString, False)
         # In order to have a return variable for this case, set the texture format to "None" again.
@@ -348,7 +348,7 @@ def transparentAndOpaque(png8Counter, dxt1Counter, plainPngCounter, texFolderLis
         # Set up the texture format using the folders found earlier.
         textureFormat = diffuseFolder
         # Print a success message to let the user know that the folder was identified.
-        questions.printSuccess("The opaque diffuse texture folder was automatically identified as " + diffuseOFolder + ". The transparent diffuse texture folder was automatically identified as " + diffuseTFolder + ".")
+        questions.printSuccess(f"The opaque diffuse texture folder was automatically identified as {diffuseOFolder}. The transparent diffuse texture folder was automatically identified as {diffuseTFolder}.")
     elif folderFound == 0:
         # No folder was found, so an acceptable folder is not in use.
         # Initialize a string to let the user know about the error.
@@ -358,7 +358,7 @@ def transparentAndOpaque(png8Counter, dxt1Counter, plainPngCounter, texFolderLis
         # Loop through the list of unique folders to report which were identified.
         for folder in uniqueFolders:
             # Add the folder to the error string.
-            errorString += (folder + " / ")
+            errorString += (f"{folder} / ")
         # Print the error so that the user can see which folders the model has.
         questions.printError(errorString, False)
         # In order to have a return variable for this case, set the texture format to "None" again.
@@ -419,9 +419,9 @@ def tripleFormat(png8Counter, dxt1Counter, plainPngCounter, texFolderList, setti
     if folderFound == 1:
         # A texture folder was found, meaning that the folder was recognized.
         # Set up the texture format using the folders found earlier.
-        textureFormat = "Main texture: " + diffuseOFolder + " / Environment Texture: " + envFolder
+        textureFormat = f"Main texture: {diffuseOFolder} / Environment Texture: {envFolder}"
         # Print a success message to let the user know that the folder was identified.
-        questions.printSuccess("The opaque diffuse texture folder was automatically identified as " + diffuseOFolder + ". The transparent diffuse texture folder was automatically identified as " + diffuseTFolder + ". The environment map folder was automatically identified as " + envFolder + ".")
+        questions.printSuccess(f"The opaque diffuse texture folder was automatically identified as {diffuseOFolder}. The transparent diffuse texture folder was automatically identified as {diffuseTFolder}. The environment map folder was automatically identified as {envFolder}.")
     elif folderFound == 0:
         # No folder was found, so an acceptable folder is not in use.
         # Initialize a string to let the user know about the error.
@@ -431,7 +431,7 @@ def tripleFormat(png8Counter, dxt1Counter, plainPngCounter, texFolderList, setti
         # Loop through the list of unique folders to report which were identified.
         for folder in uniqueFolders:
             # Add the folder to the error string.
-            errorString += (folder + " / ")
+            errorString += (f"{folder} / ")
         # Print the error so that the user can see which folders the model has.
         questions.printError(errorString, False)
         # In order to have a return variable for this case, set the texture format to "None" again.

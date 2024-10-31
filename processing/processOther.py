@@ -30,7 +30,7 @@ def otherModelNameInput(charNum, gameName, fullFileName, celExt):
     else:
         # used with this game
         # Create the question
-        prompt = "What is the name of this file for " + gameName + "? Do not include the file extension. Enter a blank value if the model is not used with this game."
+        prompt = f"What is the name of this file for {gameName}? Do not include the file extension. Enter a blank value if the model is not used with this game."
         # Ask the question
         fileName = questions.pathDefault(prompt, fileNameValidator, Path(fullFileName).stem)
         # Determine if a value was entered
@@ -41,7 +41,7 @@ def otherModelNameInput(charNum, gameName, fullFileName, celExt):
         else:
             # Something was added
             # add the file extension
-            fileName = fileName + celExt + ".igb"
+            fileName = f"{fileName}{celExt}.igb"
     # return the collected value
     return fileName
 

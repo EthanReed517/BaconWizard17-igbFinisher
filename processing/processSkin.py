@@ -48,20 +48,20 @@ def getFileNamesAndNumbers(settings, fullFileName):
         # Set the default description for the file
         description = "Skin"
         # Determine if this game is used
-        if not(settings[game + "Num"] == None):
+        if not(settings[f"{game}Num"] == None):
             # This game is used.
             # Determine if the last two digits of the skin number are 01.
-            if not(settings[game + "Num"][-2:] == "01"):
+            if not(settings[f"{game}Num"][-2:] == "01"):
                 # The last two digits are not 01.
                 # Warn the user that this isn't recommended.
-                questions.printWarning("The skin number for " + str(game) + " is set to " + settings[game + "Num"] + ". It's recommended for the last two digits of the skin number to be 01 outside of special cases.")
+                questions.printWarning(f"The skin number for {game} is set to {settings[f'{game}Num']}. It's recommended for the last two digits of the skin number to be 01 outside of special cases.")
                 # Ask the user what they want to do.
-                numChoice = questions.select("What do you want to do for the " + game + "number?", ["Update the number to " + settings[game + "Num"][0:-2] + "01 (does not overwrite settings.ini).", "Leave the number as-is. This is a special skin/animated bolton that needs a unique number and file name.", "Leave the number as-is. I want to use a specific skin number."])
+                numChoice = questions.select(f"What do you want to do for the {game} number?", [f"Update the number to {settings[f'{game}Num'][0:-2]}01 (does not overwrite settings.ini).", "Leave the number as-is. This is a special skin/animated bolton that needs a unique number and file name.", "Leave the number as-is. I want to use a specific skin number."])
                 # Determine what the user picked.
-                if numChoice == "Update the number to " + settings[game + "Num"][0:-2] + "01 (does not overwrite settings.ini).":
+                if numChoice == f"Update the number to {settings[f'{game}Num'][0:-2]}01 (does not overwrite settings.ini).":
                     # The user wanted to update the skin number to end in 01.
                     # Update the settings for this game.
-                    settings[game + "Num"] = settings[game + "Num"][0:-2] + "01"
+                    settings[f"{game}Num"] = f"{settings[f'{game}Num'][0:-2]}01"
                 elif numChoice == "Leave the number as-is. This is a special skin/animated bolton that needs a unique number and file name.":
                     # The user wants to leave the number as-is, but this is a special model with a new name.
                     # Indicate that a special name is needed
@@ -76,14 +76,14 @@ def getFileNamesAndNumbers(settings, fullFileName):
                 # Set the suffix
                 suffix = " - No Cel"
             # Determine what the number is
-            if settings[game + "Num"][-2:] == "01":
+            if settings[f"{game}Num"][-2:] == "01":
                 # Standard numbering, can end the number in "XX"
                 # Set the file name
-                nameList.append(common.setUpFileName2("", settings[game + "Num"][0:-2] + "XX", " (Skin" + suffix + ").igb"))
+                nameList.append(common.setUpFileName2("", f"{settings[f'{game}Num'][0:-2]}XX", f" (Skin{suffix}).igb"))
             else:
                 # Non-standard file name
                 # Set the file name
-                nameList.append(common.setUpFileName2("", settings[game + "Num"], " (" + description + suffix + ").igb"))
+                nameList.append(common.setUpFileName2("", settings[f"{game}Num"], f" ({description}{suffix}).igb"))
         else:
             # The game is not used.
             # The name should be None as well

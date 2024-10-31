@@ -21,7 +21,7 @@ def fileNameValidatorStart(fileName):
         return "Please enter a file name."
     elif ".igb" in fileName:
         return "Do not include the file extension."
-    elif not(os.path.exists(fileName + ".igb")):
+    elif not(os.path.exists(f"{fileName}.igb")):
         return "The file does not exist."
     else:
         return True
@@ -70,7 +70,7 @@ def assetRecognition(inputFileName, fullFileName, settings):
     if assetType == "Unknown":
         # The file does not have a known name
         # Print a warning message
-        questions.printWarning("The asset type for " + inputFileName + " could not be identified from the file name. Please choose the asset type.")
+        questions.printWarning(f"The asset type for {inputFileName} could not be identified from the file name. Please choose the asset type.")
         # Check which assets should be asked about
         assetType = getAssetChoices(settings)
         # Set the file name
@@ -78,6 +78,6 @@ def assetRecognition(inputFileName, fullFileName, settings):
     else:
         # The file has a known name
         # Print success
-        questions.printSuccess(inputFileName + " was automatically identified as a " + assetType + ".\n")
+        questions.printSuccess(f"{inputFileName} was automatically identified as a {assetType}.\n")
     # return the collected values
     return assetType, fileName

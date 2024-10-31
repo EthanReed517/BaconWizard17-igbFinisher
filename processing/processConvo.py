@@ -28,28 +28,28 @@ def getFileNamesAndNumbers(settings, fullFileName, suffix):
     # Cycle through the list of games
     for game in ["XML1", "XML2", "MUA1", "MUA2"]:
         # Determine if the game is in use
-        if not(settings[game + "Num"] == None):
+        if not(settings[f"{game}Num"] == None):
             # The game is in use
             # Determine if the number ends in 01
-            if not(settings[game + "Num"][-2:] == "01"):
+            if not(settings[f"{game}Num"][-2:] == "01"):
                 # The number does not end in 01
                 # Warn the user that this isn't recommended.
-                questions.printWarning("The skin number for " + str(game) + " is set to " + settings[game + "Num"] + ". It's recommended for the last two digits of the skin number to be 01 outside of special cases.")
+                questions.printWarning(f"The skin number for {game} is set to {settings[f'{game}Num']}. It's recommended for the last two digits of the skin number to be 01 outside of special cases.")
                 # Ask the user what they want to do.
-                numChoice = questions.select("What do you want to do for the " + game + "number?", ["Update the number to " + settings[game + "Num"][0:-2] + "01 (does not overwrite settings.ini).", "Leave the number as-is. I want to use a specific skin number."])
-                if numChoice == "Update the number to " + settings[game + "Num"][0:-2] + "01 (does not overwrite settings.ini).":
+                numChoice = questions.select(f"What do you want to do for the {game} number?", [f"Update the number to {settings[f'{game}Num'][0:-2]}01 (does not overwrite settings.ini).", "Leave the number as-is. I want to use a specific skin number."])
+                if numChoice == f"Update the number to {settings[f'{game}Num'][0:-2]}01 (does not overwrite settings.ini).":
                     # The user wants to update the number
                     # Update the number to end in 01
-                    settings[game + "Num"] = settings[game + "Num"][0:-2] + "01"
+                    settings[f"{game}Num"] = f"{settings[f'{game}Num'][0:-2]}01"
             # Determine what the number is
-            if settings[game + "Num"][-2:] == "01":
+            if settings[f"{game}Num"][-2:] == "01":
                 # Standard numbering, can end the number in "XX"
                 # Set the file name
-                nameList.append(common.setUpFileName(fullFileName, "hud_head_", settings[game + "Num"][0:-2] + "XX", suffix + ".igb"))
+                nameList.append(common.setUpFileName(fullFileName, "hud_head_", f"{settings[f'{game}Num'][0:-2]}XX", f"{suffix}.igb"))
             else:
                 # Non-standard file name
                 # Set the file name
-                nameList.append(common.setUpFileName(fullFileName, "hud_head_", settings[game + "Num"], suffix + ".igb"))
+                nameList.append(common.setUpFileName(fullFileName, "hud_head_", settings[f"{game}Num"], f"{suffix}.igb"))
         else:
             # The game is not not in use
             # Set no name
@@ -222,7 +222,7 @@ def processConvo(settings, textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name
     else:
         # None of the above
         # Display an error message
-        questions.printError("Choice of texture format did not line up with an existing operation. Selected texture format: " + textureFormat, True)
+        questions.printError(f"Choice of texture format did not line up with an existing operation. Selected texture format: {textureFormat}", True)
         # Set the completion status
         complete = False
         # Wait for the user to acknowledge the error
