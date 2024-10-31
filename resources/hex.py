@@ -6,9 +6,7 @@
 # ####### #
 # IMPORTS #
 # ####### #
-# Resources for this program
 import resources
-# To be able to copy and move files
 import os.path
 
 
@@ -103,9 +101,18 @@ def hexEditor(filename: str, replace: list):
     with open(filename, 'wb') as f:
         f.write(byte)
 
+# Define the updated function for hex editing
+def hexEdit2(file, num, assetType):
+    # Get the geometry names from the file using Alchemy
+    geomNames = resources.GetModelStats(file)
+    # Get the texture paths from the file using Alchemy
+    (texPathList, texFormatList) = resources.GetTexPath(file)
+    # Perform the hex editing
+    hexEditor(file, getReplaceList(num, assetType, geomNames, texPathList))
+
 # Define the function for hex editing
 def hexEdit(numList, nameList, assetType):
-        # Determine the length of the character number
+    # Determine the length of the character number
     # Initialize a list for the character numbers
     hexNumList = []
     # Initialize a list for the character names

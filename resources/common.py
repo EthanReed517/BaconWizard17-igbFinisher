@@ -6,13 +6,9 @@
 # ####### #
 # IMPORTS #
 # ####### #
-# Resources for this program
 import resources
-# To be able to manipulate paths
 import os.path
-# To be able to make folders and delete files
 from os import mkdir, remove
-# To be able to perform shell operations
 from shutil import copy
 
 
@@ -33,6 +29,19 @@ def setUpFileName(fullFileName, prefix, gameNum, suffix):
     # Return the collected file name
     return gameName
 
+# Define the alternate function to set up file names
+def setUpFileName2(prefix, gameNum, suffix):
+    # Determine if the character number is None, meaning that the character is not used in this game and the name is not needed
+    if gameNum == None:
+        # The character number is None, so no name is needed
+        # set the file name to None
+        gameName = None
+    else:
+        # The character number is not None, so the file name needs to get set up
+        # Set up the file name accordingly
+        gameName = prefix + gameNum + suffix
+    # Return the collected file name
+    return gameName
 
 # Define the function to copy files to the necessary destination
 def copyToDestination(fileName, releasePath, folderName):

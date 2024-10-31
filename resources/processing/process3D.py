@@ -6,16 +6,11 @@
 # ####### #
 # IMPORTS #
 # ####### #
-# Resources for this program
 import resources
 import globalVars
-# To be able to copy files
 from shutil import copy
-# To be able to manipulate paths
+from os import makedirs, rename, remove
 import os.path
-# To be able to delete and rename files
-from os import remove, rename
-# To be able to parse the ini file
 from configparser import ConfigParser
 
 
@@ -54,39 +49,109 @@ def updateXML2PSPOptPath():
     with open("Scripts/skin2-1.ini", "w") as configfile:
         config.write(configfile)
 
-# Define the function for exporting XML2 PSP Skins
-def exportXML2PSPSkin(XML2Name, MUA1Name, MUA2Name, XMLPath):
-    # Update the name to remove "No Cel"
-    XML2NamePSP = XML2Name.replace(" - No Cel", "")
-    # Determine if the XML2 file exists
-    if os.path.exists(XML2Name):
-        # The XML2 file exists
-        # Make a copy of the XML2 file specifically for PSP
-        copy(XML2Name, XML2NamePSP)
-    # Determine if the XML2 number is the same as the MUA1 number or MUA2 number
-    if ((XML2NamePSP == MUA1Name) or (XML2NamePSP == MUA2Name)):
-        # XML2 and MUA1 or MUA2 numbers match
-        # Make a backup copy of the file to allow further non-optimized files
-        copy(XML2NamePSP, XML2NamePSP + ".bak")
-    # Update the Alchemy optimization to reference the correct file path
-    updateXML2PSPOptPath()                
-    # Perform the Alchemy optimization for XML2 PSP
-    resources.callAlchemy(XML2NamePSP, "skin2-1.ini")
-    # Copy the XML2 PSP file
-    resources.copyToDestination(XML2NamePSP, XMLPath, "for XML2 (PSP)")
-    # Determine if a separate XML2 PSP file was made
-    if os.path.exists(XML2NamePSP):
-        # An XML2 PSP file was made
-        # Delete the optimized XML2 PSP file
-        remove(XML2NamePSP)
-    # Determine if the XML2 number is the same as the MUA1 number or MUA2 number
-    if ((XML2NamePSP == MUA1Name) or (XML2NamePSP == MUA2Name)):
-        # XML2 and MUA1 or MUA2 numbers match
-        # Restore the backup
-        rename(XML2NamePSP + ".bak", XML2NamePSP)
+# Define the function for sending a file
+def processFile(sourceFileName, assetType, num, file, path, folder, optList):
+    # Verify that something needs to be done
+    if ((num is not None) and (file is not None) and (path is not None)):
+        # Make the destination folder if needed
+        makedirs(os.path.join(path, folder), exist_ok=True)
+        # Create a temporary copy of the file
+        tempFile = os.path.join(os.path.dirname(sourceFileName), "temp.igb")
+        copy(sourceFileName, tempFile)
+        # Hex edit the file
+        resources.hexEdit2(tempFile, num, assetType)
+        # Run the Alchemy operations if needed
+        if optList is not None:
+            for optimization in optList:
+                resources.callAlchemy(tempFile, optimization)
+        # Copy the file and then remove the temp file (can't move by renaming because the destination could exist)
+        copy(tempFile, os.path.join(path, folder, file))
+        remove(tempFile)
+
+# Define the function for sending Wii files
+def processWiiFiles(sourceFileName, assetType, nums, files, path):
+    # Determine if the MUA1 and MUA2 files have the same name
+    if files["MUA1"] == files["MUA2"]:
+        # The files are the same, so copy to one folder
+        processFile(sourceFileName, nums["MUA1"], assetType, files["MUA1"], path, "for MUA1 (Wii) and MUA2 (Wii)", None)
+    else:
+        # The files are not the same, so copy to two folders
+        processFile(sourceFileName, nums["MUA1"], assetType, files["MUA1"], path, "for MUA1 (Wii)", None)
+        processFile(sourceFileName, nums["MUA1"], assetType, files["MUA2"], path, "for MUA2 (Wii)", None)
+
+# Define the function for sending PSP files
+def processPSPFiles(sourceFileName, assetType, nums, files, paths, prefix):
+    # Determine if this is a skin. XML2 PSP skins need special consideration
+    if prefix == "skin":
+        # This is a skin, so check if XML2 PSP skins are allowed
+        if globalVars.allowXML2PSPSkin == True:
+            # This is allowed, so process it
+            # Check if this is the file without cel shading, which is the only one used in XML2 PSP
+            if "No Cel" in files["XML2"]:
+                # This is without cel shading
+                # The name should not mention that this is without cel shading, since XML2 PSP doesn't use cel shading
+                outName = files["XML2"].replace(" - No Cel", "")
+                # Update the Alchemy optimization to reference the correct file path
+                updateXML2PSPOptPath()
+                # Process the file
+                processFile(sourceFileName, nums["XML2"], assetType, outName, paths["XML"], "for XML2 (PSP)", ["skin2-1.ini"])
+    else:
+        # This is not a skin, so process the XML2 file
+        processFile(sourceFileName, nums["XML2"], assetType, files["XML2"], paths["XML"], "for XML2 (PSP)", None)
+    # MUA1 and MUA2 are processed the same way no matter what
+    if files["MUA1"] == files["MUA2"]:
+        # The files are the same, so copy to one folder
+        processFile(sourceFileName, nums["MUA1"], assetType, files["MUA1"], paths["MUA"], "for MUA1 (PSP) and MUA2 (PSP)", [f"{prefix}3.ini"])
+    else:
+        # The files are not the same, so copy to two folders
+        processFile(sourceFileName, nums["MUA1"], assetType, files["MUA1"], paths["MUA"], "for MUA1 (PSP)", [f"{prefix}3.ini"])
+        processFile(sourceFileName, nums["MUA2"], assetType, files["MUA2"], paths["MUA"], "for MUA2 (PSP)", [f"{prefix}3.ini"])
+
+# Define the function for processing files with no textures
+def processNoTexFile(sourceFileName, assetType, nums, files, paths, prefix):
+    # Set up the list of folder options
+    folderOptions = ["Like a model with a 256x256 or less texture", "Like a model with a larger than 256x256 texture", "Using as few folders as possible"]
+    # Determine how the user wants to process the file
+    folderOption = resources.select("What folder structure should be used?", folderOptions)
+    # Determine what the user picked
+    if folderOption == folderOptions[0]:
+        # Send out like a model with a 256x256 or less texture
+        processFile(sourceFileName, nums["XML1"], assetType, files["XML1"], paths["XML"], "for XML1 (GC)", None)
+        processFile(sourceFileName, nums["XML1"], assetType, files["XML1"], paths["XML"], "for XML1 (PS2 and Xbox)", None)
+        processFile(sourceFileName, nums["XML2"], assetType, files["XML2"], paths["XML"], "for XML2 (GC)", None)
+        processFile(sourceFileName, nums["XML2"], assetType, files["XML2"], paths["XML"], "for XML2 (PC, PS2, and Xbox)", None)
+        processPSPFiles(sourceFileName, nums, assetType, files, paths, prefix)
+        processFile(sourceFileName, nums["MUA1"], assetType, files["MUA1"], paths["MUA"], "for MUA1 (PS2 and Xbox)", None)
+        processWiiFiles(sourceFileName, nums, assetType, files, paths["MUA"])
+        processFile(sourceFileName, nums["MUA1"], assetType, files["MUA1"], paths["MUA"], "for MUA1 (PC and 360)", [f"{prefix}1-1.ini"])
+        processFile(sourceFileName, nums["MUA1"], assetType, files["MUA1"], paths["MUA"], "for MUA1 (Steam and PS3)", [f"{iniPrefix}1-1.ini"])
+        processFile(sourceFileName, nums["MUA2"], assetType, files["MUA2"], paths["MUA"], "for MUA2 (PS2)", [f"{prefix}3.ini"])
+    elif folderOption == folderOptions[1]:
+        # Send out like a model with a larger than 256x256 texture
+        processFile(sourceFileName, nums["XML1"], assetType, files["XML1"], paths["XML"], "for XML1 (GC)", None)
+        processFile(sourceFileName, nums["XML1"], assetType, files["XML1"], paths["XML"], "for XML1 (PS2)", None)
+        processFile(sourceFileName, nums["XML1"], assetType, files["XML1"], paths["XML"], "for XML1 (Xbox)", None)
+        processFile(sourceFileName, nums["XML2"], assetType, files["XML2"], paths["XML"], "for XML2 (GC)", None)
+        processFile(sourceFileName, nums["XML2"], assetType, files["XML2"], paths["XML"], "for XML2 (PS2)", None)
+        processFile(sourceFileName, nums["XML2"], assetType, files["XML2"], paths["XML"], "for XML2 (PC and Xbox)", None)
+        processPSPFiles(sourceFileName, nums, assetType, files, paths, prefix)
+        processFile(sourceFileName, nums["MUA1"], assetType, files["MUA1"], paths["MUA"], "for MUA1 (PS2)", None)
+        processFile(sourceFileName, nums["MUA1"], assetType, files["MUA1"], paths["MUA"], "for MUA1 (Xbox)", None)
+        processWiiFiles(sourceFileName, nums, assetType, files, paths["MUA"])
+        processFile(sourceFileName, nums["MUA1"], assetType, files["MUA1"], paths["MUA"], "for MUA1 (PC, Steam, PS3, and 360)", [f"{prefix}1-1.ini"])
+        processFile(sourceFileName, nums["MUA2"], assetType, files["MUA2"], paths["MUA"], "for MUA2 (PS2)", [f"{prefix}3.ini"])
+    else:
+        # Send to as few folders as possible
+        processFile(sourceFileName, nums["XML1"], assetType, files["XML1"], paths["XML"], "for XML1 (GC, PS2, and Xbox)", None)
+        processFile(sourceFileName, nums["XML2"], assetType, files["XML2"], paths["XML"], "for XML2 (PC, GC, PS2, and Xbox)", None)
+        processPSPFiles(sourceFileName, nums, assetType, files, paths, prefix)
+        processFile(sourceFileName, nums["MUA1"], assetType, files["MUA1"], paths["MUA"], "for MUA1 (PS2 and Xbox)", None)
+        processWiiFiles(sourceFileName, nums, assetType, files, paths["MUA"])
+        processFile(sourceFileName, nums["MUA1"], assetType, files["MUA1"], paths["MUA"], "for MUA1 (PC, Steam, PS3, and 360)", [f"{prefix}1-1.ini"])
+        processFile(sourceFileName, nums["MUA2"], assetType, files["MUA2"], paths["MUA"], "for MUA2 (PS2)", [f"{prefix}3.ini"])
 
 # Define the function for processing assets
-def process3D(assetType, textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name, XMLPath, MUAPath, settings):
+def process3D(assetType, sourceFileName, textureFormat, numsDict, nameDict, pathDict):
     # Determine the asset type
     if assetType == "Skin":
         # This is a skin
@@ -96,365 +161,221 @@ def process3D(assetType, textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name, 
         # Not a skin
         # Set the ini prefix
         iniPrefix = "stat"
-    # Initialize the completion variable
+    # Set up the dictionary of necessary operations for each texture type
+    processDict = {
+        # No texture type
+        "No Texture": [
+            {"function": processNoTexFile, "args": {"nums": numsDict, "assetType": assetType, "files": nameDict, "paths": pathDict, "prefix": iniPrefix}}
+        ],
+        # Single texture type, PNG8 format, all consoles
+        "PC, PS2, Xbox, and MUA1 360": [
+            {"function": processFile, "args": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (PS2 and Xbox)", "optList": None}},
+            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PC, PS2, and Xbox)", "optList": None}},
+            {"function": processFile, "args": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (PS2 and Xbox)", "optList": None}},
+            {"function": processFile, "args": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (PC and 360)", "optList": [f"{iniPrefix}1-1.ini"]}},
+            {"function": processFile, "args": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (Steam and PS3)", "optList": [f"{iniPrefix}1-1.ini", f"{iniPrefix}1-2.ini"]}}
+        ],
+        "PC, Xbox, and MUA1 360": [
+            {"function": processFile, "args": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (Xbox)", "optList": None}},
+            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PC and Xbox)", "optList": None}},
+            {"function": processFile, "args": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (Xbox)", "optList": None}},
+            {"function": processFile, "args": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (PC and 360)", "optList": [f"{iniPrefix}1-1.ini"]}},
+            {"function": processFile, "args": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (Steam and PS3)", "optList": [f"{iniPrefix}1-1.ini", f"{iniPrefix}1-2.ini"]}}
+        ],
+        "PS2": [
+            {"function": processFile, "args": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (PS2)", "optList": None}},
+            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PS2)", "optList": None}},
+            {"function": processFile, "args": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (PS2)", "optList": None}}
+        ],
+        "GameCube, PSP, and MUA2 PS2": [
+            {"function": processFile, "args": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (GC)", "optList": None}},
+            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (GC)", "optList": None}},
+            {"function": processPSPFiles, "args": {"nums": numsDict, "files": nameDict, "paths": pathDict, "prefix": iniPrefix}},
+            {"function": processFile, "args": {"num": numsDict["MUA2"], "file": nameDict["MUA2"], "path": pathDict["MUA"], "folder": "for MUA2 (PS2)", "optList": [f"{iniPrefix}3.ini"]}}
+        ],
+        # Single texture type, PNG8 format, PC only
+        "PC": [
+            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PC)", "optList": None}},
+            {"function": processFile, "args": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (PC)", "optList": [f"{iniPrefix}1-1.ini"]}},
+            {"function": processFile, "args": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (Steam)", "optList": [f"{iniPrefix}1-1.ini", f"{iniPrefix}1-2.ini"]}}
+        ],
+        # Single texture type, DXT1 format, all consoles
+        "MUA1 PC, Steam, 360, and PS3": [
+            {"function": processFile, "args": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (PC, Steam, PS3 and 360)", "optList": [f"{iniPrefix}1-1.ini"]}}
+        ],
+        "XML2 PC, Xbox, and Wii": [
+            {"function": processFile, "args": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (Xbox)", "optList": None}},
+            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PC and Xbox)", "optList": None}},
+            {"function": processFile, "args": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (Xbox and Wii)", "optList": None}}
+        ],
+        "Wii": [
+            {"function": processWiiFiles, "args": {"nums": numsDict, "files": nameDict, "path": pathDict["MUA"]}}
+        ],
+        # Single texture type, DXT1 format, PC only
+        "MUA1 PC and Steam": [
+            {"function": processFile, "args": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (PC and Steam)", "optList": [f"{iniPrefix}1-1.ini"]}}
+        ],
+        "XML2 PC": [
+            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PC)", "optList": None}}
+        ],
+        # Single texture type, plain PNG format, all consoles ("PS2" and "GameCube, PSP, and MUA2 PSP" already covered earlier)
+        "PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360": [
+            {"function": processFile, "args": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (PS2 and Xbox)", "optList": None}},
+            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PC, PS2, and Xbox)", "optList": None}},
+            {"function": processFile, "args": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (PS2 and Xbox)", "optList": None}},
+            {"function": processWiiFiles, "args": {"nums": numsDict, "files": nameDict, "path": pathDict["MUA"]}},
+            {"function": processFile, "args": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (PC and 360)", "optList": [f"{iniPrefix}1-1.ini"]}},
+            {"function": processFile, "args": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (Steam and PS3)", "optList": [f"{iniPrefix}1-1.ini"]}}
+        ],
+        "PC, Xbox, Wii, MUA1 Steam, PS3, and 360": [
+            {"function": processFile, "args": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (Xbox)", "optList": None}},
+            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PC and Xbox)", "optList": None}},
+            {"function": processFile, "args": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (Xbox)", "optList": None}},
+            {"function": processWiiFiles, "args": {"nums": numsDict, "files": nameDict, "path": pathDict["MUA"]}},
+            {"function": processFile, "args": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (PC and 360)", "optList": [f"{iniPrefix}1-1.ini"]}},
+            {"function": processFile, "args": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (Steam and PS3)", "optList": [f"{iniPrefix}1-1.ini"]}}
+        ],
+        # Single texture type, plain PNG format, PC only
+        "PC and MUA1 Steam": [
+            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PC)", "optList": None}},
+            {"function": processFile, "args": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (PC and Steam)", "optList": [f"{iniPrefix}1-1.ini"]}}
+        ],
+        # Single texture type with environment maps, PNG8 format, all consoles
+        "Main texture: PC, PS2, Xbox, and MUA1 360 / Environment texture: PC and MUA1 360": [
+            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PC)", "optList": None}}
+        ],
+        "Main texture: PC, PS2, Xbox, and MUA1 360 / Environment texture: Xbox": [
+            {"function": processFile, "args": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (Xbox)", "optList": None}},
+            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (Xbox)", "optList": None}},
+            {"function": processFile, "args": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (Xbox)", "optList": None}}
+        ],
+        "Main texture: PC, PS2, Xbox, and MUA1 360 / Environment texture: PS2": [
+            {"function": processFile, "args": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (PS2)", "optList": None}},
+            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PS2)", "optList": None}},
+            {"function": processFile, "args": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (PS2)", "optList": None}}
+        ],
+        "Main texture: PC, Xbox, and MUA1 360 / Environment texture: PC and MUA1 360": [
+            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PC)", "optList": None}}
+        ],
+        "Main texture: PC, Xbox, and MUA1 360 / Environment texture: Xbox": [
+            {"function": processFile, "args": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (Xbox)", "optList": None}},
+            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (Xbox)", "optList": None}},
+            {"function": processFile, "args": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (Xbox)", "optList": None}}
+        ],
+        "Main texture: PC and MUA1 360 / Environment texture: PC and MUA1 360": [
+            {"function": processFile, "args": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (Xbox)", "optList": None}},
+            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (Xbox)", "optList": None}},
+            {"function": processFile, "args": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (Xbox)", "optList": None}}
+        ],
+        "Main texture: Xbox / Environment texture: Xbox": [
+            {"function": processFile, "args": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (Xbox)", "optList": None}},
+            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (Xbox)", "optList": None}},
+            {"function": processFile, "args": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (Xbox)", "optList": None}}
+        ],
+        "Main texture: PS2 / Environment texture: PS2": [
+            {"function": processFile, "args": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (PS2)", "optList": None}},
+            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PS2)", "optList": None}},
+            {"function": processFile, "args": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (PS2)", "optList": None}}
+        ],
+        "Main texture: GameCube, PSP, and MUA2 PS2 / Environment texture: GameCube, PSP, and MUA2 PS2": [
+            {"function": processFile, "args": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (GC)", "optList": None}},
+            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (GC)", "optList": None}},
+            {"function": processPSPFiles, "args": {"nums": numsDict, "files": nameDict, "paths": pathDict, "prefix": iniPrefix}},
+            {"function": processFile, "args": {"num": numsDict["MUA2"], "file": nameDict["MUA2"], "path": pathDict["MUA"], "folder": "for MUA2 (PS2)", "optList": [f"{iniPrefix}3.ini"]}}
+        ],
+        # Single texture type with environment maps, PNG8, PC only
+        "Main texture: PC / Environment texture: PC": [
+            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PC)", "optList": None}}
+        ],
+        # Single texture type with environment maps, DXT1 Format, all consoles
+        "Main texture: XML2 PC, Xbox, and Wii / Environment texture: XML2 PC": [
+            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PC)", "optList": None}}
+        ],
+        "Main texture: XML2 PC, Xbox, and Wii / Environment texture: Xbox and Wii": [
+            {"function": processFile, "args": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (Xbox)", "optList": None}},
+            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (Xbox)", "optList": None}},
+            {"function": processFile, "args": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (Xbox)", "optList": None}},
+            {"function": processWiiFiles, "args": {"nums": numsDict, "files": nameDict, "path": pathDict["MUA"]}}
+        ],
+        "Main texture: Wii / Environment texture: Wii": [
+            {"function": processWiiFiles, "args": {"nums": numsDict, "files": nameDict, "path": pathDict["MUA"]}}
+        ],
+        "Main texture: Wii / Environment texture: Xbox and Wii": [
+            {"function": processWiiFiles, "args": {"nums": numsDict, "files": nameDict, "path": pathDict["MUA"]}}
+        ],
+        # Single texture type with environment maps, DXT1, PC only
+        "Main texture: XML2 PC / Environment texture: XML2 PC": [
+            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PC)", "optList": None}}
+        ],
+        # Transparent texture with PNG8 environment maps, all consoles
+        "Main texture: PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360 / Environment texture: PC and MUA1 360": [
+            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PC)", "optList": None}}
+        ],
+        "Main texture: PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360 / Environment texture: Xbox": [
+            {"function": processFile, "args": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (Xbox)", "optList": None}},
+            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (Xbox)", "optList": None}},
+            {"function": processFile, "args": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (Xbox)", "optList": None}}
+        ],
+        "Main texture: PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360 / Environment texture: PS2": [
+            {"function": processFile, "args": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (PS2)", "optList": None}},
+            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PS2)", "optList": None}},
+            {"function": processFile, "args": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (PS2)", "optList": None}}
+        ],
+        "Main texture: PC, Xbox, Wii, MUA1 Steam, PS3, and 360 / Environment texture: PC and MUA1 360": [
+            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PC)", "optList": None}}
+        ],
+        "Main texture: PC, Xbox, Wii, MUA1 Steam, PS3, and 360 / Environment texture: Xbox": [
+            {"function": processFile, "args": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (Xbox)", "optList": None}},
+            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (Xbox)", "optList": None}},
+            {"function": processFile, "args": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (Xbox)", "optList": None}}
+        ],
+        # Transparent texture with PNG8 environment maps, PC only
+        "Main texture: PC and MUA1 Steam / Environment texture: PC": [
+            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PC)", "optList": None}}
+        ],
+        # Transparent texture with DXT1 environment maps, all consoles
+        "Main texture: PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360 / Environment texture: XML2 PC": [
+            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PC)", "optList": None}}
+        ],
+        "Main texture: PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360 / Environment texture: Xbox and Wii": [
+            {"function": processFile, "args": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (Xbox)", "optList": None}},
+            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (Xbox)", "optList": None}},
+            {"function": processFile, "args": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (Xbox)", "optList": None}},
+            {"function": processWiiFiles, "args": {"nums": numsDict, "files": nameDict, "path": pathDict["MUA"]}}
+        ],
+        "Main texture: PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360 / Environment texture: Wii": [
+            {"function": processWiiFiles, "args": {"nums": numsDict, "files": nameDict, "path": pathDict["MUA"]}}
+        ],
+        "Main texture: PC, Xbox, Wii, MUA1 Steam, PS3, and 360 / Environment texture: XML2 PC": [
+            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PC)", "optList": None}}
+        ],
+        "Main texture: PC, Xbox, Wii, MUA1 Steam, PS3, and 360 / Environment texture: Xbox and Wii": [
+            {"function": processFile, "args": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (Xbox)", "optList": None}},
+            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (Xbox)", "optList": None}},
+            {"function": processFile, "args": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (Xbox)", "optList": None}},
+            {"function": processWiiFiles, "args": {"nums": numsDict, "files": nameDict, "path": pathDict["MUA"]}}
+        ],
+        "Main texture: PC, Xbox, Wii, MUA1 Steam, PS3, and 360 / Environment texture: Wii": [
+            {"function": processWiiFiles, "args": {"nums": numsDict, "files": nameDict, "path": pathDict["MUA"]}}
+        ],
+        # Transparent texture with DXT1 environment maps, PC only
+        "Main texture: PC and MUA1 Steam / Environment texture: XML2 PC": [
+            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PC)", "optList": None}}
+        ]
+    }
+    # Start a variable that assumes completion
     complete = True
-    # Filter by texture type
-    if textureFormat == "No Texture":
-        # There is no texture (intentionally), so this will be exported for every console.
-        # Copy the files that don't need optimization.
-        resources.copyToDestination(XML1Name, XMLPath, "for XML1 (GC, PS2, and Xbox)")
-        # Determine if this is a skin. Skins need special operations for XML2 PSP.
-        if assetType == "Skin":
-            # This is a skin
-            # Determine if the skin has cel shading. XML2 PSP doesn't use cel shading on the skins, so the naming convention is more like MUA1/MUA2.
-            if "No Cel" in XML2Name:
-                # The skin does not have cel shading
-                if globalVars.allowXML2PSPSkin == True:
-                    # Export the skin for XML2 PSP
-                    exportXML2PSPSkin(XML2Name, MUA1Name, MUA2Name, XMLPath)
-            # Copy the other XML2 files
-            resources.copyToDestination(XML2Name, XMLPath, "for XML2 (PC, GC, PS2, and Xbox)")
-        else:
-            # This is not a skin
-            # Copy the XML2 PSP file
-            resources.copyToDestination(XML2Name, XMLPath, "for XML2 (PC, GC, PS2, PSP, and Xbox)")
-        # Check if the MUA1 and MUA2 numbers are the same
-        if settings["MUA1Num"] == settings["MUA2Num"]:
-            # MUA1 and MUA2 are the same
-            # Copy the Wii files
-            resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PS2, Wii, and Xbox) and MUA2 (Wii)")
-        else:
-            # MUA1 and MUA2 are not the same
-            # Copy the Wii files
-            resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PS2, Wii, and Xbox)")
-            resources.copyToDestination(MUA2Name, MUAPath, "for MUA2 (Wii)")
-        # Verify that there is a file for MUA1
-        if not(MUA1Name == None):
-            # Determine if the MUA1 file exists
-            if os.path.exists(MUA1Name):
-                # The MUA1 file exists
-                # Make a temporary copy of the MUA1 file
-                copy(MUA1Name, MUA1Name + ".bak")
-                # Perform the Alchemy optimization for next-gen MUA1
-                resources.callAlchemy(MUA1Name, iniPrefix + "1-1.ini")
-                # Copy the next-gen MUA1 file
-                resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PC, Steam, PS3, and 360)")
-                # Delete the optimized MUA1 file
-                remove(MUA1Name)
-                # Rename the backup to the main file
-                rename(MUA1Name + ".bak", MUA1Name)
-        # Check if the MUA1 and MUA2 numbers are the same
-        if settings["MUA1Num"] == settings["MUA2Num"]:
-            # MUA1 and MUA2 are the same
-            # Run alchemy
-            resources.callAlchemy(MUA1Name, iniPrefix + "3.ini")
-            # Copy the files
-            resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PSP) and MUA2 (PS2 and PSP)")
-        else:
-            # MUA1 and MUA2 are not the same
-            # Run alchemy
-            resources.callAlchemy(MUA1Name, iniPrefix + "3.ini")
-            resources.callAlchemy(MUA2Name, iniPrefix + "3.ini")
-            # Copy the files
-            resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PSP)")
-            resources.copyToDestination(MUA2Name, MUAPath, "for MUA2 (PS2 and PSP)")
-    elif (("PC, PS2, Xbox, and MUA1 360" in textureFormat) or ("PC, Xbox, and MUA1 360" in textureFormat)):
-        # The main texture type
-        # Determine if environment maps are used
-        if not("Environment Texture" in textureFormat):
-            # No environment maps
-            # Determine if PS2 should be included
-            if ("PS2" in textureFormat):
-                # Has PS2 (Primary skin)
-                # Copy the files that don't need optimization
-                resources.copyToDestination(XML1Name, XMLPath, "for XML1 (PS2 and Xbox)")
-                resources.copyToDestination(XML2Name, XMLPath, "for XML2 (PC, PS2, and Xbox)")
-                resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PS2 and Xbox)")
-            else:
-                # No PS2 (Secondary skin)
-                # Copy any files that don't need optimization.
-                resources.copyToDestination(XML1Name, XMLPath, "for XML1 (Xbox)")
-                resources.copyToDestination(XML2Name, XMLPath, "for XML2 (PC and Xbox)")
-                resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (Xbox)")
-            # Perform the first Alchemy operation
-            resources.callAlchemy(MUA1Name, iniPrefix + "1-1.ini")
-            # Copy the first optimized alchemy file
-            resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PC and 360)")
-            # Perform the second Alchemy operation
-            resources.callAlchemy(MUA1Name, iniPrefix + "1-2.ini")
-            # Copy the second optimized alchemy file
-            resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (Steam and PS3)")
-        else:
-            # Has environment maps
-            # Filter based on environment map type
-            if ("Environment Texture: PC and MUA1 360" in textureFormat):
-                # PC and MUA1 360
-                # Copy the XML2 PC file
-                resources.copyToDestination(XML2Name, XMLPath, "for XML2 (PC)")
-                # Perform the first Alchemy operation
-                resources.callAlchemy(MUA1Name, iniPrefix + "1-1.ini")
-                # Copy the first optimized alchemy file
-                resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PC and 360)")
-                # Perform the second Alchemy operation
-                resources.callAlchemy(MUA1Name, iniPrefix + "1-2.ini")
-                # Copy the second optimized alchemy file
-                resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (Steam and PS3)")
-            elif ("Environment Texture: Xbox" in textureFormat):
-                # Xbox
-                # Copy the files
-                resources.copyToDestination(XML1Name, XMLPath, "for XML1 (Xbox)")
-                resources.copyToDestination(XML2Name, XMLPath, "for XML2 (Xbox)")
-                resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (Xbox)")
-            else:
-                # PS2
-                # Copy the files
-                resources.copyToDestination(XML1Name, XMLPath, "for XML1 (PS2)")
-                resources.copyToDestination(XML2Name, XMLPath, "for XML2 (PS2)")
-                resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PS2)")
-    elif textureFormat == "Main texture: Xbox / Environment Texture: Xbox":
-        # Xbox only environment maps
-        # Copy the files
-        resources.copyToDestination(XML1Name, XMLPath, "for XML1 (Xbox)")
-        resources.copyToDestination(XML2Name, XMLPath, "for XML2 (Xbox)")
-        resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (Xbox)")
-    elif textureFormat == "Main texture: PS2 / Environment Texture: PS2":
-        # PS2 only environment maps
-        # Copy the files
-        resources.copyToDestination(XML1Name, XMLPath, "for XML1 (PS2)")
-        resources.copyToDestination(XML2Name, XMLPath, "for XML2 (PS2)")
-        resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PS2)")
-    elif ((textureFormat == "Wii") or ("Environment Texture: Wii" in textureFormat)):
-        # Wii stuff
-        # Check if the MUA1 and MUA2 numbers are the same
-        if settings["MUA1Num"] == settings["MUA2Num"]:
-            # MUA1 and MUA2 are the same
-            # Copy the files
-            resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (Wii) and MUA2 (Wii)")
-        else:
-            # MUA1 and MUA2 are not the same
-            # Copy the files
-            resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (Wii)")
-            resources.copyToDestination(MUA2Name, MUAPath, "for MUA2 (Wii)")
-    elif textureFormat == "PS2":
-        # PS2 only
-        # Copy the files
-        resources.copyToDestination(XML1Name, XMLPath, "for XML1 (PS2)")
-        resources.copyToDestination(XML2Name, XMLPath, "for XML2 (PS2)")
-        resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PS2)")
-    elif "GameCube, PSP, and MUA2 PS2" in textureFormat:
-        # GameCube, PSP, and MUA2 PS2
-        # Copy the files that don't need optimization
-        resources.copyToDestination(XML1Name, XMLPath, "for XML1 (GC)")
-        resources.copyToDestination(XML2Name, XMLPath, "for XML2 (GC)")
-        # Determine if this is a skin. Skins need special operations for XML2 PSP.
-        if assetType == "Skin":
-            # This is a skin
-            # Determine if the skin has cel shading. XML2 PSP doesn't use cel shading on the skins, so the naming convention is more like MUA1/MUA2.
-            if "No Cel" in XML2Name:
-                # The skin does not have cel shading
-                if globalVars.allowXML2PSPSkin == True:
-                    # Export the skin for XML2 PSP
-                    exportXML2PSPSkin(XML2Name, MUA1Name, MUA2Name, XMLPath)
-        else:
-            # This is not a skin
-            # Copy the XML2 PSP file
-            resources.copyToDestination(XML2Name, XMLPath, "for XML2 (PSP)")
-        # Check if the MUA1 and MUA2 numbers are the same
-        if settings["MUA1Num"] == settings["MUA2Num"]:
-            # MUA1 and MUA2 are the same
-            # Run alchemy
-            resources.callAlchemy(MUA1Name, iniPrefix + "3.ini")
-            # Copy the files
-            resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PSP) and MUA2 (PSP)")
-            resources.copyToDestination(MUA2Name, MUAPath, "for MUA2 (PS2)")
-        else:
-            # MUA1 and MUA2 are not the same
-            # Run alchemy
-            resources.callAlchemy(MUA1Name, iniPrefix + "3.ini")
-            resources.callAlchemy(MUA2Name, iniPrefix + "3.ini")
-            # Copy the files
-            resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PSP)")
-            resources.copyToDestination(MUA2Name, MUAPath, "for MUA2 (PSP)")
-            resources.copyToDestination(MUA2Name, MUAPath, "for MUA2 (PS2)")
-    elif (("PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360" in textureFormat) or ("PC, Wii, Xbox, MUA1 Steam, PS3, and 360" in textureFormat)):
-        # Transparent common texture
-        # Determine if the skin has environment maps
-        if not("Environment Texture" in textureFormat):
-            # No environment maps
-            # Determine if PS2 should be included
-            if "PS2" in textureFormat:
-                # Has PS2
-                # Copy the files that don't need optimization
-                resources.copyToDestination(XML1Name, XMLPath, "for XML1 (PS2 and Xbox)")
-                resources.copyToDestination(XML2Name, XMLPath, "for XML2 (PC, PS2, and Xbox)")
-                # Check if the MUA1 and MUA2 numbers are the same
-                if settings["MUA1Num"] == settings["MUA2Num"]:
-                    # MUA1 and MUA2 are the same
-                    # Copy the files
-                    resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PS2, Wii, and Xbox) and MUA2 (Wii)")
-                else:
-                    # MUA1 and MUA2 are not the same
-                    # Copy the files
-                    resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PS2, Wii, and Xbox)")
-                    resources.copyToDestination(MUA2Name, MUAPath, "for MUA2 (Wii)")
-            else:
-                # No PS2 (Secondary skin)
-                # Copy any files that don't need optimization.
-                resources.copyToDestination(XML1Name, XMLPath, "for XML1 (Xbox)")
-                resources.copyToDestination(XML2Name, XMLPath, "for XML2 (PC and Xbox)")
-                # Check if the MUA1 and MUA2 numbers are the same
-                if settings["MUA1Num"] == settings["MUA2Num"]:
-                    # MUA1 and MUA2 are the same
-                    # Copy the files
-                    resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (Wii and Xbox) and MUA2 (Wii)")
-                else:
-                    # MUA1 and MUA2 are not the same
-                    # Copy the files
-                    resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (Wii and Xbox)")
-                    resources.copyToDestination(MUA2Name, MUAPath, "for MUA2 (Wii)")
-            # Perform the Alchemy operation
-            resources.callAlchemy(MUA1Name, iniPrefix + "1-1.ini")
-            # Copy the optimized file
-            resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PC, Steam, PS3, and 360)")
-        else:
-            # Has environment maps
-            # Filter based on environment map type
-            if ("Environment Texture: PC and MUA1 360" in textureFormat):
-                # PC and MUA1 360
-                # Copy the XML2 PC file
-                resources.copyToDestination(XML2Name, XMLPath, "for XML2 (PC)")
-                # Perform the first Alchemy operation
-                resources.callAlchemy(MUA1Name, iniPrefix + "1-1.ini")
-                # Copy the first optimized alchemy file
-                resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PC, Steam, PS3, and 360)")
-            elif ("Environment Texture: Xbox" in textureFormat):
-                # Xbox
-                # Copy the files
-                resources.copyToDestination(XML1Name, XMLPath, "for XML1 (Xbox)")
-                resources.copyToDestination(XML2Name, XMLPath, "for XML2 (Xbox)")
-                resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (Xbox)")
-            elif ("Environment Texture: Wii" in textureFormat):
-                # Wii
-                # Check if the MUA1 and MUA2 numbers are the same
-                if settings["MUA1Num"] == settings["MUA2Num"]:
-                    # MUA1 and MUA2 are the same
-                    # Copy the files
-                    resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (Wii) and MUA2 (Wii)")
-                else:
-                    # MUA1 and MUA2 are not the same
-                    # Copy the files
-                    resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (Wii)")
-                    resources.copyToDestination(MUA2Name, MUAPath, "for MUA2 (Wii)")
-            else:
-                # PS2
-                # Copy the files
-                resources.copyToDestination(XML1Name, XMLPath, "for XML1 (PS2)")
-                resources.copyToDestination(XML2Name, XMLPath, "for XML2 (PS2)")
-                resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PS2)")
-    elif textureFormat == "MUA1 PC, Steam, 360, and PS3":
-        # Oversized next-gen MUA1
-        # Perform the first Alchemy operation
-        resources.callAlchemy(MUA1Name, iniPrefix + "1-1.ini")
-        # Copy the first optimized alchemy file
-        resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PC, Steam, PS3, and 360)")
-    elif textureFormat == "Main texture: MUA1 PC, Steam, 360, and PS3 / Environment Texture: PC and MUA1 360":
-        # Oversized next-gen MUA1 with environment maps
-        # Perform the first Alchemy operation
-        resources.callAlchemy(MUA1Name, iniPrefix + "1-1.ini")
-        # Copy the first optimized alchemy file
-        resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PC and 360)")
-        # Perform the second Alchemy operation
-        resources.callAlchemy(MUA1Name, iniPrefix + "1-2.ini")
-        # Copy the second optimized alchemy file
-        resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (Steam and PS3)")
-    elif textureFormat == "XML2 PC, Xbox, and Wii":
-        # Oversized XML2 PC, Xbox, and Wii
-        # Copy the files
-        resources.copyToDestination(XML1Name, XMLPath, "for XML1 (Xbox)")
-        resources.copyToDestination(XML2Name, XMLPath, "for XML2 (PC and Xbox)")
-        # Check if the MUA1 and MUA2 numbers are the same
-        if settings["MUA1Num"] == settings["MUA2Num"]:
-            # MUA1 and MUA2 are the same
-            # Copy the files
-            resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (Wii and Xbox) and MUA2 (Wii)")
-        else:
-            # MUA1 and MUA2 are not the same
-            # Copy the files
-            resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (Wii and Xbox)")
-            resources.copyToDestination(MUA2Name, MUAPath, "for MUA2 (Wii)")
-    elif "Main texture: XML2 PC, Xbox, and Wii" in textureFormat:
-        # Oversized XML2 PC, Xbox, and Wii with environment maps
-        # Determine which environment maps were used
-        if "Environment Texture: PC and MUA1 360" in textureFormat:
-            # XML2 PC
-            # Copy the file
-            resources.copyToDestination(XML2Name, XMLPath, "for XML2 (PC)")
-        elif "Environment Texture: Wii" in textureFormat:
-            # Wii
-            # Check if the MUA1 and MUA2 numbers are the same
-            if settings["MUA1Num"] == settings["MUA2Num"]:
-                # MUA1 and MUA2 are the same
-                # Copy the files
-                resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (Wii) and MUA2 (Wii)")
-            else:
-                # MUA1 and MUA2 are not the same
-                # Copy the files
-                resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (Wii)")
-                resources.copyToDestination(MUA2Name, MUAPath, "for MUA2 (Wii)")
-        else:
-            # Xbox
-            # Copy the files
-            resources.copyToDestination(XML1Name, XMLPath, "for XML1 (Xbox)")
-            resources.copyToDestination(XML2Name, XMLPath, "for XML2 (Xbox)")
-            resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (Xbox)")
-    elif ((textureFormat == "PC") or ("Environment Texture: PC" in textureFormat) or (textureFormat == "PC and MUA1 Steam")):
-        # Standard sized opaque PC-only, or any size transparent PC-only
-        # Copy the XML2 PC file
-        resources.copyToDestination(XML2Name, XMLPath, "for XML2 (PC)")
-        # Determine if it's transparent or not
-        if not(textureFormat == "PC and MUA1 Steam"):
-            # Not transparent, or has environment maps
-            # Perform the first Alchemy operation
-            resources.callAlchemy(MUA1Name, iniPrefix + "1-1.ini")
-            # Copy the first optimized alchemy file
-            resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PC)")
-            # Perform the second Alchemy operation
-            resources.callAlchemy(MUA1Name, iniPrefix + "1-2.ini")
-            # Copy the second optimized alchemy file
-            resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (Steam)")
-        else:
-            # Transparent
-            # Perform the first Alchemy operation
-            resources.callAlchemy(MUA1Name, iniPrefix + "1-1.ini")
-            # Copy the first optimized alchemy file
-            resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PC and Steam)")
-    elif textureFormat == "MUA1 PC and Steam":
-        # Oversized PC-only for MUA1
-        # Perform the first Alchemy operation
-        resources.callAlchemy(MUA1Name, iniPrefix + "1-1.ini")
-        # Copy the first optimized alchemy file
-        resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PC and Steam)")
-    elif textureFormat == "Main texture: MUA1 PC and Steam / Environment Texture: PC and MUA1 360":
-        # Oversized PC-only for MUA1 with environment maps
-        # Perform the first Alchemy operation
-        resources.callAlchemy(MUA1Name, iniPrefix + "1-1.ini")
-        # Copy the first optimized alchemy file
-        resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PC)")
-        # Perform the second Alchemy operation
-        resources.callAlchemy(MUA1Name, iniPrefix + "1-2.ini")
-        # Copy the second optimized alchemy file
-        resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (Steam)")
-    elif ((textureFormat == "XML2 PC") or (textureFormat == "Main texture: XML2 PC / Environment Texture: PC and MUA1 360")):
-        # Oversized PC-only for XML2
-        # Copy the file
-        resources.copyToDestination(MUA1Name, MUAPath, "for XML2 (PC)")
-    else:
-        # None of the above
-        # Display an error message
-        resources.printError("Choice of texture format did not line up with an existing operation. Please contact the program author. Selected texture format: " + textureFormat, True)
-        # Set the completion status
+    # Attempt to process
+    try:
+        # Loop through the possible files for the selected texture format
+        for file in processDict[textureFormat]:
+            # Process the file using its necessary function and arguments
+            file["function"](sourceFileName, assetType, **file["args"])
+    except KeyError:
+        # The selected texture format doesn't have an entry in the dictionary
+        # Print an error
+        resources.printError(f"Choice of texture format did not line up with an existing operation. Selected texture format: {textureFormat}", True)
+        # Update the completion variable to indicate that nothing was processed
         complete = False
-        # Wait for the user to acknowledge the error
-        resources.pressAnyKey(None)
-    # Return the collected value
+    # Return whether or not the processing was successfully completed
     return complete

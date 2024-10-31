@@ -6,11 +6,8 @@
 # ####### #
 # IMPORTS #
 # ####### #
-# Resources for this program
 import resources
-# To be able to manipulate paths
 import os.path
-# To be able to copy files
 from shutil import copy
 
 
@@ -41,11 +38,11 @@ def getFileNamesAndNumbers(settings, fullFileName):
             if settings[game + "Num"][-2:] == "01":
                 # Standard numbering, can end the number in "XX"
                 # Set the file name
-                nameList.append(resources.setUpFileName(fullFileName, "", settings[game + "Num"][0:-2] + "XX", " (3D Head).igb"))
+                nameList.append(resources.setUpFileName2("", settings[game + "Num"][0:-2] + "XX", " (3D Head).igb"))
             else:
                 # Non-standard file name
                 # Set the file name
-                nameList.append(resources.setUpFileName(fullFileName, "", settings[game + "Num"], " (3D Head).igb"))
+                nameList.append(resources.setUpFileName2("", settings[game + "Num"], " (3D Head).igb"))
         else:
             # The game is not not in use
             # Set no name
@@ -69,19 +66,12 @@ def headProcessing(fullFileName, settings, XMLPath, MUAPath):
         # A texture format was chosen
         # Set up file names
         (XML1Name, XML2Name, MUA1Name, MUA2Name) = getFileNamesAndNumbers(settings, fullFileName)
-        # Copy the files
-        for num, name in zip([settings["XML1Num"], settings["XML2Num"], settings["MUA1Num"], settings["MUA2Num"]], [XML1Name, XML2Name, MUA1Name, MUA2Name]):
-            # Determine if the number is used
-            if (not(num == None) and not(name == None) and not(os.path.exists(name))):
-                # Number isn't empty, need to copy
-                # Perform the copying
-                copy(fullFileName, name)
-        # Perform the hex editing
-        resources.hexEdit([settings["XML1Num"], settings["XML2Num"], settings["MUA1Num"], settings["MUA2Num"]], [XML1Name, XML2Name, MUA1Name, MUA2Name], "3D Head")
+        # Set up the dictionaries for processing
+        numsDict = {"XML1": settings["XML1Num"], "XML2": settings["XML2Num"], "MUA1": settings["MUA1Num"], "MUA2": settings["MUA2Num"]}
+        nameDict = {"XML1": XML1Name, "XML2": XML2Name, "MUA1": MUA1Name, "MUA2": MUA2Name}
+        pathDict = {"XML": XMLPath, "MUA": MUAPath}
         # Process the file
-        complete = resources.process3D("3D Head", textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name, XMLPath, MUAPath, settings)
-        # Delete the lingering files
-        resources.deleteLingering([XML1Name, XML2Name, MUA1Name, MUA2Name])
+        complete = resources.process3D("3D Head", fullFileName, textureFormat, numsDict, nameDict, pathDict)
     else:
         # A texture format was not chosen
         complete = False

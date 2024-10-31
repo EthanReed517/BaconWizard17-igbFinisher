@@ -7,7 +7,6 @@
 # ####### #
 # IMPORTS #
 # ####### #
-# Resources for this program
 import resources
 
 
@@ -157,7 +156,7 @@ def oneFormatEnvironmentMaps(png8Counter, dxt1Counter, plainPngCounter, texFolde
         if settings["pcOnly"] == False:
             # The model is being processed for all consoles.
             # Set up the texture folder list with PNG8 texture options that are compatible with all consoles.
-            textureFolderList = [("PC, PS2, Xbox, and MUA1 360", "PC and MUA1 360"), ("PC, PS2, Xbox, and MUA1 360", "Xbox"), ("PC, PS2, Xbox, and MUA1 360", "PS2"), ("PC, Xbox, and MUA1 360", "PC and MUA1 360"), ("PC, Xbox, and MUA1 360", "Xbox"), ("PS2", "PS2"), ("GameCube, PSP, and MUA2 PS2", "GameCube, PSP, and MUA2 PS2"), ("PC and MUA1 360", "PC and MUA1 360"), ("Xbox", "Xbox"), ("Wii", "Wii")]
+            textureFolderList = [("PC, PS2, Xbox, and MUA1 360", "PC and MUA1 360"), ("PC, PS2, Xbox, and MUA1 360", "Xbox"), ("PC, PS2, Xbox, and MUA1 360", "PS2"), ("PC, Xbox, and MUA1 360", "PC and MUA1 360"), ("PC, Xbox, and MUA1 360", "Xbox"), ("PS2", "PS2"), ("GameCube, PSP, and MUA2 PS2", "GameCube, PSP, and MUA2 PS2"), ("PC and MUA1 360", "PC and MUA1 360"), ("Xbox", "Xbox")]
         else:
             # The model is being process for PC only.
             # Set up the texture folder list with PNG8 texture options that are compatible with PC only.
@@ -168,11 +167,11 @@ def oneFormatEnvironmentMaps(png8Counter, dxt1Counter, plainPngCounter, texFolde
         if settings["pcOnly"] == False:
             # The model is being processed for all consoles.
             # Set up the texture folder list with DXT1 texture options that are compatible with all consoles.
-            textureFolderList = [("MUA1 PC, Steam, 360, and PS3", "MUA1 PC, Steam, 360, and PS3"), ("XML2 PC, Xbox, and Wii", "XML2 PC"), ("XML2 PC, Xbox, and Wii", "Xbox and Wii"), ("Wii", "Wii"), ("Wii", "Xbox and Wii")]
+            textureFolderList = [("XML2 PC, Xbox, and Wii", "XML2 PC"), ("XML2 PC, Xbox, and Wii", "Xbox and Wii"), ("Wii", "Wii"), ("Wii", "Xbox and Wii")]
         else:
             # The model is being process for PC only.
             # Set up the texture folder list with DXT1 texture options that are compatible with PC only.
-            textureFolderList = [("MUA1 PC and Steam", "MUA1 PC and Steam"), ("XML2 PC", "XML2 PC")]
+            textureFolderList = [("XML2 PC", "XML2 PC")]
     elif plainPngCounter == len(texFolderList):
         # This is plain png format, which isn't allowed. Environment maps can't be in plain png format.
         # Print an error to let the user know.
@@ -201,7 +200,7 @@ def oneFormatEnvironmentMaps(png8Counter, dxt1Counter, plainPngCounter, texFolde
     if folderFound == 1:
         # A texture folder was found, meaning that the folder was recognized.
         # Set up the texture format using the folders found earlier.
-        textureFormat = "Main texture: " + diffuseFolder + " / Environment Texture: " + envFolder
+        textureFormat = "Main texture: " + diffuseFolder + " / Environment texture: " + envFolder
         # Print a success message to let the user know that the folder was identified.
         resources.printSuccess("The diffuse texture folder was automatically identified as " + diffuseFolder + ". The environment map folder was automatically identified as " + envFolder + ".")
     elif folderFound == 0:
@@ -246,11 +245,11 @@ def transparentEnvironmentMaps(png8Counter, dxt1Counter, plainPngCounter, texFol
         if settings["pcOnly"] == False:
             # The model is being processed for all consoles.
             # Set up the texture folder list with plain png texture options that are compatible with all consoles.
-            textureFolderList = [("PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360", "MUA1 PC, Steam, 360, and PS3"), ("PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360", "XML2 PC"), ("PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360", "Xbox and Wii"), ("PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360", "Wii"), ("PC, Xbox, Wii, MUA1 Steam, PS3, and 360", "MUA1 PC, Steam, 360, and PS3"), ("PC, Xbox, Wii, MUA1 Steam, PS3, and 360", "XML2 PC"), ("PC, Xbox, Wii, MUA1 Steam, PS3, and 360", "Xbox and Wii"), ("PC, Xbox, Wii, MUA1 Steam, PS3, and 360", "Wii")]
+            textureFolderList = [("PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360", "XML2 PC"), ("PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360", "Xbox and Wii"), ("PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360", "Wii"), ("PC, Xbox, Wii, MUA1 Steam, PS3, and 360", "XML2 PC"), ("PC, Xbox, Wii, MUA1 Steam, PS3, and 360", "Xbox and Wii"), ("PC, Xbox, Wii, MUA1 Steam, PS3, and 360", "Wii")]
         else:
             # The model is being process for PC only.
             # Set up the texture folder list with plain png texture options that are compatible with PC only.
-            textureFolderList = [("PC and MUA1 Steam", "MUA1 PC and Steam"), ("PC and MUA1 Steam", "XML2 PC")]
+            textureFolderList = [("PC and MUA1 Steam", "XML2 PC")]
     else:
         # The environment maps use neither DXT1 nor PNG8 format, which shouldn't be possible.
         # Let the user know that this shouldn't be possible.

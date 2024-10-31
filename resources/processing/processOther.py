@@ -6,13 +6,9 @@
 # ####### #
 # IMPORTS #
 # ####### #
-# Resources for this program
 import resources
-# To be able to manipulate paths
 import os.path
-# To be able to copy files
 from shutil import copy
-# To be able to get the file name
 from pathlib import Path
 
 
@@ -40,7 +36,7 @@ def otherModelNameInput(charNum, gameName, fullFileName, celExt):
         else:
             # Something was added
             # add the file extension
-            fileName = os.path.join(os.path.dirname(fullFileName), fileName + celExt + ".igb")
+            fileName = fileName + celExt + ".igb"
     # return the collected value
     return fileName
 
@@ -92,15 +88,12 @@ def otherProcessing(fullFileName, settings, XMLPath, MUAPath):
             # Set up the other file names
             MUA1Name = otherModelNameInput(settings["MUA1Num"], "MUA1", fullFileName, "")
             MUA2Name = otherModelNameInput(settings["MUA2Num"], "MUA2", fullFileName, "")
-        # Copy the files
-        for num, name in zip([settings["XML1Num"], settings["XML2Num"], settings["MUA1Num"], settings["MUA2Num"]], [XML1Name, XML2Name, MUA1Name, MUA2Name]):
-            # Determine if the number is used and the file doesn't exist
-            if (not(num == None) and not(name == None) and not(os.path.exists(name))):
-                # Number isn't empty, need to copy
-                # Perform the copying
-                copy(fullFileName, name)
+        # Set up the dictionaries for processing
+        numsDict = {"XML1": settings["XML1Num"], "XML2": settings["XML2Num"], "MUA1": settings["MUA1Num"], "MUA2": settings["MUA2Num"]}
+        nameDict = {"XML1": XML1Name, "XML2": XML2Name, "MUA1": MUA1Name, "MUA2": MUA2Name}
+        pathDict = {"XML": XMLPath, "MUA": MUAPath}
         # Process the file
-        complete = resources.process3D("Other", textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name, XMLPath, MUAPath, settings)
+        complete = resources.process3D("Other", fullFileName, textureFormat, numsDict, nameDict, pathDict)
     else:
         # A texture format was not chosen
         complete = False
