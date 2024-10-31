@@ -11,6 +11,7 @@ import alchemy
 import common
 import hex
 import questions
+import textures
 # Other modules
 import os.path
 from os import remove
@@ -232,7 +233,7 @@ def processConvo(settings, textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name
 # Define the function to process conversation portraits
 def convoProcessing(fullFileName, settings, XMLPath, MUAPath):
     # Determine the texture format
-    (textureFormat, suffix) = resources.getConvoTextureFormat(settings, fullFileName)
+    (textureFormat, suffix) = textures.getConvoTextureFormat(settings, fullFileName)
     # Confirm that a texture format was chosen
     if not(textureFormat == None):
         # A texture format was chosen

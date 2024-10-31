@@ -10,6 +10,7 @@
 import alchemy
 import common
 import questions
+import textures
 # Other modules
 import os.path
 from shutil import copy
@@ -103,7 +104,7 @@ def getFileNamesAndNumbers(settings, fullFileName):
 # Define the function to process skins
 def skinProcessing(fullFileName, settings, XMLPath, MUAPath):
     # Determine the texture format
-    textureFormat = resources.get3DTextureFormat("Skin", settings, fullFileName)
+    textureFormat = textures.get3DTextureFormat("Skin", settings, fullFileName)
     # Confirm that a texture format was chosen
     if not(textureFormat == None):
         # A texture format was chosen

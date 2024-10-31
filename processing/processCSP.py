@@ -10,6 +10,7 @@
 import alchemy
 import common
 import questions
+import textures
 # Other modules
 import os.path
 from shutil import copy
@@ -66,7 +67,7 @@ def processCSP(textureFormat, XML1Name, XML2Name, XMLPath, portraitType):
 # Define the function to process conversation portraits
 def CSPProcessing(fullFileName, settings, XMLPath):
     # Determine the texture format
-    (textureFormat, portraitType) = resources.getCSPTextureFormat(settings, fullFileName)
+    (textureFormat, portraitType) = textures.getCSPTextureFormat(settings, fullFileName)
     # Confirm that a texture format was chosen
     if not(textureFormat == None):
         # A texture format was chosen

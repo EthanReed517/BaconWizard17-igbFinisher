@@ -1,14 +1,13 @@
 # ########### #
 # INFORMATION #
 # ########### #
-# This module is used to determine the texture formats for character select portraits (CSPs).
+# This module is used to determine the texture formats for conversation portraits (HUDs).
 
 
 # ####### #
 # IMPORTS #
 # ####### #
 # Modules from this program
-import resources
 import alchemy
 import questions
 
@@ -17,10 +16,11 @@ import questions
 # FUNCTIONS #
 # ######### #
 # Define the function to recognize the texture format.
-def recognizeCSPTextureFormat(texPathList, texFormatList):
+def recognizeHUDTextureFormat(texPathList, texFormatList):
     # Initialize the counters for the acceptable texture formats. These will keep track of how many textures of each format are found.
     png8Counter = 0
     dxt1Counter = 0
+    plainPngCounter = 0
     # Get the name of the folder that the texture is stored in. This is the second to last element in the path.
     texFolder = texPathList[0].split("\\")[-2]
     # Get the name of the texture file. This is the last element in the path.
@@ -38,8 +38,8 @@ def recognizeCSPTextureFormat(texPathList, texFormatList):
         dxt1Counter += 1
     elif texFormat == "IG_GFX_TEXTURE_FORMAT_RGBA_8888_32 (7)":
         # This format is a png file with no compression.
-        # Give an error to let the user know that this format isn't allowed. There's no reason for CSP textures to have transparency.
-        questions.printError("This model uses a plain png texture. This texture format is not supported with CSPs. Please choose a different texture.", False)
+        # Increment the counter for plain png textures.
+        plainPngCounter += 1
     elif texFormat == "IG_GFX_TEXTURE_FORMAT_X_4 (65537)":
         # This format is a png file with PNG4 compression, which is not supported. 
         # Give an error to let the user know that this format isn't allowed. It's not supported because PNG4 is only used on the PSP and only for some assets; taking out PNG4 compatibility reduces the number of texture options and makes processing easier.
@@ -61,7 +61,7 @@ def recognizeCSPTextureFormat(texPathList, texFormatList):
         # Give an error to let the user know. This technically shouldn't happen because the previous options cover all the common formats, but there are some fringe formats that can be exported if you know how to do it.
         questions.printError("A texture format used by this model is not recognized. Please choose a different texture.\nTexture format \"" + texFormat + "\".", False)
     # Return the collected variables: the number of PNG8 textures found in the model, the number of DXT1 textures found in the model, the number of plain png textures found in the model, and the texture folder and file name.
-    return png8Counter, dxt1Counter, texFolder, texFile
+    return png8Counter, dxt1Counter, plainPngCounter, texFolder, texFile
 
 # Define the function for finding the texture folder in the list of texture folders.
 def findFolder(texFolder, textureFolderList):
@@ -82,13 +82,13 @@ def findFolder(texFolder, textureFolderList):
     return textureFormat
 
 # Define the function to get texture formats for 3D assets
-def getCSPTextureFormat(settings, fullFileName):
+def getConvoTextureFormat(settings, fullFileName):
     # Call the function to get the texture information from Alchemy for this file. Return a list of the texture paths and another of the texture formats.
     (texPathList, texFormatList) = alchemy.GetTexPath(fullFileName)
     # Initialize the texture format as a None variable. This way, if a format is not detected, it doesn't have to be set as anything. But if one is detected, it can be overwritten.
     textureFormat = None
-    # Initialize the portrait type as a None variable. This way, if a correct portrait type is not detected, it doesn't have to be set as anything. But if one is detected, it can be overwritten.
-    portraitType = None
+    # Initialize the file name suffix as a None variable. This way, if a correct suffix is not detected, it doesn't have to be set as anything. But if one is detected, it can be overwritten.
+    suffix = None
     # Determine the number of textures to ensure that the model was set up correctly.
     if len(texPathList) == 0:
         # No textures were found.
@@ -97,23 +97,49 @@ def getCSPTextureFormat(settings, fullFileName):
     elif len(texPathList) == 1:
         # One texture was found. This is the correct number of textures.
         # Determine which texture format is being used.
-        (png8Counter, dxt1Counter, texFolder, texFile) = recognizeCSPTextureFormat(texPathList, texFormatList)
-        # Determine if a format was recognized.
-        if ((png8Counter == 1) or (dxt1Counter == 1)):
-            # One of the counters is up, so the format was recognized.
-            # Determine which prefix was used with the texture name.
-            if texFile[0:4] == "x1c_":
-                # The texture uses a blue hero outline.
-                # Define the portrait type.
-                portraitType = "XML1"
-            elif texFile[0:4] == "x2c_":
-                # The texture uses a red villain outline.
-                # Set up the file name suffix for the igb file.
-                portraitType = "XML2"
+        (png8Counter, dxt1Counter, plainPngCounter, texFolder, texFile) = recognizeHUDTextureFormat(texPathList, texFormatList)
+        # Determine if this is a plain png texture or not, which would indicate that it's a next-gen style HUD
+        if plainPngCounter == 1:
+            # This is a plain png texture, meaning that this is a next-gen style HUD.
+            # Determine if the file name has the correct prefix for next-gen style HUDs.
+            if texFile[0:3] == "ng_":
+                # The file has the correct prefix.
+                # Set the file name suffix for the igb file.
+                suffix = " (Next-Gen Style)"
+                # Determine if this is for PC or consoles, which will determine which texture list to use.
+                if settings["pcOnly"] == False:
+                    # The model is being processed for all consoles.
+                    # Set up the texture folder list with plain png texture options that are compatible with all consoles.
+                    textureFolderList = ["All", "All except PSP", "PSP", "PC and Next-Gen", "Last-Gen"]
+                else:
+                    # The model is being process for PC only.
+                    # Set up the texture folder list with plain png texture options that are compatible with PC only.
+                    textureFolderList = ["PC and Steam"]
+                # Determine the format that's in use.
+                textureFormat = findFolder(texFolder, textureFolderList)
             else:
                 # The file has the incorrect prefix, meaning that the texture was not exported correctly.
                 # Display an error to let the user know.
-                questions.printError("The texture name does not have the correct prefix. This means that the texture was not exported correctly. Please try again.", False)
+                questions.printError("The texture name does not have the \"ng_\" prefix, but the texture format was detected as plain png. This means that the texture was not exported correctly. Please try again.", False)
+        elif ((png8Counter == 1) or (dxt1Counter == 1)):
+            # This is an opaque texture, meaning that it's a traditional style HUD.
+            # Determine which prefix was used with the texture name.
+            if texFile[0:2] == "b_":
+                # The texture uses a blue hero outline.
+                # Set up the file name suffix for the igb file.
+                suffix = " (Hero)"
+            elif texFile[0:2] == "r_":
+                # The texture uses a red villain outline.
+                # Set up the file name suffix for the igb file.
+                suffix = " (Villain)"
+            elif texFile[0:2] == "g_":
+                # The texture uses a green villain outline.
+                # Set up the file name suffix for the igb file.
+                suffix = " (Doom-Possessed)"
+            else:
+                # The texture has no outline. It's possible that this also means that the texture was set up incorrectly, but that would be caught later with the folder detection, so it's okay for it to get through here.
+                # Set up the file name suffix for the igb file.
+                suffix = ""
             # Determine which format is in use.
             if png8Counter == 1:
                 # The texture is PNG8 format.
@@ -121,7 +147,7 @@ def getCSPTextureFormat(settings, fullFileName):
                 if settings["pcOnly"] == False:
                     # The model is being processed for all consoles.
                     # Set up the texture folder list with PNG8 texture options that are compatible with all consoles.
-                    textureFolderList = ["All", "All except PSP", "GC, PS2, and Xbox", "PSP"]
+                    textureFolderList = ["Main", "Main except PSP", "PSP", "GC, PS2, and Xbox"]
                 else:
                     # The model is being process for PC only.
                     # Set up the texture folder list with PNG8 texture options that are compatible with PC only.
@@ -132,11 +158,11 @@ def getCSPTextureFormat(settings, fullFileName):
                 if settings["pcOnly"] == False:
                     # The model is being processed for all consoles.
                     # Set up the texture folder list with DXT1 texture options that are compatible with all consoles.
-                    textureFolderList = []
+                    textureFolderList = ["Wii", "XML2 PC", "MUA1 PC and Next-Gen"]
                 else:
                     # The model is being process for PC only.
                     # Set up the texture folder list with DXT1 texture options that are compatible with PC only.
-                    textureFolderList = ["PC"]
+                    textureFolderList = ["XML2 PC", "MUA1 PC and Steam"]
             # Determine the format that's in use.
             textureFormat = findFolder(texFolder, textureFolderList)
         else:
@@ -148,4 +174,4 @@ def getCSPTextureFormat(settings, fullFileName):
         # Give an error to let the user know.
         questions.printError("Two or more textures were found in the model. HUDs should only have one texture applied. Please try again.", False)
     # Return the collected value
-    return textureFormat, portraitType
+    return textureFormat, suffix

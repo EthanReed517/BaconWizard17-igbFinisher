@@ -9,6 +9,7 @@
 # Modules from this program
 import common
 import questions
+import textures
 # Other modules
 import os.path
 from shutil import copy
@@ -63,7 +64,7 @@ def getFileNamesAndNumbers(settings, fullFileName):
 # Define the function to process skins
 def headProcessing(fullFileName, settings, XMLPath, MUAPath):
     # Determine the texture format
-    textureFormat = resources.get3DTextureFormat("3D Head", settings, fullFileName)
+    textureFormat = textures.get3DTextureFormat("3D Head", settings, fullFileName)
     # Confirm that a texture format was chosen
     if not(textureFormat == None):
         # A texture format was chosen
