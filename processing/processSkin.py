@@ -7,7 +7,6 @@
 # IMPORTS #
 # ####### #
 # Modules from this program
-import resources
 import alchemy
 import common
 import questions
@@ -115,7 +114,7 @@ def skinProcessing(fullFileName, settings, XMLPath, MUAPath):
         nameDict = {"XML1": XML1Name, "XML2": XML2Name, "MUA1": MUA1Name, "MUA2": MUA2Name}
         pathDict = {"XML": XMLPath, "MUA": MUAPath}
         # Process the file
-        complete = resources.process3D("Skin", fullFileName, textureFormat, numsDict, nameDict, pathDict)
+        complete = processing.process3D("Skin", fullFileName, textureFormat, numsDict, nameDict, pathDict)
     else:
         # A texture format was not chosen
         complete = False

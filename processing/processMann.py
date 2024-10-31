@@ -7,7 +7,6 @@
 # IMPORTS #
 # ####### #
 # Modules from this program
-import resources
 import common
 import questions
 # Other modules
@@ -49,7 +48,6 @@ def getFileNamesAndNumbers(settings, fullFileName):
     MUA2Name = nameList[3]
     # Return the collected values
     return (XML1Name, XML2Name, MUA1Name, MUA2Name)
-    
 
 # Define the function to process skins
 def mannProcessing(fullFileName, settings, XMLPath, MUAPath):
@@ -65,7 +63,7 @@ def mannProcessing(fullFileName, settings, XMLPath, MUAPath):
         nameDict = {"XML1": XML1Name, "XML2": XML2Name, "MUA1": MUA1Name, "MUA2": MUA2Name}
         pathDict = {"XML": XMLPath, "MUA": MUAPath}
         # Process the file
-        complete = resources.process3D("Mannequin", fullFileName, textureFormat, numsDict, nameDict, pathDict)
+        complete = processing.process3D("Mannequin", fullFileName, textureFormat, numsDict, nameDict, pathDict)
     else:
         # A texture format was not chosen
         complete = False

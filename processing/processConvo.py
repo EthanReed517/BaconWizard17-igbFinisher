@@ -7,7 +7,6 @@
 # IMPORTS #
 # ####### #
 # Modules from this program
-import resources
 import alchemy
 import common
 import hex

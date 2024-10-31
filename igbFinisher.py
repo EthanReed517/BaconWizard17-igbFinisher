@@ -7,11 +7,11 @@
 # IMPORTS #
 # ####### #
 # Modules from this program
-import resources
 import alchemy
 import assetRecognition
 import config
 import questions
+import processing
 # Other modules
 import os.path
 from os import rename, system
@@ -135,26 +135,26 @@ def fileDrop(fullFileName):
     if assetType == "Skin":
         # Skin
         # Call the skin processing function
-        complete = resources.skinProcessing(fullFileName, settings, XMLPath, MUAPath)
+        complete = processing.skinProcessing(fullFileName, settings, XMLPath, MUAPath)
     elif assetType == "Mannequin":
         # Mannequin
         # Call the mannequin processing function
-        complete = resources.mannProcessing(fullFileName, settings, XMLPath, MUAPath)
+        complete = processing.mannProcessing(fullFileName, settings, XMLPath, MUAPath)
     elif assetType == "3D Head":
         # 3D Head
         # Call the 3D head processing function
-        complete = resources.headProcessing(fullFileName, settings, XMLPath, MUAPath)
+        complete = processing.headProcessing(fullFileName, settings, XMLPath, MUAPath)
     elif assetType == "Conversation Portrait":
         # Conversation portrait
         # Call the conversation portrait processing function
-        complete = resources.convoProcessing(fullFileName, settings, XMLPath, MUAPath)
+        complete = processing.convoProcessing(fullFileName, settings, XMLPath, MUAPath)
     elif assetType == "Character Select Portrait":
         # Character select portrait
         # Call the mannequin processing function
-        complete = resources.CSPProcessing(fullFileName, settings, XMLPath)
+        complete = processing.CSPProcessing(fullFileName, settings, XMLPath)
     else:
         # Other models
-        complete = resources.otherProcessing(fullFileName, settings, XMLPath, MUAPath)
+        complete = processing.otherProcessing(fullFileName, settings, XMLPath, MUAPath)
     # Clear the screen from the previous run
     system("cls")
     # Print the welcome information
