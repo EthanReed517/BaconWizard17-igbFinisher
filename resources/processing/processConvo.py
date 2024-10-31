@@ -6,13 +6,10 @@
 # ####### #
 # IMPORTS #
 # ####### #
-# Resources for this program
 import resources
-# To be able to manipulate paths
+import hex
 import os.path
-# To be able to 
 from os import remove
-# To be able to copy files
 from shutil import copy
 
 
@@ -245,7 +242,7 @@ def convoProcessing(fullFileName, settings, XMLPath, MUAPath):
                 # Perform the copying
                 copy(fullFileName, name)
         # Perform the hex editing
-        resources.hexEdit([settings["XML1Num"], settings["XML2Num"], settings["MUA1Num"], settings["MUA2Num"]], [XML1Name, XML2Name, MUA1Name, MUA2Name], "Conversation Portrait")
+        hex.hexEdit([settings["XML1Num"], settings["XML2Num"], settings["MUA1Num"], settings["MUA2Num"]], [XML1Name, XML2Name, MUA1Name, MUA2Name], "Conversation Portrait")
         # Process the file
         complete = processConvo(settings, textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name, XMLPath, MUAPath, suffix, fullFileName)
         # Delete the lingering files

@@ -8,6 +8,7 @@
 # ####### #
 import resources
 import globalVars
+import hex
 from shutil import copy
 from os import makedirs, rename, remove
 import os.path
@@ -59,7 +60,7 @@ def processFile(sourceFileName, assetType, num, file, path, folder, optList):
         tempFile = os.path.join(os.path.dirname(sourceFileName), "temp.igb")
         copy(sourceFileName, tempFile)
         # Hex edit the file
-        resources.hexEdit2(tempFile, num, assetType)
+        hex.hexEdit2(tempFile, num, assetType)
         # Run the Alchemy operations if needed
         if optList is not None:
             for optimization in optList:
