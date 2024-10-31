@@ -10,6 +10,7 @@
 import resources
 import alchemy
 import assetRecognition
+import common
 import questions
 # Other modules
 import os.path
@@ -99,7 +100,7 @@ def fileDrop(fullFileName):
     # Print the welcome information
     displayInfo()
     # Restore the settings from the ini file
-    settings = resources.parseConfig()
+    settings = config.parseConfig()
     # Trim the curly brackets off the file name
     fullFileName = fullFileName.data.replace("{", "").replace("}", "")
     # Get the file name
@@ -249,7 +250,7 @@ displayInfo()
 # Print the welcome message
 questions.printImportant("Welcome to BaconWizard17's igb Finisher!\n")
 # Read the settings
-settings = resources.parseConfig()
+settings = config.parseConfig()
 # Reset the Alchemy eval to avoid possible issues
 alchemy.resetAlchemy()
 # Initialize the window
