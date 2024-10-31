@@ -70,7 +70,7 @@ def GetModelStats(file_name) -> list:
 # Define the function for performing Alchemy operations
 def callAlchemy(file_name, ini_name):
     # Determine if the file actually exists
-    if not(file_name == None):
+    if file_name is not None:
         # There is a file
         # Define the Alchemy ini file & command
         ini_file = os.path.abspath("Scripts/" + ini_name)

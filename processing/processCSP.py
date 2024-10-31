@@ -69,7 +69,7 @@ def CSPProcessing(fullFileName, settings, XMLPath):
     # Determine the texture format
     (textureFormat, portraitType) = textures.getCSPTextureFormat(settings, fullFileName)
     # Confirm that a texture format was chosen
-    if not(textureFormat == None):
+    if textureFormat is not None:
         # A texture format was chosen
         # Determine the portrait type
         if portraitType == "XML1":
@@ -85,7 +85,7 @@ def CSPProcessing(fullFileName, settings, XMLPath):
         # Copy the files
         for num, name in zip([settings["XML1Num"], settings["XML2Num"]], [XML1Name, XML2Name]):
             # Determine if the number is used
-            if (not(num == None) and not(name == None) and not(os.path.exists(name))):
+            if ((num is not None) and (name is not None) and not(os.path.exists(name))):
                 # Number isn't empty, need to copy
                 # Perform the copying
                 copy(fullFileName, name)

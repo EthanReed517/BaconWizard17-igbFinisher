@@ -33,15 +33,15 @@ def getAssetChoices(settings):
     # Skins are present in every game
     assetChoices = ["Skin"]
     # Include mannequins if an MUA1 or MUA2 number is present
-    if (not(settings["MUA1Num"] == None)) or (not(settings["MUA2Num"] == None)):
+    if ((settings["MUA1Num"] is not None) or (settings["MUA2Num"] is not None)):
         assetChoices.append("Mannequin")
     # Include 3D heads if an XML1 or XML2 number is present
-    if (not(settings["XML1Num"] == None)) or (not(settings["XML2Num"] == None)):
+    if ((settings["XML1Num"] is not None) or (settings["XML2Num"] is not None)):
         assetChoices.append("3D Head")
     # Conversation portraits are present in every game
     assetChoices.append("Conversation Portrait")
     # Include CSPs if an XML1 or XML2 number is present
-    if (not(settings["XML1Num"] == None)) or (not(settings["XML2Num"] == None)):
+    if ((settings["XML1Num"] is not None) or (settings["XML2Num"] is not None)):
         assetChoices.append("Character Select Portrait")
     # Other models are present in every game
     assetChoices.append("Other")

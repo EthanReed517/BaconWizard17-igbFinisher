@@ -18,7 +18,7 @@ from shutil import copy
 # Define the function to set up file names
 def setUpFileName(fullFileName, prefix, gameNum, suffix):
     # Determine if the character number is None, meaning that the character is not used in this game and the name is not needed
-    if gameNum == None:
+    if gameNum is None:
         # The character number is None, so no name is needed
         # set the file name to None
         gameName = None
@@ -32,7 +32,7 @@ def setUpFileName(fullFileName, prefix, gameNum, suffix):
 # Define the alternate function to set up file names
 def setUpFileName2(prefix, gameNum, suffix):
     # Determine if the character number is None, meaning that the character is not used in this game and the name is not needed
-    if gameNum == None:
+    if gameNum is None:
         # The character number is None, so no name is needed
         # set the file name to None
         gameName = None
@@ -46,13 +46,13 @@ def setUpFileName2(prefix, gameNum, suffix):
 # Define the function to copy files to the necessary destination
 def copyToDestination(fileName, releasePath, folderName):
     # Verify that the file name is not a None
-    if not(fileName == None):
+    if fileName is not None:
         # File name is not none
         # Verify that the file exists before copying
         if os.path.isfile(fileName):
             # The file exists
             # Verify that the file path is populated
-            if not(releasePath == None):
+            if releasePath is not None:
                 # The path is populated
                 # Create the path to the game-specific release folder
                 gamePath = os.path.join(releasePath, folderName)
@@ -69,7 +69,7 @@ def deleteLingering(fileList):
     # Delete the lingering files
     for file in fileList:
         # Check if the file name is not a none type
-        if not(file == None):
+        if file is not None:
             # File is not a none type
             # Check if the file exists
             if os.path.isfile(file):

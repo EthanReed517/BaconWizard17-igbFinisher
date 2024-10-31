@@ -93,7 +93,7 @@ def printPlain(message):
 # Define the function to display a message for the user to press any key to continue.
 def pressAnyKey(message):
     # Determine if the message is not a None type (None type displays the default message, "Press any key to continue. . .").
-    if not(message == None):
+    if message is not None:
         # The message is not a None type, meaning that it's custom.
         # Determine if the message does not end in ellipses, which should be present at the end for style consistency.
         if not(message[-5:] == ". . ."):

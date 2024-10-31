@@ -27,7 +27,7 @@ def getFileNamesAndNumbers(settings, fullFileName):
     # Cycle through the list of games
     for game in ["MUA1", "MUA2"]:
         # Determine if the game is in use
-        if not(settings[f"{game}Num"] == None):
+        if settings[f"{game}Num"] is not None:
             # The game is in use
             # Determine if the number ends in 01
             if not(settings[f"{game}Num"][-2:] == "01"):
@@ -55,7 +55,7 @@ def mannProcessing(fullFileName, settings, XMLPath, MUAPath):
     # Determine the texture format
     textureFormat = textures.get3DTextureFormat("Mannequin", settings, fullFileName)
     # Confirm that a texture format was chosen
-    if not(textureFormat == None):
+    if textureFormat is not None:
         # A texture format was chosen
         # Set up file names
         (XML1Name, XML2Name, MUA1Name, MUA2Name) = getFileNamesAndNumbers(settings, fullFileName)

@@ -28,7 +28,7 @@ def getFileNamesAndNumbers(settings, fullFileName, suffix):
     # Cycle through the list of games
     for game in ["XML1", "XML2", "MUA1", "MUA2"]:
         # Determine if the game is in use
-        if not(settings[f"{game}Num"] == None):
+        if settings[f"{game}Num"] is not None:
             # The game is in use
             # Determine if the number ends in 01
             if not(settings[f"{game}Num"][-2:] == "01"):
@@ -108,7 +108,7 @@ def processConvo(settings, textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name
                     # Delete it
                     remove(name)
                 # Determine if the number is used
-                if (not(num == None) and not(name == None) and not(os.path.exists(name))):
+                if ((num is not None) and (name is not None) and not(os.path.exists(name))):
                     # Number isn't empty, need to copy
                     # Perform the copying
                     copy(fullFileName, name)
@@ -235,14 +235,14 @@ def convoProcessing(fullFileName, settings, XMLPath, MUAPath):
     # Determine the texture format
     (textureFormat, suffix) = textures.getConvoTextureFormat(settings, fullFileName)
     # Confirm that a texture format was chosen
-    if not(textureFormat == None):
+    if textureFormat is not None:
         # A texture format was chosen
         # Set up the file names
         (XML1Name, XML2Name, MUA1Name, MUA2Name) = getFileNamesAndNumbers(settings, fullFileName, suffix)
         # Copy the files
         for num, name in zip([settings["XML1Num"], settings["XML2Num"], settings["MUA1Num"], settings["MUA2Num"]], [XML1Name, XML2Name, MUA1Name, MUA2Name]):
             # Determine if the number is used
-            if (not(num == None) and not(name == None) and not(os.path.exists(name))):
+            if ((num is not None) and (name is not None) and not(os.path.exists(name))):
                 # Number isn't empty, need to copy
                 # Perform the copying
                 copy(fullFileName, name)

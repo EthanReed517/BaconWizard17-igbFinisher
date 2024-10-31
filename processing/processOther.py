@@ -23,7 +23,7 @@ from pathlib import Path
 # Define the function for getting other model names
 def otherModelNameInput(charNum, gameName, fullFileName, celExt):
     # determine what to do based on whether or not the character number is defined.
-    if charNum == None:
+    if charNum is None:
         # Not used with this game
         # no file name is needed
         fileName = None
@@ -57,7 +57,7 @@ def otherProcessing(fullFileName, settings, XMLPath, MUAPath):
     # Determine the texture format
     textureFormat = textures.get3DTextureFormat("Other", settings, fullFileName)
     # Confirm that a texture format was chosen
-    if not(textureFormat == None):
+    if textureFormat is not None:
         # A texture format was chosen
         # Get the geometry names from the file
         geomNames = alchemy.GetModelStats(fullFileName)

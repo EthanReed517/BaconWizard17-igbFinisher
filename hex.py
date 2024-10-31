@@ -127,7 +127,7 @@ def hexEdit(numList, nameList, assetType):
     # Loop through the character numbers and file names
     for num, name in zip(hexNumList, hexNameList):
         # Determine if the name is defined
-        if not(name == None):
+        if name is not None:
             # The name is defined
             # Determine if the file exists
             if os.path.exists(name):

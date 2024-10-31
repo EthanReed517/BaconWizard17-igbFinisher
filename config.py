@@ -145,9 +145,9 @@ def pathGetter(series, game1Name, game2Name):
         path = "None"
     else:
         # At least one game is in use
-        if not(game1Num == None):
+        if game1Num is not None:
             # Game 1 is in use
-            if not(game2Num == None):
+            if game2Num is not None:
                 # Game 1 and Game 2 are in use
                 games = f"{game1Name}/{game2Name}"
             else:

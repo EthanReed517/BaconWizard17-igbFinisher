@@ -193,14 +193,14 @@ def getFilePath(settings, series, game1Name, game2Name):
     elif settings[f"{series}Path"] == "Ask":
         # Need to ask about the path
         # Determine which games are in use
-        if (game1Num == None) and (game2Num == None):
+        if ((game1Num is None) and (game2Num is None)):
             # Neither game is in use
             filePath = None
         else:
             # At least one game is in use
-            if not(game1Num == None):
+            if game1Num is not None:
                 # game 1 is in use
-                if not(game2Num == None):
+                if game2Num is not None:
                     # game 1 and game 2 are in use
                     games = f"{game1Name}/{game2Name}"
                 else:
