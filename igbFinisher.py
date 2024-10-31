@@ -10,7 +10,7 @@
 import resources
 import alchemy
 import assetRecognition
-import common
+import config
 import questions
 # Other modules
 import os.path
