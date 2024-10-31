@@ -9,6 +9,7 @@
 # Modules from this program
 import resources
 import alchemy
+import common
 import hex
 import questions
 # Other modules
@@ -44,11 +45,11 @@ def getFileNamesAndNumbers(settings, fullFileName, suffix):
             if settings[game + "Num"][-2:] == "01":
                 # Standard numbering, can end the number in "XX"
                 # Set the file name
-                nameList.append(resources.setUpFileName(fullFileName, "hud_head_", settings[game + "Num"][0:-2] + "XX", suffix + ".igb"))
+                nameList.append(common.setUpFileName(fullFileName, "hud_head_", settings[game + "Num"][0:-2] + "XX", suffix + ".igb"))
             else:
                 # Non-standard file name
                 # Set the file name
-                nameList.append(resources.setUpFileName(fullFileName, "hud_head_", settings[game + "Num"], suffix + ".igb"))
+                nameList.append(common.setUpFileName(fullFileName, "hud_head_", settings[game + "Num"], suffix + ".igb"))
         else:
             # The game is not not in use
             # Set no name
@@ -69,12 +70,12 @@ def processConvo(settings, textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name
     if (("Main" in textureFormat) or ("All" in textureFormat)):
         # Common format
         # Copy any files that don't need optimization.
-        resources.copyToDestination(XML1Name, XMLPath, "for XML1 (GC)")
-        resources.copyToDestination(XML1Name, XMLPath, "for XML1 (PS2 and Xbox)")
-        resources.copyToDestination(XML2Name, XMLPath, "for XML2 (GC)")
-        resources.copyToDestination(XML2Name, XMLPath, "for XML2 (PC, PS2, and Xbox)")
-        resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PS2 and Xbox)")
-        resources.copyToDestination(MUA2Name, MUAPath, "for MUA2 (PS2)")
+        common.copyToDestination(XML1Name, XMLPath, "for XML1 (GC)")
+        common.copyToDestination(XML1Name, XMLPath, "for XML1 (PS2 and Xbox)")
+        common.copyToDestination(XML2Name, XMLPath, "for XML2 (GC)")
+        common.copyToDestination(XML2Name, XMLPath, "for XML2 (PC, PS2, and Xbox)")
+        common.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PS2 and Xbox)")
+        common.copyToDestination(MUA2Name, MUAPath, "for MUA2 (PS2)")
         # Determine if next-gen Wii portraits are needed
         if suffix == " (Next-Gen Style)":
             # Next-gen style
@@ -82,20 +83,20 @@ def processConvo(settings, textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name
             if settings["MUA1Num"] == settings["MUA2Num"]:
                 # MUA1 and MUA2 are the same
                 # Copy the files
-                resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (Wii) and MUA2 (Wii)")
+                common.copyToDestination(MUA1Name, MUAPath, "for MUA1 (Wii) and MUA2 (Wii)")
             else:
                 # MUA1 and MUA2 are not the same
                 # Copy the files
-                resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (Wii)")
-                resources.copyToDestination(MUA2Name, MUAPath, "for MUA2 (Wii)")
+                common.copyToDestination(MUA1Name, MUAPath, "for MUA1 (Wii)")
+                common.copyToDestination(MUA2Name, MUAPath, "for MUA2 (Wii)")
         # Perform the first Alchemy operation
         alchemy.callAlchemy(MUA1Name, "stat1-1.ini")
         # Copy the first optimized alchemy file
-        resources.resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PC and 360)")
+        resources.common.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PC and 360)")
         # Perform the second Alchemy operation
         alchemy.callAlchemy(MUA1Name, "stat1-2.ini")
         # Copy the second optimized alchemy file
-        resources.resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (Steam and PS3)")
+        resources.common.copyToDestination(MUA1Name, MUAPath, "for MUA1 (Steam and PS3)")
         # Determine if PSP should be included
         if not("except PSP" in textureFormat):
             # Include PSP
@@ -117,30 +118,30 @@ def processConvo(settings, textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name
                 # Run alchemy
                 alchemy.callAlchemy(MUA1Name, "stat3.ini")
                 # Copy the files
-                resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PSP) and MUA2 (PSP)")
+                common.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PSP) and MUA2 (PSP)")
             else:
                 # MUA1 and MUA2 are not the same
                 alchemy.callAlchemy(MUA1Name, "stat3.ini")
                 alchemy.callAlchemy(MUA2Name, "stat3.ini")
                 # Copy the files
-                resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PSP)")
-                resources.copyToDestination(MUA2Name, MUAPath, "for MUA2 (PSP)")
+                common.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PSP)")
+                common.copyToDestination(MUA2Name, MUAPath, "for MUA2 (PSP)")
             # Optimize the file for XML2 PSP
             alchemy.callAlchemy(XML2Name, "stat2.ini")
             # Copy the file for XML2 PSP
-            resources.copyToDestination(XML2Name, XMLPath, "for XML2 (PSP)")
+            common.copyToDestination(XML2Name, XMLPath, "for XML2 (PSP)")
     elif textureFormat == "Wii":
         # Wii only format
         # Determine if the numbers are the same
         if settings["MUA1Num"] == settings["MUA2Num"]:
             # MUA1 and MUA2 are the same
             # Copy the files
-            resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (Wii) and MUA2 (Wii)")
+            common.copyToDestination(MUA1Name, MUAPath, "for MUA1 (Wii) and MUA2 (Wii)")
         else:
             # MUA1 and MUA2 are not the same
             # Copy the files
-            resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (Wii)")
-            resources.copyToDestination(MUA2Name, MUAPath, "for MUA2 (Wii)")
+            common.copyToDestination(MUA1Name, MUAPath, "for MUA1 (Wii)")
+            common.copyToDestination(MUA2Name, MUAPath, "for MUA2 (Wii)")
     elif textureFormat == "PSP":
         # PSP only format
         # Determine if the MUA1 and MUA2 numbers are the same
@@ -149,27 +150,27 @@ def processConvo(settings, textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name
             # Run alchemy
             alchemy.callAlchemy(MUA1Name, "stat3.ini")
             # Copy the files
-            resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PSP) and MUA2 (PSP)")
+            common.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PSP) and MUA2 (PSP)")
         else:
             # MUA1 and MUA2 are not the same
             alchemy.callAlchemy(MUA1Name, "stat3.ini")
             alchemy.callAlchemy(MUA2Name, "stat3.ini")
             # Copy the files
-            resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PSP)")
-            resources.copyToDestination(MUA2Name, MUAPath, "for MUA2 (PSP)")
+            common.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PSP)")
+            common.copyToDestination(MUA2Name, MUAPath, "for MUA2 (PSP)")
         # Optimize the file for XML2 PSP
         alchemy.callAlchemy(XML2Name, "stat2.ini")
         # Copy the file for XML2 PSP
-        resources.copyToDestination(XML2Name, XMLPath, "for XML2 (PSP)")
+        common.copyToDestination(XML2Name, XMLPath, "for XML2 (PSP)")
     elif ((textureFormat == "GC, PS2, and Xbox") or (textureFormat == "Last-Gen")):
         # Common last-gen format for HD
         # Copy any files that don't need optimization.
-        resources.copyToDestination(XML1Name, XMLPath, "for XML1 (GC)")
-        resources.copyToDestination(XML1Name, XMLPath, "for XML1 (PS2 and Xbox)")
-        resources.copyToDestination(XML2Name, XMLPath, "for XML2 (GC)")
-        resources.copyToDestination(XML2Name, XMLPath, "for XML2 (PS2 and Xbox)")
-        resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PS2 and Xbox)")
-        resources.copyToDestination(MUA2Name, MUAPath, "for MUA2 (PS2)")
+        common.copyToDestination(XML1Name, XMLPath, "for XML1 (GC)")
+        common.copyToDestination(XML1Name, XMLPath, "for XML1 (PS2 and Xbox)")
+        common.copyToDestination(XML2Name, XMLPath, "for XML2 (GC)")
+        common.copyToDestination(XML2Name, XMLPath, "for XML2 (PS2 and Xbox)")
+        common.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PS2 and Xbox)")
+        common.copyToDestination(MUA2Name, MUAPath, "for MUA2 (PS2)")
         # Determine if Wii is needed
         if textureFormat == "Last Gen":
             # Wii is needed
@@ -177,47 +178,47 @@ def processConvo(settings, textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name
             if settings["MUA1Num"] == settings["MUA2Num"]:
                 # MUA1 and MUA2 are the same
                 # Copy the files
-                resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (Wii) and MUA2 (Wii)")
+                common.copyToDestination(MUA1Name, MUAPath, "for MUA1 (Wii) and MUA2 (Wii)")
             else:
                 # MUA1 and MUA2 are not the same
                 # Copy the files
-                resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (Wii)")
-                resources.copyToDestination(MUA2Name, MUAPath, "for MUA2 (Wii)")
+                common.copyToDestination(MUA1Name, MUAPath, "for MUA1 (Wii)")
+                common.copyToDestination(MUA2Name, MUAPath, "for MUA2 (Wii)")
     elif textureFormat == "XML2 PC":
         # XML2-specific HD format
         # Copy the file
-        resources.copyToDestination(XML2Name, XMLPath, "for XML2 (PC)")
+        common.copyToDestination(XML2Name, XMLPath, "for XML2 (PC)")
     elif "PC and Next-Gen" in textureFormat:
         # Common HD format
         # Determine if this is MUA1 only
         if not("MUA1" in textureFormat):
             # Not MUA1 only
             # Copy the XML2 file
-            resources.copyToDestination(XML2Name, XMLPath, "for XML2 (PC)")
+            common.copyToDestination(XML2Name, XMLPath, "for XML2 (PC)")
         # Perform the Alchemy operation
         alchemy.callAlchemy(MUA1Name, "stat1-1.ini")
         # Copy the optimized alchemy file
-        resources.resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PC, Steam, PS3, and 360)")
+        resources.common.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PC, Steam, PS3, and 360)")
     elif textureFormat == "PC":
         # Common PC format (128x128 or 64x64)
         # Copy the XML2 file
-        resources.copyToDestination(XML2Name, XMLPath, "for XML2 (PC)")     
+        common.copyToDestination(XML2Name, XMLPath, "for XML2 (PC)")     
         # Perform the first Alchemy operation
         alchemy.callAlchemy(MUA1Name, "stat1-1.ini")
         # Copy the first optimized alchemy file
-        resources.resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PC)")
+        resources.common.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PC)")
         # Perform the second Alchemy operation
         alchemy.callAlchemy(MUA1Name, "stat1-2.ini")
         # Copy the second optimized alchemy file
-        resources.resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (Steam)")
+        resources.common.copyToDestination(MUA1Name, MUAPath, "for MUA1 (Steam)")
     elif "PC and Steam" in textureFormat:
         # PC-only transparent HD format
         # Copy the XML2 file
-        resources.copyToDestination(XML2Name, XMLPath, "for XML2 (PC)")
+        common.copyToDestination(XML2Name, XMLPath, "for XML2 (PC)")
         # Perform the Alchemy operation
         alchemy.callAlchemy(MUA1Name, "stat1-1.ini")
         # Copy the optimized alchemy file
-        resources.resources.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PC and Steam)")   
+        resources.common.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PC and Steam)")   
     else:
         # None of the above
         # Display an error message
@@ -250,7 +251,7 @@ def convoProcessing(fullFileName, settings, XMLPath, MUAPath):
         # Process the file
         complete = processConvo(settings, textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name, XMLPath, MUAPath, suffix, fullFileName)
         # Delete the lingering files
-        resources.deleteLingering([XML1Name, XML2Name, MUA1Name, MUA2Name])
+        common.deleteLingering([XML1Name, XML2Name, MUA1Name, MUA2Name])
     else:
         # A texture format was not chosen
         complete = False

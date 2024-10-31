@@ -9,6 +9,7 @@
 # Modules from this program
 import resources
 import alchemy
+import common
 import questions
 # Other modules
 import os.path
@@ -26,32 +27,32 @@ def processCSP(textureFormat, XML1Name, XML2Name, XMLPath, portraitType):
     if "All" in textureFormat:
         # Common format
         # Copy the files
-        resources.copyToDestination(XML1Name, XMLPath, "for XML1 (GC)")
-        resources.copyToDestination(XML1Name, XMLPath, "for XML1 (PS2 and Xbox)")
-        resources.copyToDestination(XML2Name, XMLPath, "for XML2 (GC)")
-        resources.copyToDestination(XML2Name, XMLPath, "for XML2 (PC, PS2, and Xbox)")
+        common.copyToDestination(XML1Name, XMLPath, "for XML1 (GC)")
+        common.copyToDestination(XML1Name, XMLPath, "for XML1 (PS2 and Xbox)")
+        common.copyToDestination(XML2Name, XMLPath, "for XML2 (GC)")
+        common.copyToDestination(XML2Name, XMLPath, "for XML2 (PC, PS2, and Xbox)")
         # Determine if PSP is included
         if not("except PSP" in textureFormat):
             # PSP is included
             # Optimize the file for XML2 PSP
             alchemy.callAlchemy(XML2Name, "stat2.ini")
             # Copy the file for XML2 PSP
-            resources.copyToDestination(XML2Name, XMLPath, "for XML2 (PSP)")            
+            common.copyToDestination(XML2Name, XMLPath, "for XML2 (PSP)")            
     elif textureFormat == "GC, PS2, and Xbox":
         # Console format for XML2 HD
         # Copy the files
-        resources.copyToDestination(XML2Name, XMLPath, "for XML2 (GC)")
-        resources.copyToDestination(XML2Name, XMLPath, "for XML2 (PS2 and Xbox)")
+        common.copyToDestination(XML2Name, XMLPath, "for XML2 (GC)")
+        common.copyToDestination(XML2Name, XMLPath, "for XML2 (PS2 and Xbox)")
     elif textureFormat == "PSP":
         # PSP-only format
         # Optimize the file for XML2 PSP
         alchemy.callAlchemy(XML2Name, "stat2.ini")
         # Copy the file for XML2 PSP
-        resources.copyToDestination(XML2Name, XMLPath, "for XML2 (PSP)")
+        common.copyToDestination(XML2Name, XMLPath, "for XML2 (PSP)")
     elif textureFormat == "PC":
         # PC only format
         # Copy the files
-        resources.copyToDestination(XML1Name, XMLPath, "for XML2 (PC)")
+        common.copyToDestination(XML1Name, XMLPath, "for XML2 (PC)")
     else:
         # None of the above
         # Display an error message
@@ -74,13 +75,13 @@ def CSPProcessing(fullFileName, settings, XMLPath):
         if portraitType == "XML1":
             # XML1 portrait
             # Set up file names
-            XML1Name = resources.setUpFileName(fullFileName, "", settings["XML1Num"][0:-2], "XX (Character Select Portrait).igb")
+            XML1Name = common.setUpFileName(fullFileName, "", settings["XML1Num"][0:-2], "XX (Character Select Portrait).igb")
             XML2Name = None
         else:
             # XML2 portrait
             # Set up file names
             XML1Name = None
-            XML2Name = resources.setUpFileName(fullFileName, "", settings["XML2Num"][0:-2], "XX (Character Select Portrait).igb")
+            XML2Name = common.setUpFileName(fullFileName, "", settings["XML2Num"][0:-2], "XX (Character Select Portrait).igb")
         # Copy the files
         for num, name in zip([settings["XML1Num"], settings["XML2Num"]], [XML1Name, XML2Name]):
             # Determine if the number is used
@@ -91,7 +92,7 @@ def CSPProcessing(fullFileName, settings, XMLPath):
         # Process the file
         complete = processCSP(textureFormat, XML1Name, XML2Name, XMLPath, portraitType)
         # Delete the lingering files
-        resources.deleteLingering([XML1Name, XML2Name])
+        common.deleteLingering([XML1Name, XML2Name])
     else:
         # A texture format was not chosen
         complete = False

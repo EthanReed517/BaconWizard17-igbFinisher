@@ -9,6 +9,7 @@
 # Modules from this program
 import resources
 import alchemy
+import common
 import questions
 # Other modules
 import os.path
@@ -102,6 +103,6 @@ def otherProcessing(fullFileName, settings, XMLPath, MUAPath):
         # A texture format was not chosen
         complete = False
     # Delete the lingering files
-    resources.deleteLingering([XML1Name, XML2Name, MUA1Name, MUA2Name])
+    common.deleteLingering([XML1Name, XML2Name, MUA1Name, MUA2Name])
     # Return the collected value
     return complete

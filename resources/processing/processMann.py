@@ -8,6 +8,7 @@
 # ####### #
 # Modules from this program
 import resources
+import common
 import questions
 # Other modules
 import os.path
@@ -36,7 +37,7 @@ def getFileNamesAndNumbers(settings, fullFileName):
                 # Update the number to end in 01
                 settings[game + "Num"] = settings[game + "Num"][0:-2] + "01"
             # Add the new name to the list
-            nameList.append(resources.setUpFileName2("", settings["MUA1Num"][0:-2] + "XX", suffix))
+            nameList.append(common.setUpFileName2("", settings["MUA1Num"][0:-2] + "XX", suffix))
         else:
             # The game is not not in use
             # Set no name

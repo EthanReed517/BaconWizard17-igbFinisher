@@ -8,6 +8,7 @@
 # ####### #
 # Modules from this program
 import resources
+import common
 import questions
 # Other modules
 import os.path
@@ -41,11 +42,11 @@ def getFileNamesAndNumbers(settings, fullFileName):
             if settings[game + "Num"][-2:] == "01":
                 # Standard numbering, can end the number in "XX"
                 # Set the file name
-                nameList.append(resources.setUpFileName2("", settings[game + "Num"][0:-2] + "XX", " (3D Head).igb"))
+                nameList.append(common.setUpFileName2("", settings[game + "Num"][0:-2] + "XX", " (3D Head).igb"))
             else:
                 # Non-standard file name
                 # Set the file name
-                nameList.append(resources.setUpFileName2("", settings[game + "Num"], " (3D Head).igb"))
+                nameList.append(common.setUpFileName2("", settings[game + "Num"], " (3D Head).igb"))
         else:
             # The game is not not in use
             # Set no name

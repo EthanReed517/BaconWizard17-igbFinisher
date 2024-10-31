@@ -9,6 +9,7 @@
 # Modules from this program
 import resources
 import alchemy
+import common
 import questions
 # Other modules
 import os.path
@@ -78,11 +79,11 @@ def getFileNamesAndNumbers(settings, fullFileName):
             if settings[game + "Num"][-2:] == "01":
                 # Standard numbering, can end the number in "XX"
                 # Set the file name
-                nameList.append(resources.setUpFileName2("", settings[game + "Num"][0:-2] + "XX", " (Skin" + suffix + ").igb"))
+                nameList.append(common.setUpFileName2("", settings[game + "Num"][0:-2] + "XX", " (Skin" + suffix + ").igb"))
             else:
                 # Non-standard file name
                 # Set the file name
-                nameList.append(resources.setUpFileName2("", settings[game + "Num"], " (" + description + suffix + ").igb"))
+                nameList.append(common.setUpFileName2("", settings[game + "Num"], " (" + description + suffix + ").igb"))
         else:
             # The game is not used.
             # The name should be None as well
