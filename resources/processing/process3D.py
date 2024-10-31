@@ -6,9 +6,12 @@
 # ####### #
 # IMPORTS #
 # ####### #
+# Modules from this program
 import resources
+import alchemy
 import globalVars
 import hex
+# Other modules
 from shutil import copy
 from os import makedirs, rename, remove
 import os.path
@@ -64,7 +67,7 @@ def processFile(sourceFileName, assetType, num, file, path, folder, optList):
         # Run the Alchemy operations if needed
         if optList is not None:
             for optimization in optList:
-                resources.callAlchemy(tempFile, optimization)
+                alchemy.callAlchemy(tempFile, optimization)
         # Copy the file and then remove the temp file (can't move by renaming because the destination could exist)
         copy(tempFile, os.path.join(path, folder, file))
         remove(tempFile)

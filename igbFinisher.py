@@ -6,19 +6,15 @@
 # ####### #
 # IMPORTS #
 # ####### #
-# Resources for this program
+# Modules from this program
 import resources
-# To be able to manipulate paths
+import alchemy
+# Other modules
 import os.path
-# To be able to rename files and call command prompts
 from os import rename, system
-# To be able to set up UIs
 import tkinter as tk
-# For stylized UIs
 import tkinter.ttk as ttk
-# For drag and drop support
 from tkinterdnd2 import DND_FILES, TkinterDnD
-# For UI image support
 from PIL import Image, ImageTk
 
 
@@ -253,7 +249,7 @@ resources.printImportant("Welcome to BaconWizard17's igb Finisher!\n")
 # Read the settings
 settings = resources.parseConfig()
 # Reset the Alchemy eval to avoid possible issues
-resources.resetAlchemy()
+alchemy.resetAlchemy()
 # Initialize the window
 window_dnd = initializeWindow()
 # Initialize the drop zone

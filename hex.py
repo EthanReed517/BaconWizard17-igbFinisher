@@ -6,7 +6,7 @@
 # ####### #
 # IMPORTS #
 # ####### #
-import resources
+# Other modules
 import os.path
 
 
@@ -104,9 +104,9 @@ def hexEditor(filename: str, replace: list):
 # Define the updated function for hex editing
 def hexEdit2(file, num, assetType):
     # Get the geometry names from the file using Alchemy
-    geomNames = resources.GetModelStats(file)
+    geomNames = alchemy.GetModelStats(file)
     # Get the texture paths from the file using Alchemy
-    (texPathList, texFormatList) = resources.GetTexPath(file)
+    (texPathList, texFormatList) = alchemy.GetTexPath(file)
     # Perform the hex editing
     hexEditor(file, getReplaceList(num, assetType, geomNames, texPathList))
 
@@ -133,8 +133,8 @@ def hexEdit(numList, nameList, assetType):
             if os.path.exists(name):
                 # The file exists
                 # Get the geometry names from the file using Alchemy
-                geomNames = resources.GetModelStats(name)
+                geomNames = alchemy.GetModelStats(name)
                 # Get the texture paths from the file using Alchemy
-                (texPathList, texFormatList) = resources.GetTexPath(name)
+                (texPathList, texFormatList) = alchemy.GetTexPath(name)
                 # Perform the hex editing
                 hexEditor(name, getReplaceList(num, assetType, geomNames, texPathList))

@@ -6,12 +6,9 @@
 # ####### #
 # IMPORTS #
 # ####### #
-import resources
-# To be able to call Alchemy and expand paths
+# Other modules
 import os
-# To be able to edit the registry
 from winreg import *
-# To be able to run the Alchemy processes to completion
 import subprocess
 
 # Global variables

@@ -6,7 +6,10 @@
 # ####### #
 # IMPORTS #
 # ####### #
+# Modules from this program
 import resources
+import alchemy
+# Other modules
 import os.path
 from shutil import copy
 from pathlib import Path
@@ -55,7 +58,7 @@ def otherProcessing(fullFileName, settings, XMLPath, MUAPath):
     if not(textureFormat == None):
         # A texture format was chosen
         # Get the geometry names from the file
-        geomNames = resources.GetModelStats(fullFileName)
+        geomNames = alchemy.GetModelStats(fullFileName)
         # Set the cel shading option to False initially. It could be updated to True if cel shading is detected.
         celChoice = False
         # Loop through the geometry names.

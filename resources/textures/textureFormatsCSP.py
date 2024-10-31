@@ -7,8 +7,9 @@
 # ####### #
 # IMPORTS #
 # ####### #
-# Resources for this program
+# Modules from this program
 import resources
+import alchemy
 
 
 # ######### #
@@ -82,7 +83,7 @@ def findFolder(texFolder, textureFolderList):
 # Define the function to get texture formats for 3D assets
 def getCSPTextureFormat(settings, fullFileName):
     # Call the function to get the texture information from Alchemy for this file. Return a list of the texture paths and another of the texture formats.
-    (texPathList, texFormatList) = resources.GetTexPath(fullFileName)
+    (texPathList, texFormatList) = alchemy.GetTexPath(fullFileName)
     # Initialize the texture format as a None variable. This way, if a format is not detected, it doesn't have to be set as anything. But if one is detected, it can be overwritten.
     textureFormat = None
     # Initialize the portrait type as a None variable. This way, if a correct portrait type is not detected, it doesn't have to be set as anything. But if one is detected, it can be overwritten.

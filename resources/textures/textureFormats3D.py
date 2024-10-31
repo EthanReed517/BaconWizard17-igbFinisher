@@ -7,7 +7,9 @@
 # ####### #
 # IMPORTS #
 # ####### #
+# Modules from this program
 import resources
+import alchemy
 
 
 # ######### #
@@ -445,7 +447,7 @@ def tripleFormat(png8Counter, dxt1Counter, plainPngCounter, texFolderList, setti
 # Define the function to get texture formats for 3D assets
 def get3DTextureFormat(assetType, settings, fullFileName):
     # Call the function to get the texture information from Alchemy for this file. Return a list of the texture paths and another of the texture formats.
-    (texPathList, texFormatList) = resources.GetTexPath(fullFileName)
+    (texPathList, texFormatList) = alchemy.GetTexPath(fullFileName)
     # Initialize the texture format as a None variable. This way, if a format is not detected, it doesn't have to be set as anything. But if one is detected, it can be overwritten.
     textureFormat = None
     # Determine the number of textures to ensure that there actually are textures.
