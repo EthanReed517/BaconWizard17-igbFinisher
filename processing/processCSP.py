@@ -65,7 +65,7 @@ def processCSP(textureFormat, XML1Name, XML2Name, XMLPath, portraitType):
     return complete
 
 # Define the function to process conversation portraits
-def CSPProcessing(fullFileName, settings, XMLPath):
+def CSPProcessing(fullFileName, settings, XMLPath, MUAPath):
     # Determine the texture format
     (textureFormat, portraitType) = textures.getCSPTextureFormat(settings, fullFileName)
     # Confirm that a texture format was chosen

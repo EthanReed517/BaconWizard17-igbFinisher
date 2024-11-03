@@ -91,7 +91,6 @@ def initializeDropZone():
     lbl_drop.pack()
     # Return the necessary elements for other operations
     return lbl_drop
-    
 
 # Define the function that will occur when a file is dropped
 def fileDrop(fullFileName):
@@ -131,30 +130,17 @@ def fileDrop(fullFileName):
     if not(fileName == "Known"):
         # Name unknown, need to update
         fullFileName = fileNameCorrection(fullFileName, assetType)
+    # Set up the dictionary for processing
+    processingDict = {
+        "Skin": processing.skinProcessing,
+        "Mannequin": processing.mannProcessing,
+        "3D Head": processing.headProcessing,
+        "Conversation Portrait": processing.convoProcessing,
+        "Character Select Portrait": processing.CSPProcessing,
+        "Other": processing.otherProcessing,
+    }
     # Begin processing
-    if assetType == "Skin":
-        # Skin
-        # Call the skin processing function
-        complete = processing.skinProcessing(fullFileName, settings, XMLPath, MUAPath)
-    elif assetType == "Mannequin":
-        # Mannequin
-        # Call the mannequin processing function
-        complete = processing.mannProcessing(fullFileName, settings, XMLPath, MUAPath)
-    elif assetType == "3D Head":
-        # 3D Head
-        # Call the 3D head processing function
-        complete = processing.headProcessing(fullFileName, settings, XMLPath, MUAPath)
-    elif assetType == "Conversation Portrait":
-        # Conversation portrait
-        # Call the conversation portrait processing function
-        complete = processing.convoProcessing(fullFileName, settings, XMLPath, MUAPath)
-    elif assetType == "Character Select Portrait":
-        # Character select portrait
-        # Call the mannequin processing function
-        complete = processing.CSPProcessing(fullFileName, settings, XMLPath)
-    else:
-        # Other models
-        complete = processing.otherProcessing(fullFileName, settings, XMLPath, MUAPath)
+    complete = processingDict[assetType](fullFileName, settings, XMLPath, MUAPath)
     # Clear the screen from the previous run
     system("cls")
     # Print the welcome information

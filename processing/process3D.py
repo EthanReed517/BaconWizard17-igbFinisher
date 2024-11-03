@@ -169,202 +169,202 @@ def process3D(assetType, sourceFileName, textureFormat, numsDict, nameDict, path
     processDict = {
         # No texture type
         "No Texture": [
-            {"function": processNoTexFile, "args": {"nums": numsDict, "assetType": assetType, "files": nameDict, "paths": pathDict, "prefix": iniPrefix}}
+            {"function": processNoTexFile, "kwargs": {"nums": numsDict, "assetType": assetType, "files": nameDict, "paths": pathDict, "prefix": iniPrefix}}
         ],
         # Single texture type, PNG8 format, all consoles
         "PC, PS2, Xbox, and MUA1 360": [
-            {"function": processFile, "args": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (PS2 and Xbox)", "optList": None}},
-            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PC, PS2, and Xbox)", "optList": None}},
-            {"function": processFile, "args": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (PS2 and Xbox)", "optList": None}},
-            {"function": processFile, "args": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (PC and 360)", "optList": [f"{iniPrefix}1-1.ini"]}},
-            {"function": processFile, "args": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (Steam and PS3)", "optList": [f"{iniPrefix}1-1.ini", f"{iniPrefix}1-2.ini"]}}
+            {"function": processFile, "kwargs": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (PS2 and Xbox)", "optList": None}},
+            {"function": processFile, "kwargs": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PC, PS2, and Xbox)", "optList": None}},
+            {"function": processFile, "kwargs": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (PS2 and Xbox)", "optList": None}},
+            {"function": processFile, "kwargs": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (PC and 360)", "optList": [f"{iniPrefix}1-1.ini"]}},
+            {"function": processFile, "kwargs": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (Steam and PS3)", "optList": [f"{iniPrefix}1-1.ini", f"{iniPrefix}1-2.ini"]}}
         ],
         "PC, Xbox, and MUA1 360": [
-            {"function": processFile, "args": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (Xbox)", "optList": None}},
-            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PC and Xbox)", "optList": None}},
-            {"function": processFile, "args": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (Xbox)", "optList": None}},
-            {"function": processFile, "args": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (PC and 360)", "optList": [f"{iniPrefix}1-1.ini"]}},
-            {"function": processFile, "args": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (Steam and PS3)", "optList": [f"{iniPrefix}1-1.ini", f"{iniPrefix}1-2.ini"]}}
+            {"function": processFile, "kwargs": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (Xbox)", "optList": None}},
+            {"function": processFile, "kwargs": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PC and Xbox)", "optList": None}},
+            {"function": processFile, "kwargs": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (Xbox)", "optList": None}},
+            {"function": processFile, "kwargs": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (PC and 360)", "optList": [f"{iniPrefix}1-1.ini"]}},
+            {"function": processFile, "kwargs": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (Steam and PS3)", "optList": [f"{iniPrefix}1-1.ini", f"{iniPrefix}1-2.ini"]}}
         ],
         "PS2": [
-            {"function": processFile, "args": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (PS2)", "optList": None}},
-            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PS2)", "optList": None}},
-            {"function": processFile, "args": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (PS2)", "optList": None}}
+            {"function": processFile, "kwargs": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (PS2)", "optList": None}},
+            {"function": processFile, "kwargs": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PS2)", "optList": None}},
+            {"function": processFile, "kwargs": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (PS2)", "optList": None}}
         ],
         "GameCube, PSP, and MUA2 PS2": [
-            {"function": processFile, "args": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (GC)", "optList": None}},
-            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (GC)", "optList": None}},
-            {"function": processPSPFiles, "args": {"nums": numsDict, "files": nameDict, "paths": pathDict, "prefix": iniPrefix}},
-            {"function": processFile, "args": {"num": numsDict["MUA2"], "file": nameDict["MUA2"], "path": pathDict["MUA"], "folder": "for MUA2 (PS2)", "optList": [f"{iniPrefix}3.ini"]}}
+            {"function": processFile, "kwargs": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (GC)", "optList": None}},
+            {"function": processFile, "kwargs": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (GC)", "optList": None}},
+            {"function": processPSPFiles, "kwargs": {"nums": numsDict, "files": nameDict, "paths": pathDict, "prefix": iniPrefix}},
+            {"function": processFile, "kwargs": {"num": numsDict["MUA2"], "file": nameDict["MUA2"], "path": pathDict["MUA"], "folder": "for MUA2 (PS2)", "optList": [f"{iniPrefix}3.ini"]}}
         ],
         # Single texture type, PNG8 format, PC only
         "PC": [
-            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PC)", "optList": None}},
-            {"function": processFile, "args": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (PC)", "optList": [f"{iniPrefix}1-1.ini"]}},
-            {"function": processFile, "args": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (Steam)", "optList": [f"{iniPrefix}1-1.ini", f"{iniPrefix}1-2.ini"]}}
+            {"function": processFile, "kwargs": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PC)", "optList": None}},
+            {"function": processFile, "kwargs": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (PC)", "optList": [f"{iniPrefix}1-1.ini"]}},
+            {"function": processFile, "kwargs": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (Steam)", "optList": [f"{iniPrefix}1-1.ini", f"{iniPrefix}1-2.ini"]}}
         ],
         # Single texture type, DXT1 format, all consoles
         "MUA1 PC, Steam, 360, and PS3": [
-            {"function": processFile, "args": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (PC, Steam, PS3 and 360)", "optList": [f"{iniPrefix}1-1.ini"]}}
+            {"function": processFile, "kwargs": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (PC, Steam, PS3 and 360)", "optList": [f"{iniPrefix}1-1.ini"]}}
         ],
         "XML2 PC, Xbox, and Wii": [
-            {"function": processFile, "args": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (Xbox)", "optList": None}},
-            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PC and Xbox)", "optList": None}},
-            {"function": processFile, "args": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (Xbox and Wii)", "optList": None}}
+            {"function": processFile, "kwargs": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (Xbox)", "optList": None}},
+            {"function": processFile, "kwargs": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PC and Xbox)", "optList": None}},
+            {"function": processFile, "kwargs": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (Xbox and Wii)", "optList": None}}
         ],
         "Wii": [
-            {"function": processWiiFiles, "args": {"nums": numsDict, "files": nameDict, "path": pathDict["MUA"]}}
+            {"function": processWiiFiles, "kwargs": {"nums": numsDict, "files": nameDict, "path": pathDict["MUA"]}}
         ],
         # Single texture type, DXT1 format, PC only
         "MUA1 PC and Steam": [
-            {"function": processFile, "args": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (PC and Steam)", "optList": [f"{iniPrefix}1-1.ini"]}}
+            {"function": processFile, "kwargs": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (PC and Steam)", "optList": [f"{iniPrefix}1-1.ini"]}}
         ],
         "XML2 PC": [
-            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PC)", "optList": None}}
+            {"function": processFile, "kwargs": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PC)", "optList": None}}
         ],
         # Single texture type, plain PNG format, all consoles ("PS2" and "GameCube, PSP, and MUA2 PSP" already covered earlier)
         "PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360": [
-            {"function": processFile, "args": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (PS2 and Xbox)", "optList": None}},
-            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PC, PS2, and Xbox)", "optList": None}},
-            {"function": processFile, "args": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (PS2 and Xbox)", "optList": None}},
-            {"function": processWiiFiles, "args": {"nums": numsDict, "files": nameDict, "path": pathDict["MUA"]}},
-            {"function": processFile, "args": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (PC and 360)", "optList": [f"{iniPrefix}1-1.ini"]}},
-            {"function": processFile, "args": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (Steam and PS3)", "optList": [f"{iniPrefix}1-1.ini"]}}
+            {"function": processFile, "kwargs": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (PS2 and Xbox)", "optList": None}},
+            {"function": processFile, "kwargs": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PC, PS2, and Xbox)", "optList": None}},
+            {"function": processFile, "kwargs": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (PS2 and Xbox)", "optList": None}},
+            {"function": processWiiFiles, "kwargs": {"nums": numsDict, "files": nameDict, "path": pathDict["MUA"]}},
+            {"function": processFile, "kwargs": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (PC and 360)", "optList": [f"{iniPrefix}1-1.ini"]}},
+            {"function": processFile, "kwargs": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (Steam and PS3)", "optList": [f"{iniPrefix}1-1.ini"]}}
         ],
         "PC, Xbox, Wii, MUA1 Steam, PS3, and 360": [
-            {"function": processFile, "args": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (Xbox)", "optList": None}},
-            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PC and Xbox)", "optList": None}},
-            {"function": processFile, "args": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (Xbox)", "optList": None}},
-            {"function": processWiiFiles, "args": {"nums": numsDict, "files": nameDict, "path": pathDict["MUA"]}},
-            {"function": processFile, "args": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (PC and 360)", "optList": [f"{iniPrefix}1-1.ini"]}},
-            {"function": processFile, "args": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (Steam and PS3)", "optList": [f"{iniPrefix}1-1.ini"]}}
+            {"function": processFile, "kwargs": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (Xbox)", "optList": None}},
+            {"function": processFile, "kwargs": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PC and Xbox)", "optList": None}},
+            {"function": processFile, "kwargs": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (Xbox)", "optList": None}},
+            {"function": processWiiFiles, "kwargs": {"nums": numsDict, "files": nameDict, "path": pathDict["MUA"]}},
+            {"function": processFile, "kwargs": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (PC and 360)", "optList": [f"{iniPrefix}1-1.ini"]}},
+            {"function": processFile, "kwargs": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (Steam and PS3)", "optList": [f"{iniPrefix}1-1.ini"]}}
         ],
         # Single texture type, plain PNG format, PC only
         "PC and MUA1 Steam": [
-            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PC)", "optList": None}},
-            {"function": processFile, "args": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (PC and Steam)", "optList": [f"{iniPrefix}1-1.ini"]}}
+            {"function": processFile, "kwargs": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PC)", "optList": None}},
+            {"function": processFile, "kwargs": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (PC and Steam)", "optList": [f"{iniPrefix}1-1.ini"]}}
         ],
         # Single texture type with environment maps, PNG8 format, all consoles
         "Main texture: PC, PS2, Xbox, and MUA1 360 / Environment texture: PC and MUA1 360": [
-            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PC)", "optList": None}}
+            {"function": processFile, "kwargs": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PC)", "optList": None}}
         ],
         "Main texture: PC, PS2, Xbox, and MUA1 360 / Environment texture: Xbox": [
-            {"function": processFile, "args": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (Xbox)", "optList": None}},
-            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (Xbox)", "optList": None}},
-            {"function": processFile, "args": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (Xbox)", "optList": None}}
+            {"function": processFile, "kwargs": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (Xbox)", "optList": None}},
+            {"function": processFile, "kwargs": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (Xbox)", "optList": None}},
+            {"function": processFile, "kwargs": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (Xbox)", "optList": None}}
         ],
         "Main texture: PC, PS2, Xbox, and MUA1 360 / Environment texture: PS2": [
-            {"function": processFile, "args": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (PS2)", "optList": None}},
-            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PS2)", "optList": None}},
-            {"function": processFile, "args": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (PS2)", "optList": None}}
+            {"function": processFile, "kwargs": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (PS2)", "optList": None}},
+            {"function": processFile, "kwargs": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PS2)", "optList": None}},
+            {"function": processFile, "kwargs": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (PS2)", "optList": None}}
         ],
         "Main texture: PC, Xbox, and MUA1 360 / Environment texture: PC and MUA1 360": [
-            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PC)", "optList": None}}
+            {"function": processFile, "kwargs": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PC)", "optList": None}}
         ],
         "Main texture: PC, Xbox, and MUA1 360 / Environment texture: Xbox": [
-            {"function": processFile, "args": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (Xbox)", "optList": None}},
-            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (Xbox)", "optList": None}},
-            {"function": processFile, "args": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (Xbox)", "optList": None}}
+            {"function": processFile, "kwargs": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (Xbox)", "optList": None}},
+            {"function": processFile, "kwargs": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (Xbox)", "optList": None}},
+            {"function": processFile, "kwargs": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (Xbox)", "optList": None}}
         ],
         "Main texture: PC and MUA1 360 / Environment texture: PC and MUA1 360": [
-            {"function": processFile, "args": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (Xbox)", "optList": None}},
-            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (Xbox)", "optList": None}},
-            {"function": processFile, "args": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (Xbox)", "optList": None}}
+            {"function": processFile, "kwargs": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (Xbox)", "optList": None}},
+            {"function": processFile, "kwargs": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (Xbox)", "optList": None}},
+            {"function": processFile, "kwargs": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (Xbox)", "optList": None}}
         ],
         "Main texture: Xbox / Environment texture: Xbox": [
-            {"function": processFile, "args": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (Xbox)", "optList": None}},
-            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (Xbox)", "optList": None}},
-            {"function": processFile, "args": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (Xbox)", "optList": None}}
+            {"function": processFile, "kwargs": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (Xbox)", "optList": None}},
+            {"function": processFile, "kwargs": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (Xbox)", "optList": None}},
+            {"function": processFile, "kwargs": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (Xbox)", "optList": None}}
         ],
         "Main texture: PS2 / Environment texture: PS2": [
-            {"function": processFile, "args": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (PS2)", "optList": None}},
-            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PS2)", "optList": None}},
-            {"function": processFile, "args": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (PS2)", "optList": None}}
+            {"function": processFile, "kwargs": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (PS2)", "optList": None}},
+            {"function": processFile, "kwargs": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PS2)", "optList": None}},
+            {"function": processFile, "kwargs": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (PS2)", "optList": None}}
         ],
         "Main texture: GameCube, PSP, and MUA2 PS2 / Environment texture: GameCube, PSP, and MUA2 PS2": [
-            {"function": processFile, "args": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (GC)", "optList": None}},
-            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (GC)", "optList": None}},
-            {"function": processPSPFiles, "args": {"nums": numsDict, "files": nameDict, "paths": pathDict, "prefix": iniPrefix}},
-            {"function": processFile, "args": {"num": numsDict["MUA2"], "file": nameDict["MUA2"], "path": pathDict["MUA"], "folder": "for MUA2 (PS2)", "optList": [f"{iniPrefix}3.ini"]}}
+            {"function": processFile, "kwargs": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (GC)", "optList": None}},
+            {"function": processFile, "kwargs": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (GC)", "optList": None}},
+            {"function": processPSPFiles, "kwargs": {"nums": numsDict, "files": nameDict, "paths": pathDict, "prefix": iniPrefix}},
+            {"function": processFile, "kwargs": {"num": numsDict["MUA2"], "file": nameDict["MUA2"], "path": pathDict["MUA"], "folder": "for MUA2 (PS2)", "optList": [f"{iniPrefix}3.ini"]}}
         ],
         # Single texture type with environment maps, PNG8, PC only
         "Main texture: PC / Environment texture: PC": [
-            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PC)", "optList": None}}
+            {"function": processFile, "kwargs": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PC)", "optList": None}}
         ],
         # Single texture type with environment maps, DXT1 Format, all consoles
         "Main texture: XML2 PC, Xbox, and Wii / Environment texture: XML2 PC": [
-            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PC)", "optList": None}}
+            {"function": processFile, "kwargs": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PC)", "optList": None}}
         ],
         "Main texture: XML2 PC, Xbox, and Wii / Environment texture: Xbox and Wii": [
-            {"function": processFile, "args": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (Xbox)", "optList": None}},
-            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (Xbox)", "optList": None}},
-            {"function": processFile, "args": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (Xbox)", "optList": None}},
-            {"function": processWiiFiles, "args": {"nums": numsDict, "files": nameDict, "path": pathDict["MUA"]}}
+            {"function": processFile, "kwargs": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (Xbox)", "optList": None}},
+            {"function": processFile, "kwargs": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (Xbox)", "optList": None}},
+            {"function": processFile, "kwargs": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (Xbox)", "optList": None}},
+            {"function": processWiiFiles, "kwargs": {"nums": numsDict, "files": nameDict, "path": pathDict["MUA"]}}
         ],
         "Main texture: Wii / Environment texture: Wii": [
-            {"function": processWiiFiles, "args": {"nums": numsDict, "files": nameDict, "path": pathDict["MUA"]}}
+            {"function": processWiiFiles, "kwargs": {"nums": numsDict, "files": nameDict, "path": pathDict["MUA"]}}
         ],
         "Main texture: Wii / Environment texture: Xbox and Wii": [
-            {"function": processWiiFiles, "args": {"nums": numsDict, "files": nameDict, "path": pathDict["MUA"]}}
+            {"function": processWiiFiles, "kwargs": {"nums": numsDict, "files": nameDict, "path": pathDict["MUA"]}}
         ],
         # Single texture type with environment maps, DXT1, PC only
         "Main texture: XML2 PC / Environment texture: XML2 PC": [
-            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PC)", "optList": None}}
+            {"function": processFile, "kwargs": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PC)", "optList": None}}
         ],
         # Transparent texture with PNG8 environment maps, all consoles
         "Main texture: PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360 / Environment texture: PC and MUA1 360": [
-            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PC)", "optList": None}}
+            {"function": processFile, "kwargs": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PC)", "optList": None}}
         ],
         "Main texture: PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360 / Environment texture: Xbox": [
-            {"function": processFile, "args": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (Xbox)", "optList": None}},
-            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (Xbox)", "optList": None}},
-            {"function": processFile, "args": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (Xbox)", "optList": None}}
+            {"function": processFile, "kwargs": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (Xbox)", "optList": None}},
+            {"function": processFile, "kwargs": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (Xbox)", "optList": None}},
+            {"function": processFile, "kwargs": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (Xbox)", "optList": None}}
         ],
         "Main texture: PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360 / Environment texture: PS2": [
-            {"function": processFile, "args": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (PS2)", "optList": None}},
-            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PS2)", "optList": None}},
-            {"function": processFile, "args": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (PS2)", "optList": None}}
+            {"function": processFile, "kwargs": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (PS2)", "optList": None}},
+            {"function": processFile, "kwargs": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PS2)", "optList": None}},
+            {"function": processFile, "kwargs": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (PS2)", "optList": None}}
         ],
         "Main texture: PC, Xbox, Wii, MUA1 Steam, PS3, and 360 / Environment texture: PC and MUA1 360": [
-            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PC)", "optList": None}}
+            {"function": processFile, "kwargs": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PC)", "optList": None}}
         ],
         "Main texture: PC, Xbox, Wii, MUA1 Steam, PS3, and 360 / Environment texture: Xbox": [
-            {"function": processFile, "args": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (Xbox)", "optList": None}},
-            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (Xbox)", "optList": None}},
-            {"function": processFile, "args": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (Xbox)", "optList": None}}
+            {"function": processFile, "kwargs": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (Xbox)", "optList": None}},
+            {"function": processFile, "kwargs": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (Xbox)", "optList": None}},
+            {"function": processFile, "kwargs": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (Xbox)", "optList": None}}
         ],
         # Transparent texture with PNG8 environment maps, PC only
         "Main texture: PC and MUA1 Steam / Environment texture: PC": [
-            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PC)", "optList": None}}
+            {"function": processFile, "kwargs": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PC)", "optList": None}}
         ],
         # Transparent texture with DXT1 environment maps, all consoles
         "Main texture: PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360 / Environment texture: XML2 PC": [
-            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PC)", "optList": None}}
+            {"function": processFile, "kwargs": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PC)", "optList": None}}
         ],
         "Main texture: PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360 / Environment texture: Xbox and Wii": [
-            {"function": processFile, "args": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (Xbox)", "optList": None}},
-            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (Xbox)", "optList": None}},
-            {"function": processFile, "args": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (Xbox)", "optList": None}},
-            {"function": processWiiFiles, "args": {"nums": numsDict, "files": nameDict, "path": pathDict["MUA"]}}
+            {"function": processFile, "kwargs": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (Xbox)", "optList": None}},
+            {"function": processFile, "kwargs": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (Xbox)", "optList": None}},
+            {"function": processFile, "kwargs": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (Xbox)", "optList": None}},
+            {"function": processWiiFiles, "kwargs": {"nums": numsDict, "files": nameDict, "path": pathDict["MUA"]}}
         ],
         "Main texture: PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360 / Environment texture: Wii": [
-            {"function": processWiiFiles, "args": {"nums": numsDict, "files": nameDict, "path": pathDict["MUA"]}}
+            {"function": processWiiFiles, "kwargs": {"nums": numsDict, "files": nameDict, "path": pathDict["MUA"]}}
         ],
         "Main texture: PC, Xbox, Wii, MUA1 Steam, PS3, and 360 / Environment texture: XML2 PC": [
-            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PC)", "optList": None}}
+            {"function": processFile, "kwargs": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PC)", "optList": None}}
         ],
         "Main texture: PC, Xbox, Wii, MUA1 Steam, PS3, and 360 / Environment texture: Xbox and Wii": [
-            {"function": processFile, "args": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (Xbox)", "optList": None}},
-            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (Xbox)", "optList": None}},
-            {"function": processFile, "args": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (Xbox)", "optList": None}},
-            {"function": processWiiFiles, "args": {"nums": numsDict, "files": nameDict, "path": pathDict["MUA"]}}
+            {"function": processFile, "kwargs": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (Xbox)", "optList": None}},
+            {"function": processFile, "kwargs": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (Xbox)", "optList": None}},
+            {"function": processFile, "kwargs": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (Xbox)", "optList": None}},
+            {"function": processWiiFiles, "kwargs": {"nums": numsDict, "files": nameDict, "path": pathDict["MUA"]}}
         ],
         "Main texture: PC, Xbox, Wii, MUA1 Steam, PS3, and 360 / Environment texture: Wii": [
-            {"function": processWiiFiles, "args": {"nums": numsDict, "files": nameDict, "path": pathDict["MUA"]}}
+            {"function": processWiiFiles, "kwargs": {"nums": numsDict, "files": nameDict, "path": pathDict["MUA"]}}
         ],
         # Transparent texture with DXT1 environment maps, PC only
         "Main texture: PC and MUA1 Steam / Environment texture: XML2 PC": [
-            {"function": processFile, "args": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PC)", "optList": None}}
+            {"function": processFile, "kwargs": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PC)", "optList": None}}
         ]
     }
     # Start a variable that assumes completion
@@ -374,7 +374,7 @@ def process3D(assetType, sourceFileName, textureFormat, numsDict, nameDict, path
         # Loop through the possible files for the selected texture format
         for file in processDict[textureFormat]:
             # Process the file using its necessary function and arguments
-            file["function"](sourceFileName, assetType, **file["args"])
+            file["function"](sourceFileName, assetType, **file["kwargs"])
     except KeyError:
         # The selected texture format doesn't have an entry in the dictionary
         # Print an error
