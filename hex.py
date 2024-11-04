@@ -6,6 +6,8 @@
 # ####### #
 # IMPORTS #
 # ####### #
+# Internal modules
+import alchemy
 # Other modules
 import os.path
 

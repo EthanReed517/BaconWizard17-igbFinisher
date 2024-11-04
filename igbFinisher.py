@@ -170,8 +170,8 @@ def getNumbers(settings):
 # Define the function to get the file path
 def getFilePath(settings, series, game1Name, game2Name):
     # Set up the numbers
-    game1Num = settings[f"{game}Num"]
-    game2Num = settings[f"{game}Num"]
+    game1Num = settings[f"{game1Name}Num"]
+    game2Num = settings[f"{game2Name}Num"]
     # Determine if a path should be collected
     if settings[f"{series}Path"] == None:
         # No path, so just set it to none

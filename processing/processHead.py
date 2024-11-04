@@ -8,6 +8,7 @@
 # ####### #
 # Modules from this program
 import common
+import processing
 import questions
 import textures
 # Other modules

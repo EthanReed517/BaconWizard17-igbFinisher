@@ -9,6 +9,7 @@
 # Modules from this program
 import alchemy
 import common
+import processing
 import questions
 import textures
 # Other modules

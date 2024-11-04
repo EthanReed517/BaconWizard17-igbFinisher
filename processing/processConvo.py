@@ -10,6 +10,7 @@
 import alchemy
 import common
 import hex
+import processing
 import questions
 import textures
 # Other modules
@@ -45,11 +46,11 @@ def getFileNamesAndNumbers(settings, fullFileName, suffix):
             if settings[f"{game}Num"][-2:] == "01":
                 # Standard numbering, can end the number in "XX"
                 # Set the file name
-                nameList.append(common.setUpFileName(fullFileName, "hud_head_", f"{settings[f'{game}Num'][0:-2]}XX", f"{suffix}.igb"))
+                nameList.append(common.setUpFileName2("hud_head_", f"{settings[f'{game}Num'][0:-2]}XX", f"{suffix}.igb"))
             else:
                 # Non-standard file name
                 # Set the file name
-                nameList.append(common.setUpFileName(fullFileName, "hud_head_", settings[f"{game}Num"], f"{suffix}.igb"))
+                nameList.append(common.setUpFileName2("hud_head_", settings[f"{game}Num"], f"{suffix}.igb"))
         else:
             # The game is not not in use
             # Set no name
@@ -63,170 +64,121 @@ def getFileNamesAndNumbers(settings, fullFileName, suffix):
     return (XML1Name, XML2Name, MUA1Name, MUA2Name)
 
 # Define the function to export the portraits
-def processConvo(settings, textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name, XMLPath, MUAPath, suffix, fullFileName):
-    # Initialize the completion variable
+def processConvo(assetType, sourceFileName, textureFormat, numsDict, nameDict, pathDict):
+    # Set up the dictionary of necessary operations for each texture type
+    processDict = {
+        # PSP-only, which could be next-gen style (plain PNG) or PNG8
+        "PSP": [
+            {"function": processing.processPSPFiles, "kwargs": {"nums": numsDict, "files": nameDict, "paths": pathDict, "prefix": "stat"}}
+        ],
+        # Next-Gen Style (plain PNG), all consoles
+        "All": [
+            {"function": processing.processFile, "kwargs": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (GC)", "optList": None}},
+            {"function": processing.processFile, "kwargs": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (PS2 and Xbox)", "optList": None}},
+            {"function": processing.processFile, "kwargs": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (GC)", "optList": None}},
+            {"function": processing.processFile, "kwargs": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PC, PS2, and Xbox)", "optList": None}},
+            {"function": processing.processFile, "kwargs": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (PS2 and Xbox)", "optList": None}},
+            {"function": processing.processFile, "kwargs": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (PC and 360)", "optList": ["stat1-1.ini"]}},
+            {"function": processing.processFile, "kwargs": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (Steam and PS3)", "optList": ["stat1-1.ini"]}},
+            {"function": processing.processFile, "kwargs": {"num": numsDict["MUA2"], "file": nameDict["MUA2"], "path": pathDict["MUA"], "folder": "for MUA2 (PS2)", "optList": ["stat3.ini"]}},
+            {"function": processing.processWiiFiles, "kwargs": {"nums": numsDict, "files": nameDict, "path": pathDict["MUA"]}},
+            {"function": processing.processPSPFiles, "kwargs": {"nums": numsDict, "files": nameDict, "paths": pathDict, "prefix": "stat"}}
+        ],
+        "All except PSP": [
+            {"function": processing.processFile, "kwargs": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (GC)", "optList": None}},
+            {"function": processing.processFile, "kwargs": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (PS2 and Xbox)", "optList": None}},
+            {"function": processing.processFile, "kwargs": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (GC)", "optList": None}},
+            {"function": processing.processFile, "kwargs": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PC, PS2, and Xbox)", "optList": None}},
+            {"function": processing.processFile, "kwargs": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (PS2 and Xbox)", "optList": None}},
+            {"function": processing.processFile, "kwargs": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (PC and 360)", "optList": ["stat1-1.ini"]}},
+            {"function": processing.processFile, "kwargs": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (Steam and PS3)", "optList": ["stat1-1.ini", "stat1-2.ini"]}},
+            {"function": processing.processFile, "kwargs": {"num": numsDict["MUA2"], "file": nameDict["MUA2"], "path": pathDict["MUA"], "folder": "for MUA2 (PS2)", "optList": ["stat3.ini"]}},
+            {"function": processing.processWiiFiles, "kwargs": {"nums": numsDict, "files": nameDict, "path": pathDict["MUA"]}}
+        ],
+        "PC and Next-Gen": [
+            {"function": processing.processFile, "kwargs": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PC)", "optList": None}},
+            {"function": processing.processFile, "kwargs": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (PC, Steam, PS3, and 360)", "optList": ["stat1-1.ini"]}}
+        ],
+        "Last-Gen": [
+            {"function": processing.processFile, "kwargs": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (GC)", "optList": None}},
+            {"function": processing.processFile, "kwargs": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (PS2 and Xbox)", "optList": None}},
+            {"function": processing.processFile, "kwargs": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (GC)", "optList": None}},
+            {"function": processing.processFile, "kwargs": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PS2 and Xbox)", "optList": None}},
+            {"function": processing.processFile, "kwargs": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (PS2 and Xbox)", "optList": None}},
+            {"function": processing.processFile, "kwargs": {"num": numsDict["MUA2"], "file": nameDict["MUA2"], "path": pathDict["MUA"], "folder": "for MUA2 (PS2)", "optList": ["stat3.ini"]}},
+            {"function": processing.processWiiFiles, "kwargs": {"nums": numsDict, "files": nameDict, "path": pathDict["MUA"]}}
+        ],
+        # Next-Gen Style (plain PNG), PC only
+        "PC and Steam": [
+            {"function": processing.processFile, "kwargs": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PC)", "optList": None}},
+            {"function": processing.processFile, "kwargs": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (PC and Steam)", "optList": ["stat1-1.ini"]}}
+        ],
+        # PNG8 format, all consoles
+        "Main": [
+            {"function": processing.processFile, "kwargs": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (GC)", "optList": None}},
+            {"function": processing.processFile, "kwargs": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (PS2 and Xbox)", "optList": None}},
+            {"function": processing.processFile, "kwargs": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (GC)", "optList": None}},
+            {"function": processing.processFile, "kwargs": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PC, PS2, and Xbox)", "optList": None}},
+            {"function": processing.processFile, "kwargs": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (PS2 and Xbox)", "optList": None}},
+            {"function": processing.processFile, "kwargs": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (PC and 360)", "optList": ["stat1-1.ini"]}},
+            {"function": processing.processFile, "kwargs": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (Steam and PS3)", "optList": ["stat1-1.ini"]}},
+            {"function": processing.processFile, "kwargs": {"num": numsDict["MUA2"], "file": nameDict["MUA2"], "path": pathDict["MUA"], "folder": "for MUA2 (PS2)", "optList": ["stat3.ini"]}},
+            {"function": processing.processPSPFiles, "kwargs": {"nums": numsDict, "files": nameDict, "paths": pathDict, "prefix": "stat"}}
+        ],
+        "Main except PSP": [
+            {"function": processing.processFile, "kwargs": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (GC)", "optList": None}},
+            {"function": processing.processFile, "kwargs": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (PS2 and Xbox)", "optList": None}},
+            {"function": processing.processFile, "kwargs": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (GC)", "optList": None}},
+            {"function": processing.processFile, "kwargs": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PC, PS2, and Xbox)", "optList": None}},
+            {"function": processing.processFile, "kwargs": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (PS2 and Xbox)", "optList": None}},
+            {"function": processing.processFile, "kwargs": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (PC and 360)", "optList": ["stat1-1.ini"]}},
+            {"function": processing.processFile, "kwargs": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (Steam and PS3)", "optList": ["stat1-1.ini"]}},
+            {"function": processing.processFile, "kwargs": {"num": numsDict["MUA2"], "file": nameDict["MUA2"], "path": pathDict["MUA"], "folder": "for MUA2 (PS2)", "optList": ["stat3.ini"]}}
+        ],
+        "GC, PS2, and Xbox": [
+            {"function": processing.processFile, "kwargs": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (GC)", "optList": None}},
+            {"function": processing.processFile, "kwargs": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (PS2 and Xbox)", "optList": None}},
+            {"function": processing.processFile, "kwargs": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (GC)", "optList": None}},
+            {"function": processing.processFile, "kwargs": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PS2 and Xbox)", "optList": None}},
+            {"function": processing.processFile, "kwargs": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (PS2 and Xbox)", "optList": None}},
+            {"function": processing.processFile, "kwargs": {"num": numsDict["MUA2"], "file": nameDict["MUA2"], "path": pathDict["MUA"], "folder": "for MUA2 (PS2)", "optList": ["stat3.ini"]}}
+        ],
+        # PNG8 format, PC only
+        "PC": [
+            {"function": processing.processFile, "kwargs": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PC)", "optList": None}},
+            {"function": processing.processFile, "kwargs": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (PC)", "optList": ["stat1-1.ini"]}},
+            {"function": processing.processFile, "kwargs": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (Steam)", "optList": ["stat1-1.ini", "stat1-2.ini"]}}
+        ],
+        # DXT1 format, all consoles
+        "Wii": [
+            {"function": processing.processWiiFiles, "kwargs": {"nums": numsDict, "files": nameDict, "path": pathDict["MUA"]}}
+        ],
+        "XML2 PC": [
+            {"function": processing.processFile, "kwargs": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PC)", "optList": None}}
+        ],
+        "MUA1 PC and Next-Gen": [
+            {"function": processing.processFile, "kwargs": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (PC and 360)", "optList": ["stat1-1.ini"]}},
+            {"function": processing.processFile, "kwargs": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (Steam and PS3)", "optList": ["stat1-1.ini"]}}
+        ],
+        # DXT1 format, PC only
+        "MUA1 PC and Steam": [
+            {"function": processing.processFile, "kwargs": {"num": numsDict["MUA1"], "file": nameDict["MUA1"], "path": pathDict["MUA"], "folder": "for MUA1 (PC and Steam)", "optList": ["stat1-1.ini"]}}
+        ]
+    }
+    # Start a variable that assumes completion
     complete = True
-    # Filter by texture type
-    if (("Main" in textureFormat) or ("All" in textureFormat)):
-        # Common format
-        # Copy any files that don't need optimization.
-        common.copyToDestination(XML1Name, XMLPath, "for XML1 (GC)")
-        common.copyToDestination(XML1Name, XMLPath, "for XML1 (PS2 and Xbox)")
-        common.copyToDestination(XML2Name, XMLPath, "for XML2 (GC)")
-        common.copyToDestination(XML2Name, XMLPath, "for XML2 (PC, PS2, and Xbox)")
-        common.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PS2 and Xbox)")
-        common.copyToDestination(MUA2Name, MUAPath, "for MUA2 (PS2)")
-        # Determine if next-gen Wii portraits are needed
-        if suffix == " (Next-Gen Style)":
-            # Next-gen style
-            # Determine if the numbers are the same
-            if settings["MUA1Num"] == settings["MUA2Num"]:
-                # MUA1 and MUA2 are the same
-                # Copy the files
-                common.copyToDestination(MUA1Name, MUAPath, "for MUA1 (Wii) and MUA2 (Wii)")
-            else:
-                # MUA1 and MUA2 are not the same
-                # Copy the files
-                common.copyToDestination(MUA1Name, MUAPath, "for MUA1 (Wii)")
-                common.copyToDestination(MUA2Name, MUAPath, "for MUA2 (Wii)")
-        # Perform the first Alchemy operation
-        alchemy.callAlchemy(MUA1Name, "stat1-1.ini")
-        # Copy the first optimized alchemy file
-        resources.common.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PC and 360)")
-        # Perform the second Alchemy operation
-        alchemy.callAlchemy(MUA1Name, "stat1-2.ini")
-        # Copy the second optimized alchemy file
-        resources.common.copyToDestination(MUA1Name, MUAPath, "for MUA1 (Steam and PS3)")
-        # Determine if PSP should be included
-        if not("except PSP" in textureFormat):
-            # Include PSP
-            # List the files to delete and recreate
-            for num, name in zip([settings["XML2Num"], settings["MUA1Num"], settings["MUA2Num"]], [XML2Name, MUA1Name, MUA2Name]):
-                # Determine if the file exists
-                if os.path.isfile(name):
-                    # File exists
-                    # Delete it
-                    remove(name)
-                # Determine if the number is used
-                if ((num is not None) and (name is not None) and not(os.path.exists(name))):
-                    # Number isn't empty, need to copy
-                    # Perform the copying
-                    copy(fullFileName, name)
-            # Determine if the MUA1 and MUA2 numbers are the same
-            if settings["MUA1Num"] == settings["MUA2Num"]:
-                # MUA1 and MUA2 are the same
-                # Run alchemy
-                alchemy.callAlchemy(MUA1Name, "stat3.ini")
-                # Copy the files
-                common.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PSP) and MUA2 (PSP)")
-            else:
-                # MUA1 and MUA2 are not the same
-                alchemy.callAlchemy(MUA1Name, "stat3.ini")
-                alchemy.callAlchemy(MUA2Name, "stat3.ini")
-                # Copy the files
-                common.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PSP)")
-                common.copyToDestination(MUA2Name, MUAPath, "for MUA2 (PSP)")
-            # Optimize the file for XML2 PSP
-            alchemy.callAlchemy(XML2Name, "stat2.ini")
-            # Copy the file for XML2 PSP
-            common.copyToDestination(XML2Name, XMLPath, "for XML2 (PSP)")
-    elif textureFormat == "Wii":
-        # Wii only format
-        # Determine if the numbers are the same
-        if settings["MUA1Num"] == settings["MUA2Num"]:
-            # MUA1 and MUA2 are the same
-            # Copy the files
-            common.copyToDestination(MUA1Name, MUAPath, "for MUA1 (Wii) and MUA2 (Wii)")
-        else:
-            # MUA1 and MUA2 are not the same
-            # Copy the files
-            common.copyToDestination(MUA1Name, MUAPath, "for MUA1 (Wii)")
-            common.copyToDestination(MUA2Name, MUAPath, "for MUA2 (Wii)")
-    elif textureFormat == "PSP":
-        # PSP only format
-        # Determine if the MUA1 and MUA2 numbers are the same
-        if settings["MUA1Num"] == settings["MUA2Num"]:
-            # MUA1 and MUA2 are the same
-            # Run alchemy
-            alchemy.callAlchemy(MUA1Name, "stat3.ini")
-            # Copy the files
-            common.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PSP) and MUA2 (PSP)")
-        else:
-            # MUA1 and MUA2 are not the same
-            alchemy.callAlchemy(MUA1Name, "stat3.ini")
-            alchemy.callAlchemy(MUA2Name, "stat3.ini")
-            # Copy the files
-            common.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PSP)")
-            common.copyToDestination(MUA2Name, MUAPath, "for MUA2 (PSP)")
-        # Optimize the file for XML2 PSP
-        alchemy.callAlchemy(XML2Name, "stat2.ini")
-        # Copy the file for XML2 PSP
-        common.copyToDestination(XML2Name, XMLPath, "for XML2 (PSP)")
-    elif ((textureFormat == "GC, PS2, and Xbox") or (textureFormat == "Last-Gen")):
-        # Common last-gen format for HD
-        # Copy any files that don't need optimization.
-        common.copyToDestination(XML1Name, XMLPath, "for XML1 (GC)")
-        common.copyToDestination(XML1Name, XMLPath, "for XML1 (PS2 and Xbox)")
-        common.copyToDestination(XML2Name, XMLPath, "for XML2 (GC)")
-        common.copyToDestination(XML2Name, XMLPath, "for XML2 (PS2 and Xbox)")
-        common.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PS2 and Xbox)")
-        common.copyToDestination(MUA2Name, MUAPath, "for MUA2 (PS2)")
-        # Determine if Wii is needed
-        if textureFormat == "Last Gen":
-            # Wii is needed
-            # Determine if the numbers are the same
-            if settings["MUA1Num"] == settings["MUA2Num"]:
-                # MUA1 and MUA2 are the same
-                # Copy the files
-                common.copyToDestination(MUA1Name, MUAPath, "for MUA1 (Wii) and MUA2 (Wii)")
-            else:
-                # MUA1 and MUA2 are not the same
-                # Copy the files
-                common.copyToDestination(MUA1Name, MUAPath, "for MUA1 (Wii)")
-                common.copyToDestination(MUA2Name, MUAPath, "for MUA2 (Wii)")
-    elif textureFormat == "XML2 PC":
-        # XML2-specific HD format
-        # Copy the file
-        common.copyToDestination(XML2Name, XMLPath, "for XML2 (PC)")
-    elif "PC and Next-Gen" in textureFormat:
-        # Common HD format
-        # Determine if this is MUA1 only
-        if not("MUA1" in textureFormat):
-            # Not MUA1 only
-            # Copy the XML2 file
-            common.copyToDestination(XML2Name, XMLPath, "for XML2 (PC)")
-        # Perform the Alchemy operation
-        alchemy.callAlchemy(MUA1Name, "stat1-1.ini")
-        # Copy the optimized alchemy file
-        resources.common.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PC, Steam, PS3, and 360)")
-    elif textureFormat == "PC":
-        # Common PC format (128x128 or 64x64)
-        # Copy the XML2 file
-        common.copyToDestination(XML2Name, XMLPath, "for XML2 (PC)")     
-        # Perform the first Alchemy operation
-        alchemy.callAlchemy(MUA1Name, "stat1-1.ini")
-        # Copy the first optimized alchemy file
-        resources.common.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PC)")
-        # Perform the second Alchemy operation
-        alchemy.callAlchemy(MUA1Name, "stat1-2.ini")
-        # Copy the second optimized alchemy file
-        resources.common.copyToDestination(MUA1Name, MUAPath, "for MUA1 (Steam)")
-    elif "PC and Steam" in textureFormat:
-        # PC-only transparent HD format
-        # Copy the XML2 file
-        common.copyToDestination(XML2Name, XMLPath, "for XML2 (PC)")
-        # Perform the Alchemy operation
-        alchemy.callAlchemy(MUA1Name, "stat1-1.ini")
-        # Copy the optimized alchemy file
-        resources.common.copyToDestination(MUA1Name, MUAPath, "for MUA1 (PC and Steam)")   
-    else:
-        # None of the above
-        # Display an error message
+    # Attempt to process
+    try:
+        # Loop through the possible files for the selected texture format
+        for file in processDict[textureFormat]:
+            # Process the file using its necessary function and arguments
+            file["function"](sourceFileName, assetType, **file["kwargs"])
+    except KeyError:
+        # The selected texture format doesn't have an entry in the dictionary
+        # Print an error
         questions.printError(f"Choice of texture format did not line up with an existing operation. Selected texture format: {textureFormat}", True)
-        # Set the completion status
+        # Update the completion variable to indicate that nothing was processed
         complete = False
-        # Wait for the user to acknowledge the error
-        questions.pressAnyKey(None)
     # Return the completion variable
     return complete
 
@@ -239,19 +191,12 @@ def convoProcessing(fullFileName, settings, XMLPath, MUAPath):
         # A texture format was chosen
         # Set up the file names
         (XML1Name, XML2Name, MUA1Name, MUA2Name) = getFileNamesAndNumbers(settings, fullFileName, suffix)
-        # Copy the files
-        for num, name in zip([settings["XML1Num"], settings["XML2Num"], settings["MUA1Num"], settings["MUA2Num"]], [XML1Name, XML2Name, MUA1Name, MUA2Name]):
-            # Determine if the number is used
-            if ((num is not None) and (name is not None) and not(os.path.exists(name))):
-                # Number isn't empty, need to copy
-                # Perform the copying
-                copy(fullFileName, name)
-        # Perform the hex editing
-        hex.hexEdit([settings["XML1Num"], settings["XML2Num"], settings["MUA1Num"], settings["MUA2Num"]], [XML1Name, XML2Name, MUA1Name, MUA2Name], "Conversation Portrait")
+        # Set up the dictionaries for processing
+        numsDict = {"XML1": settings["XML1Num"], "XML2": settings["XML2Num"], "MUA1": settings["MUA1Num"], "MUA2": settings["MUA2Num"]}
+        nameDict = {"XML1": XML1Name, "XML2": XML2Name, "MUA1": MUA1Name, "MUA2": MUA2Name}
+        pathDict = {"XML": XMLPath, "MUA": MUAPath}
         # Process the file
-        complete = processConvo(settings, textureFormat, XML1Name, XML2Name, MUA1Name, MUA2Name, XMLPath, MUAPath, suffix, fullFileName)
-        # Delete the lingering files
-        common.deleteLingering([XML1Name, XML2Name, MUA1Name, MUA2Name])
+        complete = processConvo("Conversation Portrait", fullFileName, textureFormat, numsDict, nameDict, pathDict)
     else:
         # A texture format was not chosen
         complete = False
