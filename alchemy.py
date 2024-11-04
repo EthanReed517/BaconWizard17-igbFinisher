@@ -6,7 +6,7 @@
 # ####### #
 # IMPORTS #
 # ####### #
-# Other modules
+# External modules
 import os
 from winreg import *
 import subprocess

@@ -6,14 +6,14 @@
 # ####### #
 # IMPORTS #
 # ####### #
-# Modules from this program
+# Internal modules
 import alchemy
 import common
 import hex
 import processing
 import questions
 import textures
-# Other modules
+# External modules
 import os.path
 from os import remove
 from shutil import copy

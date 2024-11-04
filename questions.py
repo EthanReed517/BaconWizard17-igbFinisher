@@ -7,7 +7,7 @@
 # ####### #
 # IMPORTS #
 # ####### #
-# Other modules
+# External modules
 import questionary
 from questionary import prompt, Style, Validator, ValidationError
 import os.path

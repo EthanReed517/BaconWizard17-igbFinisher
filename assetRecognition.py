@@ -6,9 +6,9 @@
 # ####### #
 # IMPORTS #
 # ####### #
-# Modules from this program
+# Internal modules
 import questions
-# Other modules
+# External modules
 import os.path
 
 

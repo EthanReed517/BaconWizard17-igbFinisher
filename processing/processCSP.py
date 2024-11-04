@@ -6,7 +6,7 @@
 # ####### #
 # IMPORTS #
 # ####### #
-# Modules from this program
+# Internal modules
 import common
 import processing
 import questions

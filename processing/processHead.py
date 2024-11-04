@@ -6,12 +6,12 @@
 # ####### #
 # IMPORTS #
 # ####### #
-# Modules from this program
+# Internal modules
 import common
 import processing
 import questions
 import textures
-# Other modules
+# External modules
 import os.path
 from shutil import copy
 

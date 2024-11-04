@@ -6,13 +6,13 @@
 # ####### #
 # IMPORTS #
 # ####### #
-# Modules from this program
+# Internal modules
 import alchemy
 import assetRecognition
 import config
 import questions
 import processing
-# Other modules
+# External modules
 import os.path
 from os import rename, system
 import tkinter as tk

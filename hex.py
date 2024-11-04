@@ -8,7 +8,7 @@
 # ####### #
 # Internal modules
 import alchemy
-# Other modules
+# External modules
 import os.path
 
 

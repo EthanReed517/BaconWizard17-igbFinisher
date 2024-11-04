@@ -6,11 +6,11 @@
 # ####### #
 # IMPORTS #
 # ####### #
-# Modules from this program
+# Internal modules
 import alchemy
 import globalVars
 import hex
-# Other modules
+# External modules
 from shutil import copy
 from os import makedirs, remove
 import os.path

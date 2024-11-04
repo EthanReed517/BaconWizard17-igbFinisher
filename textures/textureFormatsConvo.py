@@ -7,7 +7,7 @@
 # ####### #
 # IMPORTS #
 # ####### #
-# Modules from this program
+# Internal modules
 import alchemy
 import questions
 

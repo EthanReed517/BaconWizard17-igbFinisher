@@ -6,7 +6,7 @@
 # ####### #
 # IMPORTS #
 # ####### #
-# Other modules
+# External modules
 import os.path
 from os import mkdir, remove
 from shutil import copy
