@@ -238,7 +238,7 @@ questions.printImportant("Welcome to BaconWizard17's igb Finisher!\n")
 # Read the settings
 settings = config.parseConfig()
 # Reset the Alchemy eval to avoid possible issues
-alchemy.resetAlchemy()
+alchemy.checkAlchemyReset()
 # Initialize the window
 window_dnd = initializeWindow()
 # Initialize the drop zone
