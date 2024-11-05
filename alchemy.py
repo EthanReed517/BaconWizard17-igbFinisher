@@ -29,7 +29,7 @@ def checkAlchemyDate(lastResetDate):
     # Subtract the last reset date from today's date
     diff = datetime.now(timezone.utc) - lastResetDatetime
     # Check if it's been 30 days or more
-    if diff.days >= 30:
+    if diff.days >= 60:
         # It's been 30 days or more, so the date is no longer valid
         validDate = False
     else:
