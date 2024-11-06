@@ -202,7 +202,7 @@ def oneFormatEnvironmentMaps(png8Counter, dxt1Counter, plainPngCounter, texFolde
     if folderFound == 1:
         # A texture folder was found, meaning that the folder was recognized.
         # Set up the texture format using the folders found earlier.
-        textureFormat = f"Main texture: {diffuseFolder} / Environment texture: {envFolder}"
+        textureFormat = f"Environment texture: {envFolder}"
         # Print a success message to let the user know that the folder was identified.
         questions.printSuccess(f"The diffuse texture folder was automatically identified as {diffuseFolder}. The environment map folder was automatically identified as {envFolder}.")
     elif folderFound == 0:
@@ -274,7 +274,7 @@ def transparentEnvironmentMaps(png8Counter, dxt1Counter, plainPngCounter, texFol
     if folderFound == 1:
         # A texture folder was found, meaning that the folder was recognized.
         # Set up the texture format using the folders found earlier.
-        textureFormat = f"Main texture: {diffuseFolder} / Environment Texture: {envFolder}"
+        textureFormat = f"Environment texture: {envFolder}"
         # Print a success message to let the user know that the folder was identified.
         questions.printSuccess(f"The diffuse texture folder was automatically identified as {diffuseFolder}. The environment map folder was automatically identified as {envFolder}.")
     elif folderFound == 0:
@@ -419,7 +419,7 @@ def tripleFormat(png8Counter, dxt1Counter, plainPngCounter, texFolderList, setti
     if folderFound == 1:
         # A texture folder was found, meaning that the folder was recognized.
         # Set up the texture format using the folders found earlier.
-        textureFormat = f"Main texture: {diffuseOFolder} / Environment Texture: {envFolder}"
+        textureFormat = f"Environment texture: {envFolder}"
         # Print a success message to let the user know that the folder was identified.
         questions.printSuccess(f"The opaque diffuse texture folder was automatically identified as {diffuseOFolder}. The transparent diffuse texture folder was automatically identified as {diffuseTFolder}. The environment map folder was automatically identified as {envFolder}.")
     elif folderFound == 0:
