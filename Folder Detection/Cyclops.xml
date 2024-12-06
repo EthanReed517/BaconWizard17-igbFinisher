@@ -1,0 +1,23 @@
+<paths>
+    <release XML="C:\Users\ethan\Desktop\Marvel Mods\Releases\Custom Models - XML1, XML2\Cyclops" MUA="C:\Users\ethan\Desktop\Marvel Mods\Releases\Custom Models - MUA1, MUA2\Cyclops" />
+    <skins>
+		<!-- Civilian Skins -->
+		<skin texFolder="Civilian A" outputFolder="0a. Civilian\Short Hair" />
+		<skin texFolder="Civilian B" outputFolder="0a. Civilian\Spiky Hair" />
+		<skin texFolder="Civilian C" outputFolder="0a. Civilian\Short Parted Hair" />
+		<skin texFolder="Civilian D" outputFolder="0a. Civilian\Long Parted Hair" />
+		<!-- Main Universe Skins -->
+		<skin texFolder="Original" outputFolder="1. Original" />
+		<skin texFolder="Classic" outputFolder="2. Classic" />
+		<skin texFolder="90s" outputFolder="7. 90s" />
+		<skin texFolder="HOX" outputFolder="17. House of X" />
+		<!-- Alternate Universe Skins -->
+		<skin texFolder="AOA" outputFolder="A2. Age of Apocalypse" />
+		<skin texFolder="Gladiator" outputFolder="A3. Astral Gladiator" />
+		<skin texFolder="Ultimate XML1" outputFolder="A7. Ultimate XML1" />
+		<!-- Dark Cyclops Skins -->
+		<skin texFolder="Astonishing Dark" outputFolder="D1. Astonishing X-Men" />
+		<skin texFolder="HOX Dark" outputFolder="D2. House of X" />
+		<skin texFolder="Ultimate XML2 Dark" outputFolder="D3. Ultimate XML2" />
+	</skins>
+</paths>

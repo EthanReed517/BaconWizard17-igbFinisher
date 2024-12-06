@@ -167,21 +167,24 @@ def pathGetter(series, game1Name, game2Name):
             except AssertionError:
                 # The AssertionError happens because the earlier "assert" statement failed, meaning that the path doesn't exist.
                 # Check if the option is "Ask", which is also allowed.
-                if ((path == "Ask") or (path == "None")):
-                    # The value is ask, which is also acceptable.
+                if path in ["Ask", "Detect", "None"]:
+                    # The path is one of the acceptable non-path values
                     # Break out of the loop.
                     break
                 else:
                     # The value is not ask or an existing file path, so something went wrong.
                     questions.printError(f"The value for the path for {games} is set to {path}, which is not an acceptable value. Please decide what you'd like the value to be.", False)
                     # Find out what the user wants in their settings.
-                    valueType = questions.select(f"What setting do you want to use for the path for {games}?", ["Update the settings with a permanent path", f"Don't enter a number (the character is not in {games})", "Ask each time an asset is processed"])
+                    valueType = questions.select(f"What setting do you want to use for the path for {games}?", ["Update the settings with a permanent path", "Detect the output path using the model's texture path.", f"Don't enter a number (the character is not in {games})", "Ask each time an asset is processed"])
                     if valueType == "Update the settings with a permanent path":
                         # The user wants to write a new path to the settings.
                         # Create the message for the prompt
                         message = f"Enter the path to the folder for the {games} release:"
                         # Ask the question
                         path = questions.path(message, questions.pathValidator)
+                    elif valueType == "Detect the output path using the model's texture path.":
+                        # The user wants to detect paths from the model's texture folder
+                        path = "Detect"
                     elif valueType == f"Don't enter a number (the character is not in {games})":
                         # The user wants to skip this series.
                         # Set the setting.
@@ -191,7 +194,7 @@ def pathGetter(series, game1Name, game2Name):
                         # Set the setting.
                         path = "Ask"
         # Determine if a path was entered
-        if (not(path == "None") or not(path == "Ask")):
+        if not(path in ["Ask", "Detect", "None"]):
             # A path was entered
             # Replace any incorrect slashes
             path = path.replace("\\", "/")

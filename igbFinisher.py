@@ -9,6 +9,7 @@
 # Internal modules
 import alchemy
 import assetRecognition
+import basicXMLOps
 import config
 import questions
 import processing
@@ -112,7 +113,7 @@ def fileDrop(fullFileName):
     if not(assetType == "Mannequin"):
         # XML-compatible asset is being used
         # Get the XML file path
-        XMLPath = getFilePath(settings, "XML", "XML1", "XML2")
+        XMLPath = getFilePath(fullFileName, settings, "XML", "XML1", "XML2")
     else:
         # Not XML-compatible (mannequin)
         # Set the path to none
@@ -121,7 +122,7 @@ def fileDrop(fullFileName):
     if not((assetType == "Character Select Portrait") or (assetType == "3D Head")):
         # MUA-compatible asset is being used
         # Get the MUA file path
-        MUAPath = getFilePath(settings, "MUA", "MUA1", "MUA2")
+        MUAPath = getFilePath(fullFileName, settings, "MUA", "MUA1", "MUA2")
     else:
         # Not MUA-compatible (CSP or 3D Head)
         # Set the path to none
@@ -168,42 +169,112 @@ def getNumbers(settings):
     return settings
 
 # Define the function to get the file path
-def getFilePath(settings, series, game1Name, game2Name):
+def getFilePath(fullFileName, settings, series, game1Name, game2Name):
+    # Start by assuming that the file path is unknown
+    filePath = "Unknown"
     # Set up the numbers
     game1Num = settings[f"{game1Name}Num"]
     game2Num = settings[f"{game2Name}Num"]
-    # Determine if a path should be collected
-    if settings[f"{series}Path"] == None:
-        # No path, so just set it to none
+    # Determine if both games are not used
+    if ((game1Num is None) and (game2Num is None)):
+        # Neither game is in use, so no file path is needed
         filePath = None
-    elif settings[f"{series}Path"] == "Ask":
-        # Need to ask about the path
-        # Determine which games are in use
-        if ((game1Num is None) and (game2Num is None)):
-            # Neither game is in use
-            filePath = None
-        else:
-            # At least one game is in use
-            if game1Num is not None:
-                # game 1 is in use
-                if game2Num is not None:
-                    # game 1 and game 2 are in use
-                    games = f"{game1Name}/{game2Name}"
-                else:
-                    # Only game 1 is in use
-                    games = game1Name
-            else:
-                # Only game 2 is in use
-                games = game2Name
-            # Create the message for the prompt
-            message = f"Enter the path to the folder for the {games} release:"
-            # Ask the question
-            filePath = questions.path(message, questions.pathValidator)
-            # Replace any incorrect slashes
-            filePath = filePath.replace("\\", "/")
     else:
-        # The path is already in the settings
-        filePath = settings[f"{series}Path"]
+        # Determine if a path should be collected
+        if settings[f"{series}Path"] == None:
+            # No path, so just set it to none
+            filePath = None
+        elif settings[f"{series}Path"] == "Detect":
+            # Get the list of textures for the model
+            (texturePaths, textureFormats) = alchemy.GetTexPath(fullFileName)
+            # Determine if there are any textures
+            if not(texturePaths == []):
+                # There are textures
+                # Remove any sphereImage textures, since they won't have a path
+                if "sphereImage" in texturePaths:
+                    texturePaths.remove("sphereImage")
+                # Get the folder from the first path
+                firstPath = "\\".join(texturePaths[0].split("\\")[0:-2])
+                # Assume that all folders for all paths will be the same
+                sameFolders = True
+                # Loop through the remaining textures to see if they match
+                for texture in texturePaths:
+                    currentPath = "\\".join(texture.split("\\")[0:-2])
+                    if not(currentPath == firstPath):
+                        sameFolders = False
+                # Check if the textures all come from the same folder
+                if sameFolders == True:
+                    # The paths are the same
+                    # Get the character folder from the path
+                    characterFolder = texturePaths[0].split("\\")[-5]
+                    xmlPath = os.path.join("Folder Detection", f"{characterFolder}.xml")
+                    xmlPathAbs = resource_path(xmlPath)
+                    # Check if an xml file exists
+                    if os.path.exists(xmlPathAbs):
+                        # An xml file exists
+                        # Open the xml file and get its root
+                        pathsRoot = basicXMLOps.openGetTreeAndRoot(xmlPathAbs)
+                        # Get the main release path
+                        releaseElem = pathsRoot.find("release")
+                        # Get the start of the path for the current series
+                        pathStart = releaseElem.get(series)
+                        # Get the skin's sub-folder
+                        skinFolder = texturePaths[0].split("\\")[-3]
+                        # Initialize a variable for the sub-folder
+                        subFolder = None
+                        # Get the skins element and loop through all the skins in it
+                        skinsElem = pathsRoot.find("skins")
+                        for skinElem in skinsElem.findall("skin"):
+                            # Check if the element's texFolder attribute matches with the skin's subfolder
+                            if skinElem.get("texFolder") == skinFolder:
+                                subFolder = skinElem.get("outputFolder")
+                        # Check if anything was found
+                        if subFolder is not None:
+                            # Something was found
+                            # Create the path
+                            filePath = os.path.join(pathStart, subFolder)
+                            # Verify that the path exists
+                            if not(os.path.exists(filePath)):
+                                questions.printWarning(f"The value for the path for the {series} games was set to \"Detect\", but the output path for {skinFolder} ({filePath}) does not exist. Please enter a path instead.")
+                        else:
+                            # Nothing was found
+                            questions.printWarning(f"The value for the path for the {series} games was set to \"Detect\", but {characterFolder}.xml does not contain a matching output folder for {skinFolder}. Please enter a path instead.")
+                    else:
+                        # No xml file exists
+                        questions.printWarning(f"The value for the path for the {series} games was set to \"Detect\", but {characterFolder}.xml does not exist in the Detection folder. Please enter a path instead.")
+                else:
+                    # The paths are not all the same
+                    questions.printWarning(f"The value for the path for the {series} games was set to \"Detect\", but the model contains textures that are in multiple folders. Detection does not support multiple folders. Please enter a path instead.")
+            else:
+                # There are no textures
+                questions.printWarning(f"The value for the path for the {series} games was set to \"Detect\", but the model contains no textures. Please enter a path instead.")
+        # Determine if anything has been found up to this point
+        if filePath == "Unknown":
+            # Nothing has been found yet
+            # Determine if the setting is a path
+            if os.path.exists(settings[f"{series}Path"]):
+                # The path is already in the settings
+                filePath = settings[f"{series}Path"]
+            else:
+                # The path is either "Ask", or detection failed. Need to ask.
+                # Determine which games are in use
+                if game1Num is not None:
+                    # game 1 is in use
+                    if game2Num is not None:
+                        # game 1 and game 2 are in use
+                        games = f"{game1Name}/{game2Name}"
+                    else:
+                        # Only game 1 is in use
+                        games = game1Name
+                else:
+                    # Only game 2 is in use
+                    games = game2Name
+                # Create the message for the prompt
+                message = f"Enter the path to the folder for the {games} release:"
+                # Ask the question
+                filePath = questions.path(message, questions.pathValidator)
+                # Replace any incorrect slashes
+                filePath = filePath.replace("\\", "/")
     # Return the path
     return filePath
 
