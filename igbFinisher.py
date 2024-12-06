@@ -208,12 +208,11 @@ def getFilePath(fullFileName, settings, series, game1Name, game2Name):
                     # Get the character folder from the path
                     characterFolder = texturePaths[0].split("\\")[-5]
                     xmlPath = os.path.join("Folder Detection", f"{characterFolder}.xml")
-                    xmlPathAbs = resource_path(xmlPath)
                     # Check if an xml file exists
-                    if os.path.exists(xmlPathAbs):
+                    if os.path.exists(xmlPath):
                         # An xml file exists
                         # Open the xml file and get its root
-                        pathsRoot = basicXMLOps.openGetTreeAndRoot(xmlPathAbs)
+                        pathsRoot = basicXMLOps.openGetTreeAndRoot(xmlPath)
                         # Get the main release path
                         releaseElem = pathsRoot.find("release")
                         # Get the start of the path for the current series
@@ -241,7 +240,7 @@ def getFilePath(fullFileName, settings, series, game1Name, game2Name):
                             questions.printWarning(f"The value for the path for the {series} games was set to \"Detect\", but {characterFolder}.xml does not contain a matching output folder for {skinFolder}. Please enter a path instead.")
                     else:
                         # No xml file exists
-                        questions.printWarning(f"The value for the path for the {series} games was set to \"Detect\", but {characterFolder}.xml does not exist in the Detection folder. Please enter a path instead.")
+                        questions.printWarning(f"The value for the path for the {series} games was set to \"Detect\", but {characterFolder}.xml does not exist in the \"Folder Detection\" folder. Please enter a path instead.")
                 else:
                     # The paths are not all the same
                     questions.printWarning(f"The value for the path for the {series} games was set to \"Detect\", but the model contains textures that are in multiple folders. Detection does not support multiple folders. Please enter a path instead.")
