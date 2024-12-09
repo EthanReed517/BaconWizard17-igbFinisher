@@ -191,8 +191,10 @@ def getFilePath(fullFileName, settings, series, game1Name, game2Name):
             if not(texturePaths == []):
                 # There are textures
                 # Remove any sphereImage textures, since they won't have a path
-                if "sphereImage" in texturePaths:
-                    texturePaths.remove("sphereImage")
+                for texturePath in texturePaths:
+                    if "sphereImage" in texturePath:
+                        sphereImageIndex = texturePaths.index(texturePath)
+                        texturePaths.remove(texturePaths[sphereImageIndex])
                 # Get the folder from the first path
                 firstPath = "\\".join(texturePaths[0].split("\\")[0:-2])
                 # Assume that all folders for all paths will be the same

@@ -175,11 +175,16 @@ def oneFormatEnvironmentMaps(png8Counter, dxt1Counter, plainPngCounter, texFolde
             # Set up the texture folder list with DXT1 texture options that are compatible with PC only.
             textureFolderList = [("XML2 PC", "XML2 PC")]
     elif plainPngCounter == len(texFolderList):
-        # This is plain png format, which isn't allowed. Environment maps can't be in plain png format.
-        # Print an error to let the user know.
-        questions.printError("igbFinisher determined that a plain png diffuse texture is being used with plain png environment maps. Plain png environment maps are not supported.", False)
-        # Create a blank list to avoid any errors.
-        textureFolderList = []
+        # This is plain png format. It's unlikely to get here, but for Wii models with transparent textures or no textures, it is possible. It's also possible for the same cases on XML2 PC or Xbox if the main texture is over 256x256.
+        # Determine if this is for PC or consoles
+        if settings["pcOnly"] == False:
+            # This is for all consoles
+            # Set up the list of texture formats
+            textureFolderList = [("Wii", "Wii"), ("Xbox and Wii", "Xbox and Wii"), ("PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360", "Wii"), ("PC, Wii, Xbox, MUA1 Steam, PS3, and 360", "Wii"), ("PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360", "Xbox and Wii"), ("PC, Wii, Xbox, MUA1 Steam, PS3, and 360", "Xbox and Wii")]
+        else:
+            # This is for PC only
+            # Set up the list of texture formats
+            textureFolderList = [("XML2 PC", "XML2 PC"), ("PC and MUA1 Steam", "XML2 PC")]
     else:
         # No format counter is the same as the length of the texture format list.
         # Notify the user of the error. There's really no way this should happen unless there's something super weird going on, but I'm adding it for extra error security.
@@ -242,12 +247,12 @@ def transparentEnvironmentMaps(png8Counter, dxt1Counter, plainPngCounter, texFol
             # Set up the texture folder list with plain png texture options that are compatible with PC only.
             textureFolderList = [("PC and MUA1 Steam", "PC")]
     elif dxt1Counter > 1:
-        # The environment maps use DXT1 textures.
+        # The environment maps use DXT1 textures, or it's a DXT1 main texture with plain png environment maps
         # Determine if this is for PC or consoles, which will determine which texture list to use.
         if settings["pcOnly"] == False:
             # The model is being processed for all consoles.
             # Set up the texture folder list with plain png texture options that are compatible with all consoles.
-            textureFolderList = [("PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360", "XML2 PC"), ("PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360", "Xbox and Wii"), ("PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360", "Wii"), ("PC, Xbox, Wii, MUA1 Steam, PS3, and 360", "XML2 PC"), ("PC, Xbox, Wii, MUA1 Steam, PS3, and 360", "Xbox and Wii"), ("PC, Xbox, Wii, MUA1 Steam, PS3, and 360", "Wii")]
+            textureFolderList = [("PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360", "XML2 PC"), ("PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360", "Xbox and Wii"), ("PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360", "Wii"), ("PC, Xbox, Wii, MUA1 Steam, PS3, and 360", "XML2 PC"), ("PC, Xbox, Wii, MUA1 Steam, PS3, and 360", "Xbox and Wii"), ("PC, Xbox, Wii, MUA1 Steam, PS3, and 360", "Wii"), ("Wii", "Wii"), ("Wii", "Xbox and Wii")]
         else:
             # The model is being process for PC only.
             # Set up the texture folder list with plain png texture options that are compatible with PC only.
@@ -492,11 +497,11 @@ def get3DTextureFormat(assetType, settings, fullFileName):
                         uniqueFolders = getUniqueFolders(texFolderList)
                         # Determine the number of unique folders.
                         if len(uniqueFolders) == 2:
-                            # There are two folders, meaning that there's a transparent diffuse texture with environment maps (theoretically, it would be possible to get here with transparent environment maps and an opaque diffuse texture, but that would take some real skill, and it wouldn't produce an accepted format anyways).
+                            # There are two folders, meaning that there's either a mix of plain png and some opaque texture. The plain png could be a transparent texture or an environment map.
                             # Determine which format is actually in use.
                             textureFormat = transparentEnvironmentMaps(png8Counter, dxt1Counter, plainPngCounter, texFolderList, settings)
                         elif len(uniqueFolders) == 3:
-                            # There are three folders, meaning that there's a transparent diffuse texture, an opaque diffuse texture, and environment maps (theoretically, it would also be possible to get here with some botched combination of 3 folders, but once again, that would take some real skill, and it wouldn't produce an accepted format anyways).
+                            # There are three folders, meaning that there's a transparent diffuse texture, an opaque diffuse texture, and environment maps (theoretically, it would also be possible to get here with some botched combination of 3 folders, but that would take some real skill, and it wouldn't produce an accepted format anyways).
                             # Determine which format is actually in use.
                             textureFormat = tripleFormat(png8Counter, dxt1Counter, plainPngCounter, texFolderList, settings)
                         elif len(uniqueFolders) > 3:
