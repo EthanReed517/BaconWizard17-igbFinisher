@@ -23,39 +23,39 @@ def processNoTexFile(sourceFileName, assetType, nums, files, paths, prefix):
     # Determine what the user picked
     if folderOption == folderOptions[0]:
         # Send out like a model with a 256x256 or less texture
-        processing.processFile(sourceFileName, nums["XML1"], assetType, files["XML1"], paths["XML"], "for XML1 (GC)", None)
-        processing.processFile(sourceFileName, nums["XML1"], assetType, files["XML1"], paths["XML"], "for XML1 (PS2 and Xbox)", None)
-        processing.processFile(sourceFileName, nums["XML2"], assetType, files["XML2"], paths["XML"], "for XML2 (GC)", None)
-        processing.processFile(sourceFileName, nums["XML2"], assetType, files["XML2"], paths["XML"], "for XML2 (PC, PS2, and Xbox)", None)
-        processing.processPSPFiles(sourceFileName, nums, assetType, files, paths, prefix)
-        processing.processFile(sourceFileName, nums["MUA1"], assetType, files["MUA1"], paths["MUA"], "for MUA1 (PS2 and Xbox)", None)
-        processing.processWiiFiles(sourceFileName, nums, assetType, files, paths["MUA"])
-        processing.processFile(sourceFileName, nums["MUA1"], assetType, files["MUA1"], paths["MUA"], "for MUA1 (PC and 360)", [f"{prefix}1-1.ini"])
-        processing.processFile(sourceFileName, nums["MUA1"], assetType, files["MUA1"], paths["MUA"], "for MUA1 (Steam and PS3)", [f"{iniPrefix}1-1.ini"])
-        processing.processFile(sourceFileName, nums["MUA2"], assetType, files["MUA2"], paths["MUA"], "for MUA2 (PS2)", [f"{prefix}3.ini"])
+        processing.processFile(sourceFileName, assetType, nums["XML1"], files["XML1"], paths["XML"], "for XML1 (GC)", None)
+        processing.processFile(sourceFileName, assetType, nums["XML1"], files["XML1"], paths["XML"], "for XML1 (PS2 and Xbox)", None)
+        processing.processFile(sourceFileName, assetType, nums["XML2"], files["XML2"], paths["XML"], "for XML2 (GC)", None)
+        processing.processFile(sourceFileName, assetType, nums["XML2"], files["XML2"], paths["XML"], "for XML2 (PC, PS2, and Xbox)", None)
+        processing.processPSPFiles(sourceFileName, assetType, nums, files, paths, prefix)
+        processing.processFile(sourceFileName, assetType, nums["MUA1"], files["MUA1"], paths["MUA"], "for MUA1 (PS2 and Xbox)", None)
+        processing.processWiiFiles(sourceFileName, assetType, nums, files, paths["MUA"])
+        processing.processFile(sourceFileName, assetType, nums["MUA1"], files["MUA1"], paths["MUA"], "for MUA1 (PC and 360)", [f"{prefix}1-1.ini"])
+        processing.processFile(sourceFileName, assetType, nums["MUA1"], files["MUA1"], paths["MUA"], "for MUA1 (Steam and PS3)", [f"{prefix}1-1.ini"])
+        processing.processFile(sourceFileName, assetType, nums["MUA2"], files["MUA2"], paths["MUA"], "for MUA2 (PS2)", [f"{prefix}3.ini"])
     elif folderOption == folderOptions[1]:
         # Send out like a model with a larger than 256x256 texture
-        processing.processFile(sourceFileName, nums["XML1"], assetType, files["XML1"], paths["XML"], "for XML1 (GC)", None)
-        processing.processFile(sourceFileName, nums["XML1"], assetType, files["XML1"], paths["XML"], "for XML1 (PS2)", None)
-        processing.processFile(sourceFileName, nums["XML1"], assetType, files["XML1"], paths["XML"], "for XML1 (Xbox)", None)
-        processing.processFile(sourceFileName, nums["XML2"], assetType, files["XML2"], paths["XML"], "for XML2 (GC)", None)
-        processing.processFile(sourceFileName, nums["XML2"], assetType, files["XML2"], paths["XML"], "for XML2 (PS2)", None)
-        processing.processFile(sourceFileName, nums["XML2"], assetType, files["XML2"], paths["XML"], "for XML2 (PC and Xbox)", None)
-        processing.processPSPFiles(sourceFileName, nums, assetType, files, paths, prefix)
-        processing.processFile(sourceFileName, nums["MUA1"], assetType, files["MUA1"], paths["MUA"], "for MUA1 (PS2)", None)
-        processing.processFile(sourceFileName, nums["MUA1"], assetType, files["MUA1"], paths["MUA"], "for MUA1 (Xbox)", None)
-        processing.processWiiFiles(sourceFileName, nums, assetType, files, paths["MUA"])
-        processing.processFile(sourceFileName, nums["MUA1"], assetType, files["MUA1"], paths["MUA"], "for MUA1 (PC, Steam, PS3, and 360)", [f"{prefix}1-1.ini"])
-        processing.processFile(sourceFileName, nums["MUA2"], assetType, files["MUA2"], paths["MUA"], "for MUA2 (PS2)", [f"{prefix}3.ini"])
+        processing.processFile(sourceFileName, assetType, nums["XML1"], files["XML1"], paths["XML"], "for XML1 (GC)", None)
+        processing.processFile(sourceFileName, assetType, nums["XML1"], files["XML1"], paths["XML"], "for XML1 (PS2)", None)
+        processing.processFile(sourceFileName, assetType, nums["XML1"], files["XML1"], paths["XML"], "for XML1 (Xbox)", None)
+        processing.processFile(sourceFileName, assetType, nums["XML2"], files["XML2"], paths["XML"], "for XML2 (GC)", None)
+        processing.processFile(sourceFileName, assetType, nums["XML2"], files["XML2"], paths["XML"], "for XML2 (PS2)", None)
+        processing.processFile(sourceFileName, assetType, nums["XML2"], files["XML2"], paths["XML"], "for XML2 (PC and Xbox)", None)
+        processing.processPSPFiles(sourceFileName, assetType, nums, files, paths, prefix)
+        processing.processFile(sourceFileName, assetType, nums["MUA1"], files["MUA1"], paths["MUA"], "for MUA1 (PS2)", None)
+        processing.processFile(sourceFileName, assetType, nums["MUA1"], files["MUA1"], paths["MUA"], "for MUA1 (Xbox)", None)
+        processing.processWiiFiles(sourceFileName, assetType, nums, files, paths["MUA"])
+        processing.processFile(sourceFileName, assetType, nums["MUA1"], files["MUA1"], paths["MUA"], "for MUA1 (PC, Steam, PS3, and 360)", [f"{prefix}1-1.ini"])
+        processing.processFile(sourceFileName, assetType, nums["MUA2"], files["MUA2"], paths["MUA"], "for MUA2 (PS2)", [f"{prefix}3.ini"])
     else:
         # Send to as few folders as possible
-        processing.processFile(sourceFileName, nums["XML1"], assetType, files["XML1"], paths["XML"], "for XML1 (GC, PS2, and Xbox)", None)
-        processing.processFile(sourceFileName, nums["XML2"], assetType, files["XML2"], paths["XML"], "for XML2 (PC, GC, PS2, and Xbox)", None)
-        processing.processPSPFiles(sourceFileName, nums, assetType, files, paths, prefix)
-        processing.processFile(sourceFileName, nums["MUA1"], assetType, files["MUA1"], paths["MUA"], "for MUA1 (PS2 and Xbox)", None)
-        processing.processWiiFiles(sourceFileName, nums, assetType, files, paths["MUA"])
-        processing.processFile(sourceFileName, nums["MUA1"], assetType, files["MUA1"], paths["MUA"], "for MUA1 (PC, Steam, PS3, and 360)", [f"{prefix}1-1.ini"])
-        processing.processFile(sourceFileName, nums["MUA2"], assetType, files["MUA2"], paths["MUA"], "for MUA2 (PS2)", [f"{prefix}3.ini"])
+        processing.processFile(sourceFileName, assetType, nums["XML1"], files["XML1"], paths["XML"], "for XML1 (GC, PS2, and Xbox)", None)
+        processing.processFile(sourceFileName, assetType, nums["XML2"], files["XML2"], paths["XML"], "for XML2 (PC, GC, PS2, and Xbox)", None)
+        processing.processPSPFiles(sourceFileName, assetType, nums, files, paths, prefix)
+        processing.processFile(sourceFileName, assetType, nums["MUA1"], files["MUA1"], paths["MUA"], "for MUA1 (PS2 and Xbox)", None)
+        processing.processWiiFiles(sourceFileName, assetType, nums, files, paths["MUA"])
+        processing.processFile(sourceFileName, assetType, nums["MUA1"], files["MUA1"], paths["MUA"], "for MUA1 (PC, Steam, PS3, and 360)", [f"{prefix}1-1.ini"])
+        processing.processFile(sourceFileName, assetType, nums["MUA2"], files["MUA2"], paths["MUA"], "for MUA2 (PS2)", [f"{prefix}3.ini"])
 
 # Define the function for processing assets
 def process3D(assetType, sourceFileName, textureFormat, numsDict, nameDict, pathDict):
@@ -72,7 +72,7 @@ def process3D(assetType, sourceFileName, textureFormat, numsDict, nameDict, path
     processDict = {
         # No texture type
         "No Texture": [
-            {"function": processNoTexFile, "kwargs": {"nums": numsDict, "assetType": assetType, "files": nameDict, "paths": pathDict, "prefix": iniPrefix}}
+            {"function": processNoTexFile, "kwargs": {"nums": numsDict, "files": nameDict, "paths": pathDict, "prefix": iniPrefix}}
         ],
         # Single texture type, PNG8 format, all consoles
         "PC, PS2, Xbox, and MUA1 360": [
