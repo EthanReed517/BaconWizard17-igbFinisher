@@ -110,11 +110,11 @@ def getConvoTextureFormat(settings, fullFileName):
                 if settings["pcOnly"] == False:
                     # The model is being processed for all consoles.
                     # Set up the texture folder list with plain png texture options that are compatible with all consoles.
-                    textureFolderList = ["All", "All except PSP", "PSP", "PC and Next-Gen", "Last-Gen"]
+                    textureFolderList = ["All except GC, PS2, and PSP", "PC and MUA1 Next-Gen", "Wii and Xbox"]
                 else:
                     # The model is being process for PC only.
                     # Set up the texture folder list with plain png texture options that are compatible with PC only.
-                    textureFolderList = ["PC and Steam"]
+                    textureFolderList = ["PC and MUA1 Steam"]
                 # Determine the format that's in use.
                 textureFormat = findFolder(texFolder, textureFolderList)
             else:
@@ -136,6 +136,10 @@ def getConvoTextureFormat(settings, fullFileName):
                 # The texture uses a green villain outline.
                 # Set up the file name suffix for the igb file.
                 suffix = " (Doom-Possessed)"
+            elif texFile[0:3] == "ng_":
+                # The file is next-gen style (indexed alpha specifically)
+                # Set the file name suffix for the igb file.
+                suffix = " (Next-Gen Style)"
             else:
                 # The texture has no outline. It's possible that this also means that the texture was set up incorrectly, but that would be caught later with the folder detection, so it's okay for it to get through here.
                 # Set up the file name suffix for the igb file.
@@ -147,7 +151,7 @@ def getConvoTextureFormat(settings, fullFileName):
                 if settings["pcOnly"] == False:
                     # The model is being processed for all consoles.
                     # Set up the texture folder list with PNG8 texture options that are compatible with all consoles.
-                    textureFolderList = ["Main", "Main except PSP", "PSP", "GC, PS2, and Xbox"]
+                    textureFolderList = ["Main", "Main except PSP", "PSP", "GC, PS2, and Xbox", "GC, PS2, and PSP", "GC and PS2"]
                 else:
                     # The model is being process for PC only.
                     # Set up the texture folder list with PNG8 texture options that are compatible with PC only.
