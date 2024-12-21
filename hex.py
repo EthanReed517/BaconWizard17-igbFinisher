@@ -8,6 +8,7 @@
 # ####### #
 # Internal modules
 import alchemy
+import questions
 # External modules
 import os.path
 
@@ -45,18 +46,39 @@ def getReplaceList(num: str, assetType: str, geomNames: list, texPathList: list)
             # The texture path has the character number in it
             # Convert the texture path to hex
             b_12301_tex = bytearray(path, 'utf-8')
-            # Replace the generic number with the character-specific number in the texture path and convert it to hex.
-            b_tex = bytearray(path.replace("12301", num), 'utf-8')
+            # Replace the generic number with the character-specific number in the texture path
+            newTexPath = path.replace("12301", num)
+            # Determine the asset type
+            if assetType == "Conversation Portrait":
+                # This is a conversation portrait
+                # Create the list of possible prefixes
+                prefixList = ["b", "g", "r", "ng"]
+            elif assetType == "Character Select Portrait":
+                # This is a character select portrait
+                # Create the list of possible prefixes
+                prefixList = ["x1c", "x2c"]
+            else:
+                # 3D asset
+                # Create an empty list
+                prefixList = []
+            # Loop through the list of prefixes
+            for prefix in prefixList:
+                # Determine if the file name starts with the prefix
+                if os.path.basename(newTexPath).startswith(f"{prefix}_"):
+                    # Replace the prefix
+                    newTexPath = newTexPath.replace(os.path.basename(newTexPath), os.path.basename(newTexPath).replace(f"{prefix}_", ""))
+            # Convert the new path to hex
+            b_tex = bytearray(newTexPath, 'utf-8')
             # Add the hex strings to the list of hex strings.
             b_List.append([b_12301_tex, b_tex])
     # Determine the asset type
     if assetType == "Conversation Portrait":
         # Conversation portrait
-        # Set up the default string
+        # Set up the default string for the geometry
         b_12301_conversationpng = bytearray('12301_conversation.png', 'utf-8')
-        # Set up the new string
+        # Set up the new string for the geometry
         b_Num_conversationpng = b_Num + bytearray('_conversation.png', 'utf-8')
-        # Build the list
+        # Add to the list
         b_List.append([b_12301_conversationpng, b_Num_conversationpng])
     else:
         # 3D asset
