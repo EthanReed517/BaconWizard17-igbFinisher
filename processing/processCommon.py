@@ -8,7 +8,6 @@
 # ####### #
 # Internal modules
 import alchemy
-import globalVars
 import hex
 # External modules
 from shutil import copy
@@ -86,18 +85,15 @@ def processWiiFiles(sourceFileName, assetType, nums, files, path):
 def processPSPFiles(sourceFileName, assetType, nums, files, paths, prefix):
     # Determine if this is a skin. XML2 PSP skins need special consideration
     if prefix == "skin":
-        # This is a skin, so check if XML2 PSP skins are allowed
-        if globalVars.allowXML2PSPSkin == True:
-            # This is allowed, so process it
-            # Check if this is the file without cel shading, which is the only one used in XML2 PSP
-            if "No Cel" in files["XML2"]:
-                # This is without cel shading
-                # The name should not mention that this is without cel shading, since XML2 PSP doesn't use cel shading
-                outName = files["XML2"].replace(" - No Cel", "")
-                # Update the Alchemy optimization to reference the correct file path
-                updateXML2PSPOptPath()
-                # Process the file
-                processFile(sourceFileName, nums["XML2"], assetType, outName, paths["XML"], "for XML2 (PSP)", ["skin2-1.ini"])
+        # Check if this is the file without cel shading, which is the only one used in XML2 PSP
+        if "No Cel" in files["XML2"]:
+            # This is without cel shading
+            # The name should not mention that this is without cel shading, since XML2 PSP doesn't use cel shading
+            outName = files["XML2"].replace(" - No Cel", "")
+            # Update the Alchemy optimization to reference the correct file path
+            updateXML2PSPOptPath()
+            # Process the file
+            processFile(sourceFileName, nums["XML2"], assetType, outName, paths["XML"], "for XML2 (PSP)", ["skin2-1.ini"])
     else:
         # This is not a skin, so process the XML2 file
         processFile(sourceFileName, nums["XML2"], assetType, files["XML2"], paths["XML"], "for XML2 (PSP)", None)
