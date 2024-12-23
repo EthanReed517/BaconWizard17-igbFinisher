@@ -138,6 +138,7 @@ def fileDrop(fullFileName):
         "3D Head": processing.headProcessing,
         "Conversation Portrait": processing.convoProcessing,
         "Character Select Portrait": processing.CSPProcessing,
+        "Power Icons": processing.iconsProcessing,
         "Other": processing.otherProcessing,
     }
     # Begin processing
@@ -282,9 +283,9 @@ def getFilePath(fullFileName, settings, series, game1Name, game2Name):
 # Define the function to correct the file name
 def fileNameCorrection(fullFileName, assetType):
     # Define the asset type list
-    assetTypeList = ["Skin", "Mannequin", "3D Head", "Conversation Portrait", "Character Select Portrait"]
+    assetTypeList = ["Skin", "Mannequin", "3D Head", "Conversation Portrait", "Character Select Portrait", "Power Icons"]
     # Define the name list
-    nameList = ["igActor01_Animation01DB.igb", "123XX (Mannequin).igb", "123XX (3D Head).igb", "hud_head_123XX.igb", "123XX (Character Select Portrait).igb"]
+    nameList = ["igActor01_Animation01DB.igb", "123XX (Mannequin).igb", "123XX (3D Head).igb", "hud_head_123XX.igb", "123XX (Character Select Portrait).igb", "power_icons.igb"]
     # List the asset types and names
     for asset, fileName in zip(assetTypeList, nameList):
         # Determine if the assets match
