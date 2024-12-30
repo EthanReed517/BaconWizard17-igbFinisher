@@ -1,0 +1,17 @@
+<paths>
+    <skins XML="C:\GitHub\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Defaultman" MUA="C:\GitHub\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Defaultman" >
+		<!-- Main Universe Skins -->
+		<skin texFolder="Classic" outputFolder="1. Classic" />
+		<skin texFolder="Locked" outputFolder="2. Locked" />
+		<skin texFolder="Locked (Heroes Pack)" outputFolder="3. Locked (Heroes Pack)" />
+		<skin texFolder="Locked (Villains Pack)" outputFolder="4. Locked (Villains Pack)" />
+		<skin texFolder="Ice Form" outputFolder="5. Ice Form" />
+		<skin texFolder="Metal Form" outputFolder="6. Metal Form" />
+		<skin texFolder="Rock Form" outputFolder="7. Rock Form" />
+	</skins>
+	<icons XML="C:\GitHub\BaconWizard17-Mod-Releases\Power Icons\Defaultman" MUA="C:\GitHub\BaconWizard17-Mod-Releases\Power Icons\Defaultman" >
+		<!-- MUA1 Icons -->
+		<icon texFolder="MUA1 Ceamonks890 Mod" outputFolder="M1-1. MUA1 (Ceamonks890 Mod) - Default" />
+		<icon texFolder="MUA1 Ceamonks890 Mod Redesign" outputFolder="M1-1r. MUA1 (Ceamonks890 Mod) - Redesign" />
+	</icons>
+</paths>
