@@ -113,7 +113,7 @@ def fileDrop(fullFileName):
     if not(assetType == "Mannequin"):
         # XML-compatible asset is being used
         # Get the XML file path
-        XMLPath = getFilePath(fullFileName, settings, "XML", "XML1", "XML2")
+        XMLPath = getFilePath(fullFileName, settings, assetType, "XML", "XML1", "XML2")
     else:
         # Not XML-compatible (mannequin)
         # Set the path to none
@@ -122,7 +122,7 @@ def fileDrop(fullFileName):
     if not((assetType == "Character Select Portrait") or (assetType == "3D Head")):
         # MUA-compatible asset is being used
         # Get the MUA file path
-        MUAPath = getFilePath(fullFileName, settings, "MUA", "MUA1", "MUA2")
+        MUAPath = getFilePath(fullFileName, settings, assetType, "MUA", "MUA1", "MUA2")
     else:
         # Not MUA-compatible (CSP or 3D Head)
         # Set the path to none
@@ -170,7 +170,7 @@ def getNumbers(settings):
     return settings
 
 # Define the function to get the file path
-def getFilePath(fullFileName, settings, series, game1Name, game2Name):
+def getFilePath(fullFileName, settings, assetType, series, game1Name, game2Name):
     # Start by assuming that the file path is unknown
     filePath = "Unknown"
     # Set up the numbers
@@ -216,20 +216,24 @@ def getFilePath(fullFileName, settings, series, game1Name, game2Name):
                         # An xml file exists
                         # Open the xml file and get its root
                         pathsRoot = basicXMLOps.openGetTreeAndRoot(xmlPath)
-                        # Get the main release path
-                        releaseElem = pathsRoot.find("release")
+                        # Determine the asset type and get the necessary XML information from it
+                        if assetType == "Power Icons":
+                            assetsElem = pathsRoot.find("icons")
+                            assetElemType = "icon"
+                        else:
+                            assetsElem = pathsRoot.find("skins")
+                            assetElemType = "skin"
                         # Get the start of the path for the current series
-                        pathStart = releaseElem.get(series)
+                        pathStart = assetsElem.get(series)
                         # Get the skin's sub-folder
                         skinFolder = texturePaths[0].split("\\")[-3]
                         # Initialize a variable for the sub-folder
                         subFolder = None
-                        # Get the skins element and loop through all the skins in it
-                        skinsElem = pathsRoot.find("skins")
-                        for skinElem in skinsElem.findall("skin"):
+                        # Loop through all the assets in the asset element
+                        for assetElem in assetsElem.findall(assetElemType):
                             # Check if the element's texFolder attribute matches with the skin's subfolder
-                            if skinElem.get("texFolder") == skinFolder:
-                                subFolder = skinElem.get("outputFolder")
+                            if assetElem.get("texFolder") == skinFolder:
+                                subFolder = assetElem.get("outputFolder")
                         # Check if anything was found
                         if subFolder is not None:
                             # Something was found

@@ -1,23 +1,36 @@
 <paths>
-    <release XML="C:\Users\ethan\Desktop\Marvel Mods\Releases\Custom Models - XML1, XML2\Cyclops" MUA="C:\Users\ethan\Desktop\Marvel Mods\Releases\Custom Models - MUA1, MUA2\Cyclops" />
-    <skins>
+    <skins XML="C:\Users\ethan\Desktop\Marvel Mods\Releases\Custom Models - XML1, XML2\Cyclops" MUA="C:\Users\ethan\Desktop\Marvel Mods\Releases\Custom Models - MUA1, MUA2\Cyclops" >
 		<!-- Civilian Skins -->
 		<skin texFolder="Civilian A" outputFolder="0a. Civilian\Short Hair" />
-		<skin texFolder="Civilian B" outputFolder="0a. Civilian\Spiky Hair" />
+		<skin texFolder="Civilian B" outputFolder="0b. Civilian\Spiky Hair" />
 		<skin texFolder="Civilian C" outputFolder="0a. Civilian\Short Parted Hair" />
 		<skin texFolder="Civilian D" outputFolder="0a. Civilian\Long Parted Hair" />
 		<!-- Main Universe Skins -->
 		<skin texFolder="Original" outputFolder="1. Original" />
 		<skin texFolder="Classic" outputFolder="2. Classic" />
 		<skin texFolder="90s" outputFolder="7. 90s" />
+		<skin texFolder="New X-Men" outputFolder="10. New X-Men" />
+		<skin texFolder="Astonishing" outputFolder="11. Astonishing X-Men" />
 		<skin texFolder="HOX" outputFolder="17. House of X" />
 		<!-- Alternate Universe Skins -->
 		<skin texFolder="AOA" outputFolder="A2. Age of Apocalypse" />
-		<skin texFolder="Gladiator" outputFolder="A3. Astral Gladiator" />
 		<skin texFolder="Ultimate XML1" outputFolder="A7. Ultimate XML1" />
-		<!-- Dark Cyclops Skins -->
-		<skin texFolder="Astonishing Dark" outputFolder="D1. Astonishing X-Men" />
-		<skin texFolder="HOX Dark" outputFolder="D2. House of X" />
-		<skin texFolder="Ultimate XML2 Dark" outputFolder="D3. Ultimate XML2" />
+		<skin texFolder="Ultimate XML2" outputFolder="A11. Ultimate XML2" />
+		<skin texFolder="X-Treme Gear" outputFolder="A19. X-Treme Gear" />
 	</skins>
+	<icons XML="C:\Users\ethan\Desktop\Marvel Mods\Releases\Power Icons\Cyclops" MUA="C:\Users\ethan\Desktop\Marvel Mods\Releases\Power Icons\Cyclops" >
+		<!-- XML1 Icons -->
+		<icon texFolder="XML1 Base" outputFolder="X1-1. XML1 (Base) - Default" />
+		<icon texFolder="XML1 Base Redesign" outputFolder="X1-1r. XML1 (Base) - Redesign" />
+		<!-- XML2 Icons -->
+		<icon texFolder="XML2 Base" outputFolder="X2-1. XML2 (Base) - Default" />
+		<icon texFolder="XML2 BaconWizard17 Booster BaconWizard17" outputFolder="X2-2. XML2 (BaconWizard17 Booster) - Default" />
+		<!-- MUA1 Icons -->
+		<icon texFolder="MUA1 Base" outputFolder="M1-1. MUA1 (Base) - Default" />
+		<icon texFolder="MUA1 Base Redesign" outputFolder="M1-1r. MUA1 (Base) - Redesign" />
+		<icon texFolder="MUA1 Maegawa Booster Maegawa" outputFolder="M1-2. MUA1 (Maegawa Booster) - Default" />
+		<!-- MUA2 Icons -->
+		<icon texFolder="MUA2 Base" outputFolder="M2-1. MUA2 (Base) - Default" />
+		<icon texFolder="MUA2 Base Redesign" outputFolder="M2-1r. MUA2 (Base) - Redesign" />
+	</icons>
 </paths>
