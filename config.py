@@ -89,8 +89,13 @@ def characterNumberGetter(game):
                 number = questions.textInput("Enter a 4 or 5 digit skin number:", questions.skinNumberValidator)
         else:
             # The number is not a number
+            # Check if the number ends in XX
+            if ((number[0:-2].isnumeric() == True) and (number[-2:] == "XX")):
+                # The number is a 2-3 digit number followed by "XX", which is allowed
+                # Break out of the while statement
+                break
             # Check if the value is one of the accepted non-numbers
-            if ((number == "None") or (number == "Ask")):
+            elif ((number == "None") or (number == "Ask")):
                 # The value is None or Ask, which is allowed.
                 # Break out of the while statement
                 break

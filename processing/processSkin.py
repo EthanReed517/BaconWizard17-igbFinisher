@@ -21,7 +21,7 @@ from shutil import copy
 # FUNCTIONS #
 # ######### #
 # Define the function for getting the file names
-def getFileNamesAndNumbers(settings, fullFileName):
+def getSkinFileNamesAndNumbers(settings, fullFileName):
     # Get the geometry names from the file
     geomNames = alchemy.GetModelStats(fullFileName)
     # Set the cel shading option to False initially. It could be updated to True if cel shading is detected.
@@ -51,22 +51,30 @@ def getFileNamesAndNumbers(settings, fullFileName):
         # Determine if this game is used
         if settings[f"{game}Num"] is not None:
             # This game is used.
-            # Determine if the last two digits of the skin number are 01.
-            if not(settings[f"{game}Num"][-2:] == "01"):
-                # The last two digits are not 01.
+            # Determine if the last two digits of the skin number are XX.
+            if not(settings[f"{game}Num"][-2:] == "XX"):
+                # The last two digits are not XX.
                 # Warn the user that this isn't recommended.
-                questions.printWarning(f"The skin number for {game} is set to {settings[f'{game}Num']}. It's recommended for the last two digits of the skin number to be 01 outside of special cases.")
+                questions.printWarning(f"The skin number for {game} is set to {settings[f'{game}Num']}. Unless this is a special case, it's recommended that the skin number in the settings ends with \"XX\", which will process the skin with the number ending in 01 and no special descriptor.")
                 # Ask the user what they want to do.
-                numChoice = questions.select(f"What do you want to do for the {game} number?", [f"Update the number to {settings[f'{game}Num'][0:-2]}01 (does not overwrite settings.ini).", "Leave the number as-is. This is a special skin/animated bolton that needs a unique number and file name.", "Leave the number as-is. I want to use a specific skin number."])
+                numChoice = questions.select(f"What do you want to do for the {game} number?", [f"Update the number to {settings[f'{game}Num'][0:-2]}XX (does not overwrite settings.ini).", "Leave the number as-is. This is a special skin/animated bolton that needs a unique number and file name.", "Leave the number as-is. I want to use a specific skin number and not have any descriptor."])
                 # Determine what the user picked.
-                if numChoice == f"Update the number to {settings[f'{game}Num'][0:-2]}01 (does not overwrite settings.ini).":
+                if numChoice == f"Update the number to {settings[f'{game}Num'][0:-2]}XX (does not overwrite settings.ini).":
                     # The user wanted to update the skin number to end in 01.
                     # Update the settings for this game.
                     settings[f"{game}Num"] = f"{settings[f'{game}Num'][0:-2]}01"
                 elif numChoice == "Leave the number as-is. This is a special skin/animated bolton that needs a unique number and file name.":
                     # The user wants to leave the number as-is, but this is a special model with a new name.
                     # Indicate that a special name is needed
-                    description = questions.textInput("Enter a descriptor for the file (i.e., \"Tail Bolton\", \"Wings\", or \"Left Arm\")", None)
+                    description = questions.textInput("Enter a descriptor for the file (i.e., \"Boss Skin\", \"Tail Bolton\", \"Wings\", \"Left Arm\", etc.)", None)
+                else:
+                    # The user wants to leave the number as-is
+                    # Set an empty descriptor
+                    description = None
+            else:
+                # The last two digits are XX
+                # Set the proper skin number
+                settings[f"{game}Num"] = settings[f'{game}Num'][0:-2] + "01"
             # Determine if cel shading is being used, or if this is an MUA game
             if ((celChoice == True) or ((celChoice == False) and (game[0] == "M"))):
                 # Cel shading is in use, or this is an MUA game
@@ -76,13 +84,17 @@ def getFileNamesAndNumbers(settings, fullFileName):
                 # This is an XML game and cel shading is not in use
                 # Set the suffix
                 suffix = " - No Cel"
-            # Determine what the number is
-            if settings[f"{game}Num"][-2:] == "01":
-                # Standard numbering, can end the number in "XX"
+            # Determine if there is a descriptor
+            if description is None:
+                # There is no descriptor
                 # Set the file name
-                nameList.append(common.setUpFileName2("", f"{settings[f'{game}Num'][0:-2]}XX", f" (Skin{suffix}).igb"))
+                nameList.append(common.setUpFileName2("", settings[f"{game}Num"], ".igb"))
+            elif description == "Skin":
+                # This is the standard description
+                # Set the file name
+                nameList.append(common.setUpFileName2("", f"{settings[f'{game}Num'][0:-2]}XX", f" ({description}{suffix}).igb"))
             else:
-                # Non-standard file name
+                # There is a special descriptor
                 # Set the file name
                 nameList.append(common.setUpFileName2("", settings[f"{game}Num"], f" ({description}{suffix}).igb"))
         else:
@@ -100,7 +112,7 @@ def getFileNamesAndNumbers(settings, fullFileName):
     MUA1Name = nameList[2]
     MUA2Name = nameList[3]
     # Return the collected values
-    return (XML1Name, XML2Name, MUA1Name, MUA2Name)
+    return (settings, XML1Name, XML2Name, MUA1Name, MUA2Name)
 
 # Define the function to process skins
 def skinProcessing(fullFileName, settings, XMLPath, MUAPath):
@@ -110,7 +122,7 @@ def skinProcessing(fullFileName, settings, XMLPath, MUAPath):
     if textureFormat is not None:
         # A texture format was chosen
         # Set up file names
-        (XML1Name, XML2Name, MUA1Name, MUA2Name) = getFileNamesAndNumbers(settings, fullFileName)
+        (settings, XML1Name, XML2Name, MUA1Name, MUA2Name) = getSkinFileNamesAndNumbers(settings, fullFileName)
         # Set up the dictionaries for processing
         numsDict = {"XML1": settings["XML1Num"], "XML2": settings["XML2Num"], "MUA1": settings["MUA1Num"], "MUA2": settings["MUA2Num"]}
         nameDict = {"XML1": XML1Name, "XML2": XML2Name, "MUA1": MUA1Name, "MUA2": MUA2Name}

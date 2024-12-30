@@ -16,6 +16,67 @@ import textures
 # ######### #
 # FUNCTIONS #
 # ######### #
+# Define the function for getting the file names
+def getCSPFileNamesAndNumbers(settings, fullFileName, portraitType):
+    # Initialize a list of names
+    nameList = []
+    # Cycle through the list of games
+    for game in ["XML1", "XML2"]:
+        # Set the default description for the file
+        description = "Character Select Portrait"
+        # Determine if the portrait type matches the current game
+        if portraitType == game:
+            # The portrait is used with this game
+            # Determine if the game is used
+            if settings[f"{game}Num"] is not None:
+                # This game is used
+                # Determine if the number ends in 01
+                if settings[f"{game}Num"][-2:] == "01":
+                    # The number ends in 01, which is okay
+                    # Just pass to move on
+                    pass
+                elif settings[f"{game}Num"][-2:] == "XX":
+                    # The number ends in XX, which is also okay
+                    # Update the number to end in 01 for proper processing
+                    settings[f"{game}Num"] = settings[f'{game}Num'][0:-2] + "01"
+                else:
+                    # The number does not end in 01 or XX
+                    # Warn the user that the number should end in 01 or XX
+                    questions.printWarning(f"The skin number for {game} is set to {settings[f'{game}Num']}. Unless this is a special case, it's recommended that the skin number in the settings ends with \"XX\" or 01, which will process the CSP with the number ending in 01 and the standard descriptor.")
+                    # Ask the user what they want to do.
+                    numChoice = questions.select(f"What do you want to do for the {game} number?", [f"Update the number to {settings[f'{game}Num'][0:-2]}XX (does not overwrite settings.ini).", "Leave the number as-is. I want to use a specific skin number and not have any descriptor."])
+                    # Determine what the user picked.
+                    if numChoice == f"Update the number to {settings[f'{game}Num'][0:-2]}XX (does not overwrite settings.ini).":
+                        # The user wanted to update the skin number to end in 01.
+                        # Update the settings for this game.
+                        settings[f"{game}Num"] = f"{settings[f'{game}Num'][0:-2]}01"
+                    else:
+                        # The user wants to leave the number as-is
+                        # Set an empty descriptor
+                        description = None
+                # Determine if there is any description
+                if description is None:
+                    # There is no description
+                    # Set the file name
+                    nameList.append(common.setUpFileName2("", settings[f'{game}Num'], ".igb"))
+                else:
+                    # There is a description
+                    # Add the new name to the list
+                    nameList.append(common.setUpFileName2("", f"{settings[f'{game}Num'][0:-2]}XX", f" ({description}).igb"))
+        else:
+            # The portrait is not used with this game
+            # Set the name to None
+            nameList.append(None)
+    # Add two None entries for MUA1 and MUA2.
+    nameList.extend([None, None])
+    # Break out the list into the specific variables
+    XML1Name = nameList[0]
+    XML2Name = nameList[1]
+    MUA1Name = nameList[2]
+    MUA2Name = nameList[3]
+    # Return the collected values
+    return (settings, XML1Name, XML2Name, MUA1Name, MUA2Name)
+
 # Define the function to export the portraits
 def processCSP(assetType, sourceFileName, textureFormat, numsDict, nameDict, pathDict):
     # Set up the dictionary of necessary operations for each texture type
@@ -78,17 +139,8 @@ def CSPProcessing(fullFileName, settings, XMLPath, MUAPath):
     # Confirm that a texture format was chosen
     if textureFormat is not None:
         # A texture format was chosen
-        # Determine the portrait type
-        if portraitType == "XML1":
-            # XML1 portrait
-            # Set up file names
-            XML1Name = common.setUpFileName2("", settings["XML1Num"][0:-2], "XX (Character Select Portrait).igb")
-            XML2Name = None
-        else:
-            # XML2 portrait
-            # Set up file names
-            XML1Name = None
-            XML2Name = common.setUpFileName2("", settings["XML2Num"][0:-2], "XX (Character Select Portrait).igb")
+        # Set up the file names
+        (settings, XML1Name, XML2Name, MUA1Name, MUA2Name) = getCSPFileNamesAndNumbers(settings, fullFileName, portraitType)
         # Set up the dictionaries for processing
         numsDict = {"XML1": settings["XML1Num"], "XML2": settings["XML2Num"], "MUA1": settings["MUA1Num"], "MUA2": settings["MUA2Num"]}
         nameDict = {"XML1": XML1Name, "XML2": XML2Name, "MUA1": None, "MUA2": None}
