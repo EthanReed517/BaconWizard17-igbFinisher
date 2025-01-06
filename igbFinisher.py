@@ -246,6 +246,12 @@ def getFilePath(fullFileName, settings, assetType, series, game1Name, game2Name)
                             # Verify that the path exists
                             if not(os.path.exists(filePath)):
                                 questions.printWarning(f"The value for the path for the {series} games was set to \"Detect\", but the output path for {skinFolder} ({filePath}) does not exist. Please enter a path instead.")
+                                # Set the file path back to unknown since it's not found
+                                filePath = "Unknown"
+                            else:
+                                # The file path exists
+                                # Announce that it was found
+                                questions.printSuccess(f"The {series} destination folder was automatically identified as {filePath}.\n")
                         else:
                             # Nothing was found
                             questions.printWarning(f"The value for the path for the {series} games was set to \"Detect\", but {characterFolder}.xml does not contain a matching output folder for {skinFolder}. Please enter a path instead.")
