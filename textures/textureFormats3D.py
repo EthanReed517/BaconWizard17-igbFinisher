@@ -461,7 +461,7 @@ def get3DTextureFormat(assetType, settings, fullFileName):
         # Give a warning to let the user know. Textures are generally required for the program to work correctly.
         questions.printWarning("No textures were found in the model.")
         # Ask the user if the model is supposed to have textures.
-        needsTex = questions.confirm("Is this model supposed to have textures?", True)
+        needsTex = questions.confirm("Is this model supposed to have textures?", False)
         # Determine what the user answered.
         if needsTex == True:
             # The model is supposed to have textures.
