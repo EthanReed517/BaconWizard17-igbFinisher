@@ -44,7 +44,7 @@ def getAssetChoices(settings):
     if ((settings["XML1Num"] is not None) or (settings["XML2Num"] is not None)):
         assetChoices.append("Character Select Portrait")
     # Other models are present in every game
-    assetChoices.extend(["Power Icons", "Other"])
+    assetChoices.extend(["Loading Screen", "Power Icons", "Other"])
     # Get the asset type
     assetType = questions.selectDefault("Which asset type are you finishing?", assetChoices, "Other")
     # Determine if the asset is not "Other"
@@ -53,9 +53,9 @@ def getAssetChoices(settings):
 # Define the function for getting the asset type from the file name
 def assetRecognition(inputFileName, fullFileName, settings):
     # Create the list of possible file names
-    fileNameList = ["igActor01_Animation01DB.igb", "123XX (Mannequin", "123XX (3D Head).igb", "hud_head_123XX.igb", "123XX (Character Select Portrait).igb", "power_icons.igb"]
+    fileNameList = ["igActor01_Animation01DB.igb", "123XX (Mannequin", "123XX (3D Head).igb", "hud_head_123XX.igb", "123XX (Character Select Portrait).igb", "123XX (Loading Screen).igb", "power_icons.igb"]
     # Create the list of asset types
-    assetTypeList = ["Skin", "Mannequin", "3D Head", "Conversation Portrait", "Character Select Portrait", "Power Icons"]
+    assetTypeList = ["Skin", "Mannequin", "3D Head", "Conversation Portrait", "Character Select Portrait", "Loading Screen", "Power Icons"]
     # Initialize the return variable for the asset type
     assetType = "Unknown"
     # Initialize the return variable for the file name

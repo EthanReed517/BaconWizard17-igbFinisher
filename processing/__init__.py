@@ -4,6 +4,7 @@ from .processConvo import *
 from .processCSP import *
 from .processHead import *
 from .processIcons import *
+from .processLoad import *
 from .processMann import *
 from .processOther import *
 from .processSkin import *

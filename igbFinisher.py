@@ -138,6 +138,7 @@ def fileDrop(fullFileName):
         "3D Head": processing.headProcessing,
         "Conversation Portrait": processing.convoProcessing,
         "Character Select Portrait": processing.CSPProcessing,
+        "Loading Screen": processing.loadProcessing,
         "Power Icons": processing.iconsProcessing,
         "Other": processing.otherProcessing,
     }
@@ -217,7 +218,10 @@ def getFilePath(fullFileName, settings, assetType, series, game1Name, game2Name)
                         # Open the xml file and get its root
                         pathsRoot = basicXMLOps.openGetTreeAndRoot(xmlPath)
                         # Determine the asset type and get the necessary XML information from it
-                        if assetType == "Power Icons":
+                        if assetType == "Loading Screen":
+                            assetsElem = pathsRoot.find("lscreens")
+                            assetElemType = "lscreen"
+                        elif assetType == "Power Icons":
                             assetsElem = pathsRoot.find("icons")
                             assetElemType = "icon"
                         else:
