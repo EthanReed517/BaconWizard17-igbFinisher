@@ -83,9 +83,16 @@
 		<!-- MUA1 Icons -->
 		<icon texFolder="MUA1 Base" outputFolder="M1-1. MUA1 (Base) - Default" />
 		<icon texFolder="MUA1 Base Redesign" outputFolder="M1-1r. MUA1 (Base) - Redesign" />
-		<icon texFolder="MUA1 Maegawa Booster Maegawa" outputFolder="M1-2. MUA1 (Maegawa Booster) - Default" />
+		<icon texFolder="MUA1 Maegawa Booster" outputFolder="M1-2. MUA1 (Maegawa Booster) - Default" />
 		<!-- MUA2 Icons -->
 		<icon texFolder="MUA2 Base" outputFolder="M2-1. MUA2 (Base) - Default" />
 		<icon texFolder="MUA2 Base Redesign" outputFolder="M2-1r. MUA2 (Base) - Redesign" />
 	</icons>
+	<lscreens XML="C:\GitHub\BaconWizard17-Mod-Releases\Loading Screens - XML1, XML2\Defaultman" MUA="C:\GitHub\BaconWizard17-Mod-Releases\Loading Screens - MUA1, MUA2\Defaultman" >
+		<!-- XML1 Outfits -->
+		<lscreen texFolder="Ultimate XML1" outputFolder="A7. Ultimate XML1" />
+		<lscreen texFolder="X-Treme Gear" outputFolder="A19. X-Treme Gear" />
+		<!-- XML2 Outfits -->
+		<lscreen texFolder="Ultimate XML2" outputFolder="A11. Ultimate XML2" />
+	</lscreens>
 </paths>
