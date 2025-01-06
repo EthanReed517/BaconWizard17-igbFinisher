@@ -83,24 +83,6 @@ def findFolder(texFolder, textureFolderList):
     # Return the collected texture format for further processing.
     return textureFormat
 
-# Define the function for finding the texture folder in the list of texture folders.
-def findFolder(texFolder, textureFolderList):
-    # Determine if the texture folder can be found in the list of texture folders that was created earlier. Since all folders are the same, the first item from the list is taken.
-    if texFolder in textureFolderList:
-        # The texture folder used by the model can be found in the list of texture folders that was created earlier.
-        # Set the format to be this folder.
-        textureFormat = texFolder
-        # Print a success message to inform the user that there is a match.
-        questions.printSuccess(f"The texture folder was automatically identified as {textureFormat}.")
-    else:
-        # The texture folder used by the model can't be found in the list of texture folders that was created earlier.
-        # Print the error to inform the user that the texture folder couldn't be matched to an acceptable format. This can happen if they exported without using the Marvel Mods GIMP Scripts or if they dropped the textures from outside of the VM.
-        questions.printError(f"The texture folder, {texFolder}, could not be recognized. Make sure that you're exporting your textures with the Marvel Mods GIMP Scripts and adding the textures from within the VM. Please try again.", False)
-        # In order to have a return variable for this case, set the texture format to "None" again.
-        textureFormat = None
-    # Return the collected texture format for further processing.
-    return textureFormat
-
 # Define the function to get texture formats for 3D assets
 def getIconsTextureFormat(settings, fullFileName):
     # Call the function to get the texture information from Alchemy for this file. Return a list of the texture paths and another of the texture formats.
