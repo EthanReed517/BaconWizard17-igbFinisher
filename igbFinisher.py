@@ -140,6 +140,7 @@ def fileDrop(fullFileName):
         "Character Select Portrait": processing.CSPProcessing,
         "Loading Screen": processing.loadProcessing,
         "Power Icons": processing.iconsProcessing,
+        "Comic Cover": processing.comicProcessing,
         "Other": processing.otherProcessing,
     }
     # Begin processing
@@ -224,6 +225,9 @@ def getFilePath(fullFileName, settings, assetType, series, game1Name, game2Name)
                         elif assetType == "Power Icons":
                             assetsElem = pathsRoot.find("icons")
                             assetElemType = "icon"
+                        elif assetType == "Comic Cover":
+                            assetsElem = pathsRoot.find("covers")
+                            assetElemType = "cover"
                         else:
                             assetsElem = pathsRoot.find("skins")
                             assetElemType = "skin"
