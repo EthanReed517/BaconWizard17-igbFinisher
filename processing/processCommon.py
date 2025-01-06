@@ -75,11 +75,11 @@ def processWiiFiles(sourceFileName, assetType, nums, files, path):
     # Determine if the MUA1 and MUA2 files have the same name
     if files["MUA1"] == files["MUA2"]:
         # The files are the same, so copy to one folder
-        processFile(sourceFileName, nums["MUA1"], assetType, files["MUA1"], path, "for MUA1 (Wii) and MUA2 (Wii)", None)
+        processFile(sourceFileName, assetType, nums["MUA1"], files["MUA1"], path, "for MUA1 (Wii) and MUA2 (Wii)", None)
     else:
         # The files are not the same, so copy to two folders
-        processFile(sourceFileName, nums["MUA1"], assetType, files["MUA1"], path, "for MUA1 (Wii)", None)
-        processFile(sourceFileName, nums["MUA1"], assetType, files["MUA2"], path, "for MUA2 (Wii)", None)
+        processFile(sourceFileName, assetType, nums["MUA1"], files["MUA1"], path, "for MUA1 (Wii)", None)
+        processFile(sourceFileName, assetType, nums["MUA1"], files["MUA2"], path, "for MUA2 (Wii)", None)
 
 # Define the function for sending PSP files
 def processPSPFiles(sourceFileName, assetType, nums, files, paths, prefix):
@@ -93,15 +93,15 @@ def processPSPFiles(sourceFileName, assetType, nums, files, paths, prefix):
             # Update the Alchemy optimization to reference the correct file path
             updateXML2PSPOptPath()
             # Process the file
-            processFile(sourceFileName, nums["XML2"], assetType, outName, paths["XML"], "for XML2 (PSP)", ["skin2-1.ini"])
+            processFile(sourceFileName, assetType, nums["XML2"], outName, paths["XML"], "for XML2 (PSP)", ["skin2-1.ini"])
     else:
         # This is not a skin, so process the XML2 file
-        processFile(sourceFileName, nums["XML2"], assetType, files["XML2"], paths["XML"], "for XML2 (PSP)", None)
+        processFile(sourceFileName, assetType, nums["XML2"], files["XML2"], paths["XML"], "for XML2 (PSP)", None)
     # MUA1 and MUA2 are processed the same way no matter what
     if files["MUA1"] == files["MUA2"]:
         # The files are the same, so copy to one folder
-        processFile(sourceFileName, nums["MUA1"], assetType, files["MUA1"], paths["MUA"], "for MUA1 (PSP) and MUA2 (PSP)", [f"{prefix}3.ini"])
+        processFile(sourceFileName, assetType, nums["MUA1"], files["MUA1"], paths["MUA"], "for MUA1 (PSP) and MUA2 (PSP)", [f"{prefix}3.ini"])
     else:
         # The files are not the same, so copy to two folders
-        processFile(sourceFileName, nums["MUA1"], assetType, files["MUA1"], paths["MUA"], "for MUA1 (PSP)", [f"{prefix}3.ini"])
-        processFile(sourceFileName, nums["MUA2"], assetType, files["MUA2"], paths["MUA"], "for MUA2 (PSP)", [f"{prefix}3.ini"])
+        processFile(sourceFileName, assetType, nums["MUA1"], files["MUA1"], paths["MUA"], "for MUA1 (PSP)", [f"{prefix}3.ini"])
+        processFile(sourceFileName, assetType, nums["MUA2"], files["MUA2"], paths["MUA"], "for MUA2 (PSP)", [f"{prefix}3.ini"])
