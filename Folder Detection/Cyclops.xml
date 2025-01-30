@@ -33,4 +33,10 @@
 		<icon texFolder="MUA2 Base" outputFolder="M2-1. MUA2 (Base) - Default" />
 		<icon texFolder="MUA2 Base Redesign" outputFolder="M2-1r. MUA2 (Base) - Redesign" />
 	</icons>
+	<lscreens XML="C:\GitHub\BaconWizard17-Mod-Releases\Loading Screens\Cyclops" MUA="C:\GitHub\BaconWizard17-Mod-Releases\Loading Screens\Cyclops" >
+		<lscreen texFolder="90s" outputFolder="7. 90s" />
+	</lscreens>
+	<covers XML="C:\GitHub\BaconWizard17-Mod-Releases\Comic Covers\Cyclops" MUA="C:\GitHub\BaconWizard17-Mod-Releases\Comic Covers\Cyclops" >
+		<cover texFolder="90s" outputFolder="7. 90s" />
+	</covers>
 </paths>
