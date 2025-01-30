@@ -25,7 +25,7 @@ This is a program to perform finishing operations on igb files to prepare them f
 7. Depending on your settings, you may be asked additional questions about the asset.
 8. The texture format and any asset-specific information will be automatically identified from the igb file.
 9. The script will run the required processes on the skin, including hex editing and Alchemy operations, and then send the files to the appropriate destination folders. See the section below titled "Asset Output" for more information.
-10. Once the asset is sucessfully exported, you'll get a completion message.
+10. Once the asset is successfully exported, you'll get a completion message.
 11. You can repeat the process for any additional igb files by simply dragging and dropping them onto the UI.
 12. Once you're done, you can close the windows.
 
@@ -33,17 +33,37 @@ This is a program to perform finishing operations on igb files to prepare them f
 `settings.ini` in the `igbFinisher` folder contains important settings that are used to run the finisher properly. Before running it, be sure to set up the values appropriately.
 
 The following settings are used:
-+ `xml1num`: Can be `None` to skip exporting for XML1, `Ask` to ask each time the program runs, or a pre-populated 2 or 3 digit character number for XML1 to automatically process.
-+ `xml2num`: Can be `None` to skip exporting for XML2, `Ask` to ask each time the program runs, or a pre-populated 2 or 3 digit character number for XML2 to automatically process.
-+ `mua1num`: Can be `None` to skip exporting for MUA1, `Ask` to ask each time the program runs, or a pre-populated 2 or 3 digit character number for MUA1 to automatically process.
-+ `mua2num`: Can be `None` to skip exporting for MUA1, `Ask` to ask each time the program runs, or a pre-populated 2 or 3 digit character number for MUA1 to automatically process.
-+ `xmlpath`: Can be `None` to skip exporting for XML1 and XML2, `Ask` to ask each time the program runs, or a pre-populated file path for the XML1/XML2 release to automatically process.
-   + If both `xml1num` and `xml2num` are set to `Num`, exporting will be skipped anyways.
-+ `muapath`: Can be `None` to skip exporting for MUA1 and MUA2, `Ask` to ask each time the program runs, or a pre-populated file path for the MUA1/MUA2 release to automatically process.
-   + If both `mua1num` and `mua2num` are set to `Num`, exporting will be skipped anyways.
++ `xml1num`: Can be `None` to skip exporting for XML1, `Ask` to ask each time the program runs, or a pre-populated skin number.
+   + Pre-populated skin numbers: for general processing, enter a 2 or 3 digit character number followed by `XX` (i.e., `01XX` or `172XX`). The skin will be processed with generic names and hex edited to the skin number ending in `01`. If a specific skin number is required for the asset, that can be used instead, and this will allow for special descriptions or no descriptions.
++ `xml2num`: Can be `None` to skip exporting for XML2, `Ask` to ask each time the program runs, or a pre-populated skin number.
+   + Pre-populated skin numbers: for general processing, enter a 2 or 3 digit character number followed by `XX` (i.e., `01XX` or `172XX`). The skin will be processed with generic names and hex edited to the skin number ending in `01`. If a specific skin number is required for the asset, that can be used instead, and this will allow for special descriptions or no descriptions.
++ `mua1num`: Can be `None` to skip exporting for MUA1, `Ask` to ask each time the program runs, or a pre-populated skin number.
+   + Pre-populated skin numbers: for general processing, enter a 2 or 3 digit character number followed by `XX` (i.e., `01XX` or `172XX`). The skin will be processed with generic names and hex edited to the skin number ending in `01`. If a specific skin number is required for the asset, that can be used instead, and this will allow for special descriptions or no descriptions.
++ `mua2num`: Can be `None` to skip exporting for MUA1, `Ask` to ask each time the program runs, or a pre-populated skin number.
+   + Pre-populated skin numbers: for general processing, enter a 2 or 3 digit character number followed by `XX` (i.e., `01XX` or `172XX`). The skin will be processed with generic names and hex edited to the skin number ending in `01`. If a specific skin number is required for the asset, that can be used instead, and this will allow for special descriptions or no descriptions.
++ `xmlpath`: Can be `None` to skip exporting for XML1 and XML2, `Ask` to ask each time the program runs, `Detect` to detect the destination path using the texture folder, or a pre-populated file path for the XML1/XML2 release to automatically process.
+   + If both `xml1num` and `xml2num` are set to `None`, exporting will be skipped anyways.
+   + For more information on the `Detect` option, see the "Folder Detection" section, below.
++ `muapath`: Can be `None` to skip exporting for MUA1 and MUA2, `Ask` to ask each time the program runs, `Detect` to detect the destination path using the texture folder, or a pre-populated file path for the MUA1/MUA2 release to automatically process.
+   + If both `mua1num` and `mua2num` are set to `None`, exporting will be skipped anyways.
+   + For more information on the `Detect` option, see the "Folder Detection" section, below.
 + `pcOnly`: Whether or not you want to finish assets for only the PC or for all consoles. Can be `True` or `False`.
    + `True` will export assets for XML2 PC, MUA1 PC, and MUA1 Steam only.
    + `False` will export assets for all consoles.
+
+### Folder Detection
+For my own uses, I built in a folder detection option for igbFinisher. This allows me to process multiple files at a time to different folders without having to enter a path each time. You can also use this option, but the texture path must be set up a specific way, and you must also set up a .xml file that the folder can be detected from. Here's how to do this:
++ First, it's necessary to create the detection .xml file. I've already included some examples in the `Folder Detection` folder that comes with igbFinisher. Create a .xml file in this folder named after your character, and include paths for the different folder names based on the example.
++ Next, the texture path should be set up correctly. The path for the .xcf file should be like this: `..\(character name)\(asset type)\(asset name)\12301.xcf` (or `12301_descriptor.xcf` for secondary textures). This will result in the GIMP script exporting to a path like so: `..\(character name)\(asset type)\(asset name)\(console compatibility)\12301.(console-specific file extension)`.
+   + Here's what each folder means:
+     + `(character name)` is the name of the character, and will be the same as the name of the .xml file in the `Folder Detection` folder.
+     + `(asset type)` is not used by igbFinisher, but this is how I organize my files, so it must be in the file path like this.
+     + `(asset name)` is whatever you want to name the asset. This value corresponds with a `texPath` attribute within the .xml file.
+     + `(console compatibility)` is the folder created by the GIMP script that houses the exported texture and tells you which consoles and games it's compatible with.
+     + `(console-specific file extension`) will either be `png` or `dds`, depending on the console and settings.
+   + An example texture path would be:
+     + `..\Cyclops\Skins\90s\12301.xcf`, which would export to `..\Cyclops\Skins\90s\PC, PS2, Xbox, and MUA1 360\12301.png` (among other textures).
+     + The `Cyclops` folder corresponds with a `Cyclops.xml` file in the `Folder Detection` folder, and the `90s` folder corresponds with a `texFolder="90s"` attribute for one of the `skin` elements in the .xml file.
 
 ### Asset Setup
 Because texture formats repeat across various consoles, one texture type can cover multiple different console versions. You can export a version of each texture format and run it through this program, and finished versions for multiple consoles will be created.
@@ -83,6 +103,9 @@ All mannequins should be exported with the file name `123XX (Mannequin).igb`. Th
 #### 3D Heads
 All 3D Heads should be exported with the file name `123XX (3D Head).igb`. The internal numbers for model portions should use the skin number "12301," regardless of the actual skin number. See the tables above for information on supported texture formats. For 3D heads, any texture formats that are exclusive to MUA1 can be skipped, since 3D heads aren't used in MUA1.
 
+#### Other 3D Models (BoltOns, power models, map models)
+All other models can be exported with any name. You will be asked for a file name during runtime. If the model uses cel shading, the cel shading model's name must end in "_outline" for igbFinisher to automatically recognize that the model has cel shading. Otherwise, it will be processed as though it doesn't have cel shading. If there is a version with cel shading, the version without cel shading should be exported with the name `fileName (No Cel).igb`; this will prevent the no cel model from overwriting the model with cel shading. The skin exporter of the Marvel Mods GIMP scripts can be used to get textures for these types of models. See the tables above for information on supported texture formats.
+
 #### Conversation Portraits (HUDs)
 All conversation portraits should be exported with the file name `hud_head_12301.igb`. The internal numbers for model portions should use the skin number "12301," regardless of the actual skin number.
 
@@ -91,10 +114,22 @@ All texture formats from the conversation portrait (HUD) exporter of the Marvel 
 #### Character Select Portraits (CSPs)
 All character select portraits should be exported with the file name `123XX (Character Select Portrait).igb`. The internal numbers for model portions should use the skin number "12301," regardless of the actual skin number.
 
-All texture formats from the character select portrait portrait (CSP) exporter of the Marvel Mods GIMP Scripts are compatible with igbFinisher. 
+All texture formats from the character select portrait portrait (CSP) exporter of the Marvel Mods GIMP Scripts are compatible with igbFinisher.
 
-#### Other Models (BoltOns, power models, map models)
-All other models can be exported with any name. You will be asked for a file name during runtime. If the skin uses cel shading, the cel shading model's name must end in "_outline" for igbFinisher to automatically recognize that the model has cel shading. Otherwise, it will be processed as though it doesn't have cel shading. If there is a version with cel shading, the version without cel shading should be exported with the name `fileName (No Cel).igb`; this will prevent the no cel model from overwriting the model with cel shading. The skin exporter of the Marvel Mods GIMP scripts can be used to get textures for other models. See the tables above for information on supported texture formats.
+#### Power Icons
+All power icons should be exported with the file name `power_icons.igb`. The internal name for the model should be the intended name of the resulting model, which should also be the same as the texture name. The name of the texture will be used for the name of the resulting file.
+
+All texture formats from the power icons exporter of the Marvel Mods GIMP Scripts are compatible with igbFinisher.
+
+#### Comic Covers
+All comic covers should be exported with the file name `comic_cov.igb`. The internal name for the model should be the intended name of the resulting model, which should also be the same as the texture name. The name of the texture will be used for the name of the resulting file.
+
+All texture formats from the comic cover exporter of the Marvel Mods GIMP Scripts are compatible with igbFinisher.
+
+#### Loading Screens
+All loading screens should be exported with the file name `123XX (Loading Screen).igb`. The internal name for the model should be "12301", regardless of the actual character number.
+
+All texture formats from the loading screen exporter of the Marvel Mods GIMP Scripts are compatible with igbFinisher. 
 
 ### Asset Output
 Assets that are the same for different games will be placed into folders together for convenience. Each folder will be labeled based on the game and console that it supports. The assets will be appropriately named, and will also be hex edited and Alchemy optimized if applicable.
