@@ -1,0 +1,123 @@
+[center][size=18pt]BaconWizard17's igbFinisher[/size][/center]
+
+igbFinisher is a program that runs finishing operations on igb files after exporting them from 3ds Max.
+
+[center][size=14pt][url="https://github.com/EthanReed517/BaconWizard17-igbFinisher/releases/latest"]Download Link[/url][/size][/center]
+
+[u][b]Features[/b][/u]:
+[list]
+[li]A program that can be used to perform finishing operations on exported igb files with the following features:
+[list]
+[li]Automatically recognizes input assets based on file name[/li]
+[li]Renames files based on chosen character numbers[/li]
+[li]Makes duplicate copies for every compatible game and console[/li]
+[li]Hex edits assets if needed[/li]
+[li]Performs Alchemy operations on the assets if needed (including the global color fix and igGeometryAttr2 fix)[/li]
+[/list]
+[/li]
+[li]For compatibility, textures must be exported with the [url="https://marvelmods.com/forum/index.php/topic,11441.0.html"]Marvel Mods GIMP Scripts[/url], and assets must be exported with Alchemy 2.5 from 3ds Max 5. See the "Tutorials" section, below, for more information.[/li]
+[/list]
+
+[u][b]Changelog[/b][/u]:
+[spoiler="Expand to see changelog"]
+[list]
+[li]Version 1.0.0:
+[list]
+[li]Initial Release[/li]
+[/list]
+[/li]
+[li]Version 1.0.1:
+[list]
+[li]Corrected DXT1 conversion to only occur on PNG8 textures, not all textures.[/li]
+[/list]
+[/li]
+[li]Version 2.0.0:
+[list]
+[li]Hex editing is now an internal process thanks to ak2yny, so XVI32 is no longer required.[/li]
+[li]Added new Alchemy-based texture recognition thanks to ak2yny, which allowed for a reduction in user input.[/li]
+[li]Updated processing to allow automatic detection for other aspects, like mannequin pose names and cel shading.[/li]
+[li]Updated settings to allow the user to put a default, ask each run, or skip for all 4 character numbers and 2 paths.[/li]
+[li]Alchemy operations and hex editing are no longer optional.[/li]
+[li]Generally improved error detection in various aspects.[/li]
+[/list]
+[/li]
+[li]Version 2.0.1:
+[list]
+[li]The internal version number was corrected to be current.[/li]
+[/list]
+[/li]
+[li]Version 2.0.2:
+[list]
+[li]Removed the igBuildNativeGeometry optimization for PSP models, as it causes a T-pose on skins. [/li]
+[/list]
+[/li]
+[li]Version 2.1.0:
+[list]
+[li]Several Improvements:
+[list]
+[li]Hex editing:
+[list]
+[li]Now accounts for any possible geometry name that contains the number "12301"[/li]
+[li]Now accounts for any textures with the number "12301" in their name[/li]
+[/list]
+[/li]
+[li]Untextured models are now supported[/li]
+[li]Settings now requires full skin numbers rather than character numbers.
+[list]
+[li]This allows for support for skin swaps or just specially-numbered skins.[/li]
+[/list]
+[/li]
+[li]Alchemy optimizations are now formatted to remove excess space and comments.[/li]
+[/list]
+[/li]
+[li]Bug Fixes:
+[list]
+[li]Fixed an issue with path collection that was removing unnecessary characters.[/li]
+[/list]
+[/li]
+[/list]
+[/li]
+[li]Version 2.1.1:
+[list]
+[li]Fixed some issues with paths.[/li]
+[/list]
+[/li]
+[li]Version 3.0.0:
+[list]
+[li]Improved overall program design for efficiency.[/li]
+[li]Added support for XML2 PSP skins.[/li]
+[li]Added support for power icons, comic covers, and loading screens.[/li]
+[li]Added a feature to track the last Alchemy reset date so that it doesn't have to be reset every time the program is run.[/li]
+[li]Added a feature to detect the destination path based on the input path.[/li]
+[li]Changed how character numbers are handled in the settings to allow better control for descriptions.[/li]
+[li]Added the ability to skip descriptions on assets.[/li]
+[li]Updated formats to line up with the latest version of the Marvel Mods GIMP Scripts.[/li]
+[li]Set up PS2 to always export to a separate folder, since many PS2 assets use a unique format.[/li]
+[/list]
+[/li]
+[/list]
+[/spoiler]
+
+
+[u][b]Installation Instructions[/b][/u]:
+[spoiler="Expand to see installation instructions for this tool"]
+[list type=decimal]
+[li]Install [url="https://marvelmods.com/forum/index.php/topic,11158.0.html"]Alchemy 5[/url].[/li]
+[li]Download igbFinisher.[/li]
+[/list]
+[/spoiler]
+
+
+[u][b]Tutorials[/b][/u]:
+[spoiler="Expand to see tutorials featuring this tool"]
+[list]
+[li][url="https://marvelmods.com/forum/index.php/topic,10797.0.html"]Marvel Mods Modeling Tutorial[/url][/li]
+[/list]
+[/spoiler]
+
+
+[u][b]Credits[/b][/u]:
+[list]
+[li][u]BaconWizard17[/u]: Program creation[/li]
+[li][u]ak2yny[/u]: Internal hex editing module, texture path script[/li]
+[/list]
