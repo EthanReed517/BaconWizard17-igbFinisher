@@ -1,0 +1,9 @@
+<paths>
+    <skins XML="C:\GitHub\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable" MUA="C:\GitHub\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable" >
+		<!-- Boltons -->
+		<skin texFolder="Grenade" outputFolder="00. Boltons" />
+		<skin texFolder="Pistol" outputFolder="00. Boltons" />
+		<skin texFolder="Psimitar" outputFolder="00. Boltons" />
+		<skin texFolder="Rifle" outputFolder="00. Boltons" />
+	</skins>
+</paths>
