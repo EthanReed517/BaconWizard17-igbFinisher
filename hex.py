@@ -105,6 +105,12 @@ def getReplaceList(num: str, assetType: str, geomNames: list, texPathList: list)
             b_igActor01_Appearance = bytearray('igActor01Appearance', 'utf-8')
             # Add the appearance string to the list of hex strings, along with the character number (which will replace the appearance string).
             b_List.append([b_igActor01_Appearance, b_Num])
+            # Set up the default skeleton string.
+            b_igActor01Skeleton = bytearray('igActor01Skeleton', 'utf-8')
+            # Set up the custom skeleton string
+            b_num_skel = b_Num + bytearray('_skel', 'utf_8')
+            # Add the skeleton replaceent to the list of hex strings
+            b_List.append([b_igActor01Skeleton, b_num_skel])
         # Append the hex strings for the main geometry.
         b_List.append([b_12301, b_Num])
     # Return the list of hex strings.
