@@ -60,6 +60,9 @@ def processFile(sourceFileName, assetType, num, file, path, folder, optList):
         # Create a temporary copy of the file
         tempFile = os.path.join(os.path.dirname(sourceFileName), "temp.igb")
         copy(sourceFileName, tempFile)
+        # For skins only, use the animation producer to create the proper animation database
+        if assetType == "Skin":
+            alchemy.CreateAnimDB(tempFile, num)
         # Hex edit the file
         hex.hexEdit2(tempFile, num, assetType)
         # Run the Alchemy operations if needed

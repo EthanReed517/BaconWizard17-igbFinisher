@@ -11,7 +11,8 @@ import questions
 # External modules
 from datetime import datetime, timezone
 import os.path
-from os import listdir, popen
+from os import listdir, popen, remove, system
+from shutil import copy
 import subprocess
 from winreg import ConnectRegistry, CreateKeyEx, DeleteKey, HKEY_CURRENT_USER, KEY_READ, KEY_WRITE, OpenKey, QueryValueEx, REG_SZ, SetValueEx
 
@@ -151,6 +152,22 @@ def GetModelStats(file_name) -> list:
             geometryNames.append((l.split('^|'))[0])
     # Return all found texture paths
     return geometryNames
+
+# This function is used to create a proper anim DB for a skin.
+def CreateAnimDB(temp_file, num):
+    # Copy the temp file to the animation producer folder
+    copy(temp_file, 'Animation Producer')
+    # Write the text file for this skin
+    with open(os.path.join('Animation Producer', 'remove.txt'), 'w') as file:
+        file.write(f'create_animation_database {num}\nload_actor temp.igb\nextract_skeleton igActor01Skeleton\nextract_skin igActor01Appearance\nsave_external_animation_database temp.igb')
+    # Get the absolute paths for the command
+    anim_producer_folder = os.path.abspath('Animation Producer')
+    # Call the process for the animation producer
+    subprocess.run('@animationProducer.exe remove.txt', shell=True, stdout=subprocess.DEVNULL, cwd=anim_producer_folder, stderr=subprocess.STDOUT)
+    # Copy the temp file back for further processing
+    copy(os.path.join('Animation Producer', 'temp.igb'), temp_file)
+    # Delete the text file
+    remove(os.path.join('Animation Producer', 'remove.txt'))
 
 # Define the function for performing Alchemy operations
 def callAlchemy(file_name, ini_name):
