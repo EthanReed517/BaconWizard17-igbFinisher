@@ -6,9 +6,12 @@
 # ####### #
 # IMPORTS #
 # ####### #
+# Internal modules
+import questions
 # External modules
 from datetime import datetime, timezone
-import os
+import os.path
+from os import listdir, popen
 import subprocess
 from winreg import ConnectRegistry, CreateKeyEx, DeleteKey, HKEY_CURRENT_USER, KEY_READ, KEY_WRITE, OpenKey, QueryValueEx, REG_SZ, SetValueEx
 
@@ -78,6 +81,42 @@ def checkAlchemyReset():
         CreateKeyEx(HKEY_CURRENT_USER, marvelModsKeyPath, access=KEY_WRITE)
         # Reset the Alchemy evaluation and update the date to today's date
         resetAlchemy(marvelModsKeyPath)
+
+# This function checks the presence of the animation producer.
+def CheckAnimationProducer():
+    # Set a variable that assumes that the animation producer is not installed.
+    animation_producer_ready = False
+    # Start a while loop so that the program won't run until the animation producer is set up.
+    while animation_producer_ready == False:
+        # Verify the existence of the folder.
+        if os.path.exists('Animation Producer'):
+            # The folder exists
+            # Verify that the exe exists
+            if os.path.exists(os.path.join('Animation Producer', 'animationProducer.exe')):
+                # The exe exists
+                # Set a variable to check for .dll files
+                dll_files = False
+                # Loop through the files in the folder
+                for file in listdir('Animation Producer'):
+                    # Check if the file is a .dll file
+                    if os.path.splitext(file)[1] == ".dll":
+                        # This is a .dll file
+                        # Update the variable to indicate that there are .dll files
+                        dll_files = True
+                # Check if any .dll files were found.
+                if dll_files == True:
+                    # .dll files were found. 
+                    # Update the variable to break out of the loop.
+                    animation_producer_ready = True
+                else:
+                    # No .dll files were found
+                    questions.printError('The "Animation Producer" folder does not contain any .dll files. Please install the animation producer and try again.', False)
+            else:
+                # The exe does not exist
+                questions.printError('"animationProducer.exe" does not exist in the "Animation Producer" folder. Please install the animation producer and try again.', False)
+        else:
+            # The folder does not exist.
+            questions.printError('The "Animation Producer" folder does not exist. Please install the animation producer and try again.', False)
 
 def GetTexPath(file_name) -> list:
     # Define the Alchemy ini file & command
