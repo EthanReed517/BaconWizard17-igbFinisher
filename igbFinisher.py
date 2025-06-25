@@ -46,7 +46,7 @@ def displayInfo():
     questions.printPlain("██║╚██████╔╝██████╔╝██║     ██║██║ ╚████║██║███████║██║  ██║███████╗██║  ██║")
     questions.printPlain("╚═╝ ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚═╝  ╚═══╝╚═╝╚══════╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝")
     # Print relevant info
-    questions.printPlain("\nVersion 3.0.0")
+    questions.printPlain("\nVersion 3.1.0")
     questions.printPlain("https://marvelmods.com/forum/index.php/topic,11440.0.html\n")
 
 # Define the function to initialize the window
