@@ -32,8 +32,15 @@ def recognize3DTextureFormat(texPathList, texFormatList):
             texFolder = "sphereImage"
         else:
             # This is not a path for an environment map.
-            # Get the name of the folder that the texture is stored in. This is the second to last element in the path.
-            texFolder = path.split("\\")[-2]
+            # Check if this is the path for an environment map component.
+            if path.rstrip()[0:-1].endswith('cube_'):
+                # This is an environment path component.
+                # Differentiate the texture format with a suffix
+                texFolder = f'{path.split('\\')[-2]} (env)'
+            else:
+                # This is a diffuse texture.
+                # Get the name of the folder that the texture is stored in. This is the second to last element in the path.
+                texFolder = path.split("\\")[-2]
         # When there are multiple formats of different lengths, there will be spaces added after them to keep them the same length for Alchemy's list. This removes the spaces to make sure that the same information is always presented.
         texFormat = format.rstrip()
         # Begin checking if the current format matches with any of the allowed format.
@@ -158,33 +165,33 @@ def oneFormatEnvironmentMaps(png8Counter, dxt1Counter, plainPngCounter, texFolde
         if settings["pcOnly"] == False:
             # The model is being processed for all consoles.
             # Set up the texture folder list with PNG8 texture options that are compatible with all consoles.
-            textureFolderList = [("PC, PS2, Xbox, and MUA1 360", "PC and MUA1 360"), ("PC, PS2, Xbox, and MUA1 360", "Xbox"), ("PC, PS2, Xbox, and MUA1 360", "PS2"), ("PC, Xbox, and MUA1 360", "PC and MUA1 360"), ("PC, Xbox, and MUA1 360", "Xbox"), ("PS2", "PS2"), ("GameCube, PSP, and MUA2 PS2", "GameCube, PSP, and MUA2 PS2"), ("PC and MUA1 360", "PC and MUA1 360"), ("Xbox", "Xbox")]
+            textureFolderList = [("PC, PS2, Xbox, and MUA1 360", "PC and MUA1 360 (env)"), ("PC, PS2, Xbox, and MUA1 360", "Xbox (env)"), ("PC, PS2, Xbox, and MUA1 360", "PS2 (env)"), ("PC, Xbox, and MUA1 360", "PC and MUA1 360 (env)"), ("PC, Xbox, and MUA1 360", "Xbox (env)"), ("PS2", "PS2 (env)"), ("GameCube, PSP, and MUA2 PS2", "GameCube, PSP, and MUA2 PS2 (env)")]
         else:
             # The model is being process for PC only.
             # Set up the texture folder list with PNG8 texture options that are compatible with PC only.
-            textureFolderList = [("PC", "PC")]
+            textureFolderList = [("PC", "PC (env)")]
     elif dxt1Counter == len(texFolderList):
         # This is DXT1 format.
         # Determine if this is for PC or consoles, which will determine which texture list to use.
         if settings["pcOnly"] == False:
             # The model is being processed for all consoles.
             # Set up the texture folder list with DXT1 texture options that are compatible with all consoles.
-            textureFolderList = [("XML2 PC, Xbox, and Wii", "XML2 PC"), ("XML2 PC, Xbox, and Wii", "Xbox and Wii"), ("Wii", "Wii"), ("Wii", "Xbox and Wii")]
+            textureFolderList = [("XML2 PC, Xbox, and Wii", "XML2 PC (env)"), ("XML2 PC, Xbox, and Wii", "Xbox and Wii (env)"), ("Wii", "Wii (env)"), ("Wii", "Xbox and Wii (env)")]
         else:
             # The model is being process for PC only.
             # Set up the texture folder list with DXT1 texture options that are compatible with PC only.
-            textureFolderList = [("XML2 PC", "XML2 PC")]
+            textureFolderList = [("XML2 PC", "XML2 PC (env)")]
     elif plainPngCounter == len(texFolderList):
         # This is plain png format. It's unlikely to get here, but for Wii models with transparent textures or no textures, it is possible. It's also possible for the same cases on XML2 PC or Xbox if the main texture is over 256x256.
         # Determine if this is for PC or consoles
         if settings["pcOnly"] == False:
             # This is for all consoles
             # Set up the list of texture formats
-            textureFolderList = [("Wii", "Wii"), ("Xbox and Wii", "Xbox and Wii"), ("PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360", "Wii"), ("PC, Wii, Xbox, MUA1 Steam, PS3, and 360", "Wii"), ("PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360", "Xbox and Wii"), ("PC, Wii, Xbox, MUA1 Steam, PS3, and 360", "Xbox and Wii")]
+            textureFolderList = [("Wii", "Wii (env)"), ("Xbox and Wii", "Xbox and Wii (env)"), ("PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360", "Wii (env)"), ("PC, Wii, Xbox, MUA1 Steam, PS3, and 360", "Wii (env)"), ("PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360", "Xbox and Wii (env)"), ("PC, Wii, Xbox, MUA1 Steam, PS3, and 360", "Xbox and Wii (env)")]
         else:
             # This is for PC only
             # Set up the list of texture formats
-            textureFolderList = [("XML2 PC", "XML2 PC"), ("PC and MUA1 Steam", "XML2 PC")]
+            textureFolderList = [("XML2 PC", "XML2 PC (env)"), ("PC and MUA1 Steam", "XML2 PC (env)")]
     else:
         # No format counter is the same as the length of the texture format list.
         # Notify the user of the error. There's really no way this should happen unless there's something super weird going on, but I'm adding it for extra error security.
@@ -200,7 +207,7 @@ def oneFormatEnvironmentMaps(png8Counter, dxt1Counter, plainPngCounter, texFolde
             # Both folders can be found in the folder list, meaning that an acceptable folder was found.
             # Set up the variables for the two folders.
             diffuseFolder = folderPair[0]
-            envFolder = folderPair[1]
+            envFolder = folderPair[1].replace(' (env)', '')
             # Increment the counter to indicate that a folder has been detected.
             folderFound += 1
     # Determine if a folder has been found, which will happen when the counter is 1.
@@ -226,7 +233,7 @@ def oneFormatEnvironmentMaps(png8Counter, dxt1Counter, plainPngCounter, texFolde
         textureFormat = None
     else:
         # More than 1 folder was found, which shouldn't be possible. This is being added for extra error security.
-        questions.printError("igbFinisher determined the texture folders used by the model match more than one texture folder option for this format.", True)
+        questions.printError("igbFinisher determined that the texture folders used by the model match more than one texture folder option for this format (single texture format with environment maps)", True)
         # In order to have a return variable for this case, set the texture format to "None" again.
         textureFormat = None
     # Return the collected texture format for further processing.
@@ -241,22 +248,22 @@ def transparentEnvironmentMaps(png8Counter, dxt1Counter, plainPngCounter, texFol
         if settings["pcOnly"] == False:
             # The model is being processed for all consoles.
             # Set up the texture folder list with plain png texture options that are compatible with all consoles.
-            textureFolderList = [("PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360", "PC and MUA1 360"), ("PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360", "Xbox"), ("PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360", "PS2"), ("PC, Wii, Xbox, MUA1 Steam, PS3, and 360", "PC and MUA1 360"), ("PC, Wii, Xbox, MUA1 Steam, PS3, and 360", "Xbox"), ("PS2", "PS2"), ("GameCube, PSP, and MUA2 PS2", "GameCube, PSP, and MUA2 PS2")]
+            textureFolderList = [("PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360", "PC and MUA1 360 (env)"), ("PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360", "Xbox (env)"), ("PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360", "PS2 (env)"), ("PC, Wii, Xbox, MUA1 Steam, PS3, and 360", "PC and MUA1 360 (env)"), ("PC, Wii, Xbox, MUA1 Steam, PS3, and 360", "Xbox (env)"), ("PS2", "PS2 (env)"), ("GameCube, PSP, and MUA2 PS2", "GameCube, PSP, and MUA2 PS2 (env)")]
         else:
             # The model is being process for PC only.
             # Set up the texture folder list with plain png texture options that are compatible with PC only.
-            textureFolderList = [("PC and MUA1 Steam", "PC")]
+            textureFolderList = [("PC and MUA1 Steam", "PC (env)")]
     elif dxt1Counter > 1:
         # The environment maps use DXT1 textures, or it's a DXT1 main texture with plain png environment maps
         # Determine if this is for PC or consoles, which will determine which texture list to use.
         if settings["pcOnly"] == False:
             # The model is being processed for all consoles.
             # Set up the texture folder list with plain png texture options that are compatible with all consoles.
-            textureFolderList = [("PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360", "XML2 PC"), ("PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360", "Xbox and Wii"), ("PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360", "Wii"), ("PC, Xbox, Wii, MUA1 Steam, PS3, and 360", "XML2 PC"), ("PC, Xbox, Wii, MUA1 Steam, PS3, and 360", "Xbox and Wii"), ("PC, Xbox, Wii, MUA1 Steam, PS3, and 360", "Wii"), ("Wii", "Wii"), ("Wii", "Xbox and Wii")]
+            textureFolderList = [("PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360", "XML2 PC (env)"), ("PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360", "Xbox and Wii (env)"), ("PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360", "Wii (env)"), ("PC, Xbox, Wii, MUA1 Steam, PS3, and 360", "XML2 PC (env)"), ("PC, Xbox, Wii, MUA1 Steam, PS3, and 360", "Xbox and Wii (env)"), ("PC, Xbox, Wii, MUA1 Steam, PS3, and 360", "Wii (env)"), ("Wii", "Wii (env)"), ("Wii", "Xbox and Wii (env)")]
         else:
             # The model is being process for PC only.
             # Set up the texture folder list with plain png texture options that are compatible with PC only.
-            textureFolderList = [("PC and MUA1 Steam", "XML2 PC")]
+            textureFolderList = [("PC and MUA1 Steam", "XML2 PC (env)")]
     else:
         # The environment maps use neither DXT1 nor PNG8 format, which shouldn't be possible.
         # Let the user know that this shouldn't be possible.
@@ -272,7 +279,7 @@ def transparentEnvironmentMaps(png8Counter, dxt1Counter, plainPngCounter, texFol
             # Both folders can be found in the folder list, meaning that an acceptable folder was found.
             # Set up the variables for the two folders.
             diffuseFolder = folderPair[0]
-            envFolder = folderPair[1]
+            envFolder = folderPair[1].replace(' (env)', '')
             # Increment the counter to indicate that a folder has been detected.
             folderFound += 1
     # Determine if a folder has been found, which will happen when the counter is 1.
@@ -298,7 +305,7 @@ def transparentEnvironmentMaps(png8Counter, dxt1Counter, plainPngCounter, texFol
         textureFormat = None
     else:
         # More than 1 folder was found, which shouldn't be possible. This is being added for extra error security.
-        questions.printError("igbFinisher determined the texture folders used by the model match more than one texture folder option for this format.", True)
+        questions.printError("igbFinisher determined that the texture folders used by the model match more than one texture folder option for this format (transparent texture with environment maps)", True)
         # In order to have a return variable for this case, set the texture format to "None" again.
         textureFormat = None
     # Return the collected texture format for further processing.
@@ -370,7 +377,7 @@ def transparentAndOpaque(png8Counter, dxt1Counter, plainPngCounter, texFolderLis
         textureFormat = None
     else:
         # More than 1 folder was found, which shouldn't be possible. This is being added for extra error security.
-        questions.printError("igbFinisher determined the texture folders used by the model match more than one texture folder option for this format.", True)
+        questions.printError("igbFinisher determined that the texture folders used by the model match more than one texture folder option for this format (transparent and opaque diffuse)", True)
         # In order to have a return variable for this case, set the texture format to "None" again.
         textureFormat = None
     # Return the collected texture format for further processing.
@@ -385,22 +392,22 @@ def tripleFormat(png8Counter, dxt1Counter, plainPngCounter, texFolderList, setti
         if settings["pcOnly"] == False:
             # The model is being processed for all consoles.
             # Set up the texture folder list with plain png texture options that are compatible with all consoles.
-            textureFolderList = [("PC, PS2, Xbox, and MUA1 360", "PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360", "PC and MUA1 360"), ("PC, PS2, Xbox, and MUA1 360", "PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360", "Xbox"), ("PC, PS2, Xbox, and MUA1 360", "PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360", "PS2"), ("PC, Xbox, and MUA1 360", "PC, Wii, Xbox, MUA1 Steam, PS3, and 360", "PC and MUA1 360"), ("PC, Xbox, and MUA1 360", "PC, Wii, Xbox, MUA1 Steam, PS3, and 360", "Xbox"), ("PS2", "PS2", "PS2"), ("GameCube, PSP, and MUA2 PS2", "GameCube, PSP, and MUA2 PS2", "GameCube, PSP, and MUA2 PS2")]
+            textureFolderList = [("PC, PS2, Xbox, and MUA1 360", "PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360", "PC and MUA1 360 (env)"), ("PC, PS2, Xbox, and MUA1 360", "PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360", "Xbox (env)"), ("PC, PS2, Xbox, and MUA1 360", "PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360", "PS2 (env)"), ("PC, Xbox, and MUA1 360", "PC, Wii, Xbox, MUA1 Steam, PS3, and 360", "PC and MUA1 360 (env)"), ("PC, Xbox, and MUA1 360", "PC, Wii, Xbox, MUA1 Steam, PS3, and 360", "Xbox (env)"), ("PS2", "PS2", "PS2 (env)"), ("GameCube, PSP, and MUA2 PS2", "GameCube, PSP, and MUA2 PS2", "GameCube, PSP, and MUA2 PS2 (env)")]
         else:
             # The model is being process for PC only.
             # Set up the texture folder list with plain png texture options that are compatible with PC only.
-            textureFolderList = [("PC", "PC and MUA1 Steam", "PC")]
+            textureFolderList = [("PC", "PC and MUA1 Steam", "PC (env)")]
     elif dxt1Counter > 1:
         # The environment maps use DXT1 textures.
         # Determine if this is for PC or consoles, which will determine which texture list to use.
         if settings["pcOnly"] == False:
             # The model is being processed for all consoles.
             # Set up the texture folder list with plain png texture options that are compatible with all consoles.
-            textureFolderList = [("MUA1 PC, Steam, 360, and PS3", "PC, PS2, Wii, Xbox, MUA1 Steam, PS3, and 360", "MUA1 PC, Steam, 360, and PS3"), ("XML2 PC, Xbox, and Wii", "PC, PS2, Wii, Xbox, MUA1 Steam, PS3, and 360", "XML2 PC"), ("XML2 PC, Xbox, and Wii", "PC, PS2, Wii, Xbox, MUA1 Steam, PS3, and 360", "Xbox and Wii"), ("Wii", "PC, PS2, Wii, Xbox, MUA1 Steam, PS3, and 360", "Wii"), ("Wii", "PC, PS2, Wii, Xbox, MUA1 Steam, PS3, and 360", "Xbox and Wii"), ("MUA1 PC, Steam, 360, and PS3", "PC, Wii, Xbox, MUA1 Steam, PS3, and 360", "MUA1 PC, Steam, 360, and PS3"), ("XML2 PC, Xbox, and Wii", "PC, Wii, Xbox, MUA1 Steam, PS3, and 360", "XML2 PC"), ("XML2 PC, Xbox, and Wii", "PC, Wii, Xbox, MUA1 Steam, PS3, and 360", "Xbox and Wii"), ("Wii", "PC, Wii, Xbox, MUA1 Steam, PS3, and 360", "Wii"), ("Wii", "PC, Wii, Xbox, MUA1 Steam, PS3, and 360", "Xbox and Wii")]
+            textureFolderList = [("MUA1 PC, Steam, 360, and PS3", "PC, PS2, Wii, Xbox, MUA1 Steam, PS3, and 360", "MUA1 PC, Steam, 360, and PS3 (env)"), ("XML2 PC, Xbox, and Wii", "PC, PS2, Wii, Xbox, MUA1 Steam, PS3, and 360", "XML2 PC (env)"), ("XML2 PC, Xbox, and Wii", "PC, PS2, Wii, Xbox, MUA1 Steam, PS3, and 360", "Xbox and Wii (env)"), ("Wii", "PC, PS2, Wii, Xbox, MUA1 Steam, PS3, and 360", "Wii (env)"), ("Wii", "PC, PS2, Wii, Xbox, MUA1 Steam, PS3, and 360", "Xbox and Wii (env)"), ("MUA1 PC, Steam, 360, and PS3", "PC, Wii, Xbox, MUA1 Steam, PS3, and 360", "MUA1 PC, Steam, 360, and PS3 (env)"), ("XML2 PC, Xbox, and Wii", "PC, Wii, Xbox, MUA1 Steam, PS3, and 360", "XML2 PC (env)"), ("XML2 PC, Xbox, and Wii", "PC, Wii, Xbox, MUA1 Steam, PS3, and 360", "Xbox and Wii (env)"), ("Wii", "PC, Wii, Xbox, MUA1 Steam, PS3, and 360", "Wii (env)"), ("Wii", "PC, Wii, Xbox, MUA1 Steam, PS3, and 360", "Xbox and Wii (env)")]
         else:
             # The model is being process for PC only.
             # Set up the texture folder list with plain png texture options that are compatible with PC only.
-            textureFolderList = [("MUA1 PC and Steam", "PC and MUA1 Steam", "MUA1 PC and Steam"), ("XML2 PC", "PC and MUA1 Steam", "XML2 PC")]
+            textureFolderList = [("MUA1 PC and Steam", "PC and MUA1 Steam", "MUA1 PC and Steam (env)"), ("XML2 PC", "PC and MUA1 Steam", "XML2 PC (env)")]
     else:
         # The environment maps use neither DXT1 nor PNG8 format, which shouldn't be possible.
         # Let the user know that this shouldn't be possible.
@@ -417,7 +424,7 @@ def tripleFormat(png8Counter, dxt1Counter, plainPngCounter, texFolderList, setti
             # Set up the variables for the two folders.
             diffuseOFolder = folderPair[0]
             diffuseTFolder = folderPair[1]
-            envFolder = folderPair[2]
+            envFolder = folderPair[2].replace(' (env)', '')
             # Increment the counter to indicate that a folder has been detected.
             folderFound += 1
     # Determine if a folder has been found, which will happen when the counter is 1.
@@ -443,7 +450,7 @@ def tripleFormat(png8Counter, dxt1Counter, plainPngCounter, texFolderList, setti
         textureFormat = None
     else:
         # More than 1 folder was found, which shouldn't be possible. This is being added for extra error security.
-        questions.printError("igbFinisher determined the texture folders used by the model match more than one texture folder option for this format.", True)
+        questions.printError("igbFinisher determined that the texture folders used by the model match more than one texture folder option for this format (triple format)", True)
         # In order to have a return variable for this case, set the texture format to "None" again.
         textureFormat = None
     # Return the collected texture format for further processing.
