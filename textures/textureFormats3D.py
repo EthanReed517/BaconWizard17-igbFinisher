@@ -267,7 +267,7 @@ def transparentEnvironmentMaps(png8Counter, dxt1Counter, plainPngCounter, texFol
     else:
         # The environment maps use neither DXT1 nor PNG8 format, which shouldn't be possible.
         # Let the user know that this shouldn't be possible.
-        questions.printError("igbFinisher determined that the model has a transparent diffuse texture with environment maps, but neither PNG8 nor DXT1 counters were more than 1.", True)
+        questions.printError("igbFinisher determined that the model has a transparent diffuse texture with environment maps, but neither PNG8 nor DXT1 counters were more than 1 (transparent environment maps)", True)
         # Create a blank list to avoid any errors.
         textureFolderList = []
     # Initiate a counter to keep track of whether or not a folder option is found in the model's list of folders
@@ -314,24 +314,24 @@ def transparentEnvironmentMaps(png8Counter, dxt1Counter, plainPngCounter, texFol
 # Define the function for getting the texture folder in the case where plain png textures are used with opaque textures
 def transparentAndOpaque(png8Counter, dxt1Counter, plainPngCounter, texFolderList, settings):
     # Compare the texture format counters to determine which environment map format is being used. This could lead to false positives if the format was botched somehow, but it's unlikely.
-    if png8Counter > 1:
+    if png8Counter > 0:
         # The environment maps use PNG8 textures. 
         # Determine if this is for PC or consoles, which will determine which texture list to use.
         if settings["pcOnly"] == False:
             # The model is being processed for all consoles.
             # Set up the texture folder list with plain png texture options that are compatible with all consoles.
-            textureFolderList = [("PC, PS2, Xbox, and MUA1 360", "PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360"), ("PC, Xbox, and MUA1 360", "PC, Wii, Xbox, MUA1 Steam, PS3, and 360"), ("PS2", "PS2"), ("GameCube, PSP, and MUA2 PS2", "GameCube, PSP, and MUA2 PS2")]
+            textureFolderList = [("PC, PS2, Xbox, and MUA1 360", "PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360"), ("PC, PS2, Xbox, and MUA1 360", "PC, Xbox, Wii, MUA1 Steam, PS3, and 360"), ("PC, Xbox, and MUA1 360", "PC, Wii, Xbox, MUA1 Steam, PS3, and 360"), ("PS2", "PS2"), ("GameCube, PSP, and MUA2 PS2", "GameCube, PSP, and MUA2 PS2")]
         else:
             # The model is being process for PC only.
             # Set up the texture folder list with plain png texture options that are compatible with PC only.
             textureFolderList = [("PC", "PC and MUA1 Steam")]
-    elif dxt1Counter > 1:
+    elif dxt1Counter > 0:
         # The environment maps use DXT1 textures.
         # Determine if this is for PC or consoles, which will determine which texture list to use.
         if settings["pcOnly"] == False:
             # The model is being processed for all consoles.
             # Set up the texture folder list with plain png texture options that are compatible with all consoles.
-            textureFolderList = [("MUA1 PC, Steam, 360, and PS3", "PC, Wii, Xbox, MUA1 Steam, PS3, and 360"), ("XML2 PC, Xbox, and Wii", "PC, Wii, Xbox, MUA1 Steam, PS3, and 360"), ("Wii", "PC, Wii, Xbox, MUA1 Steam, PS3, and 360")]
+            textureFolderList = [("MUA1 PC, Steam, 360, and PS3", "PC, Wii, Xbox, MUA1 Steam, PS3, and 360"), ("XML2 PC, Xbox, and Wii", "PC, Wii, Xbox, MUA1 Steam, PS3, and 360"), ("Wii", "PC, Wii, Xbox, MUA1 Steam, PS3, and 360"), ("Wii", "PC, Xbox, Wii, MUA1 Steam, PS3, and 360")]
         else:
             # The model is being process for PC only.
             # Set up the texture folder list with plain png texture options that are compatible with PC only.
@@ -339,7 +339,7 @@ def transparentAndOpaque(png8Counter, dxt1Counter, plainPngCounter, texFolderLis
     else:
         # The environment maps use neither DXT1 nor PNG8 format, which shouldn't be possible.
         # Let the user know that this shouldn't be possible.
-        questions.printError("igbFinisher determined that the model has transparent and opaque diffuse textures with environment maps, but neither PNG8 nor DXT1 counters were more than 1.", True)
+        questions.printError("igbFinisher determined that the model has transparent and opaque diffuse textures with environment maps, but neither PNG8 nor DXT1 counters were more than 1 (transparent and opaque)", True)
         # Create a blank list to avoid any errors.
         textureFolderList = []
     # Initiate a counter to keep track of whether or not a folder option is found in the model's list of folders
@@ -358,7 +358,7 @@ def transparentAndOpaque(png8Counter, dxt1Counter, plainPngCounter, texFolderLis
     if folderFound == 1:
         # A texture folder was found, meaning that the folder was recognized.
         # Set up the texture format using the folders found earlier.
-        textureFormat = diffuseFolder
+        textureFormat = diffuseOFolder
         # Print a success message to let the user know that the folder was identified.
         questions.printSuccess(f"The opaque diffuse texture folder was automatically identified as {diffuseOFolder}. The transparent diffuse texture folder was automatically identified as {diffuseTFolder}.")
     elif folderFound == 0:
@@ -411,7 +411,7 @@ def tripleFormat(png8Counter, dxt1Counter, plainPngCounter, texFolderList, setti
     else:
         # The environment maps use neither DXT1 nor PNG8 format, which shouldn't be possible.
         # Let the user know that this shouldn't be possible.
-        questions.printError("igbFinisher determined that the model has transparent and opaque diffuse textures with environment maps, but neither PNG8 nor DXT1 counters were more than 1.", True)
+        questions.printError("igbFinisher determined that the model has transparent and opaque diffuse textures with environment maps, but neither PNG8 nor DXT1 counters were more than 1 (triple format)", True)
         # Create a blank list to avoid any errors.
         textureFolderList = []
     # Initiate a counter to keep track of whether or not a folder option is found in the model's list of folders
