@@ -53,13 +53,16 @@ def printSuccess(message):
     questionary.print(message, style = successStyle)
 
 # Define the function for printing a warning message.
-def printWarning(message):
+def printWarning(message, **kwargs):
     # Update the message string with a "Warning: " prefix so that I don't have to add this to every single warning prompt.
     message = f"Warning: {message}"
     # Print the message for the user to see.
     questionary.print(message, style = warningStyle)
-    # Pause to allow the user to see the warning and acknowledge it.
-    pressAnyKey("Press any key to acknowledge this warning and proceed")
+    # Determine if the pause should be skipped (default is that it shouldn't).
+    if kwargs.get('skip_pause', False) == False:
+        # The pause should not be skipped.
+        # Pause to allow the user to see the warning and acknowledge it.
+        pressAnyKey("Press any key to acknowledge this warning and proceed")
 
 # Define the function for printing an error message.
 def printError(message, contactCreator):

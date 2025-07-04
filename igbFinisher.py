@@ -249,7 +249,7 @@ def getFilePath(fullFileName, settings, assetType, series, game1Name, game2Name)
                             filePath = os.path.join(pathStart, subFolder)
                             # Verify that the path exists
                             if not(os.path.exists(filePath)):
-                                questions.printWarning(f"The value for the path for the {series} games was set to \"Detect\", but the output path for {skinFolder} ({filePath}) does not exist. Please enter a path instead.")
+                                questions.printWarning(f"The value for the path for the {series} games was set to \"Detect\", but the output path for {skinFolder} ({filePath}) does not exist. Please enter a path instead.", skip_pause = True)
                                 # Set the file path back to unknown since it's not found
                                 filePath = "Unknown"
                             else:
@@ -258,16 +258,16 @@ def getFilePath(fullFileName, settings, assetType, series, game1Name, game2Name)
                                 questions.printSuccess(f"The {series} destination folder was automatically identified as {filePath}.\n")
                         else:
                             # Nothing was found
-                            questions.printWarning(f"The value for the path for the {series} games was set to \"Detect\", but {characterFolder}.xml does not contain a matching output folder for {skinFolder}. Please enter a path instead.")
+                            questions.printWarning(f"The value for the path for the {series} games was set to \"Detect\", but {characterFolder}.xml does not contain a matching output folder for {skinFolder}. Please enter a path instead.", skip_pause = True)
                     else:
                         # No xml file exists
-                        questions.printWarning(f"The value for the path for the {series} games was set to \"Detect\", but {characterFolder}.xml does not exist in the \"Folder Detection\" folder. Please enter a path instead.")
+                        questions.printWarning(f"The value for the path for the {series} games was set to \"Detect\", but {characterFolder}.xml does not exist in the \"Folder Detection\" folder. Please enter a path instead.", skip_pause = True)
                 else:
                     # The paths are not all the same
-                    questions.printWarning(f"The value for the path for the {series} games was set to \"Detect\", but the model contains textures that are in multiple folders. Detection does not support multiple folders. Please enter a path instead.")
+                    questions.printWarning(f"The value for the path for the {series} games was set to \"Detect\", but the model contains textures that are in multiple folders. Detection does not support multiple folders. Please enter a path instead.", skip_pause = True)
             else:
                 # There are no textures
-                questions.printWarning(f"The value for the path for the {series} games was set to \"Detect\", but the model contains no textures. Please enter a path instead.")
+                questions.printWarning(f"The value for the path for the {series} games was set to \"Detect\", but the model contains no textures. Please enter a path instead.", skip_pause = True)
         # Determine if anything has been found up to this point
         if filePath == "Unknown":
             # Nothing has been found yet

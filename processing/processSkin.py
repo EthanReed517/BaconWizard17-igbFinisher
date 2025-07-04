@@ -55,7 +55,7 @@ def getSkinFileNamesAndNumbers(settings, fullFileName):
             if not(settings[f"{game}Num"][-2:] == "XX"):
                 # The last two digits are not XX.
                 # Warn the user that this isn't recommended.
-                questions.printWarning(f"The skin number for {game} is set to {settings[f'{game}Num']}. Unless this is a special case, it's recommended that the skin number in the settings ends with \"XX\", which will process the skin with the number ending in 01 and no special descriptor.")
+                questions.printWarning(f"The skin number for {game} is set to {settings[f'{game}Num']}. Unless this is a special case, it's recommended that the skin number in the settings ends with \"XX\", which will process the skin with the number ending in 01 and no special descriptor.", skip_pause=True)
                 # Ask the user what they want to do.
                 numChoice = questions.select(f"What do you want to do for the {game} number?", [f"Update the number to {settings[f'{game}Num'][0:-2]}XX (does not overwrite settings.ini).", "Leave the number as-is. This is a special skin/animated bolton that needs a unique number and file name.", "Leave the number as-is. I want to use a specific skin number and not have any descriptor."])
                 # Determine what the user picked.
