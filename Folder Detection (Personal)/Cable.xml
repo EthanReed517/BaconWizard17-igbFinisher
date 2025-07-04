@@ -1,11 +1,5 @@
 <paths>
     <skins XML="C:\GitHub\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable" MUA="C:\GitHub\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable" >
-		<!-- Boltons -->
-		<skin texFolder="Grenade" outputFolder="00. Boltons" />
-		<skin texFolder="Pistol" outputFolder="00. Boltons - Pistols" />
-		<skin texFolder="Psimitar" outputFolder="00. Boltons" />
-		<skin texFolder="Rifle" outputFolder="00. Boltons - Rifle" />
-		<skin texFolder="Volley Cannon" outputFolder="00. Boltons - Volley Cannon" />
 		<!-- Main Universe Skins -->
 		<skin texFolder="Civilian" outputFolder="0. Civilian" />
 		<skin texFolder="90s" outputFolder="3. 90s" />
@@ -25,14 +19,14 @@
 	</skins>
 	<icons XML="C:\GitHub\BaconWizard17-Mod-Releases\Power Icons\Cable" MUA="C:\GitHub\BaconWizard17-Mod-Releases\Power Icons\Cable" >
 		<!-- XML2 Icons -->
-		<icon texFolder="XML2 X2UP" outputFolder="X2-1. XML2 (X2UP) - Redesign" />
-		<icon texFolder="XML2 nodoubt_jr Redesign" outputFolder="X2-2. XML2 (nodoubt_jr mod) - Redesign" />
+		<icon texFolder="XML2 X2UP" outputFolder="X2-1r. XML2 (X2UP) - Redesign" />
+		<icon texFolder="XML2 nodoubt_jr Redesign" outputFolder="X2-2r. XML2 (nodoubt_jr mod) - Redesign" />
 		<!-- MUA1 Icons -->
 		<icon texFolder="MUA1 OCP" outputFolder="M1-1. MUA1 (OCP) - Default" />
 		<icon texFolder="MUA1 OCP Redesign" outputFolder="M1-1r. MUA1 (OCP) - Redesign" />
-		<icon texFolder="MUA1 Norrin Radd Redesign" outputFolder="M1-2. MUA1 (Norrin Radd mod) - Redesign" />
+		<icon texFolder="MUA1 Norrin Radd Redesign" outputFolder="M1-2r. MUA1 (Norrin Radd mod) - Redesign" />
 	</icons>
-	<lscreens XML="C:\GitHub\BaconWizard17-Mod-Releases\Loading Screens - XML1, XML2\Cable" MUA="C:\GitHub\BaconWizard17-Mod-Releases\Loading Screens - MUA1, MUA2\Cable" >
+	<lscreens XML="C:\GitHub\BaconWizard17-Mod-Releases\Loading Screens\Cable" MUA="C:\GitHub\BaconWizard17-Mod-Releases\Loading Screens\Cable" >
 		<lscreen texFolder="90s" outputFolder="3. 90s" />
 		<lscreen texFolder="Classic" outputFolder="7. Classic" />
 		<lscreen texFolder="Modern" outputFolder="17. Modern" />
