@@ -31,9 +31,14 @@ def otherModelNameInput(charNum, gameName, fullFileName, celExt):
     else:
         # used with this game
         # Create the question
-        prompt = f"What is the name of this file for {gameName}? Do not include the file extension. Enter a blank value if the model is not used with this game."
+        prompt = f'What is the name of this file in the game files for {gameName}? Do not include the file extension or "No Cel". Enter a blank value if the model is not used with this game.'
+        # Get the default file name
+        if ' (No Cel)' in fullFileName:
+            default_file_name = fullFileName.replace(' (No Cel)', '')
+        else:
+            default_file_name = fullFileName
         # Ask the question
-        fileName = questions.pathDefault(prompt, fileNameValidator, Path(fullFileName).stem)
+        fileName = questions.pathDefault(prompt, fileNameValidator, Path(default_file_name).stem)
         # Determine if a value was entered
         if fileName == "":
             # No file name was entered
@@ -79,6 +84,11 @@ def otherProcessing(fullFileName, settings, XMLPath, MUAPath):
             XML2Name = otherModelNameInput(settings["XML2Num"], "XML2", fullFileName, "")
             MUA1Name = None
             MUA2Name = None
+            # Determine if the PSP format is used.
+            if textureFormat == 'GameCube, PSP, and MUA2 PS2':
+                # The PSP format is used.
+                # Update the texture format to the special version for cel shading
+                textureFormat = 'GameCube (Other Model with Cel)'
         else:
             # cel shading is not used
             # Determine if there will be any cel shaded assets
@@ -87,6 +97,11 @@ def otherProcessing(fullFileName, settings, XMLPath, MUAPath):
                 # set up file names
                 XML1Name = otherModelNameInput(settings["XML1Num"], "XML1", fullFileName, " (No Cel)")
                 XML2Name = otherModelNameInput(settings["XML2Num"], "XML2", fullFileName, " (No Cel)")
+                # Determine if the PSP format is used
+                if textureFormat == 'GameCube, PSP, and MUA2 PS2':
+                    # The PSP format is used
+                    # Update the texture format to the special variant that will not have " (No Cel)" in the PSP file's name
+                    textureFormat = 'GameCube, PSP, and MUA2 PS2 (No Cel)'
             else:
                 # There will not be a version with cel shading
                 XML1Name = otherModelNameInput(settings["XML1Num"], "XML1", fullFileName, "")

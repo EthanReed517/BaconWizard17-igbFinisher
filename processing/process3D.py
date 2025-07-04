@@ -106,6 +106,16 @@ def process3D(assetType, sourceFileName, textureFormat, numsDict, nameDict, path
             {"function": processing.processPSPFiles, "kwargs": {"nums": numsDict, "files": nameDict, "paths": pathDict, "prefix": iniPrefix}},
             {"function": processing.processFile, "kwargs": {"num": numsDict["MUA2"], "file": nameDict["MUA2"], "path": pathDict["MUA"], "folder": "for MUA2 (PS2)", "optList": [f"{iniPrefix}3.ini"]}}
         ],
+        "GameCube (Other Model with Cel)": [
+            {"function": processing.processFile, "kwargs": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (GC)", "optList": None}},
+            {"function": processing.processFile, "kwargs": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (GC)", "optList": None}}
+        ],
+        "GameCube, PSP, and MUA2 PS2 (No Cel)": [
+            {"function": processing.processFile, "kwargs": {"num": numsDict["XML1"], "file": nameDict["XML1"], "path": pathDict["XML"], "folder": "for XML1 (GC)", "optList": None}},
+            {"function": processing.processFile, "kwargs": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (GC)", "optList": None}},
+            {"function": processing.processPSPFiles, "kwargs": {"nums": numsDict, "files": {"XML1": nameDict["XML1"], "XML2": nameDict["XML2"].replace(" (No Cel)", ""), "MUA1": nameDict["MUA1"], "MUA2": nameDict["MUA2"]}, "paths": pathDict, "prefix": iniPrefix}},
+            {"function": processing.processFile, "kwargs": {"num": numsDict["MUA2"], "file": nameDict["MUA2"], "path": pathDict["MUA"], "folder": "for MUA2 (PS2)", "optList": [f"{iniPrefix}3.ini"]}}
+        ],
         # Single texture type, PNG8 format, PC only
         "PC": [
             {"function": processing.processFile, "kwargs": {"num": numsDict["XML2"], "file": nameDict["XML2"], "path": pathDict["XML"], "folder": "for XML2 (PC)", "optList": None}},
