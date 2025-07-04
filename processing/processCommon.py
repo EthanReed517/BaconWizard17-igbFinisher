@@ -82,21 +82,24 @@ def processWiiFiles(sourceFileName, assetType, nums, files, path):
     else:
         # The files are not the same, so copy to two folders
         processFile(sourceFileName, assetType, nums["MUA1"], files["MUA1"], path, "for MUA1 (Wii)", None)
-        processFile(sourceFileName, assetType, nums["MUA1"], files["MUA2"], path, "for MUA2 (Wii)", None)
+        processFile(sourceFileName, assetType, nums["MUA2"], files["MUA2"], path, "for MUA2 (Wii)", None)
 
 # Define the function for sending PSP files
 def processPSPFiles(sourceFileName, assetType, nums, files, paths, prefix):
     # Determine if this is a skin. XML2 PSP skins need special consideration
     if prefix == "skin":
-        # Check if this is the file without cel shading, which is the only one used in XML2 PSP
-        if "No Cel" in files["XML2"]:
-            # This is without cel shading
-            # The name should not mention that this is without cel shading, since XML2 PSP doesn't use cel shading
-            outName = files["XML2"].replace(" - No Cel", "")
-            # Update the Alchemy optimization to reference the correct file path
-            updateXML2PSPOptPath()
-            # Process the file
-            processFile(sourceFileName, assetType, nums["XML2"], outName, paths["XML"], "for XML2 (PSP)", ["skin2-1.ini"])
+        # Check if there is an XML2 skin at all.
+        if files['XML2'] is not None:
+            # There is an XML2 file.
+            # Check if this is the file without cel shading, which is the only one used in XML2 PSP
+            if "No Cel" in files["XML2"]:
+                # This is without cel shading
+                # The name should not mention that this is without cel shading, since XML2 PSP doesn't use cel shading
+                outName = files["XML2"].replace(" - No Cel", "")
+                # Update the Alchemy optimization to reference the correct file path
+                updateXML2PSPOptPath()
+                # Process the file
+                processFile(sourceFileName, assetType, nums["XML2"], outName, paths["XML"], "for XML2 (PSP)", ["skin2-1.ini"])
     else:
         # This is not a skin, so process the XML2 file
         processFile(sourceFileName, assetType, nums["XML2"], files["XML2"], paths["XML"], "for XML2 (PSP)", None)
