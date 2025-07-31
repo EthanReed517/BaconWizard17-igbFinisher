@@ -10,9 +10,9 @@
 import alchemy
 import assetRecognition
 import basicXMLOps
-import config
 import questions
 import processing
+import settings
 # External modules
 import os.path
 from os import rename, system
