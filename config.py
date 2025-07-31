@@ -48,9 +48,9 @@ def verifyConfigExistence():
         except AssertionError:
             # The assertion failed (the file does not exist)
             # Print the error message
-            questions.printError("settings.ini does not exist. Restore the file and try again.", False)
+            questions.PrintError("settings.ini does not exist. Restore the file and try again.", skip_pause = True)
             # Wait for user confirmation
-            questions.pressAnyKey("Press any key to try again...")
+            questions.PressAnyKey("Press any key to try again...")
 
 # Define the function to get the character numbers
 def characterNumberGetter(game):
@@ -78,15 +78,15 @@ def characterNumberGetter(game):
                 else:
                     # The character number is not acceptable
                     # Give the error to let the user know
-                    questions.printError(f"The skin number for {game} is set to {number}. The character number (first 2-3 digits) must be between 00 and 255. Please enter a new number.", False)
+                    questions.PrintError(f"The skin number for {game} is set to {number}. The character number (first 2-3 digits) must be between 00 and 255. Please enter a new number.", skip_pause = True)
                     # Get the user input
-                    number = questions.textInput("Enter a 4 or 5 digit skin number:", questions.skinNumberValidator)
+                    number = questions.TextInput("Enter a 4 or 5 digit skin number:", validator = questions.SkinNumberValidator)
             else:
                 # The number is not the correct length
                 # Give the error to let the user know.
-                questions.printError(f"The skin number for {game} is set to {number}. Skin numbers must be 4 or 5 digits long. Please enter a new number.", False)
+                questions.PrintError(f"The skin number for {game} is set to {number}. Skin numbers must be 4 or 5 digits long. Please enter a new number.", skip_pause = True)
                 # Get the user input
-                number = questions.textInput("Enter a 4 or 5 digit skin number:", questions.skinNumberValidator)
+                number = questions.TextInput("Enter a 4 or 5 digit skin number:", validator = questions.SkinNumberValidator)
         else:
             # The number is not a number
             # Check if the number ends in XX
@@ -102,14 +102,14 @@ def characterNumberGetter(game):
             else:
                 # The value is not a number, "None", or "Ask".
                 # Display an error to the user so that they know that their input is not acceptable.
-                questions.printError(f"The skin number for {game} is set to {number}, which is not an acceptable value. Please enter an acceptable value.", False)
+                questions.PrintError(f"The skin number for {game} is set to {number}, which is not an acceptable value. Please enter an acceptable value.", skip_pause = True)
                 # Find out what the user wants in their settings.
-                valueType = questions.select(f"What setting do you want to use for the {game}number?", ["Update the settings with a permanent number", f"Don't enter a number (the character is not in {game})", "Ask each time an asset is processed"])
+                valueType = questions.Select(f"What setting do you want to use for the {game}number?", ["Update the settings with a permanent number", f"Don't enter a number (the character is not in {game})", "Ask each time an asset is processed"])
                 # Determine what to do based on the settings.
                 if valueType == "Update the settings with a permanent number":
                     # The user wants to enter a number.
                     # Ask the user for a number.
-                    number = questions.textInput("Enter a 2 or 3 digit character number.", questions.skinNumberValidator)
+                    number = questions.TextInput("Enter a 2 or 3 digit character number.", validator = questions.SkinNumberValidator)
                 elif valueType == f"Don't enter a number (the character is not in {game})":
                     # The user wants to skip this number.
                     # Set the setting.
@@ -178,15 +178,15 @@ def pathGetter(series, game1Name, game2Name):
                     break
                 else:
                     # The value is not ask or an existing file path, so something went wrong.
-                    questions.printError(f"The value for the path for {games} is set to {path}, which is not an acceptable value. Please decide what you'd like the value to be.", False)
+                    questions.PrintError(f"The value for the path for {games} is set to {path}, which is not an acceptable value. Please decide what you'd like the value to be.", skip_pause = True)
                     # Find out what the user wants in their settings.
-                    valueType = questions.select(f"What setting do you want to use for the path for {games}?", ["Update the settings with a permanent path", "Detect the output path using the model's texture path.", f"Don't enter a number (the character is not in {games})", "Ask each time an asset is processed"])
+                    valueType = questions.Select(f"What setting do you want to use for the path for {games}?", ["Update the settings with a permanent path", "Detect the output path using the model's texture path.", f"Don't enter a number (the character is not in {games})", "Ask each time an asset is processed"])
                     if valueType == "Update the settings with a permanent path":
                         # The user wants to write a new path to the settings.
                         # Create the message for the prompt
                         message = f"Enter the path to the folder for the {games} release:"
                         # Ask the question
-                        path = questions.path(message, questions.pathValidator)
+                        path = questions.PathInput(message, validator = questions.PathValidator)
                     elif valueType == "Detect the output path using the model's texture path.":
                         # The user wants to detect paths from the model's texture folder
                         path = "Detect"
@@ -234,9 +234,9 @@ def settingsGetter(settingName):
             break
         except (ValueError, AssertionError):
             # The value is not acceptable. Print an error
-            questions.printError(f"The value for setting {settingName} is set to {setting}, which is not an acceptable value. It must be True or False. Please enter an acceptable value.", False)
+            questions.PrintError(f"The value for setting {settingName} is set to {setting}, which is not an acceptable value. It must be True or False. Please enter an acceptable value.", True)
             # Let the user pick the new option.
-            choice = questions.select("Which console are you processing for?", ["All consoles", "PC only"])
+            choice = questions.Select("Which console are you processing for?", ["All consoles", "PC only"])
             # Determine which option was picked
             if choice == "All consoles":
                 # This is for all consoles

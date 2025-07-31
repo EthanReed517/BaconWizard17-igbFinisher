@@ -21,7 +21,7 @@ def openGetTreeAndRoot(file):
     try:
         tree = ET.parse(file)
     except:
-        questions.printError(f"Failed to open {file} due to a formatting error.", False)
+        questions.PrintError(f"Failed to open {file} due to a formatting error.")
         tree = ET.parse(file)
     # Get the root from the tree
     root = tree.getroot()

@@ -46,7 +46,7 @@ def getAssetChoices(settings):
     # Other models are present in every game
     assetChoices.extend(["Loading Screen", "Power Icons", "Comic Cover", "Other"])
     # Get the asset type
-    assetType = questions.selectDefault("Which asset type are you finishing?", assetChoices, "Other")
+    assetType = questions.Select("Which asset type are you finishing?", assetChoices, default_choice = "Other")
     # Determine if the asset is not "Other"
     return assetType
 
@@ -70,7 +70,7 @@ def assetRecognition(inputFileName, fullFileName, settings):
     if assetType == "Unknown":
         # The file does not have a known name
         # Print a warning message
-        questions.printWarning(f"The asset type for {inputFileName} could not be identified from the file name. Please choose the asset type.", skip_pause = True)
+        questions.PrintWarning(f"The asset type for {inputFileName} could not be identified from the file name. Please choose the asset type.", skip_pause = True)
         # Check which assets should be asked about
         assetType = getAssetChoices(settings)
         # Set the file name
@@ -78,6 +78,6 @@ def assetRecognition(inputFileName, fullFileName, settings):
     else:
         # The file has a known name
         # Print success
-        questions.printSuccess(f"{inputFileName} was automatically identified as a {assetType}.\n")
+        questions.PrintSuccess(f"{inputFileName} was automatically identified as a {assetType}.\n")
     # return the collected values
     return assetType, fileName

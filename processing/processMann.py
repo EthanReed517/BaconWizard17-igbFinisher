@@ -40,9 +40,9 @@ def getMannFileNamesAndNumbers(settings, fullFileName):
             else:
                 # The number does not end in XX
                 # Warn the user that the number should end in XX
-                questions.printWarning(f"The skin number for {game} is set to {settings[f'{game}Num']}. For mannequins, it is recommended that the skin number end in \"XX\", which will process the mannequin with the number ending in 01 and the standard descriptor.")
+                questions.PrintWarning(f"The skin number for {game} is set to {settings[f'{game}Num']}. For mannequins, it is recommended that the skin number end in \"XX\", which will process the mannequin with the number ending in 01 and the standard descriptor.")
                 # Ask the user what they want to do.
-                numChoice = questions.select(f"What do you want to do for the {game} number?", [f"Update the number to {settings[f'{game}Num'][0:-2]}XX (does not overwrite settings.ini).", "Leave the number as-is. I want the file name to end in 01 and not have any descriptor."])
+                numChoice = questions.Select(f"What do you want to do for the {game} number?", [f"Update the number to {settings[f'{game}Num'][0:-2]}XX (does not overwrite settings.ini).", "Leave the number as-is. I want the file name to end in 01 and not have any descriptor."])
                 # Determine what the user picked.
                 if numChoice == f"Update the number to {settings[f'{game}Num'][0:-2]}XX (does not overwrite settings.ini).":
                     # The user wanted to update the skin number to end in 01.

@@ -39,15 +39,15 @@ def resource_path(relative_path):
 # Define the function to display the command prompt information
 def displayInfo():
     # Display the title
-    questions.printPlain("██╗ ██████╗ ██████╗ ███████╗██╗███╗   ██╗██╗███████╗██╗  ██╗███████╗██████╗ ")
-    questions.printPlain("██║██╔════╝ ██╔══██╗██╔════╝██║████╗  ██║██║██╔════╝██║  ██║██╔════╝██╔══██╗")
-    questions.printPlain("██║██║  ███╗██████╔╝█████╗  ██║██╔██╗ ██║██║███████╗███████║█████╗  ██████╔╝")
-    questions.printPlain("██║██║   ██║██╔══██╗██╔══╝  ██║██║╚██╗██║██║╚════██║██╔══██║██╔══╝  ██╔══██╗")
-    questions.printPlain("██║╚██████╔╝██████╔╝██║     ██║██║ ╚████║██║███████║██║  ██║███████╗██║  ██║")
-    questions.printPlain("╚═╝ ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚═╝  ╚═══╝╚═╝╚══════╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝")
+    questions.PrintPlain("██╗ ██████╗ ██████╗ ███████╗██╗███╗   ██╗██╗███████╗██╗  ██╗███████╗██████╗ ")
+    questions.PrintPlain("██║██╔════╝ ██╔══██╗██╔════╝██║████╗  ██║██║██╔════╝██║  ██║██╔════╝██╔══██╗")
+    questions.PrintPlain("██║██║  ███╗██████╔╝█████╗  ██║██╔██╗ ██║██║███████╗███████║█████╗  ██████╔╝")
+    questions.PrintPlain("██║██║   ██║██╔══██╗██╔══╝  ██║██║╚██╗██║██║╚════██║██╔══██║██╔══╝  ██╔══██╗")
+    questions.PrintPlain("██║╚██████╔╝██████╔╝██║     ██║██║ ╚████║██║███████║██║  ██║███████╗██║  ██║")
+    questions.PrintPlain("╚═╝ ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚═╝  ╚═══╝╚═╝╚══════╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝")
     # Print relevant info
-    questions.printPlain("\nVersion 3.1.0")
-    questions.printPlain("https://marvelmods.com/forum/index.php/topic,11440.0.html\n")
+    questions.PrintPlain("\nVersion 3.1.0")
+    questions.PrintPlain("https://marvelmods.com/forum/index.php/topic,11440.0.html\n")
 
 # Define the function to initialize the window
 def initializeWindow():
@@ -153,11 +153,11 @@ def fileDrop(fullFileName):
     if complete == True:
         # The process was completed
         # Print the completion message
-        questions.printSuccess(f"{assetType} {inputFileName} was successfully processed!")
+        questions.PrintSuccess(f"{assetType} {inputFileName} was successfully processed!")
     else:
         # The process was not completed
         # Print the error message
-        questions.printError(f"{assetType} {inputFileName} was not able to be processed.", False)
+        questions.PrintError(f"{assetType} {inputFileName} was not able to be processed.")
 
 # Define the function to get the character numbers
 def getNumbers(settings):
@@ -167,7 +167,7 @@ def getNumbers(settings):
         if settings[f"{game}Num"] == "Ask":
             # Need to ask about the character number.
             # Ask the user.
-            settings[f"{game}Num"] = questions.textInput(f"Enter the 4 or 5 digit skin number for {game}:", questions.skinNumberValidator)
+            settings[f"{game}Num"] = questions.TextInput(f"Enter the 4 or 5 digit skin number for {game}:", validator = questions.SkinNumberValidator)
     # Return the updated settings.
     return settings
 
@@ -249,25 +249,25 @@ def getFilePath(fullFileName, settings, assetType, series, game1Name, game2Name)
                             filePath = os.path.join(pathStart, subFolder)
                             # Verify that the path exists
                             if not(os.path.exists(filePath)):
-                                questions.printWarning(f"The value for the path for the {series} games was set to \"Detect\", but the output path for {skinFolder} ({filePath}) does not exist. Please enter a path instead.", skip_pause = True)
+                                questions.PrintWarning(f"The value for the path for the {series} games was set to \"Detect\", but the output path for {skinFolder} ({filePath}) does not exist. Please enter a path instead.", skip_pause = True)
                                 # Set the file path back to unknown since it's not found
                                 filePath = "Unknown"
                             else:
                                 # The file path exists
                                 # Announce that it was found
-                                questions.printSuccess(f"The {series} destination folder was automatically identified as {filePath}.\n")
+                                questions.PrintSuccess(f"The {series} destination folder was automatically identified as {filePath}.\n")
                         else:
                             # Nothing was found
-                            questions.printWarning(f"The value for the path for the {series} games was set to \"Detect\", but {characterFolder}.xml does not contain a matching output folder for {skinFolder}. Please enter a path instead.", skip_pause = True)
+                            questions.PrintWarning(f"The value for the path for the {series} games was set to \"Detect\", but {characterFolder}.xml does not contain a matching output folder for {skinFolder}. Please enter a path instead.", skip_pause = True)
                     else:
                         # No xml file exists
-                        questions.printWarning(f"The value for the path for the {series} games was set to \"Detect\", but {characterFolder}.xml does not exist in the \"Folder Detection\" folder. Please enter a path instead.", skip_pause = True)
+                        questions.PrintWarning(f"The value for the path for the {series} games was set to \"Detect\", but {characterFolder}.xml does not exist in the \"Folder Detection\" folder. Please enter a path instead.", skip_pause = True)
                 else:
                     # The paths are not all the same
-                    questions.printWarning(f"The value for the path for the {series} games was set to \"Detect\", but the model contains textures that are in multiple folders. Detection does not support multiple folders. Please enter a path instead.", skip_pause = True)
+                    questions.PrintWarning(f"The value for the path for the {series} games was set to \"Detect\", but the model contains textures that are in multiple folders. Detection does not support multiple folders. Please enter a path instead.", skip_pause = True)
             else:
                 # There are no textures
-                questions.printWarning(f"The value for the path for the {series} games was set to \"Detect\", but the model contains no textures. Please enter a path instead.", skip_pause = True)
+                questions.PrintWarning(f"The value for the path for the {series} games was set to \"Detect\", but the model contains no textures. Please enter a path instead.", skip_pause = True)
         # Determine if anything has been found up to this point
         if filePath == "Unknown":
             # Nothing has been found yet
@@ -292,7 +292,7 @@ def getFilePath(fullFileName, settings, assetType, series, game1Name, game2Name)
                 # Create the message for the prompt
                 message = f"Enter the path to the folder for the {games} release:"
                 # Ask the question
-                filePath = questions.path(message, questions.pathValidator)
+                filePath = questions.PathInput(message, validator = questions.PathValidator)
                 # Replace any incorrect slashes
                 filePath = filePath.replace("\\", "/")
     # Return the path
@@ -325,7 +325,7 @@ system("title BaconWizard17's igb Finisher")
 # Print the welcome information
 displayInfo()
 # Print the welcome message
-questions.printImportant("Welcome to BaconWizard17's igb Finisher!\n")
+questions.PrintImportant("Welcome to BaconWizard17's igb Finisher!\n")
 # Read the settings
 settings = config.parseConfig()
 # Reset the Alchemy eval to avoid possible issues
@@ -339,4 +339,4 @@ lbl_drop = initializeDropZone()
 # Start the window loop
 window_dnd.mainloop()
 # Add a "press any key to continue" prompt
-questions.pressAnyKey(None)
+questions.PressAnyKey(None)

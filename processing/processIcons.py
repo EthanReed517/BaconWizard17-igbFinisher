@@ -107,7 +107,7 @@ def processIcons(assetType, sourceFileName, textureFormat, numsDict, nameDict, p
     except KeyError:
         # The selected texture format doesn't have an entry in the dictionary
         # Print an error
-        questions.printError(f"Choice of texture format did not line up with an existing operation. Selected texture format: {textureFormat}", True)
+        questions.PrintError(f"Choice of texture format did not line up with an existing operation. Selected texture format: {textureFormat}")
         # Update the completion variable to indicate that nothing was processed
         complete = False
     # Return the completion variable

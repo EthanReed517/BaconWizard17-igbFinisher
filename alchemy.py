@@ -100,7 +100,7 @@ def CheckAnimationProducer():
                 # Loop through the files in the folder
                 for file in listdir('Animation Producer'):
                     # Check if the file is a .dll file
-                    if os.path.splitext(file)[1] == ".dll":
+                    if os.path.splitext(file)[1] == '.dll':
                         # This is a .dll file
                         # Update the variable to indicate that there are .dll files
                         dll_files = True
@@ -111,13 +111,13 @@ def CheckAnimationProducer():
                     animation_producer_ready = True
                 else:
                     # No .dll files were found
-                    questions.printError('The "Animation Producer" folder does not contain any .dll files. Please install the animation producer and try again.', False)
+                    questions.PrintError('The "Animation Producer" folder does not contain any .dll files. Please install the animation producer and try again.')
             else:
                 # The exe does not exist
-                questions.printError('"animationProducer.exe" does not exist in the "Animation Producer" folder. Please install the animation producer and try again.', False)
+                questions.PrintError('"animationProducer.exe" does not exist in the "Animation Producer" folder. Please install the animation producer and try again.')
         else:
             # The folder does not exist.
-            questions.printError('The "Animation Producer" folder does not exist. Please install the animation producer and try again.', False)
+            questions.PrintError('The "Animation Producer" folder does not exist. Please install the animation producer and try again.')
 
 def GetTexPath(file_name) -> list:
     # Define the Alchemy ini file & command

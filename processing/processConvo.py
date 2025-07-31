@@ -37,9 +37,9 @@ def getHUDFileNamesAndNumbers(settings, fullFileName, suffix):
             if not(settings[f"{game}Num"][-2:] == "XX"):
                 # The last two digits are not XX.
                 # Warn the user that this isn't recommended.
-                questions.printWarning(f"The skin number for {game} is set to {settings[f'{game}Num']}. Unless this is a special case, it's recommended that the skin number in the settings ends with \"XX\", which will process the HUD with the number ending in 01 and no special descriptor.")
+                questions.PrintWarning(f"The skin number for {game} is set to {settings[f'{game}Num']}. Unless this is a special case, it's recommended that the skin number in the settings ends with \"XX\", which will process the HUD with the number ending in 01 and no special descriptor.")
                 # Ask the user what they want to do.
-                numChoice = questions.select(f"What do you want to do for the {game} number?", [f"Update the number to {settings[f'{game}Num'][0:-2]}XX (does not overwrite settings.ini).", "Leave the number as-is. This is a special HUD that needs a unique number and file name.", "Leave the number as-is. I want to use a specific skin number and not have any descriptor."])
+                numChoice = questions.Select(f"What do you want to do for the {game} number?", [f"Update the number to {settings[f'{game}Num'][0:-2]}XX (does not overwrite settings.ini).", "Leave the number as-is. This is a special HUD that needs a unique number and file name.", "Leave the number as-is. I want to use a specific skin number and not have any descriptor."])
                 # Determine what the user picked.
                 if numChoice == f"Update the number to {settings[f'{game}Num'][0:-2]}XX (does not overwrite settings.ini).":
                     # The user wanted to update the skin number to end in 01.
@@ -48,7 +48,7 @@ def getHUDFileNamesAndNumbers(settings, fullFileName, suffix):
                 elif numChoice == "Leave the number as-is. This is a special HUD that needs a unique number and file name.":
                     # The user wants to leave the number as-is, but this is a special model with a new name.
                     # Indicate that a special name is needed
-                    description = questions.textInput("Enter a descriptor for the file (i.e., \"Boss HUD\", etc.)", None)
+                    description = questions.TextInput("Enter a descriptor for the file (i.e., \"Boss HUD\", etc.)")
                     # Format the description to match
                     description = f" ({description})"
                 else:
@@ -206,7 +206,7 @@ def processConvo(assetType, sourceFileName, textureFormat, numsDict, nameDict, p
     except KeyError:
         # The selected texture format doesn't have an entry in the dictionary
         # Print an error
-        questions.printError(f"Choice of texture format did not line up with an existing operation. Selected texture format: {textureFormat}", True)
+        questions.PrintError(f"Choice of texture format did not line up with an existing operation. Selected texture format: {textureFormat}")
         # Update the completion variable to indicate that nothing was processed
         complete = False
     # Return the completion variable

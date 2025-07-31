@@ -42,9 +42,9 @@ def getCSPFileNamesAndNumbers(settings, fullFileName, portraitType):
                 else:
                     # The number does not end in 01 or XX
                     # Warn the user that the number should end in 01 or XX
-                    questions.printWarning(f"The skin number for {game} is set to {settings[f'{game}Num']}. Unless this is a special case, it's recommended that the skin number in the settings ends with \"XX\" or 01, which will process the CSP with the number ending in 01 and the standard descriptor.")
+                    questions.PrintWarning(f"The skin number for {game} is set to {settings[f'{game}Num']}. Unless this is a special case, it's recommended that the skin number in the settings ends with \"XX\" or 01, which will process the CSP with the number ending in 01 and the standard descriptor.")
                     # Ask the user what they want to do.
-                    numChoice = questions.select(f"What do you want to do for the {game} number?", [f"Update the number to {settings[f'{game}Num'][0:-2]}XX (does not overwrite settings.ini).", "Leave the number as-is. I want to use a specific skin number and not have any descriptor."])
+                    numChoice = questions.Select(f"What do you want to do for the {game} number?", [f"Update the number to {settings[f'{game}Num'][0:-2]}XX (does not overwrite settings.ini).", "Leave the number as-is. I want to use a specific skin number and not have any descriptor."])
                     # Determine what the user picked.
                     if numChoice == f"Update the number to {settings[f'{game}Num'][0:-2]}XX (does not overwrite settings.ini).":
                         # The user wanted to update the skin number to end in 01.
@@ -126,7 +126,7 @@ def processCSP(assetType, sourceFileName, textureFormat, numsDict, nameDict, pat
     except KeyError:
         # The selected texture format doesn't have an entry in the dictionary
         # Print an error
-        questions.printError(f"Choice of texture format did not line up with an existing operation. Selected texture format: {textureFormat}", True)
+        questions.PrintError(f"Choice of texture format did not line up with an existing operation. Selected texture format: {textureFormat}")
         # Update the completion variable to indicate that nothing was processed
         complete = False
     # Return the completion variable

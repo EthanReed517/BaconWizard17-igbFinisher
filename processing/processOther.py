@@ -38,7 +38,7 @@ def otherModelNameInput(charNum, gameName, fullFileName, celExt):
         else:
             default_file_name = fullFileName
         # Ask the question
-        fileName = questions.pathDefault(prompt, fileNameValidator, Path(default_file_name).stem)
+        fileName = questions.PathInput(prompt, validator = fileNameValidator, default_choice = Path(default_file_name).stem)
         # Determine if a value was entered
         if fileName == "":
             # No file name was entered
