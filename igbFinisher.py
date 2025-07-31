@@ -1,7 +1,8 @@
 # ########### #
 # INFORMATION #
 # ########### #
-# This is the main function for igbFinisher that the rest of the program runs on
+# This module is the main function for igbFinisher that the rest of the program runs on.
+
 
 # ####### #
 # IMPORTS #
