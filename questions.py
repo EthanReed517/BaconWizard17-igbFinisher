@@ -151,7 +151,7 @@ def TextInput(question, **kwargs):
     answer = questionary.text(
         question,
         style = question_style,
-        default = kwargs.get('default_choice', None),
+        default = kwargs.get('default_choice', ''),
         validate = kwargs.get('validator', None)
     ).ask()
     # Return the collected answer.
@@ -163,7 +163,7 @@ def PathInput(question, **kwargs):
     answer = questionary.path(
         question,
         style = question_style,
-        default = kwargs.get('default_choice', None),
+        default = kwargs.get('default_choice', ''),
         validate = kwargs.get('validator', None)
     ).ask()
     # Return the collected answer.
@@ -184,10 +184,8 @@ def Confirm(question, **kwargs):
 def SkinNumberValidator(number):
     if len(number) == 0:
         return 'Please enter a number.'
-    elif number[0:-2].isnumeric() == False:
-        return 'The character number of the skin number (first 2-3 digits) must be a number.'
-    elif not((number[-2:].isnumeric) or (number[-2:] == "XX")):
-        return 'The last two digits of the skin number must be a number or "XX".'
+    elif number.isnumeric() == False:
+        return 'The skin number must be a number.'
     elif ((len(number) > 5) or (len(number) < 4)):
         return 'Skin numbers must be 4 or 5 digits long.'        
     elif not(0 <= int(number[0:-2]) <= 255):

@@ -101,7 +101,7 @@ def fileDrop(fullFileName):
     # Print the welcome information
     displayInfo()
     # Restore the settings from the ini file
-    settings = settings.parseConfig()
+    settings = settings.parse_settings()
     # Trim the curly brackets off the file name
     fullFileName = fullFileName.data.replace("{", "").replace("}", "")
     # Get the file name
@@ -328,7 +328,7 @@ displayInfo()
 # Print the welcome message
 questions.PrintImportant("Welcome to BaconWizard17's igb Finisher!\n")
 # Read the settings
-settings = settings.parseConfig()
+settings = settings.parse_settings()
 # Reset the Alchemy eval to avoid possible issues
 alchemy.checkAlchemyReset()
 # Check for the animation producer
