@@ -115,10 +115,15 @@ def PressAnyKey(message):
     if message is not None:
         # The message is not a None type, meaning that it's custom.
         # Determine if the message ends in ellipses, which should be present at the end for style consistency.
-        if not(message.endswith == '. . .'):
+        if not(message.endswith('. . .')):
             # The message does not end in ellipses.
+            # Determine if the message ends with spaceless elipses, which is the incorrect style.
+            if message.endswith('...'):
+                # The message ends with spaceless elipses.
+                # Remove them.
+                message.replace('...', '')
             # Determine if the message ends in a period, which is not needed for this format.
-            if message.endswith == '.':
+            if message.endswith('.'):
                 # The message ends in a period and should not.
                 # Trim the message to take off the period.
                 message = message[0:-1]
