@@ -1,7 +1,7 @@
 # ########### #
 # INFORMATION #
 # ########### #
-
+# This is the main function for igbFinisher that the rest of the program runs on
 
 # ####### #
 # IMPORTS #
@@ -25,29 +25,29 @@ from PIL import Image, ImageTk
 # ######### #
 # FUNCTIONS #
 # ######### #
-# Define the function to get local resources
+# This function displays the command prompt information.
+def displayInfo():
+    # Display the title.
+    questions.PrintPlain('██╗ ██████╗ ██████╗ ███████╗██╗███╗   ██╗██╗███████╗██╗  ██╗███████╗██████╗ ')
+    questions.PrintPlain('██║██╔════╝ ██╔══██╗██╔════╝██║████╗  ██║██║██╔════╝██║  ██║██╔════╝██╔══██╗')
+    questions.PrintPlain('██║██║  ███╗██████╔╝█████╗  ██║██╔██╗ ██║██║███████╗███████║█████╗  ██████╔╝')
+    questions.PrintPlain('██║██║   ██║██╔══██╗██╔══╝  ██║██║╚██╗██║██║╚════██║██╔══██║██╔══╝  ██╔══██╗')
+    questions.PrintPlain('██║╚██████╔╝██████╔╝██║     ██║██║ ╚████║██║███████║██║  ██║███████╗██║  ██║')
+    questions.PrintPlain('╚═╝ ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚═╝  ╚═══╝╚═╝╚══════╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝')
+    # Print the relevant information.
+    questions.PrintPlain('\nVersion 3.1.0')
+    questions.PrintPlain('https://marvelmods.com/forum/index.php/topic,11440.0.html\n')
+
+# This function gets local resources.
 def resource_path(relative_path):
     # Get absolute path to resource, works for dev and for PyInstaller
     try:
         # PyInstaller creates a temp folder and stores path in _MEIPASS
         base_path = sys._MEIPASS
     except Exception:
-        base_path = os.path.abspath(".")
+        base_path = os.path.abspath('.')
     # Return the collected value
     return os.path.join(base_path, relative_path)
-
-# Define the function to display the command prompt information
-def displayInfo():
-    # Display the title
-    questions.PrintPlain("██╗ ██████╗ ██████╗ ███████╗██╗███╗   ██╗██╗███████╗██╗  ██╗███████╗██████╗ ")
-    questions.PrintPlain("██║██╔════╝ ██╔══██╗██╔════╝██║████╗  ██║██║██╔════╝██║  ██║██╔════╝██╔══██╗")
-    questions.PrintPlain("██║██║  ███╗██████╔╝█████╗  ██║██╔██╗ ██║██║███████╗███████║█████╗  ██████╔╝")
-    questions.PrintPlain("██║██║   ██║██╔══██╗██╔══╝  ██║██║╚██╗██║██║╚════██║██╔══██║██╔══╝  ██╔══██╗")
-    questions.PrintPlain("██║╚██████╔╝██████╔╝██║     ██║██║ ╚████║██║███████║██║  ██║███████╗██║  ██║")
-    questions.PrintPlain("╚═╝ ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚═╝  ╚═══╝╚═╝╚══════╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝")
-    # Print relevant info
-    questions.PrintPlain("\nVersion 3.1.0")
-    questions.PrintPlain("https://marvelmods.com/forum/index.php/topic,11440.0.html\n")
 
 # Define the function to initialize the window
 def initializeWindow():
