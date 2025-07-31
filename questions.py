@@ -125,7 +125,7 @@ def PressAnyKey(message):
             # Add the ellipses to the end of the message.
             message += '. . .'
     # Display the prompt.
-    questionary.PressAnyKey_to_continue(message).ask()
+    questionary.press_any_key_to_continue(message).ask()
 
 # This function displays a question with choices.
 def Select(question, options, **kwargs):
