@@ -201,3 +201,16 @@ def PathValidator(path):
         return 'Path does not exist'
     else:
         return True
+
+# This function validates a user entering a file path.
+def ValidateFileNameNoExt(name):
+    if len(name) == 0:
+        return 'Please enter a file name.'
+    elif '/' in name:
+        return 'Enter just a name, not a path.'
+    elif '\\' in name:
+        return 'Enter just a name, not a path.'
+    elif name.endswith('.igb'):
+        return 'Do not include a file extension.'
+    else:
+        return True

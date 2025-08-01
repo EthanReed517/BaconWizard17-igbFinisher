@@ -94,6 +94,8 @@ def GetSettings():
     settings_dict = GetGameSpecificSettings(settings_dict)
     # Get the console-specific settings.
     settings_dict = GetConsoleSpecificSettings(settings_dict)
+    # Get the remaining settings.
+    settings_dict = GetRemainingSettings(settings_dict)
     # Return the dictionary of settings.
     return settings_dict
 
@@ -126,7 +128,7 @@ def GetGameSpecificSettings(settings_dict):
             else:
                 # A path was given.
                 # Get the numbering convention fot this game.
-                game_num_XX = GetGameNumConvention(game)
+                game_num_XX = GetTrueFalseAskSetting('ASSET', f'{game}_num_XX', f'the numbering convention for {game}', 'Should the number in the file name end in XX?', True)
                 # Get the special name for this game.
                 game_special_name = GetGameSpecialName(game)
         # Write the game-specific settings.
@@ -134,6 +136,32 @@ def GetGameSpecificSettings(settings_dict):
         settings_dict[f'{game}_path'] = game_path
         settings_dict[f'{game}_num_XX'] = game_num_XX
         settings_dict[f'{game}_special_name'] = game_special_name
+    # Return the dictionary of settings.
+    return settings_dict
+
+# This function gets the console-specific settings.
+def GetConsoleSpecificSettings(settings_dict):
+    # Loop through the possible consoles.
+    for console in consoles_list:
+        # Get the status of that console.
+        console_status = GetTrueFalseAskSetting('CONSOLES', console.replace(' ', '_'), f'if assets should be exported for {console}', f'Should assets be exported for {console}?', True)
+        # Write the console's status to the settings.
+        settings_dict[console.replace(' ', '_')] = console_status
+    # Return the dictionary of settings.
+    return settings_dict
+
+# This function gets the remaining settings.
+def GetRemainingSettings(settings_dict):
+    # Get the settings that can be True, False, or Ask
+    settings_dict['big_texture'] = GetTrueFalseAskSetting('SETTINGS', 'big_texture', 'if assets with textures over 256x256 should retain the default size for weaker consoles', 'Should assets with textures over 256x256 be kept at their original size on weaker consoles?', False)
+    settings_dict['secondary_skin'] = GetTrueFalseAskSetting('SETTINGS', 'secondary_skin', 'if this is a secondary skin', 'Is this a secondary skin?', False)
+    settings_dict['cel_other_model'] = GetTrueFalseAskSetting('SETTINGS', 'cel_other_model', 'if this is an Other model that can have cel shading', 'If this is an Other model, can it have cel shading?', True)
+    settings_dict['PSP_PNG4'] = GetTrueFalseAskSetting('SETTINGS', 'PSP_PNG4', 'if PSP 3D assets should use PNG4 textures', 'Should PSP 3D assets use PNG4 textures?', False)
+    settings_dict['untextured_okay'] = GetTrueFalseAskSetting('SETTINGS', 'untextured_okay', 'if it\'s okay for 3D assets to lack textures', 'Is it okay if 3D assets lack textures?', False)
+    settings_dict['generate_collision'] = GetTrueFalseAskSetting('SETTINGS', 'generate_collision', 'if collision should be generated for Other models', 'Should collision be generated for Other models?', False)
+    settings_dict['igBlend_to_igAlpha_transparency'] = GetTrueFalseAskSetting('SETTINGS', 'igBlend_to_igAlpha_transparency', 'if igBlendStateAttr/igBlendFunctionAttr attributes should be converted to igAlphaStateAttr/igAlphaFunctionAttr attributes in transparent models', 'Should igBlendStateAttr/igBlendFunctionAttr attributes be converted to igAlphaStateAttr/igAlphaFunctionAttr attributes in transparent models?', False)
+    settings_dict['skip_subfolder'] = GetTrueFalseAskSetting('SETTINGS', 'skip_subfolder', 'if subfolders should be skipped for the resulting model', 'Should subfolders be skipped for the resulting model?', False)
+    settings_dict['advanced_texture_ini'] = GetAdvancedTextureINIPath()
     # Return the dictionary of settings.
     return settings_dict
 
@@ -159,76 +187,218 @@ def SkinNumberGetter(game):
                 else:
                     # The number is not between 00 and 255.
                     # Get the correct number from the user.
-                    game_number = questions.TextInput(f'The first {len(game_number) - 2} digits of the skin number for {game} (\'{game}_num\' in settings.ini) are not between 00 and 255. Please enter the skin number. settings.ini will not be updated.', validator = questions.SkinNumberValidator)
+                    game_number = questions.TextInput(f'The first {len(game_number) - 2} digits of the skin number for {game} ("{game}_num" in settings.ini) are not between 00 and 255. Please enter the skin number. settings.ini will not be updated.', validator = questions.SkinNumberValidator)
             else:
                 # The number is not numeric.
                 # Get the correct number from the user.
-                game_number = questions.TextInput(f'The skin number for {game} (\'{game}_num\' in settings.ini) is not a number. Please enter the skin number. settings.ini will not be updated.', validator = questions.SkinNumberValidator)
+                game_number = questions.TextInput(f'The skin number for {game} ("{game}_num" in settings.ini) is not a number. Please enter the skin number. settings.ini will not be updated.', validator = questions.SkinNumberValidator)
         else:
             # The number is not the correct length.
             # Get the correct number from the user.
-            game_number = questions.TextInput(f'The skin number for {game} (\'{game}_num\' in settings.ini) is not the correct length (4 or 5 digits). Please enter the skin number. settings.ini will not be updated.', validator = questions.SkinNumberValidator)
+            game_number = questions.TextInput(f'The skin number for {game} ("{game}_num" in settings.ini) is not the correct length (4 or 5 digits). Please enter the skin number. settings.ini will not be updated.', validator = questions.SkinNumberValidator)
     # Return the skin number.
     return game_number
 
 # This function is used to get game paths from the settings.
 def GamePathGetter(game):
     # Get the number from the settings.
-    game_number = 0
+    game_path = config['CHARACTER'][f'{game}_path']
+    # Set a variable to track if the number is valid and begin by assuming that it's not.
+    is_valid = False
+    # Start a while loop to get the number.
+    while is_valid == False:
+        # Set that it's not necessary to ask about the path.
+        ask_about_path = False
+        # Check the path value.
+        if game_path == 'Ask':
+            # The user wants to be asked about the path.
+            # Set that it's necessary to ask about the path.
+            ask_about_path = True
+        elif game_path == 'Detect':
+            # This is one of the allowed strings that can stay as a string.
+            # Set that the value is valid.
+            is_valid = True
+        elif game_path == 'None':
+            # This is the None value.
+            # Convert it to a None value.
+            game_path = None
+            # Set that the value is valid.
+            is_valid = True
+        else:
+            # This is not one of the available strings.
+            # Set a variable that assumes that the path is not okay.
+            path_okay = False
+            try:
+                # Check if the string is a path
+                game_path = Path(game_path)
+                # If there are no issues in the previous step, then this can be converted to a path. Check if the path exists.
+                if game_path.exists():
+                    # The path exists.
+                    # Say that the path is okay.
+                    path_okay = True
+                    # Set that the value is valid
+                    is_valid = True
+                else:
+                    # The path does not exist.
+                    # Give an error.
+                    questions.PrintError(f'The path entered for {game} ("{game}_path" in settings.ini) does not exist.', skip_pause = True)
+            except:
+                # The path could not be made a path.
+                questions.PrintError(f'The path entered for {game} ("{game}_path" in settings.ini) is not a recognized value.', skip_pause = True)
+            # Check if the path was okay.
+            if path_okay == False:
+                # The path was not okay.
+                # Ask the user what they want to do.
+                do_with_path = questions.Select(f'What would you like to do for the path for {game}? This will not update settings.ini', ['Enter a new path', 'Skip exporting for this game', 'Use folder detection'])
+                # Check what the user selected.
+                if do_with_path == 'Skip exporting for this game':
+                    # The user wanted to skip.
+                    # Set no path.
+                    game_path = None
+                    # Set that the value is valid.
+                    is_valid = True
+                elif do_with_path == 'Use folder detection':
+                    # The user wants to use folder detection.
+                    # Set the value.
+                    game_path = 'Detect'
+                    # Set that the value is valid.
+                    is_valid = True
+                else:
+                    # The user wanted to enter a new path.
+                    # Set that the path should be asked about.
+                    ask_about_path = True
+        # Check if it's necessary to ask about the path.
+        if ask_about_path == True:
+            # It's necessary to ask about the path.
+            # Get the path from the user.
+            game_path = questions.PathInput(f'What path should be used for {game}?', validator = questions.PathValidator)
+            # The path is being validated by the validator, so it will definitely pass.
+            is_valid = True
     # Return the skin number.
-    return game_number
+    return game_path
 
-# This function is used to get a game's numbering convention from the settings.
-def GetGameNumConvention(game):
-    # Get the number from the settings.
-    game_number = 0
-    # Return the skin number.
-    return game_number
+# This function is used to get the value from a settings whose options are True, False, and Ask.
+def GetTrueFalseAskSetting(section, key, setting_name, question_string, default_setting):
+    # Get the numbering convention from the settings.
+    setting_value = config[section][key]
+    # Set that it's necessary to ask about the value.
+    ask_about_value = True
+    # Check the possible values.
+    if setting_value in ['True', 'False']:
+        # The value is a boolean.
+        # Convert it to a boolean.
+        setting_value = bool_dict[setting_value]
+        # Set that it's not necessary to ask about the value.
+        ask_about_value = False
+    elif ask_about_value == 'Ask':
+        # The user wants to be asked about the value.
+        # Do nothing here
+        pass
+    else:
+        # The value is something else.
+        # Give an error.
+        questions.PrintError(f'The value for {setting_name} ("{key}" in settings.ini) is not a recognized value. Please enter a correct value. This will not update settings.ini', skip_pause = True)
+    # Determine if it's necessary to ask.
+    if ask_about_value == True:
+        # It's necessary to ask.
+        # Ask about the setting.
+        setting_value = questions.Confirm(question_string, default_choice = default_setting)
+    # Return the collected setting.
+    return setting_value
 
 # This function is used to get a game's special asset name from the settings.
 def GetGameSpecialName(game):
-    # Get the number from the settings.
-    game_number = 0
+    # Get the special name from the settings.
+    game_special_name = config['ASSET'][f'{game}_special_name']
+    # Set a variable to track if the user should be asked. Assume no at first.
+    ask_about_value = False
+    # Check what was found.
+    if game_special_name == "None":
+        # No special name is needed.
+        # Update this to a None type.
+        game_special_name = None
+    elif game_special_name == "Ask":
+        # The user wants to be asked.
+        # Set that it's necessary to ask.
+        ask_about_value = True
+    elif game_special_name == "NumberOnly":
+        # The user only wants a number.
+        # Do nothing here.
+        pass
+    else:
+        # Some other value is present. Assume that this is the file name.
+        # Check if any slashes are present.
+        if (('/' in game_special_name) or ('\\' in game_special_name)):
+            # There are slashes in the name.
+            # Print the error.
+            questions.PrintError(f'The value for the special name for {game} ("{game}_special_name" in settings.ini) includes a slash. The value should be a name, not a path. Please enter the name. This will not update settings.ini.', skip_pause = True)
+            # Set that it's necessary to ask.
+            ask_about_value = True
+        elif game_special_name.endswith('.igb'):
+            # There is a file extension in the name.
+            # Print the error.
+            questions.PrintError(f'The value for the special name for {game} ("{game}_special_name" in settings.ini) includes a file extension. The value should not have a file extension. Please enter the name. This will not update settings.ini.', skip_pause = True)
+            # Set that it's necessary to ask.
+            ask_about_value = True
+        else:
+            # The value has no issues.
+            # Proceed
+            pass
+    # Check if it's necessary to ask about the value.
+    if ask_about_value == True:
+        # It's necessary to ask.
+        # Present the question.
+        game_special_name = questions.TextInput(f'What is the name of the special name for {game}?', validator = questions.ValidateFileNameNoExt)
     # Return the skin number.
-    return game_number
+    return game_special_name
 
-# This function gets the console-specific settings.
-def GetConsoleSpecificSettings(settings_dict):
-    # Loop through the possible consoles.
-    for console in consoles_list:
-        # Get the status of that console.
-        console_status = GetConsoleStatus(console)
-        # Write the console's status to the settings.
-        settings_dict[console.replace(' ', '_')] = console_status
-    # Return the dictionary of settings.
-    return settings_dict
-
-# This function is used to get the status of a console from the settings.
-def GetConsoleStatus(game):
-    # Get the number from the settings.
-    game_number = 0
-    # Return the skin number.
-    return game_number
-
-# This function gets the remaining settings.
-def GetRemainingSettings(settings_dict):
-    # Set up a list of True/False settings and their descriptions.
-    true_false_settings_list = [
-        ['big_texture', 'Does this model need to keep large textures at full size for less powerful consoles? Only choose Yes if this is a large character like Galactus or if this is a map.', 'whether or not this model needs to keep large textures at full size for less poweful consoles.', False],
-        ['secondary_skin', 'If processing a skin, will this be a secondary skin?', 'whether or not this is a secondary skin (if processing a skin).', False],
-        ['PSP_PNG4', 'Use PNG4 textures with PSP 3D assets?', 'whether or not PSP 3D assets should use PNG4 textures.', False],
-        ['untextured_okay', 'If processing a 3D model and no texture is found, is it okay to proceed?', 'whether or not it\'s okay to proceed if an 3D model has no textures.', True],
-        ['generate_collision', 'For other models, generate collision? Choose Yes for maps and map models, choose No for boltons.', 'whether or not collision should be generated for other models.', False],
-        ['igBlend_to_igAlpha_transparency', 'If a transparent texture is detected, should igBlendStateAttr/igBlendFunctionAttr be converted to igAlphaStateAttr/igAlphaFunctionAttr?', 'whether or not igBlendStateAttr/igBlendFunctionAttr should be converted to igAlphaStateAttr/igAlphaFunctionAttr.', True]
-    ]
-    # Loop through the True/False settings.
-    for true_false_setting in true_false_settings_list:
-        # Get the value for this setting.
-        true_false_setting_value = GetTrueFalseSettingValue(true_false_setting)
-        # Write this setting value to the settings.
-        settings_dict[true_false_setting[0]] = true_false_setting_value
-    # Return the dictionary of settings.
-    return settings_dict
+# This function is used to get the Advanced Texture ini setting.
+def GetAdvancedTextureINIPath():
+    # Get the setting value.
+    setting_value = config['SETTINGS']['advanced_texture_ini']
+    # Assume that the value should not be asked about.
+    ask_about_value = False
+    # Check the value.
+    if setting_value == 'None':
+        # Nothing is needed.
+        # Update the value to a None string.
+        setting_value = None
+    elif setting_value == 'Ask':
+        # It's necessary to ask about the value.
+        # Set that the value should be asked about.
+        ask_about_value = True
+    else:
+        # The setting is either a path or not an allowed value.
+        try:
+            # Check if the string can be made a path.
+            setting_value = Path(setting_value)
+            # Check if the path exists.
+            if not(setting_value.exists()):
+                # The value doesn't exist.
+                # Show the error to the user.
+                questions.PrintError('The value for the advanced texture ini path ("advanced_texture_ini" in settings.ini) does not exist. Please enter a path. This will not update settings.ini.', skip_pause = True)
+                # Set that it's necessary to ask about the path.
+                ask_about_value = True
+        except:
+            # The string cannot be made a path.
+            questions.PrintError('The value for the advanced texture ini path ("advanced_texture_ini" in settings.ini) is not a recognized value.', skip_pause = True)
+            # See what the user wants to do.
+            what_to_do = questions.Select('What would you like to do? This will not update settings.ini.', ['Do not use advanced textures', 'Enter the path to an advanced texture ini file'])
+            # See what the user picked.
+            if what_to_do == 'Do not use advanced textures':
+                # The user does not want to use advanced textures.
+                # Set the value to None.
+                setting_value = None
+            else:
+                # The user wants to enter the path to advanced textures.
+                # Set that the path needs to be asked about.
+                ask_about_value = True
+    # Determine if it's necessary to ask about the path.
+    if ask_about_value == True:
+        # It's necessary to ask.
+        setting_value = questions.PathInput('What is the path to the ini file for advanced textures?', validator = questions.PathValidator)
+    # Return the collected value.
+    return setting_value
 
 # ############## #
 # MAIN EXECUTION #
@@ -247,9 +417,18 @@ settings_file_path = application_path / 'settings.ini'
 # Create a list of the games and consoles so that they can be a global variable and don't need to be written each time.
 games_list = ['XML1', 'XML2', 'MUA1', 'MUA2']
 consoles_list = ['PC', 'Steam', 'GameCube', 'PS2', 'PS3', 'PSP', 'Wii', 'Xbox', 'Xbox 360']
+# Create a dictionary of boolean strings to their values.
+bool_dict = {'True': True, 'False': False}
 # Check if the settings file exists.
 VerifySettingsExistence()
 # Open the settings ifle to be able to parse its contents
 config = ReadAndConfirmSettingsStructure()
 # Collect the relevant settings.
-settings = GetSettings()
+settings_dict = GetSettings()
+
+'''
+print('DEBUG: settings_dict = {')
+for key, value in settings_dict.items():
+    print(f"    '{key}': {value}")
+print('}')
+'''
