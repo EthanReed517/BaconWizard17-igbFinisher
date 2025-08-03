@@ -1,4 +1,4 @@
 @echo off
 REM call the python file
-py igbFinisher.py
+py igbFinisher.py "C:\Users\ethan\Desktop\New Folder\test.igb"
 pause

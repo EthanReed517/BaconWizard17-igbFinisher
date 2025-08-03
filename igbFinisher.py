@@ -15,19 +15,18 @@ import questions
 import processing
 import settings
 # External modules
+import argparse
 import os.path
 from os import rename, system
-import tkinter as tk
-import tkinter.ttk as ttk
-from tkinterdnd2 import DND_FILES, TkinterDnD
-from PIL import Image, ImageTk
+from pathlib import Path
+import sys
 
 
 # ######### #
 # FUNCTIONS #
 # ######### #
 # This function displays the command prompt information.
-def displayInfo():
+def DisplayInfo():
     # Display the title.
     questions.PrintPlain('██╗ ██████╗ ██████╗ ███████╗██╗███╗   ██╗██╗███████╗██╗  ██╗███████╗██████╗ ')
     questions.PrintPlain('██║██╔════╝ ██╔══██╗██╔════╝██║████╗  ██║██║██╔════╝██║  ██║██╔════╝██╔══██╗')
@@ -39,60 +38,50 @@ def displayInfo():
     questions.PrintPlain('\nVersion 3.1.0')
     questions.PrintPlain('https://marvelmods.com/forum/index.php/topic,11440.0.html\n')
 
-# This function gets local resources.
-def resource_path(relative_path):
-    # Get absolute path to resource, works for dev and for PyInstaller
+# This function gets the application path.
+def GetApplicationPath():
+    # Get the execution path by first checking if there is a frozen attribute for the system.
+    if getattr(sys, 'frozen', False):
+        # There is a frozen attribute, so this is running as the compiled exe.
+        # Get the path to the exe's folder.
+        application_path  = Path(('/').join(Path(sys.executable).parts[0:-1]))
+    else:
+        # There is no frozen attribute, so this is not compiled.
+        # Get the path to the main python file's folder.
+        application_path = Path(('/').join(Path(__file__).resolve().parts[0:-1]))
+    # Return the collected path
+    return application_path
+
+# This function processes the arguments.
+def ProcessArguments(args, application_path):
+    # Check if the input file path can be converted to a path.
     try:
-        # PyInstaller creates a temp folder and stores path in _MEIPASS
-        base_path = sys._MEIPASS
-    except Exception:
-        base_path = os.path.abspath('.')
-    # Return the collected value
-    return os.path.join(base_path, relative_path)
-
-# Define the function to initialize the window
-def initializeWindow():
-    # Establish the main window. Drag and drop requires this instead of tk.Tk()
-    window_dnd = TkinterDnD.Tk()
-    # Set the window title
-    window_dnd.title("Queue for BaconWizard17's igbFinisher")
-    # Get the icon path
-    iconPath = resource_path("icon.ico")
-    # set the window icon
-    window_dnd.iconbitmap(iconPath)
-    # Make it so that the window can't be resized
-    window_dnd.resizable(width=False, height=False)
-    # Create a label to let the user know what to do
-    lbl_dnd = ttk.Label(text="Drag and drop files below:")
-    # Pack the label in the window
-    lbl_dnd.pack()
-    # Return the created window
-    return window_dnd
-
-# Define the function to initialize the drop zone
-def initializeDropZone():
-    # Get the image path
-    imagePath = resource_path("images/dropZone.png")
-    # Set up the image for the drop zone
-    imageFile_dropZone = Image.open(imagePath)
-    # Add the image
-    image_dropZone = ImageTk.PhotoImage(imageFile_dropZone)
-    # Set up the frame for the drop zone
-    frame_drop = tk.Frame(relief=tk.SUNKEN, borderwidth=2)
-    # Add the label where the image will be shown
-    lbl_drop = tk.Label(image=image_dropZone, master=frame_drop)
-    # set the image
-    lbl_drop.image = image_dropZone
-    # Register the label as a drag and drop location
-    lbl_drop.drop_target_register(DND_FILES)
-    # Set up the function for when a file is dropped
-    lbl_drop.dnd_bind('<<Drop>>', fileDrop)\
-    # Pack the frame into the UI
-    frame_drop.pack()
-    # Pack the label into the UI
-    lbl_drop.pack()
-    # Return the necessary elements for other operations
-    return lbl_drop
+        input_file_path = Path(args.input_file_path)
+    except Exception as e:
+        questions.PrintError(f'The input file ({args.input_file_path}) could not be processed as a path. Error text:\n\n{e}\n\nThe system will now exit.', system_exit = True)
+    # Check if the input file exists.
+    if not(input_file_path.exists()):
+        # The input path does not exist.
+        # Print the error.
+        questions.PrintError(f'The input file ({args.input_file_path}) does not exist. The system will now exit.', system_exit = True)
+    # Check if a settings path was entered.
+    if args.settings_file_path is None:
+        # No settings path was entered.
+        # Use the default path.
+        settings_file_path = application_path / 'settings.ini'
+    else:
+        # Something was entered.
+        # Check if the file exists.
+        if Path(args.settings_file_path).exists():
+            # The file exists.
+            # Set this value.
+            settings_file_path = Path(args.settings_file_path)
+        else:
+            # The file does not exist.
+            # Give a warning.
+            questions.PrintError(f'The input settings file ({args.settings_file_path}) does not exist. The system will now exit.', system_exit = True)
+    # Return the collected arguments.
+    return input_file_path, settings_file_path
 
 # Define the function that will occur when a file is dropped
 def fileDrop(fullFileName):
@@ -321,23 +310,33 @@ def fileNameCorrection(fullFileName, assetType):
 # ############## #
 # MAIN EXECUTION #
 # ############## #
-# Set the window title
+# Set the window title.
 system("title BaconWizard17's igb Finisher")
-# Print the welcome information
-displayInfo()
-# Print the welcome message
+# Print the welcome information.
+DisplayInfo()
+# Print the welcome message.
 questions.PrintImportant("Welcome to BaconWizard17's igb Finisher!\n")
+# Get the application path.
+application_path = GetApplicationPath()
+# Create an argument parser.
+parser = argparse.ArgumentParser()
+# Add an argument for the input file's path.
+parser.add_argument('input_file_path')
+# Add an argument for the settings file path.
+parser.add_argument('-s', '--settings')
+# Parse the arguments.
+args = parser.parse_args()
+# Process the arguments.
+(input_file_path, settings_file_path) = ProcessArguments(args, application_path)
+
+
 # Read the settings
 settings = settings.parse_settings()
 # Reset the Alchemy eval to avoid possible issues
 alchemy.checkAlchemyReset()
 # Check for the animation producer
 alchemy.CheckAnimationProducer()
-# Initialize the window
-window_dnd = initializeWindow()
-# Initialize the drop zone
-lbl_drop = initializeDropZone()
-# Start the window loop
-window_dnd.mainloop()
+
+
 # Add a "press any key to continue" prompt
 questions.PressAnyKey(None)

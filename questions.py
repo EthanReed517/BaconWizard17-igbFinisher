@@ -108,6 +108,11 @@ def PrintError(message, **kwargs):
         # The pause cannot be skipped.
         # Pause to allow the user to see the error and acknowledge it.
         PressAnyKey("Press any key to acknowledge this error and proceed")
+    # Determine if it's necessary to exit.
+    if kwargs.get('system_exit', False) == True:
+        # It's necessary to exit after showing the error.
+        # Exit.
+        raise SystemExit(1)
 
 # This function gives the user a prompt to press any key to continue.
 def PressAnyKey(message):

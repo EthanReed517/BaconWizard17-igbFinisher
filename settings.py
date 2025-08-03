@@ -12,7 +12,7 @@ import questions
 # External modules
 from configparser import ConfigParser
 import os.path
-from pathlib import Path, PurePath
+from pathlib import Path
 import sys
 
 
