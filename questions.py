@@ -107,7 +107,7 @@ def PrintError(message, **kwargs):
         # Add the period to the end of the message.
         message = AddPeriod(message)
         # Add the error text.
-        message += f'Error text: {kwargs['error_text']}'
+        message += f'Error text:\n\n{kwargs['error_text']}\n\n'
     # Determine if the user needs to contact me because of the error.
     if kwargs.get('contact_creator', False) == True:
         # The user needs to contact me because of the error.
