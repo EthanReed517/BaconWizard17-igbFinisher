@@ -1,6 +1,7 @@
 # ########### #
 # INFORMATION #
 # ########### #
+# This module is used to recognize the asset type from the file name.
 
 
 # ####### #
@@ -9,8 +10,6 @@
 # Internal modules
 import questions
 import settings
-# External modules
-import os.path
 
 
 # ######### #
