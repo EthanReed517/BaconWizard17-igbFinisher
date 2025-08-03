@@ -13,6 +13,6 @@ echo Copying resources...
 robocopy >nul Scripts dist\Scripts
 copy >nul settings.ini dist
 echo Running pyInstaller...
-pyinstaller igbFinisher.py --onefile --additional-hooks-dir=. --icon=icon.ico --add-data "icon.ico:." --add-data "images/dropZone.png:images"
+pyinstaller igbFinisher.py --onefile --icon=icon.ico --add-data "icon.ico:."
 echo Installation complete.
 pause
