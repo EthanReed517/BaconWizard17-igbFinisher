@@ -136,23 +136,47 @@ def CheckAlchemyStatus():
     # Check the Alchemy reset date.
     CheckAlchemyReset()
 
+# This function writes the optimization for getting texture statistics.
+def WriteStatTOptimization():
+    # Set the path for this optimization.
+    optimization_path = Path(os.environ['temp']) / 'opt.ini'
+    # Get the list of what to put in the optimization.
+    opt_text_list = ['[OPTIMIZE]', 'optimizationCount = 1', 'hierarchyCheck = true',
+        '[OPTIMIZATION1]', 'name = igStatisticsTexture', 'useFullPath = true', 'separatorString = ^|', 'columnMaxWidth = -1', 'showColumnsMask = 0x00000117', 'sortColumn = -1']
+    # Open the optimization path
+    with open(optimization_path, 'w') as file:
+        # Loop through the lines to write.
+        for line in opt_text_list:
+            # Write the lines.
+            file.write(f'{line}\n')
+    # Return the collected path.
+    return optimization_path
+
 def GetTexPath(file_name) -> list:
-    # Define the Alchemy ini file & command
-    ini_file = os.path.abspath("Scripts/statsT.ini")
-    cmd = f'"{sgOptimizer}" "{file_name}" "%temp%\\temp.igb" "{ini_file}"'
+    # Get the optimization path.
+    optimization_path = WriteStatTOptimization()
+    # Write the command.
+    cmd = f'"{sgOptimizer}" "{file_name}" "%temp%\\temp.igb" "{optimization_path}"'
+    # Call the command.
     output = os.popen(cmd).read()
-    # Initialize the return list as an empty list
-    texturePaths = []
-    textureFormats = []
-    # Run the optimization and isolate the texture paths 
-    for l in output.split('\n'):
-        if l.find('IG_GFX_TEXTURE_FORMAT_') > 0:
-            # If a texture exists, it's listed with a texture format
-            # Append the path from the same line (first listed)
-            texturePaths.append((l.split('^|'))[0])
-            textureFormats.append((l.split('^|'))[1])
-    # Return all found texture paths
-    return texturePaths, textureFormats
+    # Initialize a list of textures.
+    textures_list = []
+    # Run through the lines in the return.
+    for texture in output.split('\n'):
+        # Initialize a dictionary for this line.
+        texture_dict = {}
+        # Check if a format is found.
+        if texture.find('IG_GFX_TEXTURE_FORMAT_') > 0:
+            # If a texture exists, it's listed with a texture format.
+            # Add the necessary information to the dictionary.
+            texture_dict['Name'] = Path(texture.split('^|')[0].rstrip())
+            texture_dict['Width'] = int(texture.split('^|')[1])
+            texture_dict['Height'] = int(texture.split('^|')[2])
+            texture_dict['Format'] = texture.split('^|')[3].rstrip()
+            texture_dict['Type'] = texture.split('^|')[4].rstrip()
+            textures_list.append(texture_dict)
+    # Return the collected texture information.
+    return textures_list
 
 def GetModelStats(file_name) -> list:
     # Define the Alchemy ini file & command
