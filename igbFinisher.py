@@ -15,7 +15,6 @@ import questions
 import processing
 import settings
 # External modules
-import argparse
 import os.path
 from os import rename, system
 from pathlib import Path
@@ -37,6 +36,8 @@ def DisplayInfo():
     # Print the relevant information.
     questions.PrintPlain('\nVersion 3.1.0')
     questions.PrintPlain('https://marvelmods.com/forum/index.php/topic,11440.0.html\n')
+    # Print the welcome message.
+    questions.PrintImportant("Welcome to BaconWizard17's igb Finisher!\n")
 
 # This function gets the application path.
 def GetApplicationPath():
@@ -51,37 +52,6 @@ def GetApplicationPath():
         application_path = Path(('/').join(Path(__file__).resolve().parts[0:-1]))
     # Return the collected path
     return application_path
-
-# This function processes the arguments.
-def ProcessArguments(args, application_path):
-    # Check if the input file path can be converted to a path.
-    try:
-        input_file_path = Path(args.input_file_path)
-    except Exception as e:
-        questions.PrintError(f'The input file ({args.input_file_path}) could not be processed as a path. Error text:\n\n{e}\n\nThe system will now exit.', system_exit = True)
-    # Check if the input file exists.
-    if not(input_file_path.exists()):
-        # The input path does not exist.
-        # Print the error.
-        questions.PrintError(f'The input file ({args.input_file_path}) does not exist. The system will now exit.', system_exit = True)
-    # Check if a settings path was entered.
-    if args.settings_file_path is None:
-        # No settings path was entered.
-        # Use the default path.
-        settings_file_path = application_path / 'settings.ini'
-    else:
-        # Something was entered.
-        # Check if the file exists.
-        if Path(args.settings_file_path).exists():
-            # The file exists.
-            # Set this value.
-            settings_file_path = Path(args.settings_file_path)
-        else:
-            # The file does not exist.
-            # Give a warning.
-            questions.PrintError(f'The input settings file ({args.settings_file_path}) does not exist. The system will now exit.', system_exit = True)
-    # Return the collected arguments.
-    return input_file_path, settings_file_path
 
 # Define the function that will occur when a file is dropped
 def fileDrop(fullFileName):
@@ -314,29 +284,15 @@ def fileNameCorrection(fullFileName, assetType):
 system("title BaconWizard17's igb Finisher")
 # Print the welcome information.
 DisplayInfo()
-# Print the welcome message.
-questions.PrintImportant("Welcome to BaconWizard17's igb Finisher!\n")
 # Get the application path.
 application_path = GetApplicationPath()
-# Create an argument parser.
-parser = argparse.ArgumentParser()
-# Add an argument for the input file's path.
-parser.add_argument('input_file_path')
-# Add an argument for the settings file path.
-parser.add_argument('-s', '--settings')
-# Parse the arguments.
-args = parser.parse_args()
-# Process the arguments.
-(input_file_path, settings_file_path) = ProcessArguments(args, application_path)
-
-
-# Read the settings
-settings = settings.parse_settings()
+# Check for the Alchemy installation.
+alchemy_3_2_path = alchemy.CheckAlchemyStatus(application_path)
 # Reset the Alchemy eval to avoid possible issues
-alchemy.checkAlchemyReset()
-# Check for the animation producer
-alchemy.CheckAnimationProducer()
-
-
+alchemy.CheckAlchemyReset()
+# Get and process the arguments.
+(input_file_path, settings_file_path) = settings.ProcessArguments(application_path)
+# Read the settings
+settings = settings.ParseSettings(settings_file_path)
 # Add a "press any key to continue" prompt
 questions.PressAnyKey(None)

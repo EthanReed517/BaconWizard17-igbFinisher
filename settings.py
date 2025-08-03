@@ -10,17 +10,77 @@
 # Internal modules
 import questions
 # External modules
+import argparse
 from configparser import ConfigParser
 import os.path
 from pathlib import Path
 import sys
 
 
+# ################ #
+# GLOBAL VARIABLES #
+# ################ #
+# The list of games in the series.
+games_list = ['XML1', 'XML2', 'MUA1', 'MUA2']
+# The list of possible consoles.
+consoles_list = ['PC', 'Steam', 'GameCube', 'PS2', 'PS3', 'PSP', 'Wii', 'Xbox', 'Xbox 360']
+# A dictionary of Boolean strings to their Boolean values.
+bool_dict = {'True': True, 'False': False}
+
+
 # ######### #
 # FUNCTIONS #
-# ######### #    
+# ######### #
+# This function processes the arguments.
+def ProcessArguments(application_path):
+    # Create an argument parser.
+    parser = argparse.ArgumentParser()
+    # Add an argument for the input file's path.
+    parser.add_argument('input_file_path')
+    # Add an argument for the settings file path.
+    parser.add_argument('-s', '--settings')
+    # Parse the arguments.
+    args = parser.parse_args()
+    # Check if the input file path can be converted to a path.
+    try:
+        input_file_path = Path(args.input_file_path)
+        # Check if the input file exists.
+        if not(input_file_path.exists()):
+            # The input path does not exist.
+            # Print the error.
+            questions.PrintError(f'The input file ({args.input_file_path}) does not exist.', system_exit = True)
+        elif not(input_file_path.suffix == '.igb'):
+            # This is not an igb file.
+            # Print the error.
+            questions.PrintError(f'The input file ({args.input_file_path}) is not a .igb file.', system_exit = True)
+    except Exception as e:
+        # The file path couldn't be converted for some reason.
+        questions.PrintError(f'The input file ({args.input_file_path}) could not be processed as a path.', error_text = e, system_exit = True)
+    # Check if a settings path was entered.
+    try:
+        args.settings_file_path
+        # A path was entered. Attempt to convert the path to a path.
+        try:
+            settings_file_path = Path(args.settings_file_path)
+            # Check if the settings file exists.
+            if not(settings_file_path.exists()):
+                # The settings file doesn't exist.
+                # Print the error.
+                questions.PrintError(f'The input settings file ({args.settings_file_path}) does not exist.', system_exit = True)
+        except Exception as e:
+            # The file path couldn't be converted for some reason.
+            questions.PrintError(f'The input settings file ({args.settings_file_path}) could not be processed as a path.', error_text = e, system_exit = True)
+    except AttributeError:
+        # There was an attribute error, which means that a settings path was not entered. This is okay, and it just means the default path should be used.
+        settings_file_path = application_path / 'settings.ini'
+    except Exception as e:
+        # There was some other error. Print an error message.
+        questions.PrintError(f'An unexpected error occurred when attempting to parse the argument for the settings file path.', error_text = e, contact_creator = True, system_exit = True)
+    # Return the collected arguments.
+    return input_file_path, settings_file_path
+
 # This function determines if the settings.ini file exists.
-def VerifySettingsExistence():
+def VerifySettingsExistence(settings_file_path):
     # Start a loop that won't end until it's broken.
     while True:
         try:
@@ -34,7 +94,7 @@ def VerifySettingsExistence():
             questions.PrintError('settings.ini does not exist. Restore the file and try again.')
 
 # This function reads the settings file and verifies its integrity. It does not pull or verify values.
-def ReadAndConfirmSettingsStructure():
+def ReadAndConfirmSettingsStructure(settings_file_path):
     # Set up the config parser class.
     config = ConfigParser()
     # Create a while loop that won't end until it's broken.
@@ -47,7 +107,7 @@ def ReadAndConfirmSettingsStructure():
         except Exception as e:
             # The file could not be read.
             # Print the error message.
-            questions.PrintError(f'Failed to open settings.ini due to the following error:\n\n{e}\n\nAddress the error and try again.')
+            questions.PrintError(f'Failed to open settings.ini. Address the error and try again.', error_text = e)
     # Create another while loop that won't end until it's broken.
     # Set up the disctionary of sections and keys.
     section_key_dict = {
@@ -87,24 +147,24 @@ def ReadAndConfirmSettingsStructure():
     return config
 
 # This function gets all of the settings from the config file or user.
-def GetSettings():
+def GetSettings(settings_file_path, config):
     # Initialize a dictionary to store the settings.
     settings_dict = {}
     # Get the game-specific settings.
-    settings_dict = GetGameSpecificSettings(settings_dict)
+    settings_dict = GetGameSpecificSettings(settings_dict, config)
     # Get the console-specific settings.
-    settings_dict = GetConsoleSpecificSettings(settings_dict)
+    settings_dict = GetConsoleSpecificSettings(settings_dict, config)
     # Get the remaining settings.
-    settings_dict = GetRemainingSettings(settings_dict)
+    settings_dict = GetRemainingSettings(settings_dict, config)
     # Return the dictionary of settings.
     return settings_dict
 
 # This function gets the game-specific settings.
-def GetGameSpecificSettings(settings_dict):
+def GetGameSpecificSettings(settings_dict, config):
     # Loop through the games in the series.
     for game in games_list:
         # Get the skin number for that game.
-        game_number = SkinNumberGetter(game)
+        game_number = SkinNumberGetter(config, game)
         # Check if a number was set for this game.
         if game_number is None:
             # There is no number for this game.
@@ -117,7 +177,7 @@ def GetGameSpecificSettings(settings_dict):
         else:
             # There is a number for this game.
             # Get the path for this game.
-            game_path = GamePathGetter(game)
+            game_path = GamePathGetter(config, game)
             # Determine if any path was given.
             if game_path is None:
                 # No path was given.
@@ -128,9 +188,9 @@ def GetGameSpecificSettings(settings_dict):
             else:
                 # A path was given.
                 # Get the numbering convention fot this game.
-                game_num_XX = GetTrueFalseAskSetting('ASSET', f'{game}_num_XX', f'the numbering convention for {game}', 'Should the number in the file name end in XX?', True)
+                game_num_XX = GetTrueFalseAskSetting(config, 'ASSET', f'{game}_num_XX', f'the numbering convention for {game}', 'Should the number in the file name end in XX?', True)
                 # Get the special name for this game.
-                game_special_name = GetGameSpecialName(game)
+                game_special_name = GetGameSpecialName(config, game)
         # Write the game-specific settings.
         settings_dict[f'{game}_num'] = game_number
         settings_dict[f'{game}_path'] = game_path
@@ -140,33 +200,33 @@ def GetGameSpecificSettings(settings_dict):
     return settings_dict
 
 # This function gets the console-specific settings.
-def GetConsoleSpecificSettings(settings_dict):
+def GetConsoleSpecificSettings(settings_dict, config):
     # Loop through the possible consoles.
     for console in consoles_list:
         # Get the status of that console.
-        console_status = GetTrueFalseAskSetting('CONSOLES', console.replace(' ', '_'), f'if assets should be exported for {console}', f'Should assets be exported for {console}?', True)
+        console_status = GetTrueFalseAskSetting(config, 'CONSOLES', console.replace(' ', '_'), f'if assets should be exported for {console}', f'Should assets be exported for {console}?', True)
         # Write the console's status to the settings.
         settings_dict[console.replace(' ', '_')] = console_status
     # Return the dictionary of settings.
     return settings_dict
 
 # This function gets the remaining settings.
-def GetRemainingSettings(settings_dict):
+def GetRemainingSettings(settings_dict, config):
     # Get the settings that can be True, False, or Ask
-    settings_dict['big_texture'] = GetTrueFalseAskSetting('SETTINGS', 'big_texture', 'if assets with textures over 256x256 should retain the default size for weaker consoles', 'Should assets with textures over 256x256 be kept at their original size on weaker consoles?', False)
-    settings_dict['secondary_skin'] = GetTrueFalseAskSetting('SETTINGS', 'secondary_skin', 'if this is a secondary skin', 'Is this a secondary skin?', False)
-    settings_dict['cel_other_model'] = GetTrueFalseAskSetting('SETTINGS', 'cel_other_model', 'if this is an Other model that can have cel shading', 'If this is an Other model, can it have cel shading?', True)
-    settings_dict['PSP_PNG4'] = GetTrueFalseAskSetting('SETTINGS', 'PSP_PNG4', 'if PSP 3D assets should use PNG4 textures', 'Should PSP 3D assets use PNG4 textures?', False)
-    settings_dict['untextured_okay'] = GetTrueFalseAskSetting('SETTINGS', 'untextured_okay', 'if it\'s okay for 3D assets to lack textures', 'Is it okay if 3D assets lack textures?', False)
-    settings_dict['generate_collision'] = GetTrueFalseAskSetting('SETTINGS', 'generate_collision', 'if collision should be generated for Other models', 'Should collision be generated for Other models?', False)
-    settings_dict['igBlend_to_igAlpha_transparency'] = GetTrueFalseAskSetting('SETTINGS', 'igBlend_to_igAlpha_transparency', 'if igBlendStateAttr/igBlendFunctionAttr attributes should be converted to igAlphaStateAttr/igAlphaFunctionAttr attributes in transparent models', 'Should igBlendStateAttr/igBlendFunctionAttr attributes be converted to igAlphaStateAttr/igAlphaFunctionAttr attributes in transparent models?', False)
-    settings_dict['skip_subfolder'] = GetTrueFalseAskSetting('SETTINGS', 'skip_subfolder', 'if subfolders should be skipped for the resulting model', 'Should subfolders be skipped for the resulting model?', False)
-    settings_dict['advanced_texture_ini'] = GetAdvancedTextureINIPath()
+    settings_dict['big_texture'] = GetTrueFalseAskSetting(config, 'SETTINGS', 'big_texture', 'if assets with textures over 256x256 should retain the default size for weaker consoles', 'Should assets with textures over 256x256 be kept at their original size on weaker consoles?', False)
+    settings_dict['secondary_skin'] = GetTrueFalseAskSetting(config, 'SETTINGS', 'secondary_skin', 'if this is a secondary skin', 'Is this a secondary skin?', False)
+    settings_dict['cel_other_model'] = GetTrueFalseAskSetting(config, 'SETTINGS', 'cel_other_model', 'if this is an Other model that can have cel shading', 'If this is an Other model, can it have cel shading?', True)
+    settings_dict['PSP_PNG4'] = GetTrueFalseAskSetting(config, 'SETTINGS', 'PSP_PNG4', 'if PSP 3D assets should use PNG4 textures', 'Should PSP 3D assets use PNG4 textures?', False)
+    settings_dict['untextured_okay'] = GetTrueFalseAskSetting(config, 'SETTINGS', 'untextured_okay', 'if it\'s okay for 3D assets to lack textures', 'Is it okay if 3D assets lack textures?', False)
+    settings_dict['generate_collision'] = GetTrueFalseAskSetting(config, 'SETTINGS', 'generate_collision', 'if collision should be generated for Other models', 'Should collision be generated for Other models?', False)
+    settings_dict['igBlend_to_igAlpha_transparency'] = GetTrueFalseAskSetting(config, 'SETTINGS', 'igBlend_to_igAlpha_transparency', 'if igBlendStateAttr/igBlendFunctionAttr attributes should be converted to igAlphaStateAttr/igAlphaFunctionAttr attributes in transparent models', 'Should igBlendStateAttr/igBlendFunctionAttr attributes be converted to igAlphaStateAttr/igAlphaFunctionAttr attributes in transparent models?', False)
+    settings_dict['skip_subfolder'] = GetTrueFalseAskSetting(config, 'SETTINGS', 'skip_subfolder', 'if subfolders should be skipped for the resulting model', 'Should subfolders be skipped for the resulting model?', False)
+    settings_dict['advanced_texture_ini'] = GetAdvancedTextureINIPath(config)
     # Return the dictionary of settings.
     return settings_dict
 
 # This function is used to get skin numbers from the settings.
-def SkinNumberGetter(game):
+def SkinNumberGetter(config, game):
     # Get the number from the settings.
     game_number = config['CHARACTER'][f'{game}_num']
     # Set a variable to track if the number is valid and begin by assuming that it's not.
@@ -200,7 +260,7 @@ def SkinNumberGetter(game):
     return game_number
 
 # This function is used to get game paths from the settings.
-def GamePathGetter(game):
+def GamePathGetter(config, game):
     # Get the number from the settings.
     game_path = config['CHARACTER'][f'{game}_path']
     # Set a variable to track if the number is valid and begin by assuming that it's not.
@@ -278,7 +338,7 @@ def GamePathGetter(game):
     return game_path
 
 # This function is used to get the value from a settings whose options are True, False, and Ask.
-def GetTrueFalseAskSetting(section, key, setting_name, question_string, default_setting):
+def GetTrueFalseAskSetting(config, section, key, setting_name, question_string, default_setting):
     # Get the numbering convention from the settings.
     setting_value = config[section][key]
     # Set that it's necessary to ask about the value.
@@ -307,7 +367,7 @@ def GetTrueFalseAskSetting(section, key, setting_name, question_string, default_
     return setting_value
 
 # This function is used to get a game's special asset name from the settings.
-def GetGameSpecialName(game):
+def GetGameSpecialName(config, game):
     # Get the special name from the settings.
     game_special_name = config['ASSET'][f'{game}_special_name']
     # Set a variable to track if the user should be asked. Assume no at first.
@@ -353,7 +413,7 @@ def GetGameSpecialName(game):
     return game_special_name
 
 # This function is used to get the Advanced Texture ini setting.
-def GetAdvancedTextureINIPath():
+def GetAdvancedTextureINIPath(config):
     # Get the setting value.
     setting_value = config['SETTINGS']['advanced_texture_ini']
     # Assume that the value should not be asked about.
@@ -400,35 +460,18 @@ def GetAdvancedTextureINIPath():
     # Return the collected value.
     return setting_value
 
-# ############## #
-# MAIN EXECUTION #
-# ############## #
-# Get the execution path by first checking if there is a frozen attribute for the system.
-if getattr(sys, 'frozen', False):
-    # There is a frozen attribute, so this is running as the compiled exe.
-    # Get the path to the exe's folder.
-    application_path  = Path(('/').join(Path(sys.executable).parts[0:-1]))
-else:
-    # There is no frozen attribute, so this is not compiled.
-    # Get the path to the main python file's folder.
-    application_path = Path(('/').join(Path(__file__).resolve().parts[0:-1]))
-# Set the path to the settings file.
-settings_file_path = application_path / 'settings.ini'
-# Create a list of the games and consoles so that they can be a global variable and don't need to be written each time.
-games_list = ['XML1', 'XML2', 'MUA1', 'MUA2']
-consoles_list = ['PC', 'Steam', 'GameCube', 'PS2', 'PS3', 'PSP', 'Wii', 'Xbox', 'Xbox 360']
-# Create a dictionary of boolean strings to their values.
-bool_dict = {'True': True, 'False': False}
-# Check if the settings file exists.
-VerifySettingsExistence()
-# Open the settings ifle to be able to parse its contents
-config = ReadAndConfirmSettingsStructure()
-# Collect the relevant settings.
-settings_dict = GetSettings()
+# This function gets the settings for the program.
+def ParseSettings(settings_file_path):
+    # Check if the settings file exists.
+    VerifySettingsExistence(settings_file_path)
+    # Open the settings file to be able to parse its contents
+    config = ReadAndConfirmSettingsStructure(settings_file_path)
+    # Collect the relevant settings.
+    settings_dict = GetSettings(settings_file_path, config)
 
-'''
-print('DEBUG: settings_dict = {')
-for key, value in settings_dict.items():
-    print(f"    '{key}': {value}")
-print('}')
-'''
+    '''
+    print('DEBUG: settings_dict = {')
+    for key, value in settings_dict.items():
+        print(f"    '{key}': {value}")
+    print('}')
+    '''
