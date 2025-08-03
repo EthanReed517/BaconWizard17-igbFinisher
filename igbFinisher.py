@@ -45,11 +45,11 @@ def GetApplicationPath():
     if getattr(sys, 'frozen', False):
         # There is a frozen attribute, so this is running as the compiled exe.
         # Get the path to the exe's folder.
-        application_path  = Path(('/').join(Path(sys.executable).parts[0:-1]))
+        application_path = Path(sys.executable).parent
     else:
         # There is no frozen attribute, so this is not compiled.
         # Get the path to the main python file's folder.
-        application_path = Path(('/').join(Path(__file__).resolve().parts[0:-1]))
+        application_path = Path(__file__).parent
     # Return the collected path
     return application_path
 
