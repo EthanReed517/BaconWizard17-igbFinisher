@@ -286,13 +286,9 @@ system("title BaconWizard17's igb Finisher")
 DisplayInfo()
 # Get the application path.
 application_path = GetApplicationPath()
-# Check for the Alchemy installation.
-alchemy_3_2_path = alchemy.CheckAlchemyStatus(application_path)
-# Reset the Alchemy eval to avoid possible issues
-alchemy.CheckAlchemyReset()
+# Check for the Alchemy installation. This also checks the last reset date.
+alchemy.CheckAlchemyStatus()
 # Get and process the arguments.
 (input_file_path, settings_file_path) = settings.ProcessArguments(application_path)
 # Read the settings
 settings = settings.ParseSettings(settings_file_path)
-# Add a "press any key to continue" prompt
-questions.PressAnyKey(None)
