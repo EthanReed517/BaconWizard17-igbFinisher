@@ -9,7 +9,7 @@
 # ####### #
 # Internal modules
 import alchemy
-import assetRecognition
+import asset_recognition
 import basicXMLOps
 import questions
 import processing
@@ -68,7 +68,7 @@ def fileDrop(fullFileName):
     # Determine the numbers
     settings = getNumbers(settings)
     # Determine the asset type
-    (assetType, fileName) = assetRecognition.assetRecognition(inputFileName, fullFileName, settings)
+    (assetType, fileName) = asset_recognition.assetRecognition(inputFileName, fullFileName, settings)
     # Determine if an XML-compatible asset is being used
     if not(assetType == "Mannequin"):
         # XML-compatible asset is being used
