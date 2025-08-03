@@ -77,37 +77,58 @@ def PrintWarning(message, **kwargs):
     if kwargs.get('skip_pause', False) == False:
         # The pause cannot be skipped.
         # Pause to allow the user to see the warning and acknowledge it.
-        PressAnyKey("Press any key to acknowledge this warning and proceed")
+        PressAnyKey('Press any key to acknowledge this warning and proceed')
+
+# This function adds a period as needed to the end of a string.
+def AddPeriod(message):
+    # Determine how the message ends.
+    if ((message.endswith('. ')) or (message.endswith('\n'))):
+        # The message has an acceptable ending.
+        # Pass through.
+        pass
+    elif message.endswith('.'):
+        # The message ends with a period but not a space.
+        # Only a space needs to be added.
+        message += ' '
+    else:
+        # The message ends with something else.
+        # Add a period and a space.
+        message += '. '
+    # Return the updated message.
+    return message
 
 # This function prints an error message.
 def PrintError(message, **kwargs):
     # Update the message string with an "ERROR: " prefix so that I don't have to add this to every single warning prompt.
     message = f'ERROR: {message}'
+    # Determine if there's an error text to show.
+    if kwargs.get('error_text', None) is not None:
+        # There is an error text to show.
+        # Add the period to the end of the message.
+        message = AddPeriod(message)
+        # Add the error text.
+        message += f'Error text: {kwargs['error_text']}'
     # Determine if the user needs to contact me because of the error.
     if kwargs.get('contact_creator', False) == True:
         # The user needs to contact me because of the error.
-        # Place the period accordingly
-        if message.endswith('. '):
-            # The message already ends with the correct period style, so it's not necessary to add a period or space.
-            # Pass through this statement.
-            pass
-        elif message.endswith('.'):
-            # The message ends with a period but not a space.
-            # Add a space at the end for proper grammar.
-            message += ' '
-        else:
-            # The message does not end with a period or a space.
-            # Add both a period and a space.
-            message += '. '
+        # Add the period to the end of the message.
+        message = AddPeriod(message)
         # Add the message to contact the creator about the error.
         message += 'Please contact the program creator to report this error.'
+    # Determine if it's necessary to exit after the error.
+    if kwargs.get('system_exit', False) == True:
+        # It's necessary to exit after showing the error.
+        # Add the period to the end of the message.
+        message = AddPeriod(message)
+        # Add the message to contact the creator about the error.
+        message += 'The program will now close.'
     # Print the message for the user to see.
     questionary.print(message, style = error_style)
     # Determine if it's necessary to pause before proceeding. The default is that it is necessary.
     if kwargs.get('skip_pause', False) == False:
         # The pause cannot be skipped.
         # Pause to allow the user to see the error and acknowledge it.
-        PressAnyKey("Press any key to acknowledge this error and proceed")
+        PressAnyKey('Press any key to acknowledge this error and proceed')
     # Determine if it's necessary to exit.
     if kwargs.get('system_exit', False) == True:
         # It's necessary to exit after showing the error.
