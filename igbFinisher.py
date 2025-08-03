@@ -56,7 +56,7 @@ def GetApplicationPath():
 # MAIN EXECUTION #
 # ############## #
 # Set the window title.
-system("title BaconWizard17's igb Finisher")
+system('title BaconWizard17\'s igb Finisher')
 # Print the welcome information.
 DisplayInfo()
 # Get the application path.
@@ -66,4 +66,6 @@ alchemy.CheckAlchemyStatus()
 # Get and process the arguments.
 (input_file_path, settings_file_path) = settings.ProcessArguments(application_path)
 # Read the settings
-settings = settings.ParseSettings(settings_file_path)
+settings_dict = settings.ParseSettings(settings_file_path)
+# Get the asset type.
+asset_type, settings_dict = asset_recognition.AssetRecognition(input_file_path, settings_dict)
