@@ -152,7 +152,7 @@ def WriteStatTOptimization():
     # Return the collected path.
     return optimization_path
 
-def GetTexPath(file_name) -> list:
+def GetTextureInfo(file_name) -> list:
     # Get the optimization path.
     optimization_path = WriteStatTOptimization()
     # Write the command.
