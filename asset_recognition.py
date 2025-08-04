@@ -98,7 +98,7 @@ def AssetRecognition(input_file_path, settings_dict):
         # Set that asset type.
         asset_type = settings_dict['forced_asset_type']
         # Announce this.
-        questions.PrintSuccess(f'{input_file_path.name} was set as a {asset_type}.\n')
+        questions.PrintSuccess(f'{input_file_path.name} was set as a {asset_type}.')
     else:
         # The user did not force an asset type.
         # Set up the dictionary of file names and their asset types.
@@ -116,7 +116,7 @@ def AssetRecognition(input_file_path, settings_dict):
         try:
             asset_type = asset_type_dict[input_file_path.name]
             # If there is no error, then this line is reached. The file type is known, so say so.
-            questions.PrintSuccess(f'{input_file_path.name} was automatically identified as a {asset_type}.\n')
+            questions.PrintSuccess(f'{input_file_path.name} was automatically identified as a {asset_type}.')
         except KeyError:
             # The file name does not match with one of the listed asset types, but it may be a mannequin. Check the name.
             asset_type, settings_dict = CheckIfMannequin(input_file_path, settings_dict)
@@ -128,6 +128,6 @@ def AssetRecognition(input_file_path, settings_dict):
             else:
                 # This was a mannequin.
                 # Announce that it was detected as such.
-                questions.PrintSuccess(f'{input_file_path.name} was automatically identified as a mannequin.\n')
+                questions.PrintSuccess(f'{input_file_path.name} was automatically identified as a mannequin.')
     # Return the asset type and the settings.
     return asset_type, settings_dict
