@@ -94,7 +94,7 @@ def GetMaxTextureSize(textures_list):
     return max_texture_size
 
 # This function is used to check the texture path for folder detection.
-def FolderDetection(textures_list, settings_dict, application_path):
+def FolderDetection(textures_list, settings_dict, application_path, asset_type):
     # Assume that detection is not needed.
     need_to_detect = False
     # Loop through the games.
@@ -128,14 +128,91 @@ def FolderDetection(textures_list, settings_dict, application_path):
         texture_folders_list = []
         # Loop through the detectable textures.
         for texture_dict in detectable_textures_list:
-            
+            # Determine if the texture folder is already in the list.
+            if not(texture_dict['Name'].parent in texture_folders_list):
+                # The folder is not in the list.
+                # Add it to the list.
+                texture_folders_list.append(texture_dict['Name'].parent)
+        # Determine how many folders were found.
+        if len(texture_folders_list) > 1:
+            # Multiple folders were found.
+            # Give an error.
+            questions.PrintError('At least one output path is set up for folder detection in the settings, but the model uses multiple texture folders.', system_exit = True)
+        # Get the character and sub-folder from the texture folder.
+        character = texture_folders_list[0].parts[-3]
+        asset_type_folder = texture_folders_list[0].parts[-2]
+        sub_folder = texture_folders_list[0].parts[-1]
+        # Loop through the games in the series.
+        for game in settings.games_list:
+            # Determine if detection is needed for this game.
+            if settings_dict[f'{game}_path'] == 'Detect':
+                # It's necessary to detect for this game.
+                # Get the path.
+                settings_dict[f'{game}_path'] = basic_xml_ops.GetOutputPath(game, application_path, character, asset_type_folder, sub_folder, asset_type)
+    # Return the updated settings file.
+    return settings_dict
 
 # This function is used to get the list of texture values that need to be hexed out.
 def GetHexOutList(textures_list, asset_type):
     # Initialize a list of things to hex out.
     hex_out_list = []
+    # Determine the asset type.
+    if asset_type == 'Conversation Portrait':
+        # This is a conversation portrait.
+        # Get the texture name.
+        texture_name = textures_list[0].stem
+        # Loop through the possible prefixes.
+        for prefix in ['b', 'g', 'r', 'ng']:
+            # Determine if the texture starts with one of these prefixes.
+            if texture_name.startswith(f'{prefix}_'):
+                # The texture starts with this prefix.
+                # Update the hex editing list to remove this.
+                hex_out_list.append([texture_name, texture_name[(len(prefix) + 1):]])
+    elif asset_type == 'Character Select Portrait':
+        # This is a character select portrait
     # Return the collected list.
     return hex_out_list
+
+# This function is used to set the output file names for 2D assets.
+def Get2DAssetFileNames(settings_dict, asset_type, hex_out_list, textures_list):
+    # Verify that this is a 2D asset that gets its file name from the texture name.
+    if asset_type in ['Power Icons', 'Comic Cover', 'Concept Art']:
+        # This is a 2D asset that gets its file name from the texture name.
+        # Get the texture name.
+        texture_name = textures_list[0].stem
+        # Filter by asset type.
+        if asset_type == 'Power Icons':
+            # These are power icons.
+            # Determine what game the icons are for.
+            icons_game = texture_name.split('_')[0]
+            # Loop through the games.
+            for game in settings.games_list:
+                # Determine if this matches the game.
+                if game == icons_game:
+                    # The games match.
+                    # Update the settings accordingly.
+                    settings_dict[f'{game}_special_name'] = texture_name
+                    hex_out_list.append([texture_name, texture_name[5:]])
+                    # Determine if this is an icons2 file.
+                    if texture_name.endswith('icons2'):
+                        # This is an icons2 file.
+                        # Skip the consoles that don't use icons2.
+                        settings_dict['GameCube'] = None
+                        settings_dict['PS2'] = None
+                        settings_dict['PSP'] = None
+                else:
+                    # This is another game.
+                    # Update the settings accordingly.
+                    settings_dict[f'{game}_num'] = None
+                    settings_dict[f'{game}_path'] = None
+        else:
+            # This is a comic cover or concept art.
+            # Loop through the games.
+            for game in settings.games_list:
+                # Update the name for that game.
+                settings_dict[f'{game}_special_name'] = texture_name
+    # Return the updated values.
+    return settings_dict, hex_out_list
 
 # This function is used to determine the environment map type.
 def GetEnvironmentType(textures_list, settings_dict, asset_type, hex_out_list, input_file_path, texture_format):
@@ -165,6 +242,7 @@ def GetEnvironmentType(textures_list, settings_dict, asset_type, hex_out_list, i
             size_suffix = size_match_dict[str(env_size)]
         except KeyError:
             size_suffix = 'L'
+        # Add the textures to the hex out list.
         hex_out_list.extend([[f'_{size_suffix}_LF.png.cube', '_LF.png.cube'], [f'_{size_suffix}_RT.png.cube', '_RT.png.cube'], [f'_{size_suffix}_FR.png.cube', '_FR.png.cube'], [f'_{size_suffix}_BK.png.cube', '_BK.png.cube'], [f'_{size_suffix}_DN.png.cube', '_DN.png.cube'], [f'_{size_suffix}_UP.png.cube', '_UP.png.cube']])
     # Return the updated settings dictionary and hex out list.
     return settings_dict, hex_out_list
@@ -178,10 +256,14 @@ def GetTextureInfo(application_path, input_file_path, settings_dict, asset_type)
     # Determine the max texture size for the model.
     max_texture_size = GetMaxTextureSize(textures_list)
     # Update the paths with folder detection.
-    settings_dict = FolderDetection(textures_list, settings_dict, application_path)
+    settings_dict = FolderDetection(textures_list, settings_dict, application_path, asset_type)
     # Determine if any texture values need to be hexed out.
     hex_out_list = GetHexOutList(textures_list, asset_type)
+    # Update file names for 2D assets.
+    settings_dict, hex_out_list = Get2DAssetFileNames(settings_dict, asset_type, hex_out_list, textures_list)
     # Determine the environment map type from the texture information.
     settings_dict, hex_out_list = GetEnvironmentType(textures_list, settings_dict, asset_type, hex_out_list, input_file_path, texture_format)
+    # Build a dictionary of texture info.
+    texture_info_dict = {'texture_type': texture_type, 'max_texture_size': max_texture_size, 'textures_list': textures_list}
     # Return the necessary information.
-    return settings_dict, hex_out_list, texture_type, max_texture_size
+    return settings_dict, hex_out_list, texture_info_dict

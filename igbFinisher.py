@@ -71,4 +71,4 @@ settings_dict = settings.ParseSettings(settings_file_path)
 # Get the asset type.
 asset_type, settings_dict = asset_recognition.AssetRecognition(input_file_path, settings_dict)
 # Get the texture information from the model.
-settings_dict, hex_out_list, texture_type, max_texture_size = textures.GetTextureInfo(application_path, input_file_path, settings_dict, asset_type)
+settings_dict, hex_out_list, texture_info_dict = textures.GetTextureInfo(application_path, input_file_path, settings_dict, asset_type)
