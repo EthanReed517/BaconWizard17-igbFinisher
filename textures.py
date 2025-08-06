@@ -156,20 +156,20 @@ def FolderDetection(textures_list, settings_dict, application_path, asset_type):
 def GetHexOutList(textures_list, asset_type):
     # Initialize a list of things to hex out.
     hex_out_list = []
-    # Determine the asset type.
-    if asset_type == 'Conversation Portrait':
-        # This is a conversation portrait.
+    # Determine if this is a portrait.
+    if asset_type in ['Conversation Portrait', 'Character Select Portrait']:
+        # This is a portrait.
         # Get the texture name.
         texture_name = textures_list[0].stem
+        # Set up the dictionary of prefixes.
+        prefix_dict = {'Conversation Portrait': ['b', 'g', 'r', 'ng'], 'Character Select Portrait': ['x1c', 'x2c']}
         # Loop through the possible prefixes.
-        for prefix in ['b', 'g', 'r', 'ng']:
+        for prefix in prefix_dict[asset_type]:
             # Determine if the texture starts with one of these prefixes.
             if texture_name.startswith(f'{prefix}_'):
                 # The texture starts with this prefix.
                 # Update the hex editing list to remove this.
                 hex_out_list.append([texture_name, texture_name[(len(prefix) + 1):]])
-    elif asset_type == 'Character Select Portrait':
-        # This is a character select portrait
     # Return the collected list.
     return hex_out_list
 
@@ -215,13 +215,13 @@ def Get2DAssetFileNames(settings_dict, asset_type, hex_out_list, textures_list):
     return settings_dict, hex_out_list
 
 # This function is used to determine the environment map type.
-def GetEnvironmentType(textures_list, settings_dict, asset_type, hex_out_list, input_file_path, texture_format):
+def GetEnvironmentType(textures_list, settings_dict, asset_type, hex_out_list, input_file_path, texture_type):
     # Set an initial environment map size of 0.
     env_size = 0
     # Loop through the textures.
     for texture_dict in textures_list:
         # Determine if this is a sphereImage
-        if texture_dict['Name'] == 'sphereImage':
+        if str(texture_dict['Name']) == 'sphereImage':
             # There is an environment map.
             # Update the max size.
             if max(texture_dict['Width'], texture_dict['Height']) > env_size:
@@ -235,7 +235,9 @@ def GetEnvironmentType(textures_list, settings_dict, asset_type, hex_out_list, i
             # Give an error.
             questions.PrintError(f'Environment maps were found in {input_file_path.name}, but assets of type {asset_type} cannot have environment maps.', system_exit = True)
         # Update the texture format.
-        texture_format += f' Env{str(env_size)}'
+        texture_type += f' Env{str(env_size)}'
+        # Let the user know.
+        questions.PrintSuccess('Detected environment maps.')
         # Match the size to the elements to remove in the replace list.
         size_match_dict = {'8': 'XS', '16': 'S', '32': 'M'}
         try:
@@ -245,7 +247,7 @@ def GetEnvironmentType(textures_list, settings_dict, asset_type, hex_out_list, i
         # Add the textures to the hex out list.
         hex_out_list.extend([[f'_{size_suffix}_LF.png.cube', '_LF.png.cube'], [f'_{size_suffix}_RT.png.cube', '_RT.png.cube'], [f'_{size_suffix}_FR.png.cube', '_FR.png.cube'], [f'_{size_suffix}_BK.png.cube', '_BK.png.cube'], [f'_{size_suffix}_DN.png.cube', '_DN.png.cube'], [f'_{size_suffix}_UP.png.cube', '_UP.png.cube']])
     # Return the updated settings dictionary and hex out list.
-    return settings_dict, hex_out_list
+    return settings_dict, hex_out_list, texture_type
 
 # This function is used to get the texture information from the model.
 def GetTextureInfo(application_path, input_file_path, settings_dict, asset_type):
@@ -262,8 +264,17 @@ def GetTextureInfo(application_path, input_file_path, settings_dict, asset_type)
     # Update file names for 2D assets.
     settings_dict, hex_out_list = Get2DAssetFileNames(settings_dict, asset_type, hex_out_list, textures_list)
     # Determine the environment map type from the texture information.
-    settings_dict, hex_out_list = GetEnvironmentType(textures_list, settings_dict, asset_type, hex_out_list, input_file_path, texture_format)
+    settings_dict, hex_out_list, texture_type = GetEnvironmentType(textures_list, settings_dict, asset_type, hex_out_list, input_file_path, texture_type)
     # Build a dictionary of texture info.
     texture_info_dict = {'texture_type': texture_type, 'max_texture_size': max_texture_size, 'textures_list': textures_list}
+    # Determine if it's necessary to print the debug information.
+    if settings_dict['Debug Mode'] == True:
+        # It's necessary to print the debug information.
+        questions.PrintPlain('\n\nDebug information from textures.py:')
+        questions.PrintDebug('texture_type', texture_type)
+        questions.PrintDebug('max_texture_size', max_texture_size)
+        questions.PrintDebug('textures_list', textures_list)
+        questions.PrintDebug('settings_dict', settings_dict)
+        questions.PrintPlain('\n\n')
     # Return the necessary information.
     return settings_dict, hex_out_list, texture_info_dict

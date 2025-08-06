@@ -207,6 +207,8 @@ def PathInput(question, **kwargs):
         default = kwargs.get('default_choice', ''),
         validate = kwargs.get('validator', None)
     ).ask()
+    # Convert to a pathlib Path.
+    answer = Path(answer)
     # Return the collected answer.
     return answer
 

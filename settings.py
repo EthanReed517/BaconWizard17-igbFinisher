@@ -139,7 +139,7 @@ def GetSettings(settings_file_path, config):
     # Get the remaining settings.
     settings_dict = GetRemainingSettings(settings_dict, config)
     # Set a temporary variable for the debug mode.
-    settings_dict['Debug Mode'] = True
+    settings_dict['Debug Mode'] = False
     # Return the dictionary of settings.
     return settings_dict
 
