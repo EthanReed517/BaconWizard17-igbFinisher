@@ -135,6 +135,21 @@ def PrintError(message, **kwargs):
         # Exit.
         raise SystemExit(1)
 
+# This function prints a debug statement.
+def PrintDebug(variable_name, variable_value, **kwargs):
+    if isinstance(variable_value, dict):
+        PrintPlain(f'DEBUG: {variable_name} = {{')
+        for key, value in variable_value.items():
+            PrintPlain(f'    {key}: {value} (type: {type(value)})')
+        PrintPlain('}')
+    elif isinstance(variable_value, list):
+        PrintPlain(f'DEBUG: {variable_name} = [')
+        for item in variable_value:
+            PrintPlain(f'    {item} (type: {type(item)})')
+        PrintPlain(']')
+    else:
+        PrintPlain(f'DEBUG: {variable_name}: {variable_value} (type: {type(variable_value)})')
+
 # This function gives the user a prompt to press any key to continue.
 def PressAnyKey(message):
     # Determine if the message is a None type (None type displays the default message, "Press any key to continue. . .").

@@ -138,6 +138,8 @@ def GetSettings(settings_file_path, config):
     settings_dict = GetConsoleSpecificSettings(settings_dict, config)
     # Get the remaining settings.
     settings_dict = GetRemainingSettings(settings_dict, config)
+    # Set a temporary variable for the debug mode.
+    settings_dict['Debug Mode'] = True
     # Return the dictionary of settings.
     return settings_dict
 
@@ -388,11 +390,12 @@ def ParseSettings(settings_file_path):
     config = ReadAndConfirmSettingsStructure(settings_file_path)
     # Collect the relevant settings.
     settings_dict = GetSettings(settings_file_path, config)
-    '''
-    print('DEBUG: settings_dict = {')
-    for key, value in settings_dict.items():
-        print(f"    '{key}': {value}")
-    print('}')
-    '''
+    # Determine if it's necessary to print the debug information.
+    if settings_dict['Debug Mode'] == True:
+        # It's necessary to print the debug information.
+        # Print the title.
+        questions.PrintPlain('\n\nDebug information from settings.py:')
+        questions.PrintDebug('settings_dict', settings_dict)
+        questions.PrintPlain('\n\n')
     # Return the dictionary of collected settings.
     return settings_dict
