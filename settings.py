@@ -87,7 +87,7 @@ def VerifySettingsExistence(settings_file_path):
     if not(settings_file_path.exists()):
         # The path doesn't exist.
         # Give an error.
-        questions.PrintError('settings.ini does not exist. Restore the file and try again.', system_exit = True)
+        questions.PrintError(f'{settings_file_path} does not exist. Restore the file and try again.', system_exit = True)
 
 # This function reads the settings file and verifies its integrity. It does not pull or verify values.
 def ReadAndConfirmSettingsStructure(settings_file_path):
@@ -139,7 +139,7 @@ def GetSettings(settings_file_path, config):
     # Get the remaining settings.
     settings_dict = GetRemainingSettings(settings_dict, config)
     # Set a temporary variable for the debug mode.
-    settings_dict['Debug Mode'] = False
+    settings_dict = GetDebugStatus(settings_dict, config)
     # Return the dictionary of settings.
     return settings_dict
 
@@ -382,6 +382,19 @@ def GetForcedAssetType(config):
     # Return the collected value.
     return setting_value
 
+# This function is used to get the debug status.
+def GetDebugStatus(settings_dict, config):
+    # Try to get the debug status.
+    try:
+        setting_value = config['SETTINGS']['debug_mode']
+        # Set this as the value in the settings dictionary.
+        settings_dict['debug_mode'] = bool_dict[setting_value]
+    except:
+        # The debug status was not set, so nothing is needed.
+        pass
+    # Return the updated settings dictionary.
+    return settings_dict
+
 # This function gets the settings for the program.
 def ParseSettings(settings_file_path):
     # Check if the settings file exists.
@@ -391,7 +404,7 @@ def ParseSettings(settings_file_path):
     # Collect the relevant settings.
     settings_dict = GetSettings(settings_file_path, config)
     # Determine if it's necessary to print the debug information.
-    if settings_dict['Debug Mode'] == True:
+    if settings_dict.get('debug_mode', False) == True:
         # It's necessary to print the debug information.
         # Print the title.
         questions.PrintPlain('\n\nDebug information from settings.py:')

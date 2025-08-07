@@ -268,7 +268,7 @@ def GetTextureInfo(application_path, input_file_path, settings_dict, asset_type)
     # Build a dictionary of texture info.
     texture_info_dict = {'texture_type': texture_type, 'max_texture_size': max_texture_size, 'textures_list': textures_list}
     # Determine if it's necessary to print the debug information.
-    if settings_dict['Debug Mode'] == True:
+    if settings_dict.get('debug_mode', False) == True:
         # It's necessary to print the debug information.
         questions.PrintPlain('\n\nDebug information from textures.py:')
         questions.PrintDebug('texture_type', texture_type)
