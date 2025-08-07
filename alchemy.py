@@ -39,12 +39,8 @@ alchemy_32_files_list = [
 # ######### #
 # This function checks when Alchemy was last reset.
 def CheckAlchemyDate(last_reset_date):
-    # Split the string into the year, month, and day.
-    year = int(last_reset_date.split(' ')[0].split('-')[0])
-    month = int(last_reset_date.split(' ')[0].split('-')[1])
-    day = int(last_reset_date.split(' ')[0].split('-')[2])
     # Convert the stored date into a new datetime object.
-    last_reset_datetime = datetime(year, month, day, tzinfo=timezone.utc)
+    last_reset_datetime = datetime.fromisoformat(last_reset_date)
     # Subtract the last reset date from today's date.
     diff = datetime.now(timezone.utc) - last_reset_datetime
     # Check if it's been 60 days or more.
