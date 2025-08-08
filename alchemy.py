@@ -8,6 +8,7 @@
 # IMPORTS #
 # ####### #
 # Internal modules
+import optimizations
 import questions
 # External modules
 from datetime import datetime, timezone
@@ -132,27 +133,11 @@ def CheckAlchemyStatus():
     # Check the Alchemy reset date.
     CheckAlchemyReset()
 
-# This function writes the optimization for getting texture statistics.
-def WriteStatTOptimization():
-    # Set the path for this optimization.
-    optimization_path = Path(os.environ['temp']) / 'opt.ini'
-    # Get the list of what to put in the optimization.
-    opt_text_list = ['[OPTIMIZE]', 'optimizationCount = 1', 'hierarchyCheck = true',
-        '[OPTIMIZATION1]', 'name = igStatisticsTexture', 'useFullPath = true', 'separatorString = ^|', 'columnMaxWidth = -1', 'showColumnsMask = 0x00000117', 'sortColumn = -1']
-    # Open the optimization path
-    with open(optimization_path, 'w') as file:
-        # Loop through the lines to write.
-        for line in opt_text_list:
-            # Write the lines.
-            file.write(f'{line}\n')
-    # Return the collected path.
-    return optimization_path
-
 def GetTextureInfo(file_name) -> list:
-    # Get the optimization path.
-    optimization_path = WriteStatTOptimization()
+    # Write the optimization.
+    optimizations.WriteOptimization(['igStatisticsTexture'])
     # Write the command.
-    cmd = f'"{sgOptimizer}" "{file_name}" "%temp%\\temp.igb" "{optimization_path}"'
+    cmd = f'"{sgOptimizer}" "{file_name}" "%temp%\\temp.igb" "{Path(os.environ['temp']) / 'opt.ini'}"'
     # Call the command.
     output = os.popen(cmd).read()
     # Initialize a list of textures.
