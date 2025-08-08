@@ -72,3 +72,5 @@ settings_dict = settings.ParseSettings(settings_file_path)
 asset_type, settings_dict = asset_recognition.AssetRecognition(input_file_path, settings_dict)
 # Get the texture information from the model.
 settings_dict, hex_out_list, texture_info_dict = textures.GetTextureInfo(application_path, input_file_path, settings_dict, asset_type)
+# Get the geometry information from the model.
+geometry_list, has_cel, settings_dict = alchemy.GetModelStats(input_file_path, asset_type, settings_dict)

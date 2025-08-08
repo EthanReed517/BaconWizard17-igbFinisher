@@ -159,21 +159,51 @@ def GetTextureInfo(file_name) -> list:
     # Return the collected texture information.
     return textures_list
 
-def GetModelStats(file_name) -> list:
-    # Define the Alchemy ini file & command
-    ini_file = os.path.abspath("Scripts/statsM.ini")
-    cmd = f'"{sgOptimizer}" "{file_name}" "%temp%\\temp.igb" "{ini_file}"'
+def GetModelStats(input_file_path, asset_type, settings_dict):
+    # Write the optimization.
+    optimizations.WriteOptimization(['igStatisticsGeometry'])
+    # Write the command.
+    cmd = f'"{sgOptimizer}" "{input_file_path}" "%temp%\\temp.igb" "{Path(os.environ['temp']) / 'opt.ini'}"'
+    # Call the command.
     output = os.popen(cmd).read()
-    # Initialize the return list as an empty list
-    geometryNames = []
+    # Initialize a list to store the geometry information.
+    geometry_list = []
     # Run the optimization and isolate the model names
-    for l in output.split('\n'):
-        if l.find('igGeometryAttr') > 0:
+    for geometry in output.split('\n'):
+        if geometry.find('igGeometryAttr') > 0:
             # If a model exists, it's listed with a model type
             # Append the path from the same line (first listed)
-            geometryNames.append((l.split('^|'))[0])
+            geometry_list.append((geometry.split('^|'))[0].rstrip())
+    # Initialize a variable to check for cel shading (assume none).
+    has_cel = False
+    # Loop through the geometry entries.
+    for geometry in geometry_list:
+        # Determine if this is outline geometry.
+        if '_outline' in geometry:
+            # This is outline geometry.
+            # Update the cel shading status.
+            has_cel = True
+            # Update the necessary settings.
+            settings_dict['MUA1_num'] = None
+            settings_dict['MUA2_num'] = None
+            settings_dict['MUA1_path'] = None
+            settings_dict['MUA2_path'] = None
+    # Make sure this is an asset that can have cel shading.
+    if asset_type in ['Conversation Portrait', 'Character Select Portrait', 'Power Icons', 'Comic Cover', 'Concept Art', 'Loading Screen']:
+        # This is an asset type that doesn't support cel shading.
+        # Give an error.
+        questions.PrintError(f'Assets of type {asset_type} cannot use cel shading, but cel shading was detected.', system_exit = True)
+    # Determine if it's necessary to print the debug information.
+    if settings_dict.get('debug_mode', False) == True:
+        # It's necessary to print the debug information.
+        # Print the title.
+        questions.PrintPlain('\n\nDebug information from GetModelStatus in alchemy.py:')
+        questions.PrintDebug('settings_dict', settings_dict)
+        questions.PrintDebug('geometry_list', geometry_list)
+        questions.PrintDebug('has_cel', has_cel)
+        questions.PrintPlain('\n\n')
     # Return all found texture paths
-    return geometryNames
+    return geometry_list, has_cel, settings_dict
 
 # This function is used to create a proper anim DB for a skin.
 def CreateAnimDB(temp_file, num):
