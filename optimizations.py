@@ -9,6 +9,7 @@
 # ####### #
 # External modules
 import os
+from pathlib import Path
 
 
 # ################ #
@@ -71,7 +72,7 @@ def WriteOptimization(optimization_list, **kwargs):
     # Open the optimization path to begin writing the file.
     with open(optimization_path, 'w') as file:
         # Loop through the opening lines.
-        for line in ['[OPTIMIZE]', f'optimizationCount = {len(optimization_list)}', 'hierarchyCheck = true']
+        for line in ['[OPTIMIZE]', f'optimizationCount = {len(optimization_list)}', 'hierarchyCheck = true']:
             # Write the opening lines.
             file.write(f'{line}\n')
         # Start a counter for the current optimization.
@@ -81,7 +82,7 @@ def WriteOptimization(optimization_list, **kwargs):
             # Increment the counter.
             optimization_count += 1
             # Write the optimization's opening line.
-            file.write(f'[OPTIMIZATION{optimization_count}]]n')
+            file.write(f'[OPTIMIZATION{optimization_count}]\n')
             # Loop through the list of lines from the optimization dictionary.
             for line in optimization_dict[kwargs.get('alchemy_version', 'Alchemy 5')][optimization]:
                 # Write the line.
