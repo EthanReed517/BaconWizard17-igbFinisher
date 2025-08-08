@@ -23,6 +23,8 @@ from winreg import ConnectRegistry, CreateKeyEx, DeleteKey, HKEY_CURRENT_USER, K
 # ################ #
 # Global variables #
 # ################ #
+# This is the path to sgOptimizer in Alchemy 3.2.
+sgOptimizer32 = '%IG_ROOT%\\bin32\\sgOptimizer.exe'
 # This is the path to sgOptimizer in Alchemy 5.
 sgOptimizer = '%IG_ROOT%\\bin\\sgOptimizer.exe'
 # This is the list of files in ALchemy 3.2 (not all of them, just some important ones that are hopefully a big enough sample size).
@@ -221,13 +223,14 @@ def CreateAnimDB(temp_file, num):
     # Delete the text file
     remove(os.path.join('Animation Producer', 'remove.txt'))
 
-# Define the function for performing Alchemy operations
-def callAlchemy(file_name, ini_name):
-    # Determine if the file actually exists
-    if file_name is not None:
-        # There is a file
-        # Define the Alchemy ini file & command
-        ini_file = os.path.abspath("Scripts/" + ini_name)
-        cmd = f'"{sgOptimizer}" "{file_name}" "{file_name}" "{ini_file}"'
-        # Call the operation
-        subprocess.run(cmd, shell=True, stdout=subprocess.DEVNULL)
+# This function performs Alchemy optimizations on a file.
+def CallAlchemy(input_file_path, **kwargs):
+    # Get the correct optimizer.
+    if kwargs.get('alchemy_version', 'Alchemy 5') == 'Alchemy 3.2':
+        optimizer_path = sgOptimizer32
+    else:
+        optimizer_path = sgOptimizer
+    # Set up the Alchemy command.
+    cmd = f'"{optimizer_path}" "{input_file_path}" "{input_file_path}" "{kwargs.get('optimization_path', (Path(os.environ['temp']) / 'opt.ini'))}"'
+    # Call the operation.
+    subprocess.run(cmd, shell=True, stdout=subprocess.DEVNULL)

@@ -74,3 +74,18 @@ asset_type, settings_dict = asset_recognition.AssetRecognition(input_file_path, 
 settings_dict, hex_out_list, texture_info_dict = textures.GetTextureInfo(application_path, input_file_path, settings_dict, asset_type)
 # Get the geometry information from the model.
 geometry_list, has_cel, settings_dict = alchemy.GetModelStats(input_file_path, asset_type, settings_dict)
+# Set up the dictionary of processing functions.
+processing_dict = {
+    'Skin': {'function': processing.ProcessSkin, 'kwargs': {'hex_out_list': hex_out_list, 'geometry_list': geometry_list, 'has_cel': has_cel}},
+    #'Mannequin': {'function': processing.ProcessMann, 'kwargs': {'hex_out_list': hex_out_list, 'geometry_list': geometry_list}},
+    #'3D Head': {'function': processing.ProcessHead, 'kwargs': {'hex_out_list': hex_out_list, 'geometry_list': geometry_list}},
+    #'Conversation Portrait': {'function': processing.ProcessHUD, 'kwargs': {'hex_out_list': hex_out_list, 'geometry_list': geometry_list}},
+    #'Character Select Portrait': {'function': processing.ProcessCSP, 'kwargs': {'hex_out_list': hex_out_list, 'geometry_list': geometry_list}},
+    #'Power Icons': {'function': processing.ProcessIcons, 'kwargs': {'hex_out_list': hex_out_list}},
+    #'Comic Cover': {'function': processing.ProcessCover, 'kwargs': {}},
+    #'Concept Art': {'function': processing.ProcessConcept, 'kwargs': {}},
+    #'Loading Screen': {'function': processing.ProcessLoad, 'kwargs': {'hex_out_list': hex_out_list, 'geometry_list': geometry_list}},
+    #'Other': {'function': processing.ProcessOther, 'kwargs': {'has_cel': has_cel}},
+}
+# Process the model per the selected process.
+processing_dict[asset_type]['function'](input_file_path, settings_dict, texture_info_dict, **processing_dict[asset_type]['kwargs'])

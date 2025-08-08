@@ -20,14 +20,24 @@ optimization_dict = {
     'Alchemy 3.2': {
         # Generate collision.
         'igCollideHullRaven': ['name = igCollideHullRaven', 'maxTrianglesPerLeaf = -1', 'mergeTriangles = false', 'ignoreIsCollidable = false', 'notifyOfError = true', 'totalBeforeVerts = -1', 'totalAfterVerts = -1'],
+        # Resize images to their original size (dummy optimization that allows the skin to be run through Alchemy 3.2, slightly reducing file size).
+        'igResizeImage (Full)': ['name = igResizeImage', 'widthFactor = 1.0', 'heightFactor = 1.0', 'minHeight = 1', 'minWidth = 1', 'maxHeight = -1', 'maxWidth = -1', 'resizeMipmap = false', 'useNextPowerOfTwo = true', 'filterType = 6'],
+        # Resize images to half their original size.
+        'igResizeImage (Half)': ['name = igResizeImage', 'widthFactor = 0.5', 'heightFactor = 0.5', 'minHeight = 1', 'minWidth = 1', 'maxHeight = -1', 'maxWidth = -1', 'resizeMipmap = false', 'useNextPowerOfTwo = true', 'filterType = 6'],
+        # Resize images to half their original size.
+        'igResizeImage (Quarter)': ['name = igResizeImage', 'widthFactor = 0.25', 'heightFactor = 0.25', 'minHeight = 1', 'minWidth = 1', 'maxHeight = -1', 'maxWidth = -1', 'resizeMipmap = false', 'useNextPowerOfTwo = true', 'filterType = 6'],
+        # Resize images to one eighth their original size.
+        'igResizeImage (Eighth)': ['name = igResizeImage', 'widthFactor = 0.125', 'heightFactor = 0.125', 'minHeight = 1', 'minWidth = 1', 'maxHeight = -1', 'maxWidth = -1', 'resizeMipmap = false', 'useNextPowerOfTwo = true', 'filterType = 6'],
+        # Resize images to one sixteenth their original size.
+        'igResizeImage (Sixteenth)': ['name = igResizeImage', 'widthFactor = 0.0625', 'heightFactor = 0.0625', 'minHeight = 1', 'minWidth = 1', 'maxHeight = -1', 'maxWidth = -1', 'resizeMipmap = false', 'useNextPowerOfTwo = true', 'filterType = 6'],
         # Convert textures to DXT1 (preserves transparent textures).
         'igConvertImage (DXT1)': ['name = igConvertImage', 'format = DXT1', 'order = DEFAULT', 'isExclude = exclude', 'convertIfSmaller = true', 'preserveAlpha = true', 'imageListFilename = '],
-        # Convert textures to PNG8 and make them opaque.
-        'igQuantizeRaven (Opaque)': ['name = igQuantizeRaven', 'imageList = ', 'imageListFilename = ', 'isExclude = true', 'isReduce = false', 'alphaPallete = false', 'eightBitTofourBitOnly = false'],
-        # Convert textures to PNG8 and preserve transparency.
-        'igQuantizeRaven (Transparent)': ['name = igQuantizeRaven', 'imageList = ', 'imageListFilename = ', 'isExclude = true', 'isReduce = false', 'alphaPallete = true', 'eightBitTofourBitOnly = false'],
+        # Convert textures to PNG8, including alpha PNG8.
+        'igQuantizeRaven': ['name = igQuantizeRaven', 'imageList = ', 'imageListFilename = ', 'isExclude = true', 'isReduce = false', 'alphaPallete = true', 'eightBitTofourBitOnly = false'],
+        # Convert textures to PNG8 but skips any textures in the texture list.
+        'igQuantizeRaven (skip)': ['name = igQuantizeRaven', 'imageList = ', f'imageListFilename = {Path(os.environ['temp']) / 'temp.txt'}', 'isExclude = true', 'isReduce = false', 'alphaPallete = true', 'eightBitTofourBitOnly = false'],
         # Convert textures to PNG8 (uses the worse format, only used on environment maps).
-        'igConvertImage (PNG8)': ['name = igConvertImage', 'format = x_8', 'order = DEFAULT', 'isExclude = exclude', 'convertIfSmaller = true', 'preserveAlpha = true', 'imageListFilename = '],
+        'igConvertImage (PNG8)': ['name = igConvertImage', 'format = x_8', 'order = DEFAULT', 'isExclude = exclude', 'convertIfSmaller = true', 'preserveAlpha = true', f'imageListFilename = {Path(os.environ['temp']) / 'temp.txt'}']
     },
     'Alchemy 5': {
         # Get statistics for textures.
