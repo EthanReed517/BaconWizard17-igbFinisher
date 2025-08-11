@@ -129,5 +129,19 @@ def AssetRecognition(input_file_path, settings_dict):
                 # This was a mannequin.
                 # Announce that it was detected as such.
                 questions.PrintSuccess(f'{input_file_path.name} was automatically identified as a mannequin.')
+        # Update the consoles based on the asset type.
+        if asset_type == 'Mannequin':
+            settings_dict['XML1_num'] = None
+            settings_dict['XML2_num'] = None
+            settings_dict['XML1_path'] = None
+            settings_dict['XML2_path'] = None
+        elif asset_type in ['3D Head', 'Character Select Portrait']:
+            settings_dict['MUA1_num'] = None
+            settings_dict['MUA2_num'] = None
+            settings_dict['MUA1_path'] = None
+            settings_dict['MUA2_path'] = None
+        elif asset_type in ['Comic Cover', 'Concept Art']:
+            settings_dict['MUA2_num'] = None
+            settings_dict['MUA2_path'] = None
     # Return the asset type and the settings.
     return asset_type, settings_dict

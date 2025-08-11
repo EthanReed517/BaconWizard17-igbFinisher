@@ -249,6 +249,22 @@ def GetEnvironmentType(textures_list, settings_dict, asset_type, hex_out_list, i
     # Return the updated settings dictionary and hex out list.
     return settings_dict, hex_out_list, texture_type
 
+# This function is used to get the game that the character select portrait is for.
+def GetCSPGame(settings_dict, textures_list):
+    # Determine what the texture name starts with.
+    if textures_list['Name'].name.startswith('x1c'):
+        # This is for XML1.
+        # Skip processing for XML2.
+        settings_dict['XML2_num'] = None
+        settings_dict['XML2_path'] = None
+    else:
+        # This is for XML2.
+        # Skip processing for XML1.
+        settings_dict['XML1_num'] = None
+        settings_dict['XML1_path'] = None
+    # Return the updated settings.
+    return settings_dict
+
 # This function is used to get the texture information from the model.
 def GetTextureInfo(application_path, input_file_path, settings_dict, asset_type):
     # Get the texture information from Alchemy.
@@ -265,6 +281,11 @@ def GetTextureInfo(application_path, input_file_path, settings_dict, asset_type)
     settings_dict, hex_out_list = Get2DAssetFileNames(settings_dict, asset_type, hex_out_list, textures_list)
     # Determine the environment map type from the texture information.
     settings_dict, hex_out_list, texture_type = GetEnvironmentType(textures_list, settings_dict, asset_type, hex_out_list, input_file_path, texture_type)
+    # Determine if this is a CSP.
+    if asset_type == 'Character Select Portrait':
+        # This is a CSP.
+        # Update processing based on the game.
+        settings_dict = GetCSPGame(settings_dict, textures_list)
     # Build a dictionary of texture info.
     texture_info_dict = {'texture_type': texture_type, 'max_texture_size': max_texture_size, 'textures_list': textures_list}
     # Determine if it's necessary to print the debug information.
