@@ -67,11 +67,11 @@ def CanProcessXbox(game, settings_dict, texture_info_dict):
                     else:
                         # Advanced texture folders are not being forced.
                         # Update the folder name.
-                        output_folder_name = ['for XML2 (PC and Xbox)']
+                        output_folder_list = ['for XML2 (PC and Xbox)']
                 else:
                     # The Xbox is not in use.
                     # Update the folder name.
-                    output_folder_name = ['for XML2 (PC)']
+                    output_folder_list = ['for XML2 (PC)']
             else:
                 # The PC is not in use.
                 # Determine if the Xbox is in use.

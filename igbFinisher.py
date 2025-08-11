@@ -77,12 +77,10 @@ settings_dict, hex_out_list, texture_info_dict = textures.GetTextureInfo(applica
 geometry_list, has_cel, settings_dict = alchemy.GetModelStats(input_file_path, asset_type, settings_dict)
 # Set up the dictionary of processes by game.
 game_console_process_dict = {
-    'XML1': [processing.ProcessXboxAsset],
-    'XML2': [processing.ProcessXboxAsset],
-    'MUA1': [processing.ProcessXboxAsset],
-    'MUA2': [],
-    #'XML1': [processing.ProcessXboxAsset, processing.ProcessPS2Asset, processing.ProcessGCAsset],
-    #'XML2': [processing.ProcessXboxAsset, processing.ProcessPS2Asset, processing.ProcessGCAsset],
+    'XML1': [processing.ProcessXboxAsset, processing.ProcessPS2Asset, processing.ProcessGCAsset],
+    'XML2': [processing.ProcessXboxAsset, processing.ProcessPS2Asset, processing.ProcessGCAsset, processing.ProcessPSPAsset],
+    'MUA1': [processing.ProcessXboxAsset, processing.ProcessPS2Asset, processing.ProcessPSPAsset],
+    'MUA2': [processing.ProcessPS2Asset, processing.ProcessPSPAsset],
     #'MUA1': [processing.ProcessPC360Asset, processing.ProcessPS3SteamAsset, processing.ProcessWiiAsset, processing.ProcessXboxAsset, processing.ProcessPS2Asset, processing.ProcessPSPAsset],
     #'MUA2': [processing.ProcessWiiAsset, processing.ProcessPS2Asset, processing.ProcessPSPAsset]
 }
@@ -103,14 +101,10 @@ if asset_type == 'Skin':
     # This is a skin.
     # Set up the temp file as an animation DB.
     temp_file_path = alchemy.CreateAnimDB(input_file_path)
-    # Add the XML2 PSP skin operation.
-    #game_console_process_dict['XML2'].append(processing.ProcessXML2PSPSkin)
 else:
     # This is another file.
     # Set up the temp file as a copy.
     temp_file_path = alchemy.SetUpTempFile(input_file_path)
-    # Add the XML2 PSP static operation.
-    #game_console_process_dict['XML2'].append(processing.ProcessXML2PSPStatic)
 # Loop through the games.
 for game in settings.games_list:
     # Determine if the game is in use.
