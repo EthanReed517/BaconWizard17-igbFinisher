@@ -12,8 +12,7 @@ import optimizations
 import questions
 # External modules
 from datetime import datetime, timezone
-import os.path
-from os import environ, listdir, popen, remove, system
+from os import environ, listdir, makedirs, popen, remove, system
 from pathlib import Path
 from shutil import copy
 import subprocess
@@ -103,12 +102,12 @@ def CheckAlchemyReset():
 def CheckAlchemyStatus():
     # Try to get the IG_ROOT environment variable.
     try:
-        os.environ['IG_ROOT']
+        environ['IG_ROOT']
     except KeyError:
         # The IG_ROOT environment variable does not exist. Notify the user.
         questions.PrintError('Alchemy 5 is not properly installed. Please properly install Alchemy 5 and try again.', system_exit = True)
     # Set up the path to the Alchemy 3.2 folder.
-    alchemy_32_folder = Path(os.environ['IG_ROOT']) / 'bin32'
+    alchemy_32_folder = Path(environ['IG_ROOT']) / 'bin32'
     # Check if the Alchemy 3.2 folder exists.
     if alchemy_32_folder.exists():
         # The path exists.
@@ -131,7 +130,7 @@ def CheckAlchemyStatus():
     else:
         # The path doesn't exist.
         # Give an error.
-        questions.PrintError(f'There is no "bin32" folder in the Alchemy 5 installation ({os.environ['IG_ROOT']}). Please properly install Alchemy 3.2 and try again.', system_exit = True)
+        questions.PrintError(f'There is no "bin32" folder in the Alchemy 5 installation ({environ['IG_ROOT']}). Please properly install Alchemy 3.2 and try again.', system_exit = True)
     # Check the Alchemy reset date.
     CheckAlchemyReset()
 
@@ -139,9 +138,9 @@ def GetTextureInfo(file_name) -> list:
     # Write the optimization.
     optimizations.WriteOptimization(['igStatisticsTexture'])
     # Write the command.
-    cmd = f'"{sgOptimizer}" "{file_name}" "%temp%\\temp.igb" "{Path(os.environ['temp']) / 'opt.ini'}"'
+    cmd = f'"{sgOptimizer}" "{file_name}" "%temp%\\temp.igb" "{Path(environ['temp']) / 'opt.ini'}"'
     # Call the command.
-    output = os.popen(cmd).read()
+    output = popen(cmd).read()
     # Initialize a list of textures.
     textures_list = []
     # Run through the lines in the return.
@@ -165,9 +164,9 @@ def GetModelStats(input_file_path, asset_type, settings_dict):
     # Write the optimization.
     optimizations.WriteOptimization(['igStatisticsGeometry'])
     # Write the command.
-    cmd = f'"{sgOptimizer}" "{input_file_path}" "%temp%\\temp.igb" "{Path(os.environ['temp']) / 'opt.ini'}"'
+    cmd = f'"{sgOptimizer}" "{input_file_path}" "%temp%\\temp.igb" "{Path(environ['temp']) / 'opt.ini'}"'
     # Call the command.
-    output = os.popen(cmd).read()
+    output = popen(cmd).read()
     # Initialize a list to store the geometry information.
     geometry_list = []
     # Run the optimization and isolate the model names
