@@ -229,7 +229,20 @@ def CallAlchemy(input_file_path, **kwargs):
         optimizer_path = sgOptimizer32
     else:
         optimizer_path = sgOptimizer
+    # Determine if an output path was given.
+    if kwargs.get('output_path', None) is not None:
+        # An output path was given.
+        # Set up the output path.
+        output_file_path = kwargs['output_path']
+        # Set up the output folder.
+        makedirs(output_file_path.parent, exist_ok = True)
+    else:
+        # There is no special output path.
+        # The output path is just the input path.
+        output_file_path = input_file_path
     # Set up the Alchemy command.
-    cmd = f'"{optimizer_path}" "{input_file_path}" "{input_file_path}" "{kwargs.get('optimization_path', (Path(os.environ['temp']) / 'opt.ini'))}"'
+    cmd = f'"{optimizer_path}" "{input_file_path}" "{output_file_path}" "{kwargs.get('optimization_path', (Path(environ['temp']) / 'opt.ini'))}"'
     # Call the operation.
     subprocess.run(cmd, shell=True, stdout=subprocess.DEVNULL)
+    # Delete the optimization path.
+    remove(kwargs.get('optimization_path', (Path(environ['temp']) / 'opt.ini')))
