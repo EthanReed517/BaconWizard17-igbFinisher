@@ -228,6 +228,17 @@ def CreateAnimDB(input_file_path):
     # Return the path of the temp file.
     return temp_skin_path
 
+# This function is used to set up a non-skin asset as a temp file.
+def SetUpTempFile(input_file_path):
+    # Set up a dummy optimization so that the asset is processed through Alchemy 3.2. This slightly reduces the file size.
+    optimizations.WriteOptimization(['igResizeImage'], alchemy_version = 'Alchemy 3.2', scale_to = 1.0)
+    # Set up the output path as the temp folder.
+    temp_file_path = Path(environ['TEMP']) / 'temp.igb'
+    # Perform the optimization.
+    alchemy.CallAlchemy(input_file_path, alchemy_version = 'Alchemy 3.2', output_path = temp_file_path)
+    # Return the path of the temp file.
+    return temp_file_path
+
 # This function performs Alchemy optimizations on a file.
 def CallAlchemy(input_file_path, **kwargs):
     # Get the correct optimizer.

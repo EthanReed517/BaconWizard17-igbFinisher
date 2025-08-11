@@ -1,113 +1,73 @@
 # ########### #
 # INFORMATION #
 # ########### #
+# This module is used for common operations in processing as well as to set up file names.
 
 
 # ####### #
 # IMPORTS #
 # ####### #
-# Internal modules
-import alchemy
-import hex
 # External modules
-from shutil import copy
-from os import makedirs, remove
-import os.path
-from configparser import ConfigParser
+from os import environ
+from pathlib import Path
 
 
 # ######### #
 # FUNCTIONS #
 # ######### #
-# Define the function to get local resources
-def resource_path(relative_path):
-    # Get absolute path to resource, works for dev and for PyInstaller
-    try:
-        # PyInstaller creates a temp folder and stores path in _MEIPASS
-        base_path = sys._MEIPASS
-    except Exception:
-        base_path = os.path.abspath(".")
-    # Return the collected value
-    return os.path.join(base_path, relative_path)
+# This function is used to get a list of transparent textures and write their names to the temp file.
+def TransparentTextureNames(textures_list):
+    # Set up a list of transparent textures.
+    transparent_textures = []
+    # Loop through the textures in the list.
+    for texture_dict in textures_list:
+        # Determine if this is a transparent texture.
+        if texture_dict['Format'] == 'IG_GFX_TEXTURE_FORMAT_RGB_8888_32 (7)':
+            # This is a transparent texture.
+            # Add its file name to a list.
+            transparent_textures.append(texture_dict['Name'].name)
+    # Open the temp file.
+    with open((Path(environ['temp']) / 'temp.txt'), 'w') as file:
+        # Loop through the texture names.
+        for transparent_texture_name in transparent_textures:
+            # Write the name to the list.
+            file.write(f'{transparent_texture_name}\n')
 
-# Define the function for updating the path for XML2 PSP optimizations
-def updateXML2PSPOptPath():
-    # Get the file path to the secondary alchemy optimization
-    skin2_2Path = resource_path("Scripts\\skin2-2.ini")
-    # Prepare to parse the optimization
-    config = ConfigParser()
-    # Make the config parser case sensitive
-    config.optionxform=str
-    # Read the optimization
-    config.read("Scripts/skin2-1.ini")
-    # Get the path
-    savedPath = config["OPTIMIZATION1"]["fileName"]
-    # Determine if the path matches
-    if not(savedPath == skin2_2Path):
-        # The paths do not match
-        # Update the path in the optimization
-        config["OPTIMIZATION1"]["fileName"] = skin2_2Path
-    # Write the new path to the optimization
-    with open("Scripts/skin2-1.ini", "w") as configfile:
-        config.write(configfile)
-
-# Define the function for sending a file
-def processFile(sourceFileName, assetType, num, file, path, folder, optList):
-    # Verify that something needs to be done
-    if ((num is not None) and (file is not None) and (path is not None)):
-        # Make the destination folder if needed
-        makedirs(os.path.join(path, folder), exist_ok=True)
-        # Create a temporary copy of the file
-        tempFile = os.path.join(os.path.dirname(sourceFileName), "temp.igb")
-        copy(sourceFileName, tempFile)
-        # For skins only, use the animation producer to create the proper animation database
-        if assetType == "Skin":
-            alchemy.CreateAnimDB(tempFile, num)
-        # Hex edit the file
-        hex.hexEdit2(tempFile, num, assetType)
-        # Run the Alchemy operations if needed
-        if optList is not None:
-            for optimization in optList:
-                alchemy.callAlchemy(tempFile, optimization)
-        # Copy the file and then remove the temp file (can't move by renaming because the destination could exist)
-        copy(tempFile, os.path.join(path, folder, file))
-        remove(tempFile)
-
-# Define the function for sending Wii files
-def processWiiFiles(sourceFileName, assetType, nums, files, path):
-    # Determine if the MUA1 and MUA2 files have the same name
-    if files["MUA1"] == files["MUA2"]:
-        # The files are the same, so copy to one folder
-        processFile(sourceFileName, assetType, nums["MUA1"], files["MUA1"], path, "for MUA1 (Wii) and MUA2 (Wii)", None)
+# This function is used to set up the skin's output file name.
+def SetUpSkinName(settings_dict, game, has_cel):
+    # Start with the character number.
+    output_file_name = settings_dict[f'{game}_num'][0:-2]
+    # Determine how the character number should end.
+    if settings_dict[f'{game}_num_XX'] == True:
+        # The number should end in XX.
+        # Add this to the output file name.
+        output_file_name += 'XX'
     else:
-        # The files are not the same, so copy to two folders
-        processFile(sourceFileName, assetType, nums["MUA1"], files["MUA1"], path, "for MUA1 (Wii)", None)
-        processFile(sourceFileName, assetType, nums["MUA2"], files["MUA2"], path, "for MUA2 (Wii)", None)
-
-# Define the function for sending PSP files
-def processPSPFiles(sourceFileName, assetType, nums, files, paths, prefix):
-    # Determine if this is a skin. XML2 PSP skins need special consideration
-    if prefix == "skin":
-        # Check if there is an XML2 skin at all.
-        if files['XML2'] is not None:
-            # There is an XML2 file.
-            # Check if this is the file without cel shading, which is the only one used in XML2 PSP
-            if "No Cel" in files["XML2"]:
-                # This is without cel shading
-                # The name should not mention that this is without cel shading, since XML2 PSP doesn't use cel shading
-                outName = files["XML2"].replace(" - No Cel", "")
-                # Update the Alchemy optimization to reference the correct file path
-                updateXML2PSPOptPath()
-                # Process the file
-                processFile(sourceFileName, assetType, nums["XML2"], outName, paths["XML"], "for XML2 (PSP)", ["skin2-1.ini"])
-    else:
-        # This is not a skin, so process the XML2 file
-        processFile(sourceFileName, assetType, nums["XML2"], files["XML2"], paths["XML"], "for XML2 (PSP)", None)
-    # MUA1 and MUA2 are processed the same way no matter what
-    if files["MUA1"] == files["MUA2"]:
-        # The files are the same, so copy to one folder
-        processFile(sourceFileName, assetType, nums["MUA1"], files["MUA1"], paths["MUA"], "for MUA1 (PSP) and MUA2 (PSP)", [f"{prefix}3.ini"])
-    else:
-        # The files are not the same, so copy to two folders
-        processFile(sourceFileName, assetType, nums["MUA1"], files["MUA1"], paths["MUA"], "for MUA1 (PSP)", [f"{prefix}3.ini"])
-        processFile(sourceFileName, assetType, nums["MUA2"], files["MUA2"], paths["MUA"], "for MUA2 (PSP)", [f"{prefix}3.ini"])
+        # The number should end in the skin number.
+        # Add this to the output file name.
+        output_file_name += settings_dict[f'{game}_num'][-2:]
+    # Determine if it's necessary to include anything else.
+    if not(settings_dict[f'{game}_special_name'] == 'NumberOnly'):
+        # There should be a descriptor.
+        # Add the opening parenthesis.
+        output_file_name += ' ('
+        # Determine which type of descriptor is needed.
+        if settings_dict[f'{game}_special_name'] is None:
+            # The user wants the default descriptor.
+            # Use the default descriptor.
+            output_file_name += 'Skin'
+        else:
+            # The user wants a custom descriptor.
+            # Add the custom descritpro.
+            output_file_name += settings_dict[f'{game}_special_name']
+        # Determine if this is an XML1/XML2 skin without cel shading.
+        if ((game in ['XML1', 'XML2']) and (has_cel == False)):
+            # This is an XML1/XML2 skin without cel shading.
+            # Add the no cel descriptor.
+            output_file_name += ' - No Cel'
+        # Add the closing parenthesis.
+        output_file_name += ')'
+    # Add the file extension.
+    output_file_name += '.igb'
+    # Return the output file name.
+    return output_file_name

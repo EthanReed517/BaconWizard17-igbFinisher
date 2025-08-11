@@ -10,12 +10,13 @@
 # Internal modules
 import alchemy
 import asset_recognition
+import hex
 import questions
 import processing
 import settings
 import textures
 # External modules
-from os import system
+from os import remove, system
 from pathlib import Path
 import sys
 
@@ -74,18 +75,56 @@ asset_type, settings_dict = asset_recognition.AssetRecognition(input_file_path, 
 settings_dict, hex_out_list, texture_info_dict = textures.GetTextureInfo(application_path, input_file_path, settings_dict, asset_type)
 # Get the geometry information from the model.
 geometry_list, has_cel, settings_dict = alchemy.GetModelStats(input_file_path, asset_type, settings_dict)
-# Set up the dictionary of processing functions.
-processing_dict = {
-    'Skin': {'function': processing.ProcessSkin, 'kwargs': {'hex_out_list': hex_out_list, 'geometry_list': geometry_list, 'has_cel': has_cel}},
-    #'Mannequin': {'function': processing.ProcessMann, 'kwargs': {'hex_out_list': hex_out_list, 'geometry_list': geometry_list}},
-    #'3D Head': {'function': processing.ProcessHead, 'kwargs': {'hex_out_list': hex_out_list, 'geometry_list': geometry_list}},
-    #'Conversation Portrait': {'function': processing.ProcessHUD, 'kwargs': {'hex_out_list': hex_out_list, 'geometry_list': geometry_list}},
-    #'Character Select Portrait': {'function': processing.ProcessCSP, 'kwargs': {'hex_out_list': hex_out_list, 'geometry_list': geometry_list}},
-    #'Power Icons': {'function': processing.ProcessIcons, 'kwargs': {'hex_out_list': hex_out_list}},
-    #'Comic Cover': {'function': processing.ProcessCover, 'kwargs': {}},
-    #'Concept Art': {'function': processing.ProcessConcept, 'kwargs': {}},
-    #'Loading Screen': {'function': processing.ProcessLoad, 'kwargs': {'hex_out_list': hex_out_list, 'geometry_list': geometry_list}},
-    #'Other': {'function': processing.ProcessOther, 'kwargs': {'has_cel': has_cel}},
+# Set up the dictionary of processes by game.
+game_console_process_dict = {
+    'XML1': [processing.ProcessXboxAsset],
+    'XML2': [processing.ProcessXboxAsset],
+    'MUA1': [processing.ProcessXboxAsset],
+    'MUA2': [],
+    #'XML1': [processing.ProcessXboxAsset, processing.ProcessPS2Asset, processing.ProcessGCAsset],
+    #'XML2': [processing.ProcessXboxAsset, processing.ProcessPS2Asset, processing.ProcessGCAsset],
+    #'MUA1': [processing.ProcessPC360Asset, processing.ProcessPS3SteamAsset, processing.ProcessWiiAsset, processing.ProcessXboxAsset, processing.ProcessPS2Asset, processing.ProcessPSPAsset],
+    #'MUA2': [processing.ProcessWiiAsset, processing.ProcessPS2Asset, processing.ProcessPSPAsset]
 }
-# Process the model per the selected process.
-processing_dict[asset_type]['function'](input_file_path, settings_dict, texture_info_dict, **processing_dict[asset_type]['kwargs'])
+# Set up the dictionary of operations for getting the output name by asset type.
+output_name_process_dict = {
+    'Skin': processing.SetUpSkinName,
+    #'Mannequin': processing.SetUpMannequinName,
+    #'3D Head': processing.SetUp3DHeadName,
+    #'Conversation Portrait': processing.SetUpConvoName,
+    #'Character Select Portrait': processing.SetUpCSPName,
+    #'Power Icons': processing.SetUpIconsName,
+    #'Comic Cover': processing.SetUpComicName,
+    #'Concept Art': processing.SetUpConceptName,
+    #'Other': processing.SetUpOtherName
+}
+# Determine if this is a skin.
+if asset_type == 'Skin':
+    # This is a skin.
+    # Set up the temp file as an animation DB.
+    temp_file_path = alchemy.CreateAnimDB(input_file_path)
+    # Add the XML2 PSP skin operation.
+    #game_console_process_dict['XML2'].append(processing.ProcessXML2PSPSkin)
+else:
+    # This is another file.
+    # Set up the temp file as a copy.
+    temp_file_path = alchemy.SetUpTempFile(input_file_path)
+    # Add the XML2 PSP static operation.
+    #game_console_process_dict['XML2'].append(processing.ProcessXML2PSPStatic)
+# Loop through the games.
+for game in settings.games_list:
+    # Determine if the game is in use.
+    if ((settings_dict[f'{game}_num'] is not None) and (settings_dict[f'{game}_path'] is not None)):
+        # The game is in use.
+        # Set up the output file name.
+        output_file_name = output_name_process_dict[asset_type](settings_dict, game, has_cel)
+        # Hex edit the file.
+        temp_file_hexed_path = hex.HexEdit(temp_file_path, 'Skin', hex_out_list, texture_info_dict, geometry_list, settings_dict[f'{game}_num'])
+        # Loop through the possible functions for the game.
+        for console_process in game_console_process_dict[game]:
+            # Perform the processing.
+            console_process(asset_type, temp_file_hexed_path, output_file_name, settings_dict, texture_info_dict, game, has_cel)
+        # Delete the hex edited file.
+        remove(temp_file_hexed_path)
+# Delete the temp file.
+remove(temp_file_path)
