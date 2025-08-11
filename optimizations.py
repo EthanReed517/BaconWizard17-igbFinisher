@@ -7,6 +7,8 @@
 # ####### #
 # IMPORTS #
 # ####### #
+# Internal modules
+import questions
 # External modules
 import os
 from pathlib import Path
@@ -22,20 +24,14 @@ optimization_dict = {
         'igCollideHullRaven': ['name = igCollideHullRaven', 'maxTrianglesPerLeaf = -1', 'mergeTriangles = false', 'ignoreIsCollidable = false', 'notifyOfError = true', 'totalBeforeVerts = -1', 'totalAfterVerts = -1'],
         # Resize images to their original size (dummy optimization that allows the skin to be run through Alchemy 3.2, slightly reducing file size).
         'igResizeImage (Full)': ['name = igResizeImage', 'widthFactor = 1.0', 'heightFactor = 1.0', 'minHeight = 1', 'minWidth = 1', 'maxHeight = -1', 'maxWidth = -1', 'resizeMipmap = false', 'useNextPowerOfTwo = true', 'filterType = 6'],
-        # Resize images to half their original size.
-        'igResizeImage (Half)': ['name = igResizeImage', 'widthFactor = 0.5', 'heightFactor = 0.5', 'minHeight = 1', 'minWidth = 1', 'maxHeight = -1', 'maxWidth = -1', 'resizeMipmap = false', 'useNextPowerOfTwo = true', 'filterType = 6'],
-        # Resize images to half their original size.
-        'igResizeImage (Quarter)': ['name = igResizeImage', 'widthFactor = 0.25', 'heightFactor = 0.25', 'minHeight = 1', 'minWidth = 1', 'maxHeight = -1', 'maxWidth = -1', 'resizeMipmap = false', 'useNextPowerOfTwo = true', 'filterType = 6'],
-        # Resize images to one eighth their original size.
-        'igResizeImage (Eighth)': ['name = igResizeImage', 'widthFactor = 0.125', 'heightFactor = 0.125', 'minHeight = 1', 'minWidth = 1', 'maxHeight = -1', 'maxWidth = -1', 'resizeMipmap = false', 'useNextPowerOfTwo = true', 'filterType = 6'],
-        # Resize images to one sixteenth their original size.
-        'igResizeImage (Sixteenth)': ['name = igResizeImage', 'widthFactor = 0.0625', 'heightFactor = 0.0625', 'minHeight = 1', 'minWidth = 1', 'maxHeight = -1', 'maxWidth = -1', 'resizeMipmap = false', 'useNextPowerOfTwo = true', 'filterType = 6'],
         # Convert textures to DXT1 (preserves transparent textures).
         'igConvertImage (DXT1)': ['name = igConvertImage', 'format = DXT1', 'order = DEFAULT', 'isExclude = exclude', 'convertIfSmaller = true', 'preserveAlpha = true', 'imageListFilename = '],
         # Convert textures to PNG8, including alpha PNG8.
         'igQuantizeRaven': ['name = igQuantizeRaven', 'imageList = ', 'imageListFilename = ', 'isExclude = true', 'isReduce = false', 'alphaPallete = true', 'eightBitTofourBitOnly = false'],
         # Convert textures to PNG8 but skips any textures in the texture list.
-        'igQuantizeRaven (skip)': ['name = igQuantizeRaven', 'imageList = ', f'imageListFilename = {Path(os.environ['temp']) / 'temp.txt'}', 'isExclude = true', 'isReduce = false', 'alphaPallete = true', 'eightBitTofourBitOnly = false'],
+        'igQuantizeRaven (exclude)': ['name = igQuantizeRaven', 'imageList = ', f'imageListFilename = {Path(os.environ['temp']) / 'temp.txt'}', 'isExclude = true', 'isReduce = false', 'alphaPallete = true', 'eightBitTofourBitOnly = false'],
+        # Convert textures to PNG8 but only on any textures in the texture list.
+        'igQuantizeRaven (include)': ['name = igQuantizeRaven', 'imageList = ', f'imageListFilename = {Path(os.environ['temp']) / 'temp.txt'}', 'isExclude = false', 'isReduce = false', 'alphaPallete = true', 'eightBitTofourBitOnly = false'],
         # Convert textures to PNG8 (uses the worse format, only used on environment maps).
         'igConvertImage (PNG8)': ['name = igConvertImage', 'format = x_8', 'order = DEFAULT', 'isExclude = exclude', 'convertIfSmaller = true', 'preserveAlpha = true', f'imageListFilename = {Path(os.environ['temp']) / 'temp.txt'}']
     },
@@ -55,7 +51,7 @@ optimization_dict = {
         # Convert opaque textures to PNG8.
         'igConvertImage (PNG8)': ['name = igConvertImage', 'format = IG_GFX_TEXTURE_FORMAT_X_8', 'sourceFormat = rgb_888_24', 'order = IG_GFX_IMAGE_ORDER_DEFAULT', 'isExclude = exclude', 'convertIfSmaller = false', 'imageListFilename = '],
         # Calls the secondary optimization for XML2 PSP.
-        'igOptimizeActorSkinsInScenes': ['name = igOptimizeActorSkinsInScenes', f'{Path(os.environ['temp']) / 'opt2.ini'}', 'applySkinLocal = true'],
+        'igOptimizeActorSkinsInScenes': ['name = igOptimizeActorSkinsInScenes', f'fileName = {Path(os.environ['temp']) / 'opt2.ini'}', 'applySkinLocal = true'],
         # Convert igGeometryAttr to igGeometryAttr2 (XML2 PSP method).
         'igConvertGeometryAttr (PSP)': ['name = igConvertGeometryAttr', 'accessMode = 0', 'storeBoundingVolume = false'],
         # Various additional XML2 PSP optimizations.
@@ -94,6 +90,21 @@ def WriteOptimization(optimization_list, **kwargs):
             # Write the optimization's opening line.
             file.write(f'[OPTIMIZATION{optimization_count}]\n')
             # Loop through the list of lines from the optimization dictionary.
-            for line in optimization_dict[kwargs.get('alchemy_version', 'Alchemy 5')][optimization]:
-                # Write the line.
-                file.write(f'{line}\n')
+            try:
+                for line in optimization_dict[kwargs.get('alchemy_version', 'Alchemy 5')][optimization]:
+                    # Write the line.
+                    file.write(f'{line}\n')
+            except KeyError:
+                # An unrecognized optimization was called.
+                # Determine what operation this is.
+                if optimization == 'igResizeImage':
+                    # This is the scaling operation.
+                    # Get the scale factor.
+                    scale_factor = kwargs.get('scale_to', 1.0)
+                    # Loop thorugh the lines for this optimization.
+                    for line in ['name = igResizeImage', f'widthFactor = {scale_factor}', f'heightFactor = {scale_factor}', 'minHeight = 1', 'minWidth = 1', 'maxHeight = -1', 'maxWidth = -1', 'resizeMipmap = false', 'useNextPowerOfTwo = true', 'filterType = 6']:
+                        # Write the line.
+                        file.write(f'{line}\n')
+                else:
+                    # The optimization was not recognized.
+                    questions.PrintError(f'An unrecognized Alchemy optimization ({optimization}) was called.', contact_creator = True, system_exit = True)

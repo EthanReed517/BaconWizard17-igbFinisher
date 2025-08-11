@@ -234,16 +234,16 @@ def GetEnvironmentType(textures_list, settings_dict, asset_type, hex_out_list, i
             # This asset does not allow environment maps.
             # Give an error.
             questions.PrintError(f'Environment maps were found in {input_file_path.name}, but assets of type {asset_type} cannot have environment maps.', system_exit = True)
+        # If this is a PC size, set the size to 128 (standard size for PC).
+        if env_size > 32:
+            env_size = 128
         # Update the texture format.
         texture_type += f' Env{str(env_size)}'
         # Let the user know.
         questions.PrintSuccess('Detected environment maps.')
         # Match the size to the elements to remove in the replace list.
-        size_match_dict = {'8': 'XS', '16': 'S', '32': 'M'}
-        try:
-            size_suffix = size_match_dict[str(env_size)]
-        except KeyError:
-            size_suffix = 'L'
+        size_match_dict = {'8': 'XS', '16': 'S', '32': 'M', '128': 'L'}
+        size_suffix = size_match_dict[str(env_size)]
         # Add the textures to the hex out list.
         hex_out_list.extend([[f'_{size_suffix}_LF.png.cube', '_LF.png.cube'], [f'_{size_suffix}_RT.png.cube', '_RT.png.cube'], [f'_{size_suffix}_FR.png.cube', '_FR.png.cube'], [f'_{size_suffix}_BK.png.cube', '_BK.png.cube'], [f'_{size_suffix}_DN.png.cube', '_DN.png.cube'], [f'_{size_suffix}_UP.png.cube', '_UP.png.cube']])
     # Return the updated settings dictionary and hex out list.

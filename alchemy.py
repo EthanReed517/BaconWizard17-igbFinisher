@@ -207,20 +207,26 @@ def GetModelStats(input_file_path, asset_type, settings_dict):
     return geometry_list, has_cel, settings_dict
 
 # This function is used to create a proper anim DB for a skin.
-def CreateAnimDB(temp_file, num):
-    # Copy the temp file to the animation producer folder
-    copy(temp_file, 'Animation Producer')
-    # Write the text file for this skin
-    with open(os.path.join('Animation Producer', 'remove.txt'), 'w') as file:
-        file.write(f'create_animation_database {num}\nload_actor temp.igb\nextract_skeleton igActor01Skeleton\nextract_skin igActor01Appearance\nsave_external_animation_database temp.igb')
-    # Get the absolute paths for the command
-    anim_producer_folder = os.path.abspath('Animation Producer')
-    # Call the process for the animation producer
-    subprocess.run('@animationProducer.exe remove.txt', shell=True, stdout=subprocess.DEVNULL, cwd=anim_producer_folder, stderr=subprocess.STDOUT)
-    # Copy the temp file back for further processing
-    copy(os.path.join('Animation Producer', 'temp.igb'), temp_file)
-    # Delete the text file
-    remove(os.path.join('Animation Producer', 'remove.txt'))
+def CreateAnimDB(input_file_path):
+    # Set up the paths to the animation producer.
+    animation_producer_folder = Path(environ['IG_ROOT']) / 'bin32'
+    temp_anim_producer_file = animation_producer_folder / 'temp.igb'
+    animation_producer_txt_path = animation_producer_folder / 'temp.txt'
+    temp_skin_path = Path(environ['TEMP']) / 'temp.igb'
+    # Copy the input file to the animation producer folder.
+    copy(input_file_path, temp_anim_producer_file)
+    # Write the text file.
+    with open(animation_producer_txt_path, 'w') as file:
+        file.write('create_animation_database 12301\nload_actor temp.igb\nextract_skeleton igActor01Skeleton\nextract_skin igActor01Appearance\nsave_external_animation_database temp.igb')
+    # Call the process for the animation producer.
+    subprocess.run('@animationProducer.exe temp.txt', shell=True, stdout=subprocess.DEVNULL, cwd=animation_producer_folder, stderr=subprocess.STDOUT)
+    # Copy the new file to the temp directory for further processing.
+    copy(temp_anim_producer_file, temp_skin_path)
+    # Delete the lingering files.
+    remove(temp_anim_producer_file)
+    remove(animation_producer_txt_path)
+    # Return the path of the temp file.
+    return temp_skin_path
 
 # This function performs Alchemy optimizations on a file.
 def CallAlchemy(input_file_path, **kwargs):
