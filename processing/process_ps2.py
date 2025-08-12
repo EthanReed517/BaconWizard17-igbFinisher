@@ -91,6 +91,9 @@ def ProcessPS2Asset(asset_type, temp_file_hexed_path, output_file_name, settings
         # It's okay to process.
         # Initialize a list of optimizations.
         optimization_list = []
+        # For other models, add the collision generation if required.
+        if ((asset_type == 'Other') and (settings['generate_collision'] == True)):
+            optimization_list.append('igCollideHullRaven')
         # Determine if the scale factor.
         scale_factor = CheckPS2Scaling(settings_dict, asset_type, texture_info_dict, game)
         # Add the necessary optimizations.

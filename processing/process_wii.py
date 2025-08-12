@@ -84,6 +84,9 @@ def ProcessWiiAsset(asset_type, temp_file_hexed_path, output_file_name, settings
         # It's okay to process.
         # Initialize a list of optimizations.
         optimizations_list = []
+        # For other models, add the collision generation if required.
+        if ((asset_type == 'Other') and (settings['generate_collision'] == True)):
+            optimization_list.append('igCollideHullRaven')
         # Check if the asset needs to be scaled.
         scale_factor, optimizations_list = CheckWiiScaling(settings_dict, asset_type, texture_info_dict, optimizations_list)
         # Add the conversion to DXT1.

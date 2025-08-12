@@ -147,6 +147,9 @@ def ProcessXboxAsset(asset_type, temp_file_hexed_path, output_file_name, setting
         # It's okay to process.
         # Initialize a list of optimizations.
         optimization_list = []
+        # For other models, add the collision generation if required.
+        if ((asset_type == 'Other') and (settings['generate_collision'] == True)):
+            optimization_list.append('igCollideHullRaven')
         # Determine if scaling is necessary.
         optimization_list, output_folder_list, scale_factor = CheckXboxScaling(asset_type, game, optimization_list, output_folder_list, texture_info_dict['max_texture_size'])
         # Determine the max size for PNG8 textures.
