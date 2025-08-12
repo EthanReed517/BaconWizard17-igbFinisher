@@ -4,7 +4,7 @@
 # Internal modules
 import questions
 # External modules
-from os import makedirs, system
+from os import makedirs, remove, system
 from pathlib import Path
 from shutil import copy, copytree, rmtree
 
@@ -35,10 +35,12 @@ copy((application_path / 'settings.ini'), dist_folder)
 if build_to_do == 'Personal Build':
     # This is the personal build.
     # Copy the personal folder detection folder.
-    copytree((application_path / 'Folder Detection (Personal)'), (dist_folder / 'Folder Detection'))
+    copytree((application_path / 'Folder Detection'), (dist_folder / 'Folder Detection'))
+    remove(dist_folder / 'Folder Detection' / 'Cyclops (Example).xml')
 else:
     # This is the release build.
-    copytree((application_path / 'Folder Detection'), (dist_folder / 'Folder Detection'))
+    makedirs(dist_folder / 'Folder Detection')
+    copy((application_path / 'Folder Detection' / 'Cyclops (Example).xml'), (dist_folder / 'Folder Detection' / 'Cyclops.xml'))
 # Open the existing batch file.
 with open((application_path / 'igbFinisher.bat'), 'r') as file:
     # Create a list of lines.
