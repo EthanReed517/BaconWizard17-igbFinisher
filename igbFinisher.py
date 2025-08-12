@@ -103,11 +103,15 @@ else:
     # This is another file.
     # Set up the temp file as a copy.
     temp_file_path = alchemy.SetUpTempFile(input_file_path)
+# Announce that processing is beginning.
+questions.PrintImportant(f'Processing {input_file_path.name} . . .')
 # Loop through the games.
 for game in settings.games_list:
     # Determine if the game is in use.
     if ((settings_dict[f'{game}_num'] is not None) and (settings_dict[f'{game}_path'] is not None)):
         # The game is in use.
+        # Announce the status.
+        questions.PrintImportant(f'Processing for {game} . . .')
         # Set up the output file name.
         output_file_name = output_name_process_dict[asset_type](settings_dict, game, has_cel)
         # Hex edit the file.
@@ -120,3 +124,5 @@ for game in settings.games_list:
         remove(temp_file_hexed_path)
 # Delete the temp file.
 remove(temp_file_path)
+# Announce completion.
+questions.PrintSuccess(f'{input_file_path.name} processed successfully.')
