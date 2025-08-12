@@ -58,13 +58,141 @@ def SetUpSkinName(settings_dict, game, has_cel):
             output_file_name += 'Skin'
         else:
             # The user wants a custom descriptor.
-            # Add the custom descritpro.
+            # Add the custom descriptor.
             output_file_name += settings_dict[f'{game}_special_name']
         # Determine if this is an XML1/XML2 skin without cel shading.
         if ((game in ['XML1', 'XML2']) and (has_cel == False)):
             # This is an XML1/XML2 skin without cel shading.
             # Add the no cel descriptor.
             output_file_name += ' - No Cel'
+        # Add the closing parenthesis.
+        output_file_name += ')'
+    # Add the file extension.
+    output_file_name += '.igb'
+    # Return the output file name.
+    return output_file_name
+
+# This function is used to set up the mannequin's output file name.
+def SetUpMannequinName(settings_dict, game, has_cel):
+    # Start with the character number.
+    output_file_name = settings_dict[f'{game}_num'][0:-2]
+    # Determine how the character number should end.
+    if settings_dict[f'{game}_num_XX'] == True:
+        # The number should end in XX.
+        # Add this to the output file name.
+        output_file_name += 'XX'
+    else:
+        # The number should end in the skin number.
+        # Add this to the output file name.
+        output_file_name += settings_dict[f'{game}_num'][-2:]
+    # Determine if it's necessary to include anything else.
+    if not(settings_dict[f'{game}_special_name'] == 'NumberOnly'):
+        # There should be a descriptor.
+        # Add the opening parenthesis.
+        output_file_name += ' ('
+        # Determine which type of descriptor is needed.
+        if settings_dict[f'{game}_special_name'] is None:
+            # The user wants the default descriptor.
+            # Use the default descriptor.
+            output_file_name += 'Mannequin'
+        else:
+            # The user wants a custom descriptor.
+            # Add the custom descriptor.
+            output_file_name += f'Mannequin - {settings_dict[f'{game}_special_name']}'
+        # Add the closing parenthesis.
+        output_file_name += ')'
+    # Add the file extension.
+    output_file_name += '.igb'
+    # Return the output file name.
+    return output_file_name
+
+# This function is used to set up the 3D head's output file name.
+def SetUp3DHeadName(settings_dict, game, has_cel):
+    # Start with the character number.
+    output_file_name = settings_dict[f'{game}_num'][0:-2]
+    # Determine how the character number should end.
+    if settings_dict[f'{game}_num_XX'] == True:
+        # The number should end in XX.
+        # Add this to the output file name.
+        output_file_name += 'XX'
+    else:
+        # The number should end in the skin number.
+        # Add this to the output file name.
+        output_file_name += settings_dict[f'{game}_num'][-2:]
+    # Determine if it's necessary to include anything else.
+    if not(settings_dict[f'{game}_special_name'] == 'NumberOnly'):
+        # There should be a descriptor.
+        # Add the opening parenthesis.
+        output_file_name += ' ('
+        # Determine which type of descriptor is needed.
+        if settings_dict[f'{game}_special_name'] is None:
+            # The user wants the default descriptor.
+            # Use the default descriptor.
+            output_file_name += '3D Head'
+        else:
+            # The user wants a custom descriptor.
+            # Add the custom descriptor.
+            output_file_name += settings_dict[f'{game}_special_name']
+        # Add the closing parenthesis.
+        output_file_name += ')'
+    # Add the file extension.
+    output_file_name += '.igb'
+    # Return the output file name.
+    return output_file_name
+
+# This function is used to set up the HUD's output file name.
+def SetUpHUDName(settings_dict, game, has_cel):
+    # Start with the typical naming and character number.
+    output_file_name = f'hud_head_{settings_dict[f'{game}_num'][0:-2]}'
+    # Determine how the character number should end.
+    if settings_dict[f'{game}_num_XX'] == True:
+        # The number should end in XX.
+        # Add this to the output file name.
+        output_file_name += 'XX'
+    else:
+        # The number should end in the skin number.
+        # Add this to the output file name.
+        output_file_name += settings_dict[f'{game}_num'][-2:]
+    # Determine if it's necessary to include anything else.
+    if not(settings_dict[f'{game}_special_name'] == 'NumberOnly'):
+        # There may need to be a descriptor.
+        # Determine which type of descriptor is needed.
+        if settings_dict[f'{game}_special_name'] is not None:
+            # The user wants a custom descriptor.
+            # Add the custom descriptor.
+            output_file_name += f' ({settings_dict[f'{game}_special_name']})'
+    # Add the file extension.
+    output_file_name += '.igb'
+    # Return the output file name.
+    return output_file_name
+
+# This function is used to set up the CSP's output file name.
+def SetUpCSPName(settings_dict, game, has_cel):
+    # Start with the character number.
+    output_file_name = settings_dict[f'{game}_num'][0:-2]
+    # Determine how the character number should end.
+    if settings_dict[f'{game}_num_XX'] == True:
+        # The number should end in XX.
+        # Add this to the output file name.
+        output_file_name += 'XX'
+    else:
+        # The number should end in the skin number.
+        # Add this to the output file name.
+        output_file_name += settings_dict[f'{game}_num'][-2:]
+    # Determine if it's necessary to include anything else.
+    if not(settings_dict[f'{game}_special_name'] == 'NumberOnly'):
+        # There should be a descriptor.
+        # Add the opening parenthesis.
+        output_file_name += ' ('
+        # Determine which type of descriptor is needed.
+        if settings_dict[f'{game}_special_name'] is None:
+            # The user wants the default descriptor.
+            # Use the default descriptor.
+            output_file_name += 'Character Select Portrait'
+        else:
+            # The user wants a custom descriptor.
+            # Add the custom descriptor.
+            output_file_name += f'Character Select Portrait - {settings_dict[f'{game}_special_name']}'
         # Add the closing parenthesis.
         output_file_name += ')'
     # Add the file extension.

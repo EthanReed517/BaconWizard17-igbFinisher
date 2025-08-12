@@ -85,10 +85,10 @@ game_console_process_dict = {
 # Set up the dictionary of operations for getting the output name by asset type.
 output_name_process_dict = {
     'Skin': processing.SetUpSkinName,
-    #'Mannequin': processing.SetUpMannequinName,
-    #'3D Head': processing.SetUp3DHeadName,
-    #'Conversation Portrait': processing.SetUpConvoName,
-    #'Character Select Portrait': processing.SetUpCSPName,
+    'Mannequin': processing.SetUpMannequinName,
+    '3D Head': processing.SetUp3DHeadName,
+    'Conversation Portrait': processing.SetUpHUDName,
+    'Character Select Portrait': processing.SetUpCSPName,
     #'Power Icons': processing.SetUpIconsName,
     #'Comic Cover': processing.SetUpComicName,
     #'Concept Art': processing.SetUpConceptName,
