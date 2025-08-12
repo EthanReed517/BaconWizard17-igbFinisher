@@ -67,7 +67,7 @@ application_path = GetApplicationPath()
 alchemy.CheckAlchemyStatus()
 # Get and process the arguments.
 (input_file_path, settings_file_path) = settings.ProcessArguments(application_path)
-# Read the settings
+# Read the settings.
 settings_dict = settings.ParseSettings(settings_file_path)
 # Get the asset type.
 asset_type, settings_dict = asset_recognition.AssetRecognition(input_file_path, settings_dict)
@@ -79,10 +79,8 @@ geometry_list, has_cel, settings_dict = alchemy.GetModelStats(input_file_path, a
 game_console_process_dict = {
     'XML1': [processing.ProcessXboxAsset, processing.ProcessPS2Asset, processing.ProcessGCAsset],
     'XML2': [processing.ProcessXboxAsset, processing.ProcessPS2Asset, processing.ProcessGCAsset, processing.ProcessPSPAsset],
-    'MUA1': [processing.ProcessXboxAsset, processing.ProcessPS2Asset, processing.ProcessPSPAsset],
-    'MUA2': [processing.ProcessPS2Asset, processing.ProcessPSPAsset],
-    #'MUA1': [processing.ProcessPC360Asset, processing.ProcessPS3SteamAsset, processing.ProcessWiiAsset, processing.ProcessXboxAsset, processing.ProcessPS2Asset, processing.ProcessPSPAsset],
-    #'MUA2': [processing.ProcessWiiAsset, processing.ProcessPS2Asset, processing.ProcessPSPAsset]
+    'MUA1': [processing.ProcessPC360Asset, processing.ProcessSteamPS3Asset, processing.ProcessWiiAsset, processing.ProcessXboxAsset, processing.ProcessPS2Asset, processing.ProcessPSPAsset],
+    'MUA2': [processing.ProcessWiiAsset, processing.ProcessPS2Asset, processing.ProcessPSPAsset]
 }
 # Set up the dictionary of operations for getting the output name by asset type.
 output_name_process_dict = {

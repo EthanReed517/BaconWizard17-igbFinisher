@@ -135,9 +135,9 @@ def ProcessPSPAsset(asset_type, temp_file_hexed_path, output_file_name, settings
             # The sub-folder should be skipped.
             # Set up the destination path.
             output_file_path = settings_dict[f'{game}_path'] / output_file_name
-        # Determine which game this is for.
-        if game == 'XML2':
-            # This is for XML2.
+        # Determine which game and asset this is for.
+        if ((game == 'XML2') and (asset_type == 'Skin')):
+            # This is for an XML2 skin.
             # Add the optimization that references the other optimization.
             alchemy_5_optimizations_list.append('igOptimizeActorSkinsInScenes')
             # Set up the list of secondary optimizations that are called.
@@ -145,14 +145,15 @@ def ProcessPSPAsset(asset_type, temp_file_hexed_path, output_file_name, settings
             # Write the secondary Alchemy 5 optimization.
             optimizations.WriteOptimization(secondary_optimization_list, optimization_path = (Path(environ['temp']) / 'opt2.ini'))
         else:
-            # This is for MUA1 or MUA2.
+            # This is any asset for MUA1/MUA2 or a static asset for XML2.
+            # Add the single necessary optimization.
             alchemy_5_optimizations_list.append('igConvertGeometryAttr')
         # Write the Alchemy 5 optimizations.
         optimizations.WriteOptimization(alchemy_5_optimizations_list)
-        # Perform the optimizations
+        # Perform the optimizations.
         alchemy.CallAlchemy(temp_file_hexed_32_path, output_path = output_file_path)
         # Delete the temp file.
         remove(temp_file_hexed_32_path)
-        # For XML2, delete the secondary operation.
+        # For XML2, delete the secondary optimization file.
         if game == 'XML2':
             remove(Path(environ['temp']) / 'opt2.ini')

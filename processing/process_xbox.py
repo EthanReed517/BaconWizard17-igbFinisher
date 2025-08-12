@@ -102,7 +102,7 @@ def CheckXboxScaling(asset_type, game, optimization_list, output_folder_list, ma
     # Set up a scale factor. Assume 1.
     scale_factor = 1.0
     # Determine if this is for XML2 PC only.
-    if not(output_folder_list == ['for XML2 PC']):
+    if not(output_folder_list == ['for XML2 (PC)']):
         # This is not for XML2 PC only, so scaling may be needed.
         # Determine if this is an asset type that needs scaling.
         if asset_type in ['Comic Cover', 'Concept Art', 'Loading Screen']:
@@ -182,7 +182,7 @@ def ProcessXboxAsset(asset_type, temp_file_hexed_path, output_file_name, setting
                 # Set up the destination path.
                 output_file_path = settings_dict[f'{game}_path'] / output_file_name
             # Determine if this is for PC after an Xbox asset that was scaled.
-            if ((output_folder_list == ['for XML2 (Xbox)', 'for XML2 (PC)']) and (output_folder_name == 'for XML2 (PC')):
+            if ((output_folder_list == ['for XML2 (Xbox)', 'for XML2 (PC)']) and (output_folder_name == 'for XML2 (PC)')):
                 # This is for the PC after an Xbox asset was scaled.
                 # Remove the scaling optimization.
                 optimization_list.remove('igResizeImage')

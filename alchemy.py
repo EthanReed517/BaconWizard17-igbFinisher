@@ -261,5 +261,5 @@ def CallAlchemy(input_file_path, **kwargs):
     cmd = f'"{optimizer_path}" "{input_file_path}" "{output_file_path}" "{kwargs.get('optimization_path', (Path(environ['temp']) / 'opt.ini'))}"'
     # Call the operation.
     subprocess.run(cmd, shell=True, stdout=subprocess.DEVNULL)
-    # Delete the optimization path.
+    # Delete the optimization file.
     remove(kwargs.get('optimization_path', (Path(environ['temp']) / 'opt.ini')))
