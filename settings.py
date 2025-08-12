@@ -106,7 +106,7 @@ def ReadAndConfirmSettingsStructure(settings_file_path):
         'CHARACTER': ['XML1_num', 'XML2_num', 'MUA1_num', 'MUA2_num', 'XML1_path', 'XML2_path', 'MUA1_path', 'MUA2_path'],
         'ASSET': ['XML1_num_xx', 'XML2_num_XX', 'MUA1_num_XX', 'MUA2_num_XX', 'XML1_special_name', 'XML2_special_name', 'MUA1_special_name', 'MUA2_special_name'],
         'CONSOLES': consoles_list,
-        'SETTINGS': ['big_texture', 'secondary_skin', 'cel_other_model', 'untextured_okay', 'generate_collision', 'igBlend_to_igAlpha_transparency', 'skip_subfolder', 'force_adv_tex_folders', 'advanced_texture_ini', 'forced_asset_type']
+        'SETTINGS': ['big_texture', 'secondary_skin', 'untextured_okay', 'generate_collision', 'igBlend_to_igAlpha_transparency', 'skip_subfolder', 'force_adv_tex_folders', 'advanced_texture_ini', 'forced_asset_type']
     }
     # Loop through the sections (the sections of the ini file are the keys of the dictionary, and the keys of the ini file make up a list that's the value of the dictionary).
     for section, key_list in section_key_dict.items():
@@ -199,7 +199,6 @@ def GetRemainingSettings(settings_dict, config):
     # Get the settings that can be True, False, or Ask
     settings_dict['big_texture'] = GetTrueFalseAskSetting(config, 'SETTINGS', 'big_texture', 'if assets with textures over 256x256 should retain the default size for weaker consoles', 'Should assets with textures over 256x256 be kept at their original size on weaker consoles?', False)
     settings_dict['secondary_skin'] = GetTrueFalseAskSetting(config, 'SETTINGS', 'secondary_skin', 'if this is a secondary skin', 'Is this a secondary skin?', False)
-    settings_dict['cel_other_model'] = GetTrueFalseAskSetting(config, 'SETTINGS', 'cel_other_model', 'if this is an Other model that can have cel shading', 'If this is an Other model, can it have cel shading?', True)
     settings_dict['untextured_okay'] = GetTrueFalseAskSetting(config, 'SETTINGS', 'untextured_okay', 'if it\'s okay for 3D assets to lack textures', 'Is it okay if 3D assets lack textures?', False)
     settings_dict['generate_collision'] = GetTrueFalseAskSetting(config, 'SETTINGS', 'generate_collision', 'if collision should be generated for Other models', 'Should collision be generated for Other models?', False)
     settings_dict['igBlend_to_igAlpha_transparency'] = GetTrueFalseAskSetting(config, 'SETTINGS', 'igBlend_to_igAlpha_transparency', 'if igBlendStateAttr/igBlendFunctionAttr attributes should be converted to igAlphaStateAttr/igAlphaFunctionAttr attributes in transparent models', 'Should igBlendStateAttr/igBlendFunctionAttr attributes be converted to igAlphaStateAttr/igAlphaFunctionAttr attributes in transparent models?', False)

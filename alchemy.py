@@ -194,6 +194,13 @@ def GetModelStats(input_file_path, asset_type, settings_dict):
         # This is an asset type that doesn't support cel shading.
         # Give an error.
         questions.PrintError(f'Assets of type {asset_type} cannot use cel shading, but cel shading was detected.', system_exit = True)
+    # Determine if this is an other model.
+    if asset_type == 'Other':
+        # This is an other model.
+        # Determine if the name has ' - No Cel' in it.
+        for game in ['MUA1', 'MUA2']:
+            if ' - No Cel' in settings_dict[f'{game}_special_name']:
+                settings_dict[f'{game}_special_name'].replace(' - No Cel', '')
     # Determine if it's necessary to print the debug information.
     if settings_dict.get('debug_mode', False) == True:
         # It's necessary to print the debug information.
