@@ -16,7 +16,9 @@ from shutil import copy
 # FUNCTIONS #
 # ######### #
 # This function updates the hex out list and adds game-specific information.
-def UpdateHexOutList(hex_out_list, asset_type, texture_info_dict, geometry_list, game_num):
+def UpdateHexOutList(hex_out_list, asset_type, texture_info_dict, geometry_list, game, settings_dict):
+    # Set the game number.
+    game_num = settings_dict[f'{game}_num']
     # Determine if the character number ends in XX.
     if game_num.endswith('XX'):
         # The skin number ends in XX.
@@ -74,6 +76,12 @@ def UpdateHexOutList(hex_out_list, asset_type, texture_info_dict, geometry_list,
         hex_out_list_byte.append([bytearray('igActor01Appearance', 'utf-8'), bytearray(game_num_hex, 'utf-8')])
         # Add the igActor01Skeleton value.
         hex_out_list_byte.append([bytearray('igActor01Skeleton', 'utf-8'), bytearray(f'{game_num_hex}_skel', 'utf-8')])
+    # Determine if the user wanted to convert igBlend transparency attributes to igAlpha transparency attributes.
+    if settings_dict['igBlend_to_igAlpha_transparency'] == True:
+        # The user wanted to convert these attributes.
+        # Add the attributes to the list.
+        hex_out_list_byte.append([bytearray('igBlendStateAttr', 'utf-8'), bytearray('igAlphaStateAttr', 'utf-8')])
+        hex_out_list_byte.append([bytearray('igBlendFunctionAttr', 'utf-8'), bytearray('igAlphaFunctionAttr', 'utf-8')])
     # Add the final 12301 value, which will get anything that's left.
     hex_out_list_byte.append([bytearray('12301', 'utf-8'), bytearray(game_num_hex, 'utf-8')])
     # Return the new list with the byte format data.
@@ -101,9 +109,9 @@ def HexEditor(temp_file_path, temp_file_hexed_path, hex_out_list_byte):
         f.write(byte)
 
 # This function coordinates the hex editing.
-def HexEdit(temp_file_path, asset_type, hex_out_list, texture_info_dict, geometry_list, game_num):
+def HexEdit(temp_file_path, asset_type, hex_out_list, texture_info_dict, geometry_list, game, settings_dict):
     # Add the game-specific information to the hex out list.
-    hex_out_list_byte = UpdateHexOutList(hex_out_list, asset_type, texture_info_dict, geometry_list, game_num)
+    hex_out_list_byte = UpdateHexOutList(hex_out_list, asset_type, texture_info_dict, geometry_list, game, settings_dict)
     # Set up the path to the hex edited file.
     temp_file_hexed_path = Path(os.environ['TEMP']) / 'temph.igb'
     # Perform the hex editing.

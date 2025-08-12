@@ -115,7 +115,7 @@ for game in settings.games_list:
         # Set up the output file name.
         output_file_name = output_name_process_dict[asset_type](settings_dict, game, has_cel)
         # Hex edit the file.
-        temp_file_hexed_path = hex.HexEdit(temp_file_path, 'Skin', hex_out_list, texture_info_dict, geometry_list, settings_dict[f'{game}_num'])
+        temp_file_hexed_path = hex.HexEdit(temp_file_path, 'Skin', hex_out_list, texture_info_dict, geometry_list, game, settings_dict)
         # Loop through the possible functions for the game.
         for console_process in game_console_process_dict[game]:
             # Perform the processing.
