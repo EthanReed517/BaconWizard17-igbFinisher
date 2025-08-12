@@ -152,65 +152,75 @@ def FolderDetection(textures_list, settings_dict, application_path, asset_type):
     # Return the updated settings file.
     return settings_dict
 
-# This function is used to get the list of texture values that need to be hexed out.
-def GetHexOutList(textures_list, asset_type):
+# This function is used to set the list of hex editing values and also get the output file names for 2D assets.
+def GetHexOutList(settings_dict, asset_type, textures_list):
     # Initialize a list of things to hex out.
     hex_out_list = []
-    # Determine if this is a portrait.
-    if asset_type in ['Conversation Portrait', 'Character Select Portrait']:
-        # This is a portrait.
-        # Get the texture name.
-        texture_name = textures_list[0].stem
-        # Set up the dictionary of prefixes.
-        prefix_dict = {'Conversation Portrait': ['b', 'g', 'r', 'ng'], 'Character Select Portrait': ['x1c', 'x2c']}
-        # Loop through the possible prefixes.
-        for prefix in prefix_dict[asset_type]:
-            # Determine if the texture starts with one of these prefixes.
-            if texture_name.startswith(f'{prefix}_'):
-                # The texture starts with this prefix.
-                # Update the hex editing list to remove this.
-                hex_out_list.append([texture_name, texture_name[(len(prefix) + 1):]])
-    # Return the collected list.
-    return hex_out_list
-
-# This function is used to set the output file names for 2D assets.
-def Get2DAssetFileNames(settings_dict, asset_type, hex_out_list, textures_list):
     # Verify that this is a 2D asset that gets its file name from the texture name.
-    if asset_type in ['Power Icons', 'Comic Cover', 'Concept Art']:
+    if asset_type in ['Conversation Portrait', 'Character Select Portrait', 'Power Icons', 'Comic Cover', 'Concept Art', 'Loading Screen']:
         # This is a 2D asset that gets its file name from the texture name.
         # Get the texture name.
         texture_name = textures_list[0].stem
         # Filter by asset type.
-        if asset_type == 'Power Icons':
-            # These are power icons.
-            # Determine what game the icons are for.
-            icons_game = texture_name.split('_')[0]
+        if asset_type in ['Conversation Portrait', 'Character Select Portrait']:
+            # This is a portrait.
+            # Set up a dictionary to match the prefixes to descriptors.
+            descriptor_dict = {'b': 'Hero', 'g': 'Villain - Green Outline', 'r': 'Villain', 'ng': 'Next-Gen Style', 'x1c': 'XML1', 'x2c': 'XML2'}
+            # Loop through the possible prefixes.
+            for prefix in descriptor_dict.keys():
+                # Determine if the texture starts with one of these prefixes.
+                if texture_name.startswith(f'{prefix}_'):
+                    # The texture starts with this prefix.
+                    # Update the hex editing list to remove this.
+                    hex_out_list.append([texture_name, texture_name[(len(prefix) + 1):]])
+                    # Loop through the games.
+                    for game in settings.games_list:
+                        # Make sure that the special name should be set.
+                        if settings_dict[f'{game}_special_name'] is None:
+                            # The special name should be set.
+                            # Update the name for that game.
+                            settings_dict[f'{game}_special_name'] = descriptor_dict[prefix]
+                    # Determine if this is a CSP.
+                    if asset_type == 'Character Select Portrait':
+                        # This is a CSP.
+                        # Set up a dictionary of games to skip.
+                        game_to_skip_dict = {'x1c': 'XML2', 'x2c': 'XML1'}
+                        # Skip the necessary game.
+                        settings_dict[f'{game_to_skip_dict[prefix]}_num'] = None
+                        settings_dict[f'{game_to_skip_dict[prefix]}_path'] = None
+        elif asset_type in ['Power Icons', 'Comic Cover']:
+            # This is a game-specific 2D asset.
+            # Determine what game this is for.
+            texture_prefix = texture_name.split('_')[0]
             # Loop through the games.
             for game in settings.games_list:
                 # Determine if this matches the game.
-                if game == icons_game:
+                if game == texture_prefix:
                     # The games match.
-                    # Update the settings accordingly.
-                    settings_dict[f'{game}_special_name'] = texture_name
-                    hex_out_list.append([texture_name, texture_name[5:]])
-                    # Determine if this is an icons2 file.
-                    if texture_name.endswith('icons2'):
-                        # This is an icons2 file.
-                        # Skip the consoles that don't use icons2.
-                        settings_dict['GameCube'] = None
-                        settings_dict['PS2'] = None
-                        settings_dict['PSP'] = None
+                    # Make sure that the special name should be set.
+                    if settings_dict[f'{game}_special_name'] is None:
+                        # The special name should be set.
+                        # Update the settings accordingly.
+                        settings_dict[f'{game}_special_name'] = texture_name
+                        hex_out_list.append([texture_name, texture_name[5:]])
+                        # Determine if this is an icons file.
+                        if asset_type == 'Power Icons':
+                            # This is an icons file.
+                            # Determine if this is an icons2 file.
+                            if texture_name.endswith('icons2'):
+                                # This is an icons2 file.
+                                # Skip the consoles that don't use icons2.
+                                settings_dict['GameCube'] = None
+                                settings_dict['PS2'] = None
+                                settings_dict['PSP'] = None
                 else:
                     # This is another game.
                     # Update the settings accordingly.
                     settings_dict[f'{game}_num'] = None
                     settings_dict[f'{game}_path'] = None
         else:
-            # This is a comic cover or concept art.
-            # Loop through the games.
-            for game in settings.games_list:
-                # Update the name for that game.
-                settings_dict[f'{game}_special_name'] = texture_name
+            # This is an asset that has game-specific aspect ratios.
+            
     # Return the updated values.
     return settings_dict, hex_out_list
 
@@ -276,9 +286,7 @@ def GetTextureInfo(application_path, input_file_path, settings_dict, asset_type)
     # Update the paths with folder detection.
     settings_dict = FolderDetection(textures_list, settings_dict, application_path, asset_type)
     # Determine if any texture values need to be hexed out.
-    hex_out_list = GetHexOutList(textures_list, asset_type)
-    # Update file names for 2D assets.
-    settings_dict, hex_out_list = Get2DAssetFileNames(settings_dict, asset_type, hex_out_list, textures_list)
+    settings_dict, hex_out_list = GetHexOutList(settings_dict, asset_type, hex_out_list, textures_list)
     # Determine the environment map type from the texture information.
     settings_dict, hex_out_list, texture_type = GetEnvironmentType(textures_list, settings_dict, asset_type, hex_out_list, input_file_path, texture_type)
     # Determine if this is a CSP.
