@@ -92,7 +92,7 @@ def ProcessWiiAsset(asset_type, temp_file_hexed_path, output_file_name, settings
         # Add the conversion to DXT1.
         optimizations_list.append('igConvertImage (DXT1)')
         # Write the optimization.
-        optimizations.WriteOptimization(optimizations_list, alchemy_version = 'Alchemy 3.2')
+        optimizations.WriteOptimization(optimizations_list, alchemy_version = 'Alchemy 3.2', scale_to = scale_factor)
         # Determine if the output sub-folder should be skipped.
         if settings_dict['skip_subfolder'] == False:
             # The sub-folder should not be skipped.

@@ -137,7 +137,7 @@ def ProcessPC360Asset(asset_type, temp_file_hexed_path, output_file_name, settin
             if not(alchemy_32_optimization_list == []):
                 # There are Alchemy 3.2 optimizations.
                 # Write the Alchemy 3.2 optimization.
-                optimizations.WriteOptimization(alchemy_32_optimization_list, alchemy_version = 'Alchemy 3.2')
+                optimizations.WriteOptimization(alchemy_32_optimization_list, alchemy_version = 'Alchemy 3.2', scale_to = scale_factor)
                 # Perform the Alchemy 3.2 optimizations and don't send the file.
                 alchemy.CallAlchemy(temp_file_hexed_path, alchemy_version = 'Alchemy 3.2', output_path = temp_file_hexed_32_path)
             else:
