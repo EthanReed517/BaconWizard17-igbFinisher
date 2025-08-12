@@ -73,9 +73,12 @@ def CheckIfMannequin(input_file_path, settings_dict):
     return asset_type, settings_dict
 
 # This function lets the user pick the asset type.
-def UserPicksAsset(input_file_path, settings_dict):
-    # Print a warning to the user.
-    questions.PrintWarning(f'The asset type of {input_file_path.name} could not be detected from the file name.', skip_pause = True)
+def UserPicksAsset(input_file_path, settings_dict, detection_failed):
+    # Determine if detection failed.
+    if detection_failed == True:
+        # The detection failed.
+        # Print a warning to the user.
+        questions.PrintWarning(f'The asset type of {input_file_path.name} could not be detected from the file name.', skip_pause = True)
     # Ask the user what the asset type is.
     asset_type = questions.Select(f'What type of asset is {input_file_path.name}?', settings.asset_type_list, default_choice = 'Other')
     # Determine if this is a mannequin.
@@ -99,6 +102,10 @@ def AssetRecognition(input_file_path, settings_dict):
         asset_type = settings_dict['forced_asset_type']
         # Announce this.
         questions.PrintSuccess(f'{input_file_path.name} was set as a {asset_type}.')
+    elif settings_dict['forced_asset_type'] == 'Ask':
+        # The user wants to be asked about the asset type no matter what.
+        # Get the asset type from the user.
+        asset_type, settings_dict = UserPicksAsset(input_file_path, settings_dict, False)
     else:
         # The user did not force an asset type.
         # Set up the dictionary of file names and their asset types.
@@ -124,24 +131,24 @@ def AssetRecognition(input_file_path, settings_dict):
             if asset_type == 'Unknown':
                 # The asset type could not be detected.
                 # Get the asset type from the user.
-                asset_type, settings_dict = UserPicksAsset(input_file_path, settings_dict)
+                asset_type, settings_dict = UserPicksAsset(input_file_path, settings_dict, True)
             else:
                 # This was a mannequin.
                 # Announce that it was detected as such.
                 questions.PrintSuccess(f'{input_file_path.name} was automatically identified as a mannequin.')
-        # Update the consoles based on the asset type.
-        if asset_type == 'Mannequin':
-            settings_dict['XML1_num'] = None
-            settings_dict['XML2_num'] = None
-            settings_dict['XML1_path'] = None
-            settings_dict['XML2_path'] = None
-        elif asset_type in ['3D Head', 'Character Select Portrait']:
-            settings_dict['MUA1_num'] = None
-            settings_dict['MUA2_num'] = None
-            settings_dict['MUA1_path'] = None
-            settings_dict['MUA2_path'] = None
-        elif asset_type in ['Comic Cover', 'Concept Art']:
-            settings_dict['MUA2_num'] = None
-            settings_dict['MUA2_path'] = None
+    # Update the consoles based on the asset type.
+    if asset_type == 'Mannequin':
+        settings_dict['XML1_num'] = None
+        settings_dict['XML2_num'] = None
+        settings_dict['XML1_path'] = None
+        settings_dict['XML2_path'] = None
+    elif asset_type in ['3D Head', 'Character Select Portrait']:
+        settings_dict['MUA1_num'] = None
+        settings_dict['MUA2_num'] = None
+        settings_dict['MUA1_path'] = None
+        settings_dict['MUA2_path'] = None
+    elif asset_type in ['Comic Cover', 'Concept Art']:
+        settings_dict['MUA2_num'] = None
+        settings_dict['MUA2_path'] = None
     # Return the asset type and the settings.
     return asset_type, settings_dict
