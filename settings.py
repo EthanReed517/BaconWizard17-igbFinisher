@@ -213,10 +213,17 @@ def GetRemainingSettings(settings_dict, config):
 def SkinNumberGetter(config, game):
     # Get the number from the settings.
     game_number = config['CHARACTER'][f'{game}_num']
-    # Set a variable to track if the number is valid and begin by assuming that it's not.
-    is_valid = False
-    # Start a while loop to get the number.
-    while is_valid == False:
+    # Determine what the value is.
+    if game_number == 'Ask':
+        # The user wants to be asked about the number.
+        # Ask about the number.
+        game_number = questions.TextInput(f'What is the skin number for {game}?', validator = questions.SkinNumberValidator)
+    elif game_number == 'None':
+        # There shouldn't be any number for this game.
+        # Update the number to the None value.
+        game_number = None
+    else:
+        # A number was entered.
         # Check if the number is the correct length.
         if ((len(game_number) == 4) or (len(game_number) == 5)):
             # The length of the number is correct.
@@ -224,22 +231,18 @@ def SkinNumberGetter(config, game):
             if game_number.isnumeric():
                 # The number is numeric.
                 # Check if the character number is between 00 and 255.
-                if ((int(game_number[0:-2]) >= 0) and (int(game_number[0:-2]) <= 255)):
-                    # The number is between 00 and 255.
-                    # The number is correct. Set that it is valid.
-                    is_valid = True
-                else:
+                if not((int(game_number[0:-2]) >= 0) and (int(game_number[0:-2]) <= 255)):
                     # The number is not between 00 and 255.
                     # Get the correct number from the user.
-                    game_number = questions.TextInput(f'The first {len(game_number) - 2} digits of the skin number for {game} ("{game}_num" in settings.ini) are not between 00 and 255. Please enter the skin number. settings.ini will not be updated.', validator = questions.SkinNumberValidator)
+                    questions.PrintError(f'The first {len(game_number) - 2} digits of the skin number for {game} ("{game}_num" in settings.ini) are not between 00 and 255.', system_exit = True)
             else:
                 # The number is not numeric.
                 # Get the correct number from the user.
-                game_number = questions.TextInput(f'The skin number for {game} ("{game}_num" in settings.ini) is not a number. Please enter the skin number. settings.ini will not be updated.', validator = questions.SkinNumberValidator)
+                questions.PrintError(f'The skin number for {game} ("{game}_num" in settings.ini) is not a number.', system_exit = True)
         else:
             # The number is not the correct length.
             # Get the correct number from the user.
-            game_number = questions.TextInput(f'The skin number for {game} ("{game}_num" in settings.ini) is not the correct length (4 or 5 digits). Please enter the skin number. settings.ini will not be updated.', validator = questions.SkinNumberValidator)
+            questions.PrintError(f'The skin number for {game} ("{game}_num" in settings.ini) is not the correct length (4 or 5 digits).', system_exit = True)
     # Return the skin number.
     return game_number
 
