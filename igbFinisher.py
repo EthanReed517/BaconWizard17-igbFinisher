@@ -89,10 +89,7 @@ output_name_process_dict = {
     '3D Head': processing.SetUp3DHeadName,
     'Conversation Portrait': processing.SetUpHUDName,
     'Character Select Portrait': processing.SetUpCSPName,
-    #'Power Icons': processing.SetUpIconsName,
-    #'Comic Cover': processing.SetUpComicName,
-    #'Concept Art': processing.SetUpConceptName,
-    #'Other': processing.SetUpOtherName
+    'Loading Screen': processing.SetUpLoadingName
 }
 # Determine if this is a skin.
 if asset_type == 'Skin':
@@ -112,8 +109,11 @@ for game in settings.games_list:
         # The game is in use.
         # Announce the status.
         questions.PrintImportant(f'Processing for {game} . . .')
-        # Set up the output file name.
-        output_file_name = output_name_process_dict[asset_type](settings_dict, game, has_cel)
+        # Set up the output file name. Anything that gets its full name from the special name uses the same function.
+        try:
+            output_file_name = output_name_process_dict[asset_type](settings_dict, game, has_cel)
+        except KeyError:
+            output_file_name = processing.SetUpSpecialName(settings_dict, game, has_cel)
         # Hex edit the file.
         temp_file_hexed_path = hex.HexEdit(temp_file_path, 'Skin', hex_out_list, texture_info_dict, geometry_list, game, settings_dict)
         # Loop through the possible functions for the game.
