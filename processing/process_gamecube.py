@@ -35,7 +35,7 @@ def CanProcessGC(settings_dict, texture_info_dict):
                 # Skip processing.
                 can_process = False
     # Determine if advanced textures are in use.
-    if settings['advanced_texture_ini'] is not None:
+    if settings_dict['advanced_texture_ini'] is not None:
         # Advanced textures are in use.
         # Skip processing.
         can_process = False
@@ -86,7 +86,7 @@ def ProcessGCAsset(asset_type, temp_file_hexed_path, output_file_name, settings_
         # Initialize a list of optimizations.
         optimization_list = []
         # For other models, add the collision generation if required.
-        if ((asset_type == 'Other') and (settings['generate_collision'] == True)):
+        if ((asset_type == 'Other') and (settings_dict['generate_collision'] == True)):
             optimization_list.append('igCollideHullRaven')
         # Determine the scale factor.
         scale_factor = CheckGCScaling(settings_dict, asset_type, texture_info_dict)
