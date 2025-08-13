@@ -11,7 +11,7 @@
 import questions
 # External modules
 from configparser import ConfigParser
-import os
+from os import environ
 from pathlib import Path
 
 
@@ -30,11 +30,11 @@ optimization_dict = {
         # Convert textures to PNG8, including alpha PNG8.
         'igQuantizeRaven': ['name = igQuantizeRaven', 'imageList = ', 'imageListFilename = ', 'isExclude = true', 'isReduce = false', 'alphaPallete = true', 'eightBitTofourBitOnly = false'],
         # Convert textures to PNG8 but skips any textures in the texture list.
-        'igQuantizeRaven (exclude)': ['name = igQuantizeRaven', 'imageList = ', f'imageListFilename = {Path(os.environ['temp']) / 'temp.txt'}', 'isExclude = true', 'isReduce = false', 'alphaPallete = true', 'eightBitTofourBitOnly = false'],
+        'igQuantizeRaven (exclude)': ['name = igQuantizeRaven', 'imageList = ', f'imageListFilename = {Path(environ['temp']) / 'temp.txt'}', 'isExclude = true', 'isReduce = false', 'alphaPallete = true', 'eightBitTofourBitOnly = false'],
         # Convert textures to PNG8 but only on any textures in the texture list.
-        'igQuantizeRaven (include)': ['name = igQuantizeRaven', 'imageList = ', f'imageListFilename = {Path(os.environ['temp']) / 'temp.txt'}', 'isExclude = false', 'isReduce = false', 'alphaPallete = true', 'eightBitTofourBitOnly = false'],
+        'igQuantizeRaven (include)': ['name = igQuantizeRaven', 'imageList = ', f'imageListFilename = {Path(environ['temp']) / 'temp.txt'}', 'isExclude = false', 'isReduce = false', 'alphaPallete = true', 'eightBitTofourBitOnly = false'],
         # Convert textures to PNG8 (uses the worse format, only used on environment maps).
-        'igConvertImage (PNG8)': ['name = igConvertImage', 'format = x_8', 'order = DEFAULT', 'isExclude = exclude', 'convertIfSmaller = true', 'preserveAlpha = true', f'imageListFilename = {Path(os.environ['temp']) / 'temp.txt'}']
+        'igConvertImage (PNG8)': ['name = igConvertImage', 'format = x_8', 'order = DEFAULT', 'isExclude = exclude', 'convertIfSmaller = true', 'preserveAlpha = true', f'imageListFilename = {Path(environ['temp']) / 'temp.txt'}']
     },
     'Alchemy 5': {
         # Get statistics for textures.
@@ -54,7 +54,7 @@ optimization_dict = {
         # Convert opaque textures to PNG8.
         'igConvertImage (PNG8)': ['name = igConvertImage', 'format = IG_GFX_TEXTURE_FORMAT_X_8', 'sourceFormat = rgb_888_24', 'order = IG_GFX_IMAGE_ORDER_DEFAULT', 'isExclude = exclude', 'convertIfSmaller = false', 'imageListFilename = '],
         # Calls the secondary optimization for XML2 PSP.
-        'igOptimizeActorSkinsInScenes': ['name = igOptimizeActorSkinsInScenes', f'fileName = {Path(os.environ['temp']) / 'opt2.ini'}', 'applySkinLocal = true'],
+        'igOptimizeActorSkinsInScenes': ['name = igOptimizeActorSkinsInScenes', f'fileName = {Path(environ['temp']) / 'opt2.ini'}', 'applySkinLocal = true'],
         # Convert igGeometryAttr to igGeometryAttr2 (XML2 PSP method).
         'igConvertGeometryAttr (PSP)': ['name = igConvertGeometryAttr', 'accessMode = 0', 'storeBoundingVolume = false'],
         # Various additional XML2 PSP optimizations.
@@ -77,7 +77,7 @@ optimization_dict = {
 # This function is used to write an optimization.
 def WriteOptimization(optimization_list, **kwargs):
     # Set up the optimization path.
-    optimization_path = kwargs.get('optimization_path', Path(os.environ['temp']) / 'opt.ini')
+    optimization_path = kwargs.get('optimization_path', Path(environ['temp']) / 'opt.ini')
     # Open the optimization path to begin writing the file.
     with open(optimization_path, 'w') as file:
         # Loop through the opening lines.
