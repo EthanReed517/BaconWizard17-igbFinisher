@@ -94,6 +94,11 @@ def CanProcessXbox(game, settings_dict, texture_info_dict):
             # The Xbox is not in use.
             # Skip processing.
             can_process = False
+    # Determine if advanced textures are in use.
+    if settings['advanced_texture_ini'] is not None:
+        # Advanced textures are in use.
+        # Skip processing.
+        can_process = False
     # Return whether or not it's okay to process as well as the list of output folders.
     return can_process, output_folder_list
 

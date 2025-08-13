@@ -34,6 +34,11 @@ def CanProcessGC(settings_dict, texture_info_dict):
                 # The wrong environment map size is in use.
                 # Skip processing.
                 can_process = False
+    # Determine if advanced textures are in use.
+    if settings['advanced_texture_ini'] is not None:
+        # Advanced textures are in use.
+        # Skip processing.
+        can_process = False
     # Return the status.
     return can_process
 

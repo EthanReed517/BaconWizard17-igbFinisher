@@ -68,6 +68,11 @@ def CanProcessPSP(settings_dict, texture_info_dict, game, has_cel, output_file_n
                     # This is for MUA2.
                     # Skip processing, as processing was already handled for MUA1.
                     can_process = False
+    # Determine if advanced textures are in use.
+    if settings['advanced_texture_ini'] is not None:
+        # Advanced textures are in use.
+        # Skip processing.
+        can_process = False
     # Return if this can be processed as well as the output folder.
     return can_process, output_folder_name
 
