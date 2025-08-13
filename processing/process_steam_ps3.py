@@ -38,8 +38,8 @@ def CanProcessSteamPS3(settings_dict, texture_info_dict):
             # Determine if the PS3 is in use.
             if settings_dict['PS3'] == True:
                 # The PS3 is in use.
-                # Determine if advanced texture folders are being forced.
-                if settings_dict['force_adv_tex_folders'] == True:
+                # Determine if advanced texture folders are being forced or if advanced textures are being used.
+                if ((settings_dict['force_adv_tex_folders'] == True) or (settings_dict['advanced_texture_ini'] is not None)):
                     # Advanced texture folders are being forced.
                     # Set up the folder names.
                     output_folder_list = ['for MUA1 (Steam)', 'for MUA1 (PS3)']
@@ -107,8 +107,11 @@ def ProcessSteamPS3Asset(asset_type, temp_file_hexed_path, output_file_name, set
             alchemy_32_optimization_list.append('igCollideHullRaven')
         # Determine if scaling is necessary.
         alchemy_32_optimization_list, output_folder_list, scale_factor = CheckPS3Scaling(asset_type, game, alchemy_32_optimization_list, output_folder_list, texture_info_dict['max_texture_size'])
-        ################################################################################################### NEED TO ADD ADVANCED TEXTURE SUPPORT HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        ### Advanced textures get converted to the necessary texture format, except need to make sure that normal maps are converted to DXT5 no matter what.
+        # Determine if an advanced texture is necessary.
+        if settings_dict['advanced_texture_ini'] is not None:
+            # Advanced textures are necessary.
+            # Add the optimizations.
+            alchemy_5_optimization_list.extend(['igRavenSetupMUAMaterial', 'igConvertImage (DXT1)', 'igConvertImage (DXT5)'])
         # Loop through the output folders.
         for output_folder_name in output_folder_list:
             # Determine if this is for Steam after a PS3 asset that was scaled.
@@ -130,10 +133,11 @@ def ProcessSteamPS3Asset(asset_type, temp_file_hexed_path, output_file_name, set
             # Add the conversion to DXT1.
             alchemy_5_optimization_list.append('igConvertImage (DXT1)')
             # Add the global color optimization for skins only.
-            if asset_type == 'Skin':
+            if ((asset_type == 'Skin') and not('igGenerateGlobalColor' in alchemy_5_optimization_list)):
                 alchemy_5_optimization_list.append('igGenerateGlobalColor')
             # Add the mandatory Alchemy 5 optimization.
-            alchemy_5_optimization_list.append('igConvertGeometryAttr')
+            if not('igConvertGeometryAttr' in alchemy_5_optimization_list):
+                alchemy_5_optimization_list.append('igConvertGeometryAttr')
             # Determine if the output sub-folder should be skipped.
             if settings_dict['skip_subfolder'] == False:
                 # The sub-folder should not be skipped.
@@ -143,8 +147,22 @@ def ProcessSteamPS3Asset(asset_type, temp_file_hexed_path, output_file_name, set
                 # The sub-folder should be skipped.
                 # Set up the destination path.
                 output_file_path = settings_dict[f'{game}_path'] / output_file_name
-            # Write the Alchemy 5 optimization.
-            optimizations.WriteOptimization(alchemy_5_optimization_list)
+            # Determine if there are advanced textures.
+            if settings_dict['advanced_texture_ini'] is not None:
+                # There are advanced textures.
+                # Check which console this is for.
+                if output_folder_name == 'for MUA1 (PS3)':
+                    # This is for PS3.
+                    # Write the optimization with green normal maps.
+                    optimizations.WriteOptimization(alchemy_5_optimization_list, advanced_texture_ini = settings_dict['advanced_texture_ini'], normal_map_type = 'green')
+                else:
+                    # This is for the Steam version.
+                    # Write the optimization with blue normal maps.
+                    optimizations.WriteOptimization(alchemy_5_optimization_list, advanced_texture_ini = settings_dict['advanced_texture_ini'], normal_map_type = 'blue')
+            else:
+                # There are no advanced textures.
+                # Write the Alchemy 5 optimization normally.
+                optimizations.WriteOptimization(alchemy_5_optimization_list)
             # Perform the Alchemy 5 optimizations and send the file.
             alchemy.CallAlchemy(temp_file_hexed_32_path, output_path = output_file_path)
             # Delete the temp file.
