@@ -103,7 +103,7 @@ def ProcessSteamPS3Asset(asset_type, temp_file_hexed_path, output_file_name, set
         alchemy_32_optimization_list = []
         alchemy_5_optimization_list = []
         # For other models, add the collision generation if required.
-        if ((asset_type == 'Other') and (settings['generate_collision'] == True)):
+        if ((asset_type == 'Other') and (settings_dict['generate_collision'] == True)):
             alchemy_32_optimization_list.append('igCollideHullRaven')
         # Determine if scaling is necessary.
         alchemy_32_optimization_list, output_folder_list, scale_factor = CheckPS3Scaling(asset_type, game, alchemy_32_optimization_list, output_folder_list, texture_info_dict['max_texture_size'])
