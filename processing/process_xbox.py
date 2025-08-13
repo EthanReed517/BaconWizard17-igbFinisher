@@ -162,7 +162,7 @@ def ProcessXboxAsset(asset_type, temp_file_hexed_path, output_file_name, setting
         # Determine the texture size.
         if texture_info_dict['max_texture_size'] > max_png8_size:
             # This is a large texture.
-            # Convert to DXT1 (automatically preserves transparent textures).
+            # Convert to DXT1 (automatically preserves transparent textures but will convert environment maps).
             optimization_list.append('igConvertImage (DXT1)')
         else:
             # This is a small texture.
@@ -177,7 +177,8 @@ def ProcessXboxAsset(asset_type, temp_file_hexed_path, output_file_name, setting
                 processing.TransparentTextureNames(texture_info_dict['textures_list'])
                 # Convert to PNG8, skipping transparent textures.
                 optimization_list.append('igQuantizeRaven (exclude)')
-        ################################################################################################### NEED TO ADD ENVIRONMENT MAP SUPPORT HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            # Add the conversion to PNG8 the default way, which will convert the environment maps. Also preserves transparent textures.
+            optimization_list.append('igConvertImage (PNG8)')
         # Loop through the output folder list.
         for output_folder_name in output_folder_list:
             # Determine if the output sub-folder should be skipped.

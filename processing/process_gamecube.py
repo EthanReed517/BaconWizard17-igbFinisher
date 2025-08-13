@@ -92,7 +92,8 @@ def ProcessGCAsset(asset_type, temp_file_hexed_path, output_file_name, settings_
         scale_factor = CheckGCScaling(settings_dict, asset_type, texture_info_dict)
         # Add the necessary optimizations.
         optimization_list.extend(['igResizeImage', 'igQuantizeRaven'])
-        ################################################################################################### NEED TO ADD ENVIRONMENT MAP SUPPORT HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        # Add the conversion to PNG8 the default way, which will convert the environment maps.
+        optimization_list.append('igConvertImage (PNG8)')
         # Write the optimization.
         optimizations.WriteOptimization(optimization_list, alchemy_version = 'Alchemy 3.2', scale_to = scale_factor)
         # Determine if the output sub-folder should be skipped.
