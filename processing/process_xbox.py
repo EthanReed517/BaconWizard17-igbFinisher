@@ -75,7 +75,7 @@ def CanProcessXbox(game, settings_dict, texture_info_dict):
             else:
                 # The PC is not in use.
                 # Determine if the Xbox is in use.
-                if settings_dict['Xbox'] == False:
+                if ((settings_dict['Xbox'] == False) or (settings_dict['Xbox'] == 'MUA1')):
                     # The xbox is not in use.
                     # Skip processing.
                     can_process = False

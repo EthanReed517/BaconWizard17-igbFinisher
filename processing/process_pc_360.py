@@ -33,7 +33,7 @@ def CanProcessPC360(settings_dict, texture_info_dict):
     else:
         # There are no environment maps.
         # Verify if the PC is in use.
-        if settings_dict['PC'] == True:
+        if ((settings_dict['PC'] == True) or (settings_dict['PC'] == 'MUA1')):
             # The PC is in use.
             # Determine if the 360 is in use.
             if settings_dict['Xbox_360'] == True:

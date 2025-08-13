@@ -210,9 +210,9 @@ def GetHexOutList(settings_dict, asset_type, textures_list):
                             if texture_name.endswith('icons2'):
                                 # This is an icons2 file.
                                 # Skip the consoles that don't use icons2.
-                                settings_dict['GameCube'] = None
-                                settings_dict['PS2'] = None
-                                settings_dict['PSP'] = None
+                                settings_dict['GameCube'] = False
+                                settings_dict['PS2'] = False
+                                settings_dict['PSP'] = False
                 else:
                     # This is another game.
                     # Update the settings accordingly.
@@ -220,7 +220,59 @@ def GetHexOutList(settings_dict, asset_type, textures_list):
                     settings_dict[f'{game}_path'] = None
         else:
             # This is an asset that has game-specific aspect ratios.
-            
+            # Get the prefix from the file name.
+            prefix = texture_name.split('_')[0]
+            # Check what the prefix is.
+            if prefix == '4-3':
+                # This is a 4:3 texture.
+                # Skip processing for PSP, MUA1, and MUA2.
+                settings_dict['PSP'] = False
+                settings_dict['MUA1_num'] = None
+                settings_dict['MUA2_num'] = None
+                settings_dict['MUA1_path'] = None
+                settings_dict['MUA2_path'] = None
+            else:
+                # This is a 16:9 texture.
+                # Skip processing for XML1 and the non-PSP versions of XML2.
+                settings_dict['XML1_num'] = None
+                settings_dict['XML1_path'] = None
+                settings_dict['GameCube'] = False
+                settings_dict['PS2'] = False
+                settings_dict['PC'] = 'MUA1'
+                settings_dict['Xbox'] = 'MUA1'
+            # Determine if this is concept art.
+            if asset_type == 'Concept Art':
+                # This is concept art.
+                # Skip processing for MUA2.
+                settings_dict['MUA2_num'] = None
+                settings_dict['MUA2_path'] = None
+                # Loop through the games.
+                for game in settings.games_list:
+                    # Make sure that the special name should be set.
+                    if settings_dict[f'{game}_special_name'] is None:
+                        # The special name should be set.
+                        # Update the settings accordingly.
+                        settings_dict[f'{game}_special_name'] = texture_name
+                # Add the hex editing information.
+                hex_out_list.append([texture_name, ('_').join(texture_name.split('_')[1:])])
+            else:
+                # This is a loading screen.
+                # Determine if this is a villain loading screen.
+                if texture_name.split('_')[1] == 'v':
+                    # This is a villain loading screen.
+                    # Loop through the games.
+                    for game in settings.games_list:
+                        # Make sure that the special name should be set.
+                        if settings_dict[f'{game}_special_name'] is None:
+                            # The special name should be set.
+                            # Update the settings accordingly.
+                            settings_dict[f'{game}_special_name'] = 'Villain'
+                    # Add the hex editing information
+                    hex_out_list.append([texture_name, ('_').join(texture_name.split('_')[2:])])
+                else:
+                    # This is a standard loading screen.
+                    # Add the hex editing information
+                    hex_out_list.append([texture_name, ('_').join(texture_name.split('_')[1:])])
     # Return the updated values.
     return settings_dict, hex_out_list
 
@@ -259,22 +311,6 @@ def GetEnvironmentType(textures_list, settings_dict, asset_type, hex_out_list, i
     # Return the updated settings dictionary and hex out list.
     return settings_dict, hex_out_list, texture_type
 
-# This function is used to get the game that the character select portrait is for.
-def GetCSPGame(settings_dict, textures_list):
-    # Determine what the texture name starts with.
-    if textures_list['Name'].name.startswith('x1c'):
-        # This is for XML1.
-        # Skip processing for XML2.
-        settings_dict['XML2_num'] = None
-        settings_dict['XML2_path'] = None
-    else:
-        # This is for XML2.
-        # Skip processing for XML1.
-        settings_dict['XML1_num'] = None
-        settings_dict['XML1_path'] = None
-    # Return the updated settings.
-    return settings_dict
-
 # This function is used to get the texture information from the model.
 def GetTextureInfo(application_path, input_file_path, settings_dict, asset_type):
     # Get the texture information from Alchemy.
@@ -286,14 +322,9 @@ def GetTextureInfo(application_path, input_file_path, settings_dict, asset_type)
     # Update the paths with folder detection.
     settings_dict = FolderDetection(textures_list, settings_dict, application_path, asset_type)
     # Determine if any texture values need to be hexed out.
-    settings_dict, hex_out_list = GetHexOutList(settings_dict, asset_type, hex_out_list, textures_list)
+    settings_dict, hex_out_list = GetHexOutList(settings_dict, asset_type, textures_list)
     # Determine the environment map type from the texture information.
     settings_dict, hex_out_list, texture_type = GetEnvironmentType(textures_list, settings_dict, asset_type, hex_out_list, input_file_path, texture_type)
-    # Determine if this is a CSP.
-    if asset_type == 'Character Select Portrait':
-        # This is a CSP.
-        # Update processing based on the game.
-        settings_dict = GetCSPGame(settings_dict, textures_list)
     # Build a dictionary of texture info.
     texture_info_dict = {'texture_type': texture_type, 'max_texture_size': max_texture_size, 'textures_list': textures_list}
     # Determine if it's necessary to print the debug information.
