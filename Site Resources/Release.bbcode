@@ -1,4 +1,5 @@
-[center][size=18pt]BaconWizard17's igbFinisher[/size][/center]
+[center][size=18pt]BaconWizard17's igbFinisher[/size]
+[size=14pt]v4.0.0[/size][/center]
 
 igbFinisher is a program that runs finishing operations on igb files after exporting them from 3ds Max.
 
@@ -8,11 +9,17 @@ igbFinisher is a program that runs finishing operations on igb files after expor
 [list]
 [li]A program that can be used to perform finishing operations on exported igb files with the following features:
 [list]
-[li]Automatically recognizes input assets based on file name[/li]
-[li]Renames files based on chosen character numbers[/li]
-[li]Makes duplicate copies for every compatible game and console[/li]
-[li]Hex edits assets if needed[/li]
-[li]Performs Alchemy operations on the assets if needed (including the global color fix and igGeometryAttr2 fix)[/li]
+[li]Automatically recognizes input assets using the file name.[/li]
+[li]Renames files based on chosen character numbers and asset descriptions.[/li]
+[li]Makes duplicate copies for every selected game and console.[/li]
+[li]Hex edits assets if needed.[/li]
+[li]Uses Alchemy optimizations to convert textures to be compatible with the selected consoles.[/li]
+[li]Performs additional Alchemy optimizations for files:
+[list]
+[li]Necessary next-gen optimizations like applying the Global Color attribute or converting to igGeometryAttr2.[/li]
+[li]Optional optimizations like generating collision and adding advanced textures.[/li]
+[/list]
+[/li]
 [/list]
 [/li]
 [li]For compatibility, textures must be exported with the [url="https://marvelmods.com/forum/index.php/topic,11441.0.html"]Marvel Mods GIMP Scripts[/url], and assets must be exported with Alchemy 2.5 from 3ds Max 5. See the "Tutorials" section, below, for more information.[/li]
@@ -102,6 +109,35 @@ igbFinisher is a program that runs finishing operations on igb files after expor
 [li]Improved handling of environment maps to address some detection issues.[/li]
 [/list]
 [/li]
+[li]Version 4.0.0:
+[list]
+[li]The program is now called as an exe from the command line or a batch file.
+[list]
+[li]You can now specify a custom settings file (if no settings file is specified, the default name is used)[/li]
+[li]The program runs once and then closes rather than staying open, so this no longer freezes your file explorer window.[/li]
+[/list]
+[/li]
+[li]Settings have been revised for better control:
+[list]
+[li]You can now specify paths for all games.[/li]
+[li]There are more options for names and numbers.[/li]
+[li]You can specify a different path for each game.[/li]
+[li]You can selectively control each console.[/li]
+[li]Many new settings are added to work with the new capabilities.[/li]
+[li]Error checking is much more simple and straightforward.[/li]
+[/list]
+[/li]
+[li]Console-specific texture folders are no longer needed! igbFinisher now only needs plain png files. The [url="https://marvelmods.com/forum/index.php/topic,11441.0.html"]Marvel Mods GIMP Scripts[/url] have been updated to account for this.
+[list]
+[li]Textures are resized and texture formats are now converted with Alchemy optimizations using Alchemy 3.2 and Alchemy 5.[/li]
+[/list]
+[/li]
+[li]Alchemy 3.2 optimizations slightly reduce the file size of static models for last-gen consoles.[/li]
+[li]Added new Alchemy optimizations: generating collision and setting up advanced textures.[/li]
+[li]Improved error handling.[/li]
+[li]Improved overall process flow for speed and efficiency.[/li]
+[/list]
+[/li]
 [/list]
 [/spoiler]
 
@@ -109,10 +145,11 @@ igbFinisher is a program that runs finishing operations on igb files after expor
 [u][b]Installation Instructions[/b][/u]:
 [spoiler="Expand to see installation instructions for this tool"]
 [list type=decimal]
-[li]Install [url="https://marvelmods.com/forum/index.php/topic,11158.0.html"]Alchemy 5[/url].[/li]
+[li]Install Alchemy 5 per the instructions in the [url="https://marvelmods.com/forum/index.php/topic,11158.0.html"]Alchemy 5 tutorial[/url].[/li]
 [li]Download igbFinisher.[/li]
+[li]Download nikita488's [url="https://marvelmods.com/forum/index.php/topic,11586.0.html"]Alchemy 3.2 sgOptimizer[/url].[/li]
 [li]Download nikita488's [url="https://drive.google.com/file/d/1d45eIzMuzY6vSGpzNilshfw2E84pUBAt/view?usp=drive_link"]AnimationProducer[/url].[/li]
-[li]Within igbFinisher's folder, create a folder called [b][font=Courier New][color=#ba8bff]Animation Producer[/color][/font][/b] and place [b][font=Courier New][color=#ba8bff]animationProducer.exe[/color][/font][/b] and its associated .dll files inside.[/li]
+[li]Within your Alchemy installation, create a folder called [b][font=Courier New][color=#ba8bff]bin32[/color][/font][/b]. Extract the files from Alchemy 3.2 sgOptimizer there, and also place [b][font=Courier New][color=#ba8bff]animationProducer.exe[/color][/font][/b] there.[/li]
 [/list]
 [/spoiler]
 
@@ -129,5 +166,5 @@ igbFinisher is a program that runs finishing operations on igb files after expor
 [list]
 [li][u]BaconWizard17[/u]: Program creation[/li]
 [li][u]ak2yny[/u]: Internal hex editing module, texture path script[/li]
-[li][u]nikita488[/u]: AnimationProducer[/li]
+[li][u]nikita488[/u]: AnimationProducer, Alchemy 3.2 sgOptimizer[/li]
 [/list]
