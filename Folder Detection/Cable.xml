@@ -1,41 +1,66 @@
 <paths>
-    <skins XML="C:\GitHub\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable" MUA="C:\GitHub\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable" >
+    <skins XML1="C:\GitHub\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable" XML2="C:\GitHub\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable" MUA1="C:\GitHub\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable" MUA2="C:\GitHub\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable" >
 		<!-- Main Universe Skins -->
-		<skin texFolder="Civilian" outputFolder="0. Civilian" />
-		<skin texFolder="90s" outputFolder="3. 90s" />
-		<skin texFolder="New Mutants" outputFolder="4. New Mutants" />
-		<skin texFolder="X-Force" outputFolder="5. X-Force" />
-		<skin texFolder="Classic" outputFolder="7. Classic" />
-		<skin texFolder="Fatigues" outputFolder="12. Fatigues" />
-		<skin texFolder="Techno" outputFolder="15. Techno" />
-		<skin texFolder="Modern" outputFolder="17. Modern" />
+		<skin tex_folder="Civilian" output_folder="0. Civilian" />
+		<skin tex_folder="90s" output_folder="3. 90s" />
+		<skin tex_folder="New Mutants" output_folder="4. New Mutants" />
+		<skin tex_folder="X-Force" output_folder="5. X-Force" />
+		<skin tex_folder="Classic" output_folder="7. Classic" />
+		<skin tex_folder="Fatigues" output_folder="12. Fatigues" />
+		<skin tex_folder="Techno" output_folder="15. Techno" />
+		<skin tex_folder="Modern" output_folder="17. Modern" />
 		<!-- Alternate Universe Skins -->
-		<skin texFolder="Modern MUA2" outputFolder="A1. Modern MUA2" />
-		<skin texFolder="Modern MUA3" outputFolder="A2. Modern MUA3" />
-		<skin texFolder="New Mutants MUA3" outputFolder="A3. New Mutants MUA3" />
-		<skin texFolder="MUA2" outputFolder="A4. Techno MUA2" />
-		<skin texFolder="Ultimate" outputFolder="A5. Ultimate" />
-		<skin texFolder="X-Treme Gear" outputFolder="A6. X-Treme Gear" />
+		<skin tex_folder="Modern MUA2" output_folder="A1. Modern MUA2" />
+		<skin tex_folder="Modern MUA3" output_folder="A2. Modern MUA3" />
+		<skin tex_folder="New Mutants MUA3" output_folder="A3. New Mutants MUA3" />
+		<skin tex_folder="MUA2" output_folder="A4. Techno MUA2" />
+		<skin tex_folder="Ultimate" output_folder="A5. Ultimate" />
+		<skin tex_folder="X-Treme Gear" output_folder="A6. X-Treme Gear" />
 	</skins>
-	<icons XML="C:\GitHub\BaconWizard17-Mod-Releases\Power Icons\Cable" MUA="C:\GitHub\BaconWizard17-Mod-Releases\Power Icons\Cable" >
+	<icons XML1="C:\GitHub\BaconWizard17-Mod-Releases\Power Icons\Cable" XML2="C:\GitHub\BaconWizard17-Mod-Releases\Power Icons\Cable" MUA1="C:\GitHub\BaconWizard17-Mod-Releases\Power Icons\Cable" MUA2="C:\GitHub\BaconWizard17-Mod-Releases\Power Icons\Cable" >
 		<!-- XML2 Icons -->
-		<icon texFolder="XML2 X2UP" outputFolder="X2-1r. XML2 (X2UP) - Redesign" />
-		<icon texFolder="XML2 nodoubt_jr Redesign" outputFolder="X2-2r. XML2 (nodoubt_jr mod) - Redesign" />
+		<icon tex_folder="XML2 X2UP" output_folder="X2-1r. XML2 (X2UP) - Redesign" />
+		<icon tex_folder="XML2 nodoubt_jr Redesign" output_folder="X2-2r. XML2 (nodoubt_jr mod) - Redesign" />
 		<!-- MUA1 Icons -->
-		<icon texFolder="MUA1 OCP" outputFolder="M1-1. MUA1 (OCP) - Default" />
-		<icon texFolder="MUA1 OCP Redesign" outputFolder="M1-1r. MUA1 (OCP) - Redesign" />
-		<icon texFolder="MUA1 Norrin Radd Redesign" outputFolder="M1-2r. MUA1 (Norrin Radd mod) - Redesign" />
+		<icon tex_folder="MUA1 OCP" output_folder="M1-1. MUA1 (OCP) - Default" />
+		<icon tex_folder="MUA1 OCP Redesign" output_folder="M1-1r. MUA1 (OCP) - Redesign" />
+		<icon tex_folder="MUA1 Norrin Radd Redesign" output_folder="M1-2r. MUA1 (Norrin Radd mod) - Redesign" />
 	</icons>
-	<lscreens XML="C:\GitHub\BaconWizard17-Mod-Releases\Loading Screens\Cable" MUA="C:\GitHub\BaconWizard17-Mod-Releases\Loading Screens\Cable" >
-		<lscreen texFolder="90s" outputFolder="3. 90s" />
-		<lscreen texFolder="Classic" outputFolder="7. Classic" />
-		<lscreen texFolder="Modern" outputFolder="17. Modern" />
-		<lscreen texFolder="MUA2" outputFolder="A4. Techno MUA2" />
+	<lscreens XML1="C:\GitHub\BaconWizard17-Mod-Releases\Loading Screens\Cable" XML2="C:\GitHub\BaconWizard17-Mod-Releases\Loading Screens\Cable" MUA1="C:\GitHub\BaconWizard17-Mod-Releases\Loading Screens\Cable" MUA2="C:\GitHub\BaconWizard17-Mod-Releases\Loading Screens\Cable" >
+		<lscreen tex_folder="90s" output_folder="3. 90s" />
+		<lscreen tex_folder="Classic" output_folder="7. Classic" />
+		<lscreen tex_folder="Modern" output_folder="17. Modern" />
+		<lscreen tex_folder="MUA2" output_folder="A4. Techno MUA2" />
 	</lscreens>
-	<covers XML="C:\GitHub\BaconWizard17-Mod-Releases\Comic Covers\Cable" MUA="C:\GitHub\BaconWizard17-Mod-Releases\Comic Covers\Cable" >
-		<cover texFolder="90s" outputFolder="3. 90s" />
-		<cover texFolder="Classic" outputFolder="7. Classic" />
-		<cover texFolder="Modern" outputFolder="17. Modern" />
-		<cover texFolder="MUA2" outputFolder="A4. Techno MUA2" />
+	<covers XML1="C:\GitHub\BaconWizard17-Mod-Releases\Comic Covers\Cable" XML2="C:\GitHub\BaconWizard17-Mod-Releases\Comic Covers\Cable" MUA1="C:\GitHub\BaconWizard17-Mod-Releases\Comic Covers\Cable" MUA2="C:\GitHub\BaconWizard17-Mod-Releases\Comic Covers\Cable" >
+		<cover tex_folder="90s" output_folder="3. 90s" />
+		<cover tex_folder="Classic" output_folder="7. Classic" />
+		<cover tex_folder="Modern" output_folder="17. Modern" />
+		<cover tex_folder="MUA2" output_folder="A4. Techno MUA2" />
 	</covers>
+	<!-- Default Assets -->
+	<d_huds XML1="C:\GitHub\BaconWizard17-Mod-Releases\Default Portraits - XML1, XML2\Cable" XML2="C:\GitHub\BaconWizard17-Mod-Releases\Default Portraits - XML1, XML2\Cable" MUA1="C:\GitHub\BaconWizard17-Mod-Releases\Default Portraits - MUA1, MUA2\Cable" MUA2="C:\GitHub\BaconWizard17-Mod-Releases\Default Portraits - MUA1, MUA2\Cable" >
+		<!-- Main Universe Skins -->
+		<portrait tex_folder="90s" output_folder="3. 90s" />
+		<portrait tex_folder="New Mutants" output_folder="4. New Mutants" />
+		<portrait tex_folder="X-Force" output_folder="5. X-Force" />
+		<portrait tex_folder="Classic" output_folder="7. Classic" />
+		<portrait tex_folder="Fatigues" output_folder="12. Fatigues" />
+		<portrait tex_folder="Techno" output_folder="15. Techno" />
+		<!-- Alternate Universe Skins -->
+		<portrait tex_folder="MUA2" output_folder="A4. Techno MUA2" />
+		<portrait tex_folder="Ultimate" output_folder="A5. Ultimate" />
+		<portrait tex_folder="X-Treme Gear" output_folder="A6. X-Treme Gear" />
+	</d_huds>
+	<d_csps XML1="C:\GitHub\BaconWizard17-Mod-Releases\Default Portraits - XML1, XML2\Cable" XML2="C:\GitHub\BaconWizard17-Mod-Releases\Default Portraits - XML1, XML2\Cable" MUA1="C:\GitHub\BaconWizard17-Mod-Releases\Default Portraits - MUA1, MUA2\Cable" MUA2="C:\GitHub\BaconWizard17-Mod-Releases\Default Portraits - MUA1, MUA2\Cable" >
+		<portrait tex_folder="90s" output_folder="3. 90s" />
+	</d_huds>
+	<d_lscreens XML1="C:\GitHub\BaconWizard17-Mod-Releases\Default Loading Screens\Cable" XML2="C:\GitHub\BaconWizard17-Mod-Releases\Default Loading Screens\Cable" MUA1="C:\GitHub\BaconWizard17-Mod-Releases\Default Loading Screens\Cable" MUA2="C:\GitHub\BaconWizard17-Mod-Releases\Default Loading Screens\Cable" >
+		<lscreen tex_folder="MUA1 OCP" output_folder="MUA1 OCP" />
+		<lscreen tex_folder="XML1 Default" output_folder="XML1 Default" />
+		<lscreen tex_folder="XML2 Default" output_folder="XML2 Default" />
+	</d_lscreens>
+	<d_covers XML1="C:\GitHub\BaconWizard17-Mod-Releases\Default Comic Covers\Cable" XML2="C:\GitHub\BaconWizard17-Mod-Releases\Default Comic Covers\Cable" MUA1="C:\GitHub\BaconWizard17-Mod-Releases\Default Comic Covers\Cable" MUA2="C:\GitHub\BaconWizard17-Mod-Releases\Default Comic Covers\Cable" >
+		<cover tex_folder="Cable vol 1 no 1" output_folder="Cable vol 1 no 1" />
+	</d_covers>
 </paths>

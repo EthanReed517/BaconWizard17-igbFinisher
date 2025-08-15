@@ -1,23 +1,32 @@
 <paths>
-    <skins XML="C:\GitHub\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Defaultman" MUA="C:\GitHub\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Defaultman" >
+    <skins XML1="C:\GitHub\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Defaultman" XML2="C:\GitHub\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Defaultman" MUA1="C:\GitHub\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Defaultman" MUA2="C:\GitHub\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Defaultman" >
 		<!-- Main Universe Skins -->
-		<skin texFolder="Classic" outputFolder="1. Classic" />
-		<skin texFolder="Locked" outputFolder="2. Locked" />
-		<skin texFolder="Locked (Heroes Pack)" outputFolder="3. Locked (Heroes Pack)" />
-		<skin texFolder="Locked (Villains Pack)" outputFolder="4. Locked (Villains Pack)" />
-		<skin texFolder="Ice Form" outputFolder="5. Ice Form" />
-		<skin texFolder="Metal Form" outputFolder="6. Metal Form" />
-		<skin texFolder="Rock Form" outputFolder="7. Rock Form" />
+		<skin tex_folder="Classic" output_folder="1. Classic" />
+		<skin tex_folder="Locked" output_folder="2. Locked" />
+		<skin tex_folder="Locked (Heroes Pack)" output_folder="3. Locked (Heroes Pack)" />
+		<skin tex_folder="Locked (Villains Pack)" output_folder="4. Locked (Villains Pack)" />
+		<skin tex_folder="Ice Form" output_folder="5. Ice Form" />
+		<skin tex_folder="Metal Form" output_folder="6. Metal Form" />
+		<skin tex_folder="Rock Form" output_folder="7. Rock Form" />
 	</skins>
-	<icons XML="C:\GitHub\BaconWizard17-Mod-Releases\Power Icons\Defaultman" MUA="C:\GitHub\BaconWizard17-Mod-Releases\Power Icons\Defaultman" >
+	<icons XML1="C:\GitHub\BaconWizard17-Mod-Releases\Power Icons\Defaultman" XML2="C:\GitHub\BaconWizard17-Mod-Releases\Power Icons\Defaultman" MUA1="C:\GitHub\BaconWizard17-Mod-Releases\Power Icons\Defaultman" MUA2="C:\GitHub\BaconWizard17-Mod-Releases\Power Icons\Defaultman" >
 		<!-- MUA1 Icons -->
-		<icon texFolder="MUA1 Ceamonks890 Mod" outputFolder="M1-1. MUA1 (Ceamonks890 Mod) - Default" />
-		<icon texFolder="MUA1 Ceamonks890 Mod Redesign" outputFolder="M1-1r. MUA1 (Ceamonks890 Mod) - Redesign" />
+		<icon tex_folder="MUA1 Ceamonks890 Mod" output_folder="M1-1. MUA1 (Ceamonks890 Mod) - Default" />
+		<icon tex_folder="MUA1 Ceamonks890 Mod Redesign" output_folder="M1-1r. MUA1 (Ceamonks890 Mod) - Redesign" />
 	</icons>
-	<lscreens XML="C:\GitHub\BaconWizard17-Mod-Releases\Loading Screens\Defaultman" MUA="C:\GitHub\BaconWizard17-Mod-Releases\Loading Screens\Defaultman" >
-		<lscreen texFolder="Classic" outputFolder="1. Classic" />
+	<lscreens XML1="C:\GitHub\BaconWizard17-Mod-Releases\Loading Screens\Defaultman" XML2="C:\GitHub\BaconWizard17-Mod-Releases\Loading Screens\Defaultman" MUA1="C:\GitHub\BaconWizard17-Mod-Releases\Loading Screens\Defaultman" MUA2="C:\GitHub\BaconWizard17-Mod-Releases\Loading Screens\Defaultman" >
+		<lscreen tex_folder="Classic" output_folder="1. Classic" />
 	</lscreens>
-	<covers XML="C:\GitHub\BaconWizard17-Mod-Releases\Comic Covers\Defaultman" MUA="C:\GitHub\BaconWizard17-Mod-Releases\Comic Covers\Defaultman" >
-		<cover texFolder="Classic" outputFolder="1. Classic" />
+	<covers XML1="C:\GitHub\BaconWizard17-Mod-Releases\Comic Covers\Defaultman" XML2="C:\GitHub\BaconWizard17-Mod-Releases\Comic Covers\Defaultman" MUA1="C:\GitHub\BaconWizard17-Mod-Releases\Comic Covers\Defaultman" MUA2="C:\GitHub\BaconWizard17-Mod-Releases\Comic Covers\Defaultman" >
+		<cover tex_folder="Classic" output_folder="1. Classic" />
 	</covers>
+	<!-- Default Assets -->
+	<d_huds XML1="C:\GitHub\BaconWizard17-Mod-Releases\Default Portraits - XML1, XML2\Defaultman" XML2="C:\GitHub\BaconWizard17-Mod-Releases\Default Portraits - XML1, XML2\Defaultman" MUA1="C:\GitHub\BaconWizard17-Mod-Releases\Default Portraits - MUA1, MUA2\Defaultman" MUA2="C:\GitHub\BaconWizard17-Mod-Releases\Default Portraits - MUA1, MUA2\Defaultman" >
+		<portrait tex_folder="XML2" output_folder="1. XML2 Default HUD" />
+		<portrait tex_folder="MUA1" output_folder="3. MUA1 Default HUD" />
+		<portrait tex_folder="MUA1 OCP" output_folder="4. MUA1 OCP HUD" />
+	</d_huds>
+	<d_csps XML1="C:\GitHub\BaconWizard17-Mod-Releases\Default Portraits - XML1, XML2\Defaultman" XML2="C:\GitHub\BaconWizard17-Mod-Releases\Default Portraits - XML1, XML2\Defaultman" MUA1="C:\GitHub\BaconWizard17-Mod-Releases\Default Portraits - MUA1, MUA2\Defaultman" MUA2="C:\GitHub\BaconWizard17-Mod-Releases\Default Portraits - MUA1, MUA2\Defaultman" >
+		<portrait tex_folder="XML2" output_folder="2. XML2 Unused CSP" />
+	</d_huds>
 </paths>

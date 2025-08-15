@@ -1,98 +1,98 @@
 <paths>
-    <skins XML="C:\GitHub\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cyclops" MUA="C:\GitHub\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cyclops" >
+    <skins XML1="C:\GitHub\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cyclops" XML2="C:\GitHub\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cyclops" MUA1="C:\GitHub\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cyclops" MUA2="C:\GitHub\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cyclops" >
 		<!-- Civilian Skins -->
-		<skin texFolder="Civilian A" outputFolder="0a. Civilian\Short Hair" />
-		<skin texFolder="Civilian A Jacket" outputFolder="0a. Civilian (Jacket)\Short Hair" />
-		<skin texFolder="Civilian B" outputFolder="0b. Civilian\Spiky Hair" />
-		<skin texFolder="Civilian B Jacket" outputFolder="0b. Civilian (Jacket)\Spiky Hair" />
-		<skin texFolder="Civilian C" outputFolder="0a. Civilian\Short Parted Hair" />
-		<skin texFolder="Civilian C Jacket" outputFolder="0b. Civilian (Jacket)\Short Parted Hair" />
-		<skin texFolder="Civilian D" outputFolder="0a. Civilian\Long Parted Hair" />
-		<skin texFolder="Civilian D Jacket" outputFolder="0b. Civilian (Jacket)\Long Parted Hair" />
+		<skin tex_folder="Civilian A" output_folder="0a. Civilian\Short Hair" />
+		<skin tex_folder="Civilian A Jacket" output_folder="0a. Civilian (Jacket)\Short Hair" />
+		<skin tex_folder="Civilian B" output_folder="0b. Civilian\Spiky Hair" />
+		<skin tex_folder="Civilian B Jacket" output_folder="0b. Civilian (Jacket)\Spiky Hair" />
+		<skin tex_folder="Civilian C" output_folder="0a. Civilian\Short Parted Hair" />
+		<skin tex_folder="Civilian C Jacket" output_folder="0b. Civilian (Jacket)\Short Parted Hair" />
+		<skin tex_folder="Civilian D" output_folder="0a. Civilian\Long Parted Hair" />
+		<skin tex_folder="Civilian D Jacket" output_folder="0b. Civilian (Jacket)\Long Parted Hair" />
 		<!-- Main Universe Skins -->
-		<skin texFolder="Original" outputFolder="1. Original" />
-		<skin texFolder="Original Unmasked" outputFolder="1u. Original Unmasked" />
-		<skin texFolder="Classic" outputFolder="2. Classic" />
-		<skin texFolder="Classic Unmasked" outputFolder="2u. Classic Unmasked" />
-		<skin texFolder="X-Factor Yellow" outputFolder="4. X-Factor (Yellow)" />
-		<skin texFolder="X-Factor Yellow Unmasked" outputFolder="4u. X-Factor (Yellow) Unmasked" />
-		<skin texFolder="X-Factor White" outputFolder="5. X-Factor (White)" />
-		<skin texFolder="X-Factor White Unmasked" outputFolder="5u. X-Factor (White) Unmasked" />
-		<skin texFolder="90s" outputFolder="7. 90s" />
-		<skin texFolder="90s Unmasked" outputFolder="7u. 90s Unmasked" />
-		<skin texFolder="90s Jacket" outputFolder="8. 90s (Jacket)" />
-		<skin texFolder="90s Jacket Unmasked" outputFolder="8u. 90s (Jacket) Unmasked" />
-		<skin texFolder="New X-Men" outputFolder="10. New X-Men" />
-		<skin texFolder="New X-Men Unmasked" outputFolder="10u. New X-Men Unmasked" />
-		<skin texFolder="Astonishing" outputFolder="11. Astonishing X-Men" />
-		<skin texFolder="Astonishing Unmasked" outputFolder="11u. Astonishing X-Men Unmasked" />
-		<skin texFolder="Heroic Age" outputFolder="12. Heroic Age" />
-		<skin texFolder="Heroic Age Unmasked" outputFolder="12u. Heroic Age Unmasked" />
-		<skin texFolder="Marvel NOW" outputFolder="15. Marvel NOW" />
-		<skin texFolder="Marvel NOW Unmasked" outputFolder="15u. Marvel NOW Unmasked" />
-		<skin texFolder="HOX" outputFolder="17. House of X" />
-		<skin texFolder="HOX Unmasked" outputFolder="17u. House of X Unmasked" />
+		<skin tex_folder="Original" output_folder="1. Original" />
+		<skin tex_folder="Original Unmasked" output_folder="1u. Original Unmasked" />
+		<skin tex_folder="Classic" output_folder="2. Classic" />
+		<skin tex_folder="Classic Unmasked" output_folder="2u. Classic Unmasked" />
+		<skin tex_folder="X-Factor Yellow" output_folder="4. X-Factor (Yellow)" />
+		<skin tex_folder="X-Factor Yellow Unmasked" output_folder="4u. X-Factor (Yellow) Unmasked" />
+		<skin tex_folder="X-Factor White" output_folder="5. X-Factor (White)" />
+		<skin tex_folder="X-Factor White Unmasked" output_folder="5u. X-Factor (White) Unmasked" />
+		<skin tex_folder="90s" output_folder="7. 90s" />
+		<skin tex_folder="90s Unmasked" output_folder="7u. 90s Unmasked" />
+		<skin tex_folder="90s Jacket" output_folder="8. 90s (Jacket)" />
+		<skin tex_folder="90s Jacket Unmasked" output_folder="8u. 90s (Jacket) Unmasked" />
+		<skin tex_folder="New X-Men" output_folder="10. New X-Men" />
+		<skin tex_folder="New X-Men Unmasked" output_folder="10u. New X-Men Unmasked" />
+		<skin tex_folder="Astonishing" output_folder="11. Astonishing X-Men" />
+		<skin tex_folder="Astonishing Unmasked" output_folder="11u. Astonishing X-Men Unmasked" />
+		<skin tex_folder="Heroic Age" output_folder="12. Heroic Age" />
+		<skin tex_folder="Heroic Age Unmasked" output_folder="12u. Heroic Age Unmasked" />
+		<skin tex_folder="Marvel NOW" output_folder="15. Marvel NOW" />
+		<skin tex_folder="Marvel NOW Unmasked" output_folder="15u. Marvel NOW Unmasked" />
+		<skin tex_folder="HOX" output_folder="17. House of X" />
+		<skin tex_folder="HOX Unmasked" output_folder="17u. House of X Unmasked" />
 		<!-- Time-Displaced Skins -->
-		<skin texFolder="All New X-Men" outputFolder="TD1. All New X-Men" />
-		<skin texFolder="All New X-Men Unmasked" outputFolder="TD1u. All New X-Men Unmasked" />
-		<skin texFolder="All New X-Men vol 2" outputFolder="TD2. All New X-Men vol 2" />
-		<skin texFolder="All New X-Men vol 2 Unmasked" outputFolder="TD2u. All New X-Men vol 2 Unmasked" />
-		<skin texFolder="X-Men Blue" outputFolder="TD3. X-Men Blue" />
-		<skin texFolder="X-Men Blue Unmasked" outputFolder="TD3u. X-Men Blue Unmasked" />
-		<skin texFolder="X-Men Blue Future" outputFolder="TD4. X-Men Blue (Future)" />
-		<skin texFolder="X-Men Blue Future Unmasked" outputFolder="TD4u. X-Men Blue (Future) Unmasked" />
+		<skin tex_folder="All New X-Men" output_folder="TD1. All New X-Men" />
+		<skin tex_folder="All New X-Men Unmasked" output_folder="TD1u. All New X-Men Unmasked" />
+		<skin tex_folder="All New X-Men vol 2" output_folder="TD2. All New X-Men vol 2" />
+		<skin tex_folder="All New X-Men vol 2 Unmasked" output_folder="TD2u. All New X-Men vol 2 Unmasked" />
+		<skin tex_folder="X-Men Blue" output_folder="TD3. X-Men Blue" />
+		<skin tex_folder="X-Men Blue Unmasked" output_folder="TD3u. X-Men Blue Unmasked" />
+		<skin tex_folder="X-Men Blue Future" output_folder="TD4. X-Men Blue (Future)" />
+		<skin tex_folder="X-Men Blue Future Unmasked" output_folder="TD4u. X-Men Blue (Future) Unmasked" />
 		<!-- Alternate Universe Skins -->
-		<skin texFolder="2005 Promotional" outputFolder="A1. 2005 Promotional" />
-		<skin texFolder="2005 Promotional Unmasked" outputFolder="A1u. 2005 Promotional Unmasked" />
-		<skin texFolder="AOA" outputFolder="A2. Age of Apocalypse" />
-		<skin texFolder="Gladiator" outputFolder="A3. Astral Gladiator" />
-		<skin texFolder="Astonishing MUA2" outputFolder="A4. Astonishing X-Men MUA2" />
-		<skin texFolder="Astonishing MUA2 Unmasked" outputFolder="A4u. Astonishing X-Men MUA2 Unmasked" />
-		<skin texFolder="90s MUA3" outputFolder="A5. 90s MUA3" />
-		<skin texFolder="90s MUA3 Unmasked" outputFolder="A5u. 90s MUA3 Unmasked" />
-		<skin texFolder="90s MUA3 (Alt)" outputFolder="A6. 90s MUA3 (Alt)" />
-		<skin texFolder="90s MUA3 (Alt) Unmasked" outputFolder="A6u. 90s MUA3 (Alt) Unmasked" />
-		<skin texFolder="Ultimate XML1" outputFolder="A7. Ultimate XML1" />
-		<skin texFolder="Ultimate XML1 Unmasked" outputFolder="A7u. Ultimate XML1 Unmasked" />
-		<skin texFolder="Ultimate XML1 (Alt)" outputFolder="A8. Ultimate XML1 (Alt)" />
-		<skin texFolder="Ultimate XML1 (Alt) Unmasked" outputFolder="A8u. Ultimate XML1 (Alt) Unmasked" />
-		<skin texFolder="Ultimate XML1 Jacket" outputFolder="A9. Ultimate XML1 (Jacket)" />
-		<skin texFolder="Ultimate XML1 Jacket Unmasked" outputFolder="A9u. Ultimate XML1 (Jacket) Unmasked" />
-		<skin texFolder="Ultimate XML2" outputFolder="A11. Ultimate XML2" />
-		<skin texFolder="Ultimate XML2 Unmasked" outputFolder="A11u. Ultimate XML2 Unmasked" />
-		<skin texFolder="Ultimate XML2 Jacket" outputFolder="A13. Ultimate XML2 (Jacket)" />
-		<skin texFolder="Ultimate XML2 Jacket Unmasked" outputFolder="A13u. Ultimate XML2 (Jacket) Unmasked" />
-		<skin texFolder="Winter" outputFolder="A15. Winter" />
-		<skin texFolder="Winter Unmasked" outputFolder="A15u. Winter Unmasked" />
-		<skin texFolder="Winter (Alt)" outputFolder="A17. Winter (Alt)" />
-		<skin texFolder="Winter (Alt) Unmasked" outputFolder="A17u. Winter (Alt) Unmasked" />
-		<skin texFolder="X-Treme Gear" outputFolder="A19. X-Treme Gear" />
-		<skin texFolder="X-Treme Gear Unmasked" outputFolder="A19u. X-Treme Gear Unmasked" />
+		<skin tex_folder="2005 Promotional" output_folder="A1. 2005 Promotional" />
+		<skin tex_folder="2005 Promotional Unmasked" output_folder="A1u. 2005 Promotional Unmasked" />
+		<skin tex_folder="AOA" output_folder="A2. Age of Apocalypse" />
+		<skin tex_folder="Gladiator" output_folder="A3. Astral Gladiator" />
+		<skin tex_folder="Astonishing MUA2" output_folder="A4. Astonishing X-Men MUA2" />
+		<skin tex_folder="Astonishing MUA2 Unmasked" output_folder="A4u. Astonishing X-Men MUA2 Unmasked" />
+		<skin tex_folder="90s MUA3" output_folder="A5. 90s MUA3" />
+		<skin tex_folder="90s MUA3 Unmasked" output_folder="A5u. 90s MUA3 Unmasked" />
+		<skin tex_folder="90s MUA3 (Alt)" output_folder="A6. 90s MUA3 (Alt)" />
+		<skin tex_folder="90s MUA3 (Alt) Unmasked" output_folder="A6u. 90s MUA3 (Alt) Unmasked" />
+		<skin tex_folder="Ultimate XML1" output_folder="A7. Ultimate XML1" />
+		<skin tex_folder="Ultimate XML1 Unmasked" output_folder="A7u. Ultimate XML1 Unmasked" />
+		<skin tex_folder="Ultimate XML1 (Alt)" output_folder="A8. Ultimate XML1 (Alt)" />
+		<skin tex_folder="Ultimate XML1 (Alt) Unmasked" output_folder="A8u. Ultimate XML1 (Alt) Unmasked" />
+		<skin tex_folder="Ultimate XML1 Jacket" output_folder="A9. Ultimate XML1 (Jacket)" />
+		<skin tex_folder="Ultimate XML1 Jacket Unmasked" output_folder="A9u. Ultimate XML1 (Jacket) Unmasked" />
+		<skin tex_folder="Ultimate XML2" output_folder="A11. Ultimate XML2" />
+		<skin tex_folder="Ultimate XML2 Unmasked" output_folder="A11u. Ultimate XML2 Unmasked" />
+		<skin tex_folder="Ultimate XML2 Jacket" output_folder="A13. Ultimate XML2 (Jacket)" />
+		<skin tex_folder="Ultimate XML2 Jacket Unmasked" output_folder="A13u. Ultimate XML2 (Jacket) Unmasked" />
+		<skin tex_folder="Winter" output_folder="A15. Winter" />
+		<skin tex_folder="Winter Unmasked" output_folder="A15u. Winter Unmasked" />
+		<skin tex_folder="Winter (Alt)" output_folder="A17. Winter (Alt)" />
+		<skin tex_folder="Winter (Alt) Unmasked" output_folder="A17u. Winter (Alt) Unmasked" />
+		<skin tex_folder="X-Treme Gear" output_folder="A19. X-Treme Gear" />
+		<skin tex_folder="X-Treme Gear Unmasked" output_folder="A19u. X-Treme Gear Unmasked" />
 		<!-- Dark Cyclops Skins -->
-		<skin texFolder="Astonishing Dark" outputFolder="D1. Astonishing X-Men" />
-		<skin texFolder="HOX Dark" outputFolder="D2. House of X" />
-		<skin texFolder="Ultimate XML2 Dark" outputFolder="D3. Ultimate XML2" />
+		<skin tex_folder="Astonishing Dark" output_folder="D1. Astonishing X-Men" />
+		<skin tex_folder="HOX Dark" output_folder="D2. House of X" />
+		<skin tex_folder="Ultimate XML2 Dark" output_folder="D3. Ultimate XML2" />
 	</skins>
-	<icons XML="C:\GitHub\BaconWizard17-Mod-Releases\Power Icons\Cyclops" MUA="C:\GitHub\BaconWizard17-Mod-Releases\Power Icons\Cyclops" >
+	<icons XML1="C:\GitHub\BaconWizard17-Mod-Releases\Power Icons\Cyclops" XML2="C:\GitHub\BaconWizard17-Mod-Releases\Power Icons\Cyclops" MUA1="C:\GitHub\BaconWizard17-Mod-Releases\Power Icons\Cyclops" MUA2="C:\GitHub\BaconWizard17-Mod-Releases\Power Icons\Cyclops" >
 		<!-- XML1 Icons -->
-		<icon texFolder="XML1 Base" outputFolder="X1-1. XML1 (Base) - Default" />
-		<icon texFolder="XML1 Base Redesign" outputFolder="X1-1r. XML1 (Base) - Redesign" />
+		<icon tex_folder="XML1 Base" output_folder="X1-1. XML1 (Base) - Default" />
+		<icon tex_folder="XML1 Base Redesign" output_folder="X1-1r. XML1 (Base) - Redesign" />
 		<!-- XML2 Icons -->
-		<icon texFolder="XML2 Base" outputFolder="X2-1. XML2 (Base) - Default" />
-		<icon texFolder="XML2 BaconWizard17 Booster BaconWizard17" outputFolder="X2-2. XML2 (BaconWizard17 Booster) - Default" />
+		<icon tex_folder="XML2 Base" output_folder="X2-1. XML2 (Base) - Default" />
+		<icon tex_folder="XML2 BaconWizard17 Booster BaconWizard17" output_folder="X2-2. XML2 (BaconWizard17 Booster) - Default" />
 		<!-- MUA1 Icons -->
-		<icon texFolder="MUA1 Base" outputFolder="M1-1. MUA1 (Base) - Default" />
-		<icon texFolder="MUA1 Base Redesign" outputFolder="M1-1r. MUA1 (Base) - Redesign" />
-		<icon texFolder="MUA1 Maegawa Booster" outputFolder="M1-2. MUA1 (Maegawa Booster) - Default" />
+		<icon tex_folder="MUA1 Base" output_folder="M1-1. MUA1 (Base) - Default" />
+		<icon tex_folder="MUA1 Base Redesign" output_folder="M1-1r. MUA1 (Base) - Redesign" />
+		<icon tex_folder="MUA1 Maegawa Booster" output_folder="M1-2. MUA1 (Maegawa Booster) - Default" />
 		<!-- MUA2 Icons -->
-		<icon texFolder="MUA2 Base" outputFolder="M2-1. MUA2 (Base) - Default" />
-		<icon texFolder="MUA2 Base Redesign" outputFolder="M2-1r. MUA2 (Base) - Redesign" />
+		<icon tex_folder="MUA2 Base" output_folder="M2-1. MUA2 (Base) - Default" />
+		<icon tex_folder="MUA2 Base Redesign" output_folder="M2-1r. MUA2 (Base) - Redesign" />
 	</icons>
-	<lscreens XML="C:\GitHub\BaconWizard17-Mod-Releases\Loading Screens - XML1, XML2\Cyclops" MUA="C:\GitHub\BaconWizard17-Mod-Releases\Loading Screens - MUA1, MUA2\Cyclops" >
+	<lscreens XML1="C:\GitHub\BaconWizard17-Mod-Releases\Loading Screens\Cyclops" XML2="C:\GitHub\BaconWizard17-Mod-Releases\Loading Screens\Cyclops" MUA1="C:\GitHub\BaconWizard17-Mod-Releases\Loading Screens\Cyclops" MUA2="C:\GitHub\BaconWizard17-Mod-Releases\Loading Screens\Cyclops" >
 		<!-- XML1 Outfits -->
-		<lscreen texFolder="Ultimate XML1" outputFolder="A7. Ultimate XML1" />
-		<lscreen texFolder="X-Treme Gear" outputFolder="A19. X-Treme Gear" />
+		<lscreen tex_folder="Ultimate XML1" output_folder="A7. Ultimate XML1" />
+		<lscreen tex_folder="X-Treme Gear" output_folder="A19. X-Treme Gear" />
 		<!-- XML2 Outfits -->
-		<lscreen texFolder="Ultimate XML2" outputFolder="A11. Ultimate XML2" />
+		<lscreen tex_folder="Ultimate XML2" output_folder="A11. Ultimate XML2" />
 	</lscreens>
 </paths>

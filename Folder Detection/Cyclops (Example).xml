@@ -1,42 +1,61 @@
 <paths>
-    <skins XML="C:\Users\ethan\Desktop\Marvel Mods\Releases\Custom Models - XML1, XML2\Cyclops" MUA="C:\Users\ethan\Desktop\Marvel Mods\Releases\Custom Models - MUA1, MUA2\Cyclops" >
+    <skins XML1="C:\GitHub\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cyclops" XML2="C:\GitHub\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cyclops" MUA1="C:\GitHub\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cyclops" MUA2="C:\GitHub\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cyclops" >
 		<!-- Civilian Skins -->
-		<skin texFolder="Civilian A" outputFolder="0a. Civilian\Short Hair" />
-		<skin texFolder="Civilian B" outputFolder="0b. Civilian\Spiky Hair" />
-		<skin texFolder="Civilian C" outputFolder="0a. Civilian\Short Parted Hair" />
-		<skin texFolder="Civilian D" outputFolder="0a. Civilian\Long Parted Hair" />
+		<skin tex_folder="Civilian A" output_folder="0a. Civilian\Short Hair" />
+		<skin tex_folder="Civilian B" output_folder="0b. Civilian\Spiky Hair" />
+		<skin tex_folder="Civilian C" output_folder="0a. Civilian\Short Parted Hair" />
+		<skin tex_folder="Civilian D" output_folder="0a. Civilian\Long Parted Hair" />
 		<!-- Main Universe Skins -->
-		<skin texFolder="Original" outputFolder="1. Original" />
-		<skin texFolder="Classic" outputFolder="2. Classic" />
-		<skin texFolder="90s" outputFolder="7. 90s" />
-		<skin texFolder="New X-Men" outputFolder="10. New X-Men" />
-		<skin texFolder="Astonishing" outputFolder="11. Astonishing X-Men" />
-		<skin texFolder="HOX" outputFolder="17. House of X" />
+		<skin tex_folder="Original" output_folder="1. Original" />
+		<skin tex_folder="Classic" output_folder="2. Classic" />
+		<skin tex_folder="90s" output_folder="7. 90s" />
+		<skin tex_folder="New X-Men" output_folder="10. New X-Men" />
+		<skin tex_folder="Astonishing" output_folder="11. Astonishing X-Men" />
+		<skin tex_folder="HOX" output_folder="17. House of X" />
 		<!-- Alternate Universe Skins -->
-		<skin texFolder="AOA" outputFolder="A2. Age of Apocalypse" />
-		<skin texFolder="Ultimate XML1" outputFolder="A7. Ultimate XML1" />
-		<skin texFolder="Ultimate XML2" outputFolder="A11. Ultimate XML2" />
-		<skin texFolder="X-Treme Gear" outputFolder="A19. X-Treme Gear" />
+		<skin tex_folder="AOA" output_folder="A2. Age of Apocalypse" />
+		<skin tex_folder="Ultimate XML1" output_folder="A7. Ultimate XML1" />
+		<skin tex_folder="Ultimate XML2" output_folder="A11. Ultimate XML2" />
+		<skin tex_folder="X-Treme Gear" output_folder="A19. X-Treme Gear" />
 	</skins>
-	<icons XML="C:\Users\ethan\Desktop\Marvel Mods\Releases\Power Icons\Cyclops" MUA="C:\Users\ethan\Desktop\Marvel Mods\Releases\Power Icons\Cyclops" >
+	<icons XML1="C:\GitHub\BaconWizard17-Mod-Releases\Power Icons\Cyclops" XML2="C:\GitHub\BaconWizard17-Mod-Releases\Power Icons\Cyclops" MUA1="C:\GitHub\BaconWizard17-Mod-Releases\Power Icons\Cyclops" MUA2="C:\GitHub\BaconWizard17-Mod-Releases\Power Icons\Cyclops" >
 		<!-- XML1 Icons -->
-		<icon texFolder="XML1 Base" outputFolder="X1-1. XML1 (Base) - Default" />
-		<icon texFolder="XML1 Base Redesign" outputFolder="X1-1r. XML1 (Base) - Redesign" />
+		<icon tex_folder="XML1 Base" output_folder="X1-1. XML1 (Base) - Default" />
+		<icon tex_folder="XML1 Base Redesign" output_folder="X1-1r. XML1 (Base) - Redesign" />
 		<!-- XML2 Icons -->
-		<icon texFolder="XML2 Base" outputFolder="X2-1. XML2 (Base) - Default" />
-		<icon texFolder="XML2 BaconWizard17 Booster BaconWizard17" outputFolder="X2-2. XML2 (BaconWizard17 Booster) - Default" />
+		<icon tex_folder="XML2 Base" output_folder="X2-1. XML2 (Base) - Default" />
+		<icon tex_folder="XML2 BaconWizard17 Booster BaconWizard17" output_folder="X2-2. XML2 (BaconWizard17 Booster) - Default" />
 		<!-- MUA1 Icons -->
-		<icon texFolder="MUA1 Base" outputFolder="M1-1. MUA1 (Base) - Default" />
-		<icon texFolder="MUA1 Base Redesign" outputFolder="M1-1r. MUA1 (Base) - Redesign" />
-		<icon texFolder="MUA1 Maegawa Booster Maegawa" outputFolder="M1-2. MUA1 (Maegawa Booster) - Default" />
+		<icon tex_folder="MUA1 Base" output_folder="M1-1. MUA1 (Base) - Default" />
+		<icon tex_folder="MUA1 Base Redesign" output_folder="M1-1r. MUA1 (Base) - Redesign" />
+		<icon tex_folder="MUA1 Maegawa Booster Maegawa" output_folder="M1-2. MUA1 (Maegawa Booster) - Default" />
 		<!-- MUA2 Icons -->
-		<icon texFolder="MUA2 Base" outputFolder="M2-1. MUA2 (Base) - Default" />
-		<icon texFolder="MUA2 Base Redesign" outputFolder="M2-1r. MUA2 (Base) - Redesign" />
+		<icon tex_folder="MUA2 Base" output_folder="M2-1. MUA2 (Base) - Default" />
+		<icon tex_folder="MUA2 Base Redesign" output_folder="M2-1r. MUA2 (Base) - Redesign" />
 	</icons>
-	<lscreens XML="C:\GitHub\BaconWizard17-Mod-Releases\Loading Screens\Cyclops" MUA="C:\GitHub\BaconWizard17-Mod-Releases\Loading Screens\Cyclops" >
-		<lscreen texFolder="90s" outputFolder="7. 90s" />
+	<lscreens XML1="C:\GitHub\BaconWizard17-Mod-Releases\Loading Screens\Cyclops" XML2="C:\GitHub\BaconWizard17-Mod-Releases\Loading Screens\Cyclops" MUA1="C:\GitHub\BaconWizard17-Mod-Releases\Loading Screens\Cyclops" MUA2="C:\GitHub\BaconWizard17-Mod-Releases\Loading Screens\Cyclops" >
+		<lscreen tex_folder="90s" output_folder="7. 90s" />
 	</lscreens>
-	<covers XML="C:\GitHub\BaconWizard17-Mod-Releases\Comic Covers\Cyclops" MUA="C:\GitHub\BaconWizard17-Mod-Releases\Comic Covers\Cyclops" >
-		<cover texFolder="90s" outputFolder="7. 90s" />
+	<covers XML1="C:\GitHub\BaconWizard17-Mod-Releases\Comic Covers\Cyclops" XML2="C:\GitHub\BaconWizard17-Mod-Releases\Comic Covers\Cyclops" MUA1="C:\GitHub\BaconWizard17-Mod-Releases\Comic Covers\Cyclops" MUA2="C:\GitHub\BaconWizard17-Mod-Releases\Comic Covers\Cyclops" >
+		<cover tex_folder="90s" output_folder="7. 90s" />
 	</covers>
+    <others XML1="C:\GitHub\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cyclops" XML2="C:\GitHub\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cyclops" MUA1="C:\GitHub\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cyclops" MUA2="C:\GitHub\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cyclops" >
+		<!-- Civilian Skins -->
+		<other tex_folder="Civilian A" output_folder="0a. Civilian\Short Hair" />
+		<other tex_folder="Civilian B" output_folder="0b. Civilian\Spiky Hair" />
+		<other tex_folder="Civilian C" output_folder="0a. Civilian\Short Parted Hair" />
+		<other tex_folder="Civilian D" output_folder="0a. Civilian\Long Parted Hair" />
+		<!-- Main Universe Skins -->
+		<other tex_folder="Original" output_folder="1. Original" />
+		<other tex_folder="Classic" output_folder="2. Classic" />
+		<other tex_folder="90s" output_folder="7. 90s" />
+		<other tex_folder="New X-Men" output_folder="10. New X-Men" />
+		<other tex_folder="Astonishing" output_folder="11. Astonishing X-Men" />
+		<other tex_folder="HOX" output_folder="17. House of X" />
+		<!-- Alternate Universe Skins -->
+		<other tex_folder="AOA" output_folder="A2. Age of Apocalypse" />
+		<other tex_folder="Ultimate XML1" output_folder="A7. Ultimate XML1" />
+		<other tex_folder="Ultimate XML2" output_folder="A11. Ultimate XML2" />
+		<other tex_folder="X-Treme Gear" output_folder="A19. X-Treme Gear" />
+	</others>
 </paths>
