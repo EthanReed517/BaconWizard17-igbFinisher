@@ -9,10 +9,11 @@
 # ####### #
 # Internal modules
 import alchemy
+import hex
 import optimizations
 import processing
 # External modules
-from os import remove
+from os import makedirs, remove
 from shutil import copy
 
 
@@ -155,15 +156,23 @@ def ProcessSteamPS3Asset(asset_type, temp_file_hexed_path, output_file_name, set
                     # This is for PS3.
                     # Write the optimization with green normal maps.
                     optimizations.WriteOptimization(alchemy_5_optimization_list, advanced_texture_ini = settings_dict['advanced_texture_ini'], normal_map_type = 'green')
+                    normal_map_suffix = '_g_n.png'
                 else:
                     # This is for the Steam version.
                     # Write the optimization with blue normal maps.
                     optimizations.WriteOptimization(alchemy_5_optimization_list, advanced_texture_ini = settings_dict['advanced_texture_ini'], normal_map_type = 'blue')
+                    normal_map_suffix = '_b_n.png'
+                # Perform the Alchemy 5 optimizations but don't send the file.
+                alchemy.CallAlchemy(temp_file_hexed_32_path)
+                # Make the destination folder.
+                makedirs(output_file_path.parent, exist_ok = True)
+                # Hex edit the extension of the normal map and send it out.
+                hex.HexEditor(temp_file_hexed_32_path, output_file_path, [[bytearray(normal_map_suffix, 'utf-8'), bytearray('_n.png', 'utf-8')]])
             else:
                 # There are no advanced textures.
                 # Write the Alchemy 5 optimization normally.
                 optimizations.WriteOptimization(alchemy_5_optimization_list)
-            # Perform the Alchemy 5 optimizations and send the file.
-            alchemy.CallAlchemy(temp_file_hexed_32_path, output_path = output_file_path)
+                # Perform the Alchemy 5 optimizations and send the file.
+                alchemy.CallAlchemy(temp_file_hexed_32_path, output_path = output_file_path)
             # Delete the temp file.
             remove(temp_file_hexed_32_path)
