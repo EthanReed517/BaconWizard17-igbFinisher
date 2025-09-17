@@ -18,7 +18,7 @@ from os import remove
 # FUNCTIONS #
 # ######### #
 # This function determines if it's okay to process PS2 assets.
-def CanProcessPS2(settings_dict, texture_info_dict):
+def CanProcessPS2(settings_dict, texture_info_dict, game):
     # Initialize a variable to determine if it's okay to process (assume yes).
     can_process = True
     # Determine if the PS2 is in use.
@@ -44,6 +44,11 @@ def CanProcessPS2(settings_dict, texture_info_dict):
     # Determine if advanced textures are in use.
     if settings_dict['advanced_texture_ini'] is not None:
         # Advanced textures are in use.
+        # Skip processing.
+        can_process = False
+    # Determine if this is MUA only.
+    if ((settings_dict['PS2'] == 'MUA') and (game == 'XML2')):
+        # This is for MUA only, but the game is XML2.
         # Skip processing.
         can_process = False
     # Return the status.
@@ -90,7 +95,7 @@ def CheckPS2Scaling(settings_dict, asset_type, texture_info_dict, game):
 # This function processes PS2 assets.
 def ProcessPS2Asset(asset_type, temp_file_hexed_path, output_file_name, settings_dict, texture_info_dict, game, has_cel):
     # Get whether or not it's okay to process.
-    can_process = CanProcessPS2(settings_dict, texture_info_dict)
+    can_process = CanProcessPS2(settings_dict, texture_info_dict, game)
     # Determine if it's okay to proces.
     if can_process == True:
         # It's okay to process.

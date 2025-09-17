@@ -188,8 +188,8 @@ def GetHexOutList(settings_dict, asset_type, textures_list):
                         # Skip the necessary game.
                         settings_dict[f'{game_to_skip_dict[prefix]}_num'] = None
                         settings_dict[f'{game_to_skip_dict[prefix]}_path'] = None
-        elif asset_type in ['Power Icons', 'Comic Cover']:
-            # This is a game-specific 2D asset.
+        elif asset_type == 'Power Icons':
+            # This is power icons.
             # Determine what game this is for.
             texture_prefix = texture_name.split('_')[0]
             # Loop through the games.
@@ -207,7 +207,7 @@ def GetHexOutList(settings_dict, asset_type, textures_list):
                         if asset_type == 'Power Icons':
                             # This is an icons file.
                             # Determine if this is an icons2 file.
-                            if texture_name.endswith('icons2'):
+                            if 'icons2' in texture_name:
                                 # This is an icons2 file.
                                 # Skip the consoles that don't use icons2.
                                 settings_dict['GameCube'] = False
@@ -218,12 +218,68 @@ def GetHexOutList(settings_dict, asset_type, textures_list):
                     # Update the settings accordingly.
                     settings_dict[f'{game}_num'] = None
                     settings_dict[f'{game}_path'] = None
+        elif asset_type == 'Comic Cover':
+            # This is a comic cover.
+            # Determine which game this is for.
+            texture_prefix = texture_name.split('_')[0]
+            # Determine the game.
+            if texture_prefix == 'XML1':
+                # This is for XML1.
+                # Disable the other games.
+                settings_dict['XML2_num'] = None
+                settings_dict['XML2_path'] = None
+                settings_dict['MUA1_num'] = None
+                settings_dict['MUA1_path'] = None
+            elif texture_prefix == 'XML2':
+                # This is for XML2 (except for PSP).
+                # Disable the other games and the PSP.
+                settings_dict['XML1_num'] = None
+                settings_dict['XML1_path'] = None
+                settings_dict['MUA1_num'] = None
+                settings_dict['MUA1_path'] = None
+                settings_dict['PSP'] = False
+            elif texture_prefix == 'XML2-PSP':
+                # This is for XML2 PSP.
+                # Disable the other games and consoles.
+                settings_dict['XML1_num'] = None
+                settings_dict['XML1_path'] = None
+                settings_dict['MUA1_num'] = None
+                settings_dict['MUA1_path'] = None
+                settings_dict['GameCube'] = False
+                settings_dict['PS2'] = False
+                settings_dict['PC'] = False
+                settings_dict['Xbox'] = False
+            elif texture_prefix == 'MUA1-LG':
+                # This is for last-gen MUA1.
+                # Disable the other games and consoles.
+                settings_dict['XML1_num'] = None
+                settings_dict['XML1_path'] = None
+                settings_dict['XML2_num'] = None
+                settings_dict['XML2_path'] = None
+                settings_dict['PC'] = False
+                settings_dict['Steam'] = False
+                settings_dict['PS3'] = False
+                settings_dict['Xbox_360'] = False
+            else:
+                # This is for next-gen MUA1.
+                # Disable the other games and consoles.
+                settings_dict['XML1_num'] = None
+                settings_dict['XML1_path'] = None
+                settings_dict['XML2_num'] = None
+                settings_dict['XML2_path'] = None
+                settings_dict['PS2'] = False
+                settings_dict['PSP'] = False
+                settings_dict['Wii'] = False
+                settings_dict['Xbox'] = False
+            # Always disable MUA2 because it doesn't use comic covers.
+            settings_dict['MUA2_num'] = None
+            settings_dict['MUA2_path'] = None
         else:
             # This is an asset that has game-specific aspect ratios.
-            # Get the prefix from the file name.
-            prefix = texture_name.split('_')[0]
-            # Check what the prefix is.
-            if prefix == '4-3':
+            # Get the suffix from the file name.
+            suffix = texture_name.split('_')[-1]
+            # Check what the suffix is.
+            if suffix == '4-3':
                 # This is a 4:3 texture.
                 # Skip processing for PSP, MUA1, and MUA2.
                 settings_dict['PSP'] = False
@@ -231,15 +287,57 @@ def GetHexOutList(settings_dict, asset_type, textures_list):
                 settings_dict['MUA2_num'] = None
                 settings_dict['MUA1_path'] = None
                 settings_dict['MUA2_path'] = None
-            else:
-                # This is a 16:9 texture.
-                # Skip processing for XML1 and the non-PSP versions of XML2.
+            elif suffix == '16-9-P':
+                # This is a 16:9 XML2 PSP loading screen texture.
+                # Skip processing for all games except for XML2.
                 settings_dict['XML1_num'] = None
                 settings_dict['XML1_path'] = None
+                settings_dict['MUA1_num'] = None
+                settings_dict['MUA1_path'] = None
+                settings_dict['MUA2_num'] = None
+                settings_dict['MUA2_path'] = None
+                # Skip processing for non-PSP consoles.
                 settings_dict['GameCube'] = False
                 settings_dict['PS2'] = False
-                settings_dict['PC'] = 'MUA1'
-                settings_dict['Xbox'] = 'MUA1'
+                settings_dict['PC'] = False
+                settings_dict['Xbox'] = False
+            elif suffix == '16-9-N':
+                # This is a 16-9 next-gen texture.
+                # Skip processing for all games except for MUA1.
+                settings_dict['XML1_num'] = None
+                settings_dict['XML1_path'] = None
+                settings_dict['XML2_num'] = None
+                settings_dict['XML2_path'] = None
+                settings_dict['MUA2_num'] = None
+                settings_dict['MUA2_path'] = None
+                # Skip processing for last-gen consoles.
+                settings_dict['PS2'] = False
+                settings_dict['PSP'] = False
+                settings_dict['Wii'] = False
+                settings_dict['Xbox'] = False
+            elif suffix == '16-9-L':
+                # This is a last-gen texture.
+                # Skip processing for XML1.
+                settings_dict['XML1_num'] = None
+                settings_dict['XML1_path'] = None
+                # Determine the asset type.
+                if asset_type == 'Loading Screen':
+                    # This is a loading screen.
+                    # Skip processing for all of XML2.
+                    settings_dict['XML2_num'] = None
+                    settings_dict['XML2_path'] = None
+                else:
+                    # This is concept art.
+                    # Skip processing for non-PSP XML2 consoles.
+                    settings_dict['GameCube'] = False
+                    settings_dict['PS2'] = 'MUA'
+                    settings_dict['PC'] = False
+                    settings_dict['Xbox'] = 'MUA1'
+                # Skip processing for next-gen consoles.
+                settings_dict['PC'] = False
+                settings_dict['Steam'] = False
+                settings_dict['PS3'] = False
+                settings_dict['Xbox_360'] = False
             # Determine if this is concept art.
             if asset_type == 'Concept Art':
                 # This is concept art.
