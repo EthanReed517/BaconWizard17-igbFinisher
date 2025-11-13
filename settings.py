@@ -288,7 +288,7 @@ def GetTrueFalseAskSetting(config, section, key, setting_name, question_string, 
         # The value is a boolean.
         # Convert it to a boolean.
         setting_value = bool_dict[setting_value]
-    elif ask_about_value == 'Ask':
+    elif setting_value == 'Ask':
         # The user wants to be asked about the value.
         # Ask about the value.
         setting_value = questions.Confirm(question_string, default_choice = default_setting)
@@ -311,7 +311,7 @@ def GetGameSpecialName(config, game):
     elif game_special_name == "Ask":
         # The user wants to be asked.
         # Ask about the value.
-        game_special_name = questions.TextInput(f'What is the name of the special name for {game}?', validator = questions.ValidateFileNameNoExt)
+        game_special_name = questions.TextInput(f'What is the special name for {game}?', validator = questions.ValidateFileNameNoExt)
     elif game_special_name == "NumberOnly":
         # The user only wants a number.
         # Do nothing here, since this is an allowed string.
