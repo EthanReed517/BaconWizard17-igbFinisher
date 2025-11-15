@@ -9,8 +9,12 @@
 # ####### #
 # Internal modules
 import alchemy
+import basic_xml_ops
 import questions
 import settings
+# External modules
+from natsort import os_sorted
+from pathlib import Path
 
 
 # ######### #
@@ -104,57 +108,63 @@ def FolderDetection(textures_list, settings_dict, application_path, asset_type):
             # Folder detection is in use for this game.
             # Set that it's necessary to detect.
             need_to_detect = True
-    # Determine if it's necessary to detect.
-    if need_to_detect == True:
-        # It's necessary to detect.
-        # Start a list of detectable textures.
-        detectable_textures_list = []
-        # Loop through the textures.
-        for texture_dict in textures_list:
-            # Check if this is a sphereImage
-            if not(texture_dict['Name'] == 'sphereImage'):
-                # This is not a sphereImage.
-                # Check if this is a cubemap component.
-                if not(texture_dict['Type'] in ['CubeNEG_X', 'CubePOS_X', 'CubeNEG_Y', 'CubePOS_Y', 'CubeNEG_Z', 'CubePOS_Z']):
-                    # This is not a cubemap component.
-                    # The texture can be used for detection.
-                    detectable_textures_list.append(texture_dict)
-        # Check if any textures were found.
-        if detectable_textures_list == []:
-            # No textures were found.
-            # Give an error.
-            questions.PrintError('At least one output path is set up for folder detection in the settings, but the model has no textures available for detection.', system_exit = True)
-        # Start a list of texture folders.
-        texture_folders_list = []
-        # Loop through the detectable textures.
-        for texture_dict in detectable_textures_list:
-            # Determine if the texture folder is already in the list.
-            if not(texture_dict['Name'].parent in texture_folders_list):
-                # The folder is not in the list.
-                # Add it to the list.
-                texture_folders_list.append(texture_dict['Name'].parent)
-        # Determine how many folders were found.
-        if len(texture_folders_list) > 1:
-            # Multiple folders were found.
-            # Give an error.
-            questions.PrintWarning('At least one output path is set up for folder detection in the settings, but the model uses multiple texture folders.', skip_pause = True)
-            # Give the option to pick a folder for selection.
-            texture_folder_choice = question.Select('Select which texture folder to use for detection.' texture_folders_list)
-        else:
-            # Only 1 folder was found.
-            # Default to this folder.
-            texture_folder_choice = texture_folders_list[0]
-        # Get the character and sub-folder from the texture folder.
-        character = texture_folder_choice.parts[-3]
-        asset_type_folder = texture_folder_choice.parts[-2]
-        sub_folder = texture_folder_choice.parts[-1]
-        # Loop through the games in the series.
-        for game in settings.games_list:
-            # Determine if detection is needed for this game.
-            if settings_dict[f'{game}_path'] == 'Detect':
-                # It's necessary to detect for this game.
-                # Get the path.
-                settings_dict[f'{game}_path'] = basic_xml_ops.GetOutputPath(game, application_path, character, asset_type_folder, sub_folder, asset_type)
+        # Determine if it's necessary to detect.
+        if need_to_detect == True:
+            # It's necessary to detect.
+            # Start a list of detectable textures.
+            detectable_textures_list = []
+            # Loop through the textures.
+            for texture_dict in textures_list:
+                # Check if this is a sphereImage
+                if not(texture_dict['Name'] == 'sphereImage'):
+                    # This is not a sphereImage.
+                    # Check if this is a cubemap component.
+                    if not(texture_dict['Type'] in ['CubeNEG_X', 'CubePOS_X', 'CubeNEG_Y', 'CubePOS_Y', 'CubeNEG_Z', 'CubePOS_Z']):
+                        # This is not a cubemap component.
+                        # The texture can be used for detection.
+                        detectable_textures_list.append(texture_dict)
+            # Check if any textures were found.
+            if detectable_textures_list == []:
+                # No textures were found.
+                # Give an error.
+                questions.PrintError(f'The output path for {game} is set up for folder detection in the settings, but the model has no textures available for detection.', system_exit = True)
+            # Start a list of texture folders.
+            texture_folders_list = []
+            # Loop through the detectable textures.
+            for texture_dict in detectable_textures_list:
+                # Determine if the texture folder is already in the list.
+                if not(texture_dict['Name'].parent in texture_folders_list):
+                    # The folder is not in the list.
+                    # Add it to the list.
+                    texture_folders_list.append(texture_dict['Name'].parent)
+            # Determine how many folders were found.
+            if len(texture_folders_list) > 1:
+                # Multiple folders were found.
+                # Give an error.
+                questions.PrintWarning(f'The output path for {game} is set up for folder detection in the settings, but the model uses multiple texture folders.', skip_pause = True)
+                # Can't use windows path types for this; start a list that will hold them as strings.
+                texture_folders_list_str = []
+                # Loop through the texture folders.
+                for texture_folder in texture_folders_list:
+                    # Add the folder as a string.
+                    texture_folders_list_str.append(str(texture_folder))
+                # Give the option to pick a folder for selection.
+                texture_folder_choice = Path(questions.Select('Select which texture folder to use for detection.', os_sorted(texture_folders_list_str)))
+            else:
+                # Only 1 folder was found.
+                # Default to this folder.
+                texture_folder_choice = texture_folders_list[0]
+            # Get the character and sub-folder from the texture folder.
+            character = texture_folder_choice.parts[-3]
+            asset_type_folder = texture_folder_choice.parts[-2]
+            sub_folder = texture_folder_choice.parts[-1]
+            # Loop through the games in the series.
+            for game in settings.games_list:
+                # Determine if detection is needed for this game.
+                if settings_dict[f'{game}_path'] == 'Detect':
+                    # It's necessary to detect for this game.
+                    # Get the path.
+                    settings_dict[f'{game}_path'] = basic_xml_ops.GetOutputPath(game, application_path, character, asset_type_folder, sub_folder, asset_type)
     # Return the updated settings file.
     return settings_dict
 

@@ -10,6 +10,7 @@
 # Internal modules
 import questions
 # External modules
+from pathlib import Path
 import xml.etree.ElementTree as ET
 
 
@@ -37,11 +38,11 @@ def GetOutputPath(game, application_path, character, asset_type_folder, sub_fold
     if not(xml_file_path.exists()):
         # The file doesn't exist.
         # Give an error.
-        questions.PrintError(f'Folder detection detected that {character}.xml is the xml file for this asset, but this file does not exist.' system_exit = True)
+        questions.PrintError(f'Folder detection detected that {character}.xml is the xml file for this asset, but this file does not exist.', system_exit = True)
     # Open the xml file and get its root.
     paths_root = OpenGetTreeAndRoot(xml_file_path)
     # Determine which dictionary should be used for the assets.
-    if asset_type_folder.startwith('Default '):
+    if asset_type_folder.startswith('Default '):
         # These are my personal versions of default assets.
         # Set up the dictionary.
         elems_dict = {
@@ -103,6 +104,6 @@ def GetOutputPath(game, application_path, character, asset_type_folder, sub_fold
     if not(output_path.exists()):
         # The path doesn't exist.
         # Give an error.
-        questions.PrintError(f'Folder detection detected {output_path} as the file path for {game}, but this folder does not exist.' system_exit = True)
+        questions.PrintError(f'Folder detection detected {output_path} as the file path for {game}, but this folder does not exist.', system_exit = True)
     # Return the collected path.
     return output_path
