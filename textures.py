@@ -137,11 +137,17 @@ def FolderDetection(textures_list, settings_dict, application_path, asset_type):
         if len(texture_folders_list) > 1:
             # Multiple folders were found.
             # Give an error.
-            questions.PrintError('At least one output path is set up for folder detection in the settings, but the model uses multiple texture folders.', system_exit = True)
+            questions.PrintWarning('At least one output path is set up for folder detection in the settings, but the model uses multiple texture folders.', skip_pause = True)
+            # Give the option to pick a folder for selection.
+            texture_folder_choice = question.Select('Select which texture folder to use for detection.' texture_folders_list)
+        else:
+            # Only 1 folder was found.
+            # Default to this folder.
+            texture_folder_choice = texture_folders_list[0]
         # Get the character and sub-folder from the texture folder.
-        character = texture_folders_list[0].parts[-3]
-        asset_type_folder = texture_folders_list[0].parts[-2]
-        sub_folder = texture_folders_list[0].parts[-1]
+        character = texture_folder_choice.parts[-3]
+        asset_type_folder = texture_folder_choice.parts[-2]
+        sub_folder = texture_folder_choice.parts[-1]
         # Loop through the games in the series.
         for game in settings.games_list:
             # Determine if detection is needed for this game.
