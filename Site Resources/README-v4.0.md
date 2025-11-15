@@ -130,10 +130,10 @@ For this option to work correctly, the texture path must be set up a specific wa
    + Here's what each folder means:
      + `(character name)` is the name of the character, and will be the same as the name of the .xml file in the `Folder Detection` folder.
      + `(asset type)` is not used by igbFinisher, but this is how I organize my files. Realistically, this folder can be anything, but it has to be in the structure like this.
-     + `(asset name)` is whatever you want to name the asset. This value corresponds with a `texPath` attribute within the .xml file.
+     + `(asset name)` is whatever you want to name the asset. This value corresponds with a `tex_folder` attribute within the .xml file.
    + An example texture path would be:
      + `..\Cyclops\Skins\90s\12301.xcf`, which would export to `..\Cyclops\Skins\90s\12301.png`.
-     + The `Cyclops` folder corresponds with a `Cyclops.xml` file in the `Folder Detection` folder, and the `90s` folder corresponds with a `texFolder="90s"` attribute for one of the `skin` elements in the .xml file.
+     + The `Cyclops` folder corresponds with a `Cyclops.xml` file in the `Folder Detection` folder, and the `90s` folder corresponds with a `tex_folder="90s"` attribute for one of the `skin` elements in the .xml file.
 
 </details>
 
