@@ -205,7 +205,7 @@ def GetModelStats(input_file_path, asset_type, settings_dict):
     if settings_dict.get('debug_mode', False) == True:
         # It's necessary to print the debug information.
         # Print the title.
-        questions.PrintPlain('\n\nDebug information from GetModelStatus in alchemy.py:')
+        questions.PrintPlain('\n\nDebug information from GetModelStats in alchemy.py:')
         questions.PrintDebug('settings_dict', settings_dict)
         questions.PrintDebug('geometry_list', geometry_list)
         questions.PrintDebug('has_cel', has_cel)
