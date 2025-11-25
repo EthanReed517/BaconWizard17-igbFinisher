@@ -126,3 +126,8 @@ for game in settings.games_list:
 remove(temp_file_path)
 # Announce completion.
 questions.PrintSuccess(f'{input_file_path.name} processed successfully.')
+# Determine if debug mode is in use.
+if settings_dict.get('debug_mode', False) == True:
+    # Debug mode is in use.
+    # Pause the program.
+    questions.PressAnyKey(None)
