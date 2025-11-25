@@ -54,7 +54,7 @@
 	</d_huds>
 	<d_csps XML1="C:\GitHub\BaconWizard17-Mod-Releases\Default Portraits - XML1, XML2\Cable" XML2="C:\GitHub\BaconWizard17-Mod-Releases\Default Portraits - XML1, XML2\Cable" MUA1="C:\GitHub\BaconWizard17-Mod-Releases\Default Portraits - MUA1, MUA2\Cable" MUA2="C:\GitHub\BaconWizard17-Mod-Releases\Default Portraits - MUA1, MUA2\Cable" >
 		<portrait tex_folder="90s" output_folder="3. 90s" />
-	</d_huds>
+	</d_csps>
 	<d_lscreens XML1="C:\GitHub\BaconWizard17-Mod-Releases\Default Loading Screens\Cable" XML2="C:\GitHub\BaconWizard17-Mod-Releases\Default Loading Screens\Cable" MUA1="C:\GitHub\BaconWizard17-Mod-Releases\Default Loading Screens\Cable" MUA2="C:\GitHub\BaconWizard17-Mod-Releases\Default Loading Screens\Cable" >
 		<lscreen tex_folder="MUA1 OCP" output_folder="MUA1 OCP" />
 		<lscreen tex_folder="XML1 Default" output_folder="XML1 Default" />
