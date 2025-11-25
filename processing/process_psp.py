@@ -74,7 +74,7 @@ def CanProcessPSP(settings_dict, texture_info_dict, game, has_cel, output_file_n
         # Skip processing.
         can_process = False
     # Return if this can be processed as well as the output folder.
-    return can_process, output_folder_name
+    return can_process, output_folder_name, output_file_name
 
 # This function determines how much to scale the asset.
 def CheckPSPScaling(settings_dict, asset_type, texture_info_dict):
@@ -113,7 +113,7 @@ def CheckPSPScaling(settings_dict, asset_type, texture_info_dict):
 # This function process PSP Assets.
 def ProcessPSPAsset(asset_type, temp_file_hexed_path, output_file_name, settings_dict, texture_info_dict, game, has_cel):
     # Get the processing status.
-    can_process, output_folder_name = CanProcessPSP(settings_dict, texture_info_dict, game, has_cel, output_file_name)
+    can_process, output_folder_name, output_file_name = CanProcessPSP(settings_dict, texture_info_dict, game, has_cel, output_file_name)
     # Determine if it's okay to proces.
     if can_process == True:
         # It's okay to process.
