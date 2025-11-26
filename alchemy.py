@@ -242,7 +242,7 @@ def SetUpTempFile(input_file_path):
     # Set up the output path as the temp folder.
     temp_file_path = Path(environ['TEMP']) / 'temp.igb'
     # Perform the optimization.
-    alchemy.CallAlchemy(input_file_path, alchemy_version = 'Alchemy 3.2', output_path = temp_file_path)
+    CallAlchemy(input_file_path, alchemy_version = 'Alchemy 3.2', output_path = temp_file_path)
     # Return the path of the temp file.
     return temp_file_path
 
