@@ -31,7 +31,7 @@ def OpenGetTreeAndRoot(file):
     return root
 
 # This function is used to get the output path for folder detection.
-def GetOutputPath(game, application_path, character, asset_type_folder, sub_folder, asset_type):
+def GetOutputPath(game, application_path, character, asset_type_folder, sub_folder, asset_type, settings_dict):
     # Set up the path to the xml file.
     xml_file_path = application_path / 'Folder Detection' / f'{character}.xml'
     # Check if the file exists.
@@ -104,6 +104,15 @@ def GetOutputPath(game, application_path, character, asset_type_folder, sub_fold
     if not(output_path.exists()):
         # The path doesn't exist.
         # Give an error.
-        questions.PrintError(f'Folder detection detected {output_path} as the file path for {game}, but this folder does not exist.', system_exit = True)
+        questions.PrintError(f'Folder detection detected {output_path} as the output file path for {game}, but this folder does not exist.', system_exit = True)
+    # Announce the path.
+    questions.PrintSuccess(f'Folder detection successfully detected {output_path} as the output file path for {game}.')
+    # Determine if it's necessary to print the debug information.
+    if settings_dict.get('debug_mode', False) == True:
+        # It's necessary to print the debug information.
+        # Print the title.
+        questions.PrintPlain('\n\nDebug information from GetOutputPath in basic_xml_ops.py:')
+        questions.PrintDebug('settings_dict', settings_dict)
+        questions.PrintPlain('\n\n')
     # Return the collected path.
     return output_path

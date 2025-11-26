@@ -158,13 +158,11 @@ def FolderDetection(textures_list, settings_dict, application_path, asset_type):
             character = texture_folder_choice.parts[-3]
             asset_type_folder = texture_folder_choice.parts[-2]
             sub_folder = texture_folder_choice.parts[-1]
-            # Loop through the games in the series.
-            for game in settings.games_list:
-                # Determine if detection is needed for this game.
-                if settings_dict[f'{game}_path'] == 'Detect':
-                    # It's necessary to detect for this game.
-                    # Get the path.
-                    settings_dict[f'{game}_path'] = basic_xml_ops.GetOutputPath(game, application_path, character, asset_type_folder, sub_folder, asset_type)
+            # Determine if detection is needed for this game.
+            if settings_dict[f'{game}_path'] == 'Detect':
+                # It's necessary to detect for this game.
+                # Get the path.
+                settings_dict[f'{game}_path'] = basic_xml_ops.GetOutputPath(game, application_path, character, asset_type_folder, sub_folder, asset_type, settings_dict)
     # Return the updated settings file.
     return settings_dict
 
