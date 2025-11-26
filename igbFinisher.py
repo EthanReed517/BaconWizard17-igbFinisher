@@ -34,7 +34,7 @@ def DisplayInfo():
     questions.PrintPlain('██║╚██████╔╝██████╔╝██║     ██║██║ ╚████║██║███████║██║  ██║███████╗██║  ██║')
     questions.PrintPlain('╚═╝ ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚═╝  ╚═══╝╚═╝╚══════╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝')
     # Print the relevant information.
-    questions.PrintPlain('\nVersion 3.1.0')
+    questions.PrintPlain('\nVersion 4.0.0')
     questions.PrintPlain('https://marvelmods.com/forum/index.php/topic,11440.0.html\n')
     # Print the welcome message.
     questions.PrintImportant("Welcome to BaconWizard17's igb Finisher!\n")
