@@ -19,6 +19,7 @@ import textures
 from os import remove, system
 from pathlib import Path
 import sys
+from time import sleep
 
 
 # ######### #
@@ -126,6 +127,8 @@ for game in settings.games_list:
 remove(temp_file_path)
 # Announce completion.
 questions.PrintSuccess(f'{input_file_path.name} processed successfully.')
+# Wait for 1 second so the user can see the success message.
+sleep(1)
 # Determine if debug mode is in use.
 if settings_dict.get('debug_mode', False) == True:
     # Debug mode is in use.
