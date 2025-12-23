@@ -119,7 +119,7 @@ def ProcessPC360Asset(asset_type, temp_file_hexed_path, output_file_name, settin
             else:
                 # The texture is transparent.
                 # Write the list of transparent textures.
-                TransparentTextureNames(texture_info_dict['textures_list'])
+                processing.TransparentTextureNames(texture_info_dict['textures_list'])
                 # Convert to PNG8, skipping transparent textures.
                 alchemy_32_optimization_list.append('igQuantizeRaven (exclude)')
         else:
