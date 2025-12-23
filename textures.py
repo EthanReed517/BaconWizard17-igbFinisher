@@ -174,7 +174,7 @@ def GetHexOutList(settings_dict, asset_type, textures_list):
     if asset_type in ['Conversation Portrait', 'Character Select Portrait', 'Power Icons', 'Comic Cover', 'Concept Art', 'Loading Screen']:
         # This is a 2D asset that gets its file name from the texture name.
         # Get the texture name.
-        texture_name = textures_list[0].stem
+        texture_name = textures_list[0]['Name'].stem
         # Filter by asset type.
         if asset_type in ['Conversation Portrait', 'Character Select Portrait']:
             # This is a portrait.
