@@ -190,7 +190,7 @@ def GetModelStats(input_file_path, asset_type, settings_dict):
             settings_dict['MUA1_path'] = None
             settings_dict['MUA2_path'] = None
     # Make sure this is an asset that can have cel shading.
-    if asset_type in ['Conversation Portrait', 'Character Select Portrait', 'Power Icons', 'Comic Cover', 'Concept Art', 'Loading Screen']:
+    if ((asset_type in ['Conversation Portrait', 'Character Select Portrait', 'Power Icons', 'Comic Cover', 'Concept Art', 'Loading Screen']) and (has_cel == True)):
         # This is an asset type that doesn't support cel shading.
         # Give an error.
         questions.PrintError(f'Assets of type {asset_type} cannot use cel shading, but cel shading was detected.', system_exit = True)
