@@ -60,14 +60,14 @@ def GetTextureType(textures_list, settings_dict, asset_type, input_file_path):
                 # This is an opaque texture.
                 # Do nothing.
                 pass
-            elif texture_dict['Format'] == 'IG_GFX_TEXTURE_FORMAT_RGB_8888_32 (7)':
+            elif texture_dict['Format'] == 'IG_GFX_TEXTURE_FORMAT_RGBA_8888_32 (7)':
                 # This is a transparent texture.
                 # Set the type to transparent.
                 texture_type = 'Transparent'
             else:
                 # This is some other texture type, which is not supported.
                 # Print an error.
-                questions.PrintError(f'Texture {texture_dict['Name']} uses format {texture_dict['Format']}, which is not supported. The supported texture formats are IG_GFX_TEXTURE_FORMAT_RGB_888_24 (5) (for opaque textures) or IG_GFX_TEXTURE_FORMAT_RGB_8888_32 (7) (for textures with transparency).', system_exit = True)
+                questions.PrintError(f'Texture {texture_dict['Name']} uses format {texture_dict['Format']}, which is not supported. The supported texture formats are IG_GFX_TEXTURE_FORMAT_RGB_888_24 (5) (for opaque textures) or IG_GFX_TEXTURE_FORMAT_RGBA_8888_32 (7) (for textures with transparency).', system_exit = True)
     # Determine what texture type was found and announce it.
     if texture_type == None:
         questions.PrintSuccess(f'{input_file_path.name} has no textures.')
