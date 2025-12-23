@@ -165,5 +165,5 @@ def ProcessPSPAsset(asset_type, temp_file_hexed_path, output_file_name, settings
         # Delete the temp file.
         remove(temp_file_hexed_32_path)
         # For XML2, delete the secondary optimization file.
-        if game == 'XML2':
+        if ((game == 'XML2') and ((Path(environ['temp']) / 'opt2.ini').exists())):
             remove(Path(environ['temp']) / 'opt2.ini')
