@@ -215,7 +215,7 @@ def GetHexOutList(settings_dict, asset_type, textures_list):
                     if settings_dict[f'{game}_special_name'] is None:
                         # The special name should be set.
                         # Update the settings accordingly.
-                        settings_dict[f'{game}_special_name'] = texture_name
+                        settings_dict[f'{game}_special_name'] = texture_name[5:]
                         hex_out_list.append([texture_name, texture_name[5:]])
                         # Determine if this is an icons file.
                         if asset_type == 'Power Icons':
