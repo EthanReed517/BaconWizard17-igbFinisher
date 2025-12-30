@@ -186,7 +186,7 @@ def GetHexOutList(settings_dict, asset_type, textures_list):
                 if texture_name.startswith(f'{prefix}_'):
                     # The texture starts with this prefix.
                     # Update the hex editing list to remove this.
-                    hex_out_list.append([texture_name, texture_name[(len(prefix) + 1):]])
+                    hex_out_list.append([str(textures_list[0]['Name']), str(textures_list[0]['Name']).replace(texture_name, texture_name[(len(prefix) + 1):])])
                     # Loop through the games.
                     for game in settings.games_list:
                         # Make sure that the special name should be set.
@@ -216,7 +216,7 @@ def GetHexOutList(settings_dict, asset_type, textures_list):
                         # The special name should be set.
                         # Update the settings accordingly.
                         settings_dict[f'{game}_special_name'] = texture_name[5:]
-                        hex_out_list.append([texture_name, texture_name[5:]])
+                        hex_out_list.append([str(textures_list[0]['Name']), str(textures_list[0]['Name']).replace(texture_name, texture_name[5:])])
                         # Determine if this is an icons file.
                         if asset_type == 'Power Icons':
                             # This is an icons file.
@@ -290,10 +290,10 @@ def GetHexOutList(settings_dict, asset_type, textures_list):
             settings_dict['MUA2_path'] = None
         else:
             # This is an asset that has game-specific aspect ratios.
-            # Get the suffix from the file name.
-            suffix = texture_name.split('_')[-1]
-            # Check what the suffix is.
-            if suffix == '4-3':
+            # Get the prefix from the file name.
+            prefix = texture_name.split('_')[0]
+            # Check what the prefix is.
+            if prefix == '4-3':
                 # This is a 4:3 texture.
                 # Skip processing for PSP, MUA1, and MUA2.
                 settings_dict['PSP'] = False
@@ -301,7 +301,7 @@ def GetHexOutList(settings_dict, asset_type, textures_list):
                 settings_dict['MUA2_num'] = None
                 settings_dict['MUA1_path'] = None
                 settings_dict['MUA2_path'] = None
-            elif suffix == '16-9-P':
+            elif prefix == '16-9-P':
                 # This is a 16:9 XML2 PSP loading screen texture.
                 # Skip processing for all games except for XML2.
                 settings_dict['XML1_num'] = None
@@ -315,7 +315,7 @@ def GetHexOutList(settings_dict, asset_type, textures_list):
                 settings_dict['PS2'] = False
                 settings_dict['PC'] = False
                 settings_dict['Xbox'] = False
-            elif suffix == '16-9-N':
+            elif prefix == '16-9-N':
                 # This is a 16-9 next-gen texture.
                 # Skip processing for all games except for MUA1.
                 settings_dict['XML1_num'] = None
@@ -329,7 +329,7 @@ def GetHexOutList(settings_dict, asset_type, textures_list):
                 settings_dict['PSP'] = False
                 settings_dict['Wii'] = False
                 settings_dict['Xbox'] = False
-            elif suffix == '16-9-L':
+            elif prefix == '16-9-L':
                 # This is a last-gen texture.
                 # Skip processing for XML1.
                 settings_dict['XML1_num'] = None
@@ -366,7 +366,7 @@ def GetHexOutList(settings_dict, asset_type, textures_list):
                         # Update the settings accordingly.
                         settings_dict[f'{game}_special_name'] = texture_name
                 # Add the hex editing information.
-                hex_out_list.append([texture_name, ('_').join(texture_name.split('_')[1:])])
+                hex_out_list.append([str(textures_list[0]['Name']), str(textures_list[0]['Name']).replace(texture_name, ('_').join(texture_name.split('_')[1:]))])
             else:
                 # This is a loading screen.
                 # Determine if this is a villain loading screen.
@@ -380,11 +380,11 @@ def GetHexOutList(settings_dict, asset_type, textures_list):
                             # Update the settings accordingly.
                             settings_dict[f'{game}_special_name'] = 'Villain'
                     # Add the hex editing information
-                    hex_out_list.append([texture_name, ('_').join(texture_name.split('_')[2:])])
+                    hex_out_list.append([str(textures_list[0]['Name']), str(textures_list[0]['Name']).replace(texture_name, ('_').join(texture_name.split('_')[2:]))])
                 else:
                     # This is a standard loading screen.
                     # Add the hex editing information
-                    hex_out_list.append([texture_name, ('_').join(texture_name.split('_')[1:])])
+                    hex_out_list.append([str(textures_list[0]['Name']), str(textures_list[0]['Name']).replace(texture_name, ('_').join(texture_name.split('_')[1:]))])
     # Return the updated values.
     return settings_dict, hex_out_list
 
