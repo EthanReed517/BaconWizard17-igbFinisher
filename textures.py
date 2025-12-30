@@ -244,6 +244,11 @@ def GetHexOutList(settings_dict, asset_type, textures_list):
                 settings_dict['XML2_path'] = None
                 settings_dict['MUA1_num'] = None
                 settings_dict['MUA1_path'] = None
+                # Make sure that the special name should be set.
+                if settings_dict['XML1_special_name'] is None:
+                    # The special name should be set.
+                    # Update the settings accordingly.
+                    settings_dict['XML1_special_name'] = ('_').join(texture_name.split('_')[1:])
             elif texture_prefix == 'XML2':
                 # This is for XML2 (except for PSP).
                 # Disable the other games and the PSP.
@@ -252,6 +257,11 @@ def GetHexOutList(settings_dict, asset_type, textures_list):
                 settings_dict['MUA1_num'] = None
                 settings_dict['MUA1_path'] = None
                 settings_dict['PSP'] = False
+                # Make sure that the special name should be set.
+                if settings_dict['XML2_special_name'] is None:
+                    # The special name should be set.
+                    # Update the settings accordingly.
+                    settings_dict['XML2_special_name'] = ('_').join(texture_name.split('_')[1:])
             elif texture_prefix == 'XML2-PSP':
                 # This is for XML2 PSP.
                 # Disable the other games and consoles.
@@ -263,6 +273,11 @@ def GetHexOutList(settings_dict, asset_type, textures_list):
                 settings_dict['PS2'] = False
                 settings_dict['PC'] = False
                 settings_dict['Xbox'] = False
+                # Make sure that the special name should be set.
+                if settings_dict['XML2_special_name'] is None:
+                    # The special name should be set.
+                    # Update the settings accordingly.
+                    settings_dict['XML2_special_name'] = ('_').join(texture_name.split('_')[1:])
             elif texture_prefix == 'MUA1-LG':
                 # This is for last-gen MUA1.
                 # Disable the other games and consoles.
@@ -274,6 +289,11 @@ def GetHexOutList(settings_dict, asset_type, textures_list):
                 settings_dict['Steam'] = False
                 settings_dict['PS3'] = False
                 settings_dict['Xbox_360'] = False
+                # Make sure that the special name should be set.
+                if settings_dict['MUA1_special_name'] is None:
+                    # The special name should be set.
+                    # Update the settings accordingly.
+                    settings_dict['MUA1_special_name'] = ('_').join(texture_name.split('_')[1:])
             else:
                 # This is for next-gen MUA1.
                 # Disable the other games and consoles.
@@ -285,9 +305,16 @@ def GetHexOutList(settings_dict, asset_type, textures_list):
                 settings_dict['PSP'] = False
                 settings_dict['Wii'] = False
                 settings_dict['Xbox'] = False
+                # Make sure that the special name should be set.
+                if settings_dict['MUA1_special_name'] is None:
+                    # The special name should be set.
+                    # Update the settings accordingly.
+                    settings_dict['MUA1_special_name'] = ('_').join(texture_name.split('_')[1:])
             # Always disable MUA2 because it doesn't use comic covers.
             settings_dict['MUA2_num'] = None
             settings_dict['MUA2_path'] = None
+            # Add the hex editing information.
+            hex_out_list.append([str(textures_list[0]['Name']), str(textures_list[0]['Name']).replace(texture_name, ('_').join(texture_name.split('_')[1:]))])
         else:
             # This is an asset that has game-specific aspect ratios.
             # Get the prefix from the file name.
