@@ -13,9 +13,7 @@ import hex
 import optimizations
 import processing
 # External modules
-from datetime import datetime, timezone
-from os import environ, makedirs, remove, rename
-from pathlib import Path
+from os import makedirs, remove
 from shutil import copy
 
 
@@ -202,15 +200,3 @@ def ProcessPC360Asset(asset_type, temp_file_hexed_path, output_file_name, settin
                 alchemy.CallAlchemy(temp_file_hexed_32_path, output_path = output_file_path, debug_mode = settings_dict.get('debug_mode', False), console = output_folder_name)
             # Delete the temp file.
             remove(temp_file_hexed_32_path)
-        # Determine if the text file exists.
-        if (Path(environ['temp']) / 'temp.txt').exists():
-            # The text file exists.
-            # Determine if debug mode is on.
-            if settings_dict.get('debug_mode', False) == True:
-                # Debug mode is on.
-                # Rename the text file.
-                rename((Path(environ['temp']) / 'temp.txt'), (Path(environ['temp']) / f'temp - {output_folder_name} - Alchemy 3.2 - {str(datetime.now(timezone.utc)).replace(':', '-')}.txt'))
-            else:
-                # Debug mode is off.
-                # Remove the text file.
-                remove(Path(environ['temp']) / 'temp.txt')

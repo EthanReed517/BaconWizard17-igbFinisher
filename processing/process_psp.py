@@ -11,8 +11,7 @@
 import alchemy
 import optimizations
 # External modules
-from datetime import datetime, timezone
-from os import environ, remove, rename
+from os import environ, remove
 from pathlib import Path
 
 
@@ -168,9 +167,3 @@ def ProcessPSPAsset(asset_type, temp_file_hexed_path, output_file_name, settings
         alchemy.CallAlchemy(temp_file_hexed_32_path, output_path = output_file_path, debug_mode = settings_dict.get('debug_mode', False), console = output_folder_name)
         # Delete the temp file.
         remove(temp_file_hexed_32_path)
-        # For XML2, delete the secondary optimization file.
-        if ((game == 'XML2') and ((Path(environ['temp']) / 'opt2.ini').exists())):
-            if settings_dict.get('debug_mode', False) == True:
-                rename((Path(environ['temp']) / 'opt2.ini'), (Path(environ['temp']) / f'opt2 - {output_folder_name} - Alchemy 5 - {str(datetime.now(timezone.utc)).replace(':', '-')}.ini'))
-            else:
-                remove(Path(environ['temp']) / 'opt2.ini')

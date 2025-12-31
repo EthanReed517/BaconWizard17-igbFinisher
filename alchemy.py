@@ -248,11 +248,13 @@ def SetUpTempFile(input_file_path):
 
 # This function performs Alchemy optimizations on a file.
 def CallAlchemy(input_file_path, **kwargs):
+    # Set up the Alchemy version as a variable for convenience.
+    alchemy_version = kwargs.get('alchemy_version', 'Alchemy 5')
     # Get the correct optimizer.
-    if kwargs.get('alchemy_version', 'Alchemy 5') == 'Alchemy 3.2':
+    if alchemy_version == 'Alchemy 3.2':
         optimizer_path = sgOptimizer32
     else:
-        optimizer_path = sgOptimizer
+        optimizer_path = sgOptimizer 
     # Determine if an output path was given.
     if kwargs.get('output_path', None) is not None:
         # An output path was given.
@@ -264,18 +266,50 @@ def CallAlchemy(input_file_path, **kwargs):
         # There is no special output path.
         # The output path is just the input path.
         output_file_path = input_file_path
+    # Set up the optimization paths as a variable for convenience.
+    optimization_path = kwargs.get('optimization_path', (Path(environ['temp']) / 'opt.ini'))
+    # Set up paths to the other possible path types to be able to delete/rename them later.
+    optimization_path2 = Path(environ['temp']) / 'opt2.ini'
+    temp_txt_path = Path(environ['temp']) / 'temp.txt'
     # Set up the Alchemy command.
-    cmd = f'"{optimizer_path}" "{input_file_path}" "{output_file_path}" "{kwargs.get('optimization_path', (Path(environ['temp']) / 'opt.ini'))}"'
+    cmd = f'"{optimizer_path}" "{input_file_path}" "{output_file_path}" "{optimization_path}"'
     # Call the operation.
     subprocess.run(cmd, shell=True, stdout=subprocess.DEVNULL)
     # Determine if debug mode is active.
     if kwargs.get('debug_mode', False) == True:
         # Debug mode is active.
+        # Set up some variables.
+        console = kwargs.get('console', 'none')
+        time_stamp = str(datetime.now(timezone.utc)).replace(':', '-')
         # Rename the optimization file.
-        rename(kwargs.get('optimization_path', (Path(environ['temp']) / 'opt.ini')), (Path(environ['temp']) / f'{kwargs.get('optimization_path', (Path(environ['temp']) / 'opt.ini')).stem} - {kwargs.get('console', 'none')} - {kwargs.get('alchemy_version', 'Alchemy 5')} - {str(datetime.now(timezone.utc)).replace(':', '-')}.ini'))
+        rename(optimization_path, (Path(environ['temp']) / f'{optimization_path.stem} - {console} - {alchemy_version} - {time_stamp}.ini'))
         # Make a copy of the exported file.
-        copy(output_file_path, (Path(environ['temp']) / f'temp - {kwargs.get('console', 'none')} - {kwargs.get('alchemy_version', 'Alchemy 5')} - {str(datetime.now(timezone.utc)).replace(':', '-')}.igb'))
+        copy(output_file_path, (Path(environ['temp']) / f'temp - {console} - {alchemy_version} - {time_stamp}.igb'))
+        # Check for other paths and rename them.
+        for file in [optimization_path2, temp_txt_path]:
+            if file.exists():
+                rename(file, (Path(environ['temp']) / f'{file.stem} - {console} - {alchemy_version} - {time_stamp}.{file.suffix}'))
     else:
         # Debug mode is not active.
         # Delete the optimization file.
-        remove(kwargs.get('optimization_path', (Path(environ['temp']) / 'opt.ini')))
+        remove(optimization_path)
+        # Check for other paths and delete them.
+        for file in [optimization_path2, temp_txt_path]:
+            if file.exists():
+                remove(file)
+
+# This function cleans up the debug files in the temp directory.
+def CleanUpDebugTemp(settings_dict)
+    # Determine if debug mode is in use.
+    if settings_dict.get('debug_mode', False) == True:
+        # Debug mode is in use.
+        # Determine if the user wants to delete the temp files.
+        delete_temp = questions.Confirm('Delete the debug temp files?')
+        # If the user wants to, delete all the debug temp files.
+        if delete_temp == True:
+            for file in listdir(Path(environ['temp'])):
+                if ((file.startswith('opt')) or (file.startswith('temp - '))):
+                    if (Path(environ['temp']) / file).is_file():
+                        remove(Path(environ['temp']) / file)
+        # Pause the program.
+        questions.PressAnyKey(None)

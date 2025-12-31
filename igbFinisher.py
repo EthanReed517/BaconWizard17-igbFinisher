@@ -129,16 +129,5 @@ remove(temp_file_path)
 questions.PrintSuccess(f'{input_file_path.name} processed successfully.')
 # Wait for 1 second so the user can see the success message.
 sleep(1)
-# Determine if debug mode is in use.
-if settings_dict.get('debug_mode', False) == True:
-    # Debug mode is in use.
-    # Determine if the user wants to delete the temp files.
-    delete_temp = questions.Confirm('Delete the debug temp files?')
-    # If the user wants to, delete all the debug temp files.
-    if delete_temp == True:
-        for file in listdir(Path(environ['temp'])):
-            if ((file.startswith('opt')) or (file.startswith('temp - '))):
-                if (Path(environ['temp']) / file).is_file():
-                    remove(Path(environ['temp']) / file)
-    # Pause the program.
-    questions.PressAnyKey(None)
+# Perform the debug cleanup.
+alchemy.CleanUpDebugTemp(settings_dict)
