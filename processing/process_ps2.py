@@ -108,8 +108,11 @@ def ProcessPS2Asset(asset_type, temp_file_hexed_path, output_file_name, settings
         scale_factor = CheckPS2Scaling(settings_dict, asset_type, texture_info_dict, game)
         # Add the necessary optimizations.
         optimization_list.extend(['igResizeImage', 'igQuantizeRaven'])
-        # Add the conversion to PNG8 the default way, which will convert the environment maps.
-        optimization_list.append('igConvertImage (PNG8)')
+        # Determine if there are environment maps.
+        if ' Env' in texture_info_dict['texture_type']:
+            # There are environment maps.
+            # Add the conversion to PNG8 the default way, which will convert the environment maps.
+            optimization_list.append('igConvertImage (PNG8)')
         # Write the optimization.
         optimizations.WriteOptimization(optimization_list, alchemy_version = 'Alchemy 3.2', scale_to = scale_factor)
         # Determine if the output sub-folder should be skipped.
@@ -127,14 +130,14 @@ def ProcessPS2Asset(asset_type, temp_file_hexed_path, output_file_name, settings
             # Set up a temp path for the Alchemy 3.2 optimized file.
             temp_file_hexed_32_path = temp_file_hexed_path.with_name('temph2.igb')
             # Perform the Alchemy 3.2 optimizations without sending the file.
-            alchemy.CallAlchemy(temp_file_hexed_path, alchemy_version = 'Alchemy 3.2', output_path = temp_file_hexed_32_path)
+            alchemy.CallAlchemy(temp_file_hexed_path, alchemy_version = 'Alchemy 3.2', output_path = temp_file_hexed_32_path, debug_mode = settings_dict.get('debug_mode', False), console = f'for {game} (PS2)')
             # Write a new optimization file for Alchemy 5.
             optimizations.WriteOptimization(['igConvertGeometryAttr'])
             # Perform the Alchemy 5 optimization.
-            alchemy.CallAlchemy(temp_file_hexed_32_path, output_path = output_file_path)
+            alchemy.CallAlchemy(temp_file_hexed_32_path, output_path = output_file_path, debug_mode = settings_dict.get('debug_mode', False), console = f'for {game} (PS2)')
             # Delete the other temp file.
             remove(temp_file_hexed_32_path)
         else:
             # This is for the other games.
             # Perform the Alchemy optimizations.
-            alchemy.CallAlchemy(temp_file_hexed_path, alchemy_version = 'Alchemy 3.2', output_path = output_file_path)
+            alchemy.CallAlchemy(temp_file_hexed_path, alchemy_version = 'Alchemy 3.2', output_path = output_file_path, debug_mode = settings_dict.get('debug_mode', False), console = f'for {game} (PS2)')

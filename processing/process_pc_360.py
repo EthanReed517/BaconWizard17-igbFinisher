@@ -13,7 +13,9 @@ import hex
 import optimizations
 import processing
 # External modules
-from os import makedirs, remove
+from datetime import datetime, timezone
+from os import environ, makedirs, remove, rename
+from pathlib import Path
 from shutil import copy
 
 
@@ -134,7 +136,7 @@ def ProcessPC360Asset(asset_type, temp_file_hexed_path, output_file_name, settin
             if texture_info_dict['max_texture_size'] <= 256:
                 # This is a small texture.
                 # Add the conversion to PNG8 in Alchemy 5, which skips transparent textures.
-                alchemy_5_optimization_list.append('igConvertImage (PNG8)')
+                alchemy_5_optimization_list.append('igConvertImage (PNG8) (exclude)')
             else:
                 # This is a large texture.
                 # Add the conversions to DXT1 (for opaque) and DXT5 (for transparent).
@@ -152,7 +154,7 @@ def ProcessPC360Asset(asset_type, temp_file_hexed_path, output_file_name, settin
                 # Write the Alchemy 3.2 optimization.
                 optimizations.WriteOptimization(alchemy_32_optimization_list, alchemy_version = 'Alchemy 3.2', scale_to = scale_factor)
                 # Perform the Alchemy 3.2 optimizations and don't send the file.
-                alchemy.CallAlchemy(temp_file_hexed_path, alchemy_version = 'Alchemy 3.2', output_path = temp_file_hexed_32_path)
+                alchemy.CallAlchemy(temp_file_hexed_path, alchemy_version = 'Alchemy 3.2', output_path = temp_file_hexed_32_path, debug_mode = settings_dict.get('debug_mode', False), console = output_folder_name)
             else:
                 # There are no Alchemy 3.2 optimizations.
                 # Create a copy of the file with the Alchemy 3.2 name.
@@ -187,7 +189,7 @@ def ProcessPC360Asset(asset_type, temp_file_hexed_path, output_file_name, settin
                     optimizations.WriteOptimization(alchemy_5_optimization_list, advanced_texture_ini = settings_dict['advanced_texture_ini'], normal_map_type = 'blue')
                     normal_map_suffix = '_n_b.png'
                 # Perform the Alchemy 5 optimizations but don't send the file.
-                alchemy.CallAlchemy(temp_file_hexed_32_path)
+                alchemy.CallAlchemy(temp_file_hexed_32_path, debug_mode = settings_dict.get('debug_mode', False), console = output_folder_name)
                 # Make the destination folder.
                 makedirs(output_file_path.parent, exist_ok = True)
                 # Hex edit the extension of the normal map and send it out.
@@ -197,6 +199,18 @@ def ProcessPC360Asset(asset_type, temp_file_hexed_path, output_file_name, settin
                 # Write the Alchemy 5 optimization normally.
                 optimizations.WriteOptimization(alchemy_5_optimization_list)
                 # Perform the Alchemy 5 optimizations and send the file.
-                alchemy.CallAlchemy(temp_file_hexed_32_path, output_path = output_file_path)
+                alchemy.CallAlchemy(temp_file_hexed_32_path, output_path = output_file_path, debug_mode = settings_dict.get('debug_mode', False), console = output_folder_name)
             # Delete the temp file.
             remove(temp_file_hexed_32_path)
+        # Determine if the text file exists.
+        if (Path(environ['temp']) / 'temp.txt').exists():
+            # The text file exists.
+            # Determine if debug mode is on.
+            if settings_dict.get('debug_mode', False) == True:
+                # Debug mode is on.
+                # Rename the text file.
+                rename((Path(environ['temp']) / 'temp.txt'), (Path(environ['temp']) / f'temp - {output_folder_name} - Alchemy 3.2 - {str(datetime.now(timezone.utc)).replace(':', '-')}.txt'))
+            else:
+                # Debug mode is off.
+                # Remove the text file.
+                remove(Path(environ['temp']) / 'temp.txt')

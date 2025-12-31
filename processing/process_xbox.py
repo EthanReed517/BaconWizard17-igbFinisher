@@ -11,6 +11,10 @@
 import alchemy
 import optimizations
 import processing
+# External modules
+from datetime import datetime, timezone
+from os import environ, remove, rename
+from pathlib import Path
 
 
 # ######### #
@@ -177,8 +181,11 @@ def ProcessXboxAsset(asset_type, temp_file_hexed_path, output_file_name, setting
                 processing.TransparentTextureNames(texture_info_dict['textures_list'])
                 # Convert to PNG8, skipping transparent textures.
                 optimization_list.append('igQuantizeRaven (exclude)')
-            # Add the conversion to PNG8 the default way, which will convert the environment maps. Also preserves transparent textures.
-            optimization_list.append('igConvertImage (PNG8)')
+            # Determine if there are environment maps.
+            if ' Env' in texture_info_dict['texture_type']:
+                # There are environment maps.
+                # Add the conversion to PNG8 the default way, which will convert the environment maps. Also preserves transparent textures.
+                optimization_list.append('igConvertImage (PNG8) (exclude)')
         # Loop through the output folder list.
         for output_folder_name in output_folder_list:
             # Determine if the output sub-folder should be skipped.
@@ -198,4 +205,16 @@ def ProcessXboxAsset(asset_type, temp_file_hexed_path, output_file_name, setting
             # Write the optimization.
             optimizations.WriteOptimization(optimization_list, alchemy_version = 'Alchemy 3.2', scale_to = scale_factor)
             # Perform the Alchemy optimizations.
-            alchemy.CallAlchemy(temp_file_hexed_path, alchemy_version = 'Alchemy 3.2', output_path = output_file_path)
+            alchemy.CallAlchemy(temp_file_hexed_path, alchemy_version = 'Alchemy 3.2', output_path = output_file_path, debug_mode = settings_dict.get('debug_mode', False), console = output_folder_name)
+        # Determine if the text file exists.
+        if (Path(environ['temp']) / 'temp.txt').exists():
+            # The text file exists.
+            # Determine if debug mode is on.
+            if settings_dict.get('debug_mode', False) == True:
+                # Debug mode is on.
+                # Rename the text file.
+                rename((Path(environ['temp']) / 'temp.txt'), (Path(environ['temp']) / f'temp - {output_folder_name} - Alchemy 3.2 - {str(datetime.now(timezone.utc)).replace(':', '-')}.txt'))
+            else:
+                # Debug mode is off.
+                # Remove the text file.
+                remove(Path(environ['temp']) / 'temp.txt')

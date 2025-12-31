@@ -16,7 +16,7 @@ import processing
 import settings
 import textures
 # External modules
-from os import remove, system
+from os import environ, listdir, remove, system
 from pathlib import Path
 import sys
 from time import sleep
@@ -132,5 +132,13 @@ sleep(1)
 # Determine if debug mode is in use.
 if settings_dict.get('debug_mode', False) == True:
     # Debug mode is in use.
+    # Determine if the user wants to delete the temp files.
+    delete_temp = questions.Confirm('Delete the debug temp files?')
+    # If the user wants to, delete all the debug temp files.
+    if delete_temp == True:
+        for file in listdir(Path(environ['temp'])):
+            if ((file.startswith('opt')) or (file.startswith('temp - '))):
+                if (Path(environ['temp']) / file).is_file():
+                    remove(Path(environ['temp']) / file)
     # Pause the program.
     questions.PressAnyKey(None)

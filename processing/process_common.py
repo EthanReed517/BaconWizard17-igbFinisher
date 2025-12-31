@@ -22,7 +22,7 @@ def TransparentTextureNames(textures_list):
     # Loop through the textures in the list.
     for texture_dict in textures_list:
         # Determine if this is a transparent texture.
-        if texture_dict['Format'] == 'IG_GFX_TEXTURE_FORMAT_RGB_8888_32 (7)':
+        if texture_dict['Format'] == 'IG_GFX_TEXTURE_FORMAT_RGBA_8888_32 (7)':
             # This is a transparent texture.
             # Add its file name to a list.
             transparent_textures.append(texture_dict['Name'].name)

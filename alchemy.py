@@ -12,7 +12,7 @@ import optimizations
 import questions
 # External modules
 from datetime import datetime, timezone
-from os import environ, listdir, makedirs, popen, remove, system
+from os import environ, listdir, makedirs, popen, remove, rename, system
 from pathlib import Path
 from shutil import copy
 import subprocess
@@ -268,5 +268,14 @@ def CallAlchemy(input_file_path, **kwargs):
     cmd = f'"{optimizer_path}" "{input_file_path}" "{output_file_path}" "{kwargs.get('optimization_path', (Path(environ['temp']) / 'opt.ini'))}"'
     # Call the operation.
     subprocess.run(cmd, shell=True, stdout=subprocess.DEVNULL)
-    # Delete the optimization file.
-    remove(kwargs.get('optimization_path', (Path(environ['temp']) / 'opt.ini')))
+    # Determine if debug mode is active.
+    if kwargs.get('debug_mode', False) == True:
+        # Debug mode is active.
+        # Rename the optimization file.
+        rename(kwargs.get('optimization_path', (Path(environ['temp']) / 'opt.ini')), (Path(environ['temp']) / f'{kwargs.get('optimization_path', (Path(environ['temp']) / 'opt.ini')).stem} - {kwargs.get('console', 'none')} - {kwargs.get('alchemy_version', 'Alchemy 5')} - {str(datetime.now(timezone.utc)).replace(':', '-')}.ini'))
+        # Make a copy of the exported file.
+        copy(output_file_path, (Path(environ['temp']) / f'temp - {kwargs.get('console', 'none')} - {kwargs.get('alchemy_version', 'Alchemy 5')} - {str(datetime.now(timezone.utc)).replace(':', '-')}.igb'))
+    else:
+        # Debug mode is not active.
+        # Delete the optimization file.
+        remove(kwargs.get('optimization_path', (Path(environ['temp']) / 'opt.ini')))

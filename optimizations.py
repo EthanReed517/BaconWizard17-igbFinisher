@@ -34,7 +34,9 @@ optimization_dict = {
         # Convert textures to PNG8 but only on any textures in the texture list.
         'igQuantizeRaven (include)': ['name = igQuantizeRaven', 'imageList = ', f'imageListFilename = {Path(environ['temp']) / 'temp.txt'}', 'isExclude = false', 'isReduce = false', 'alphaPallete = true', 'eightBitTofourBitOnly = false'],
         # Convert textures to PNG8 (uses the worse format, only used on environment maps).
-        'igConvertImage (PNG8)': ['name = igConvertImage', 'format = x_8', 'order = DEFAULT', 'isExclude = exclude', 'convertIfSmaller = true', 'preserveAlpha = true', f'imageListFilename = {Path(environ['temp']) / 'temp.txt'}']
+        'igConvertImage (PNG8)': ['name = igConvertImage', 'format = x_8', 'order = DEFAULT', 'isExclude = exclude', 'convertIfSmaller = true', 'preserveAlpha = true', 'imageListFilename = '],
+        # Convert textures to PNG8 but skips any textures in the texture list (uses the worse format, only used on environment maps).
+        'igConvertImage (PNG8) (exclude)': ['name = igConvertImage', 'format = x_8', 'order = DEFAULT', 'isExclude = exclude', 'convertIfSmaller = true', 'preserveAlpha = true', f'imageListFilename = {Path(environ['temp']) / 'temp.txt'}']
     },
     'Alchemy 5': {
         # Get statistics for textures.

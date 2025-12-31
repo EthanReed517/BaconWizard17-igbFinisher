@@ -11,7 +11,8 @@
 import alchemy
 import optimizations
 # External modules
-from os import environ, remove
+from datetime import datetime, timezone
+from os import environ, remove, rename
 from pathlib import Path
 
 
@@ -128,14 +129,17 @@ def ProcessPSPAsset(asset_type, temp_file_hexed_path, output_file_name, settings
         scale_factor = CheckPSPScaling(settings_dict, asset_type, texture_info_dict)
         # Add the necessary optimizations.
         alchemy_32_optimization_list.extend(['igResizeImage', 'igQuantizeRaven'])
-        # Add the conversion to PNG8 the default way, which will convert the environment maps.
-        alchemy_32_optimization_list.append('igConvertImage (PNG8)')
+        # Determine if there are environment maps.
+        if ' Env' in texture_info_dict['texture_type']:
+            # There are environment maps.
+            # Add the conversion to PNG8 the default way, which will convert the environment maps.
+            alchemy_32_optimization_list.append('igConvertImage (PNG8)')
         # Write the Alchemy 3.2 optimization.
         optimizations.WriteOptimization(alchemy_32_optimization_list, alchemy_version = 'Alchemy 3.2', scale_to = scale_factor)
         # Set up an output name for the Alchemy 3.2 optimized file.
         temp_file_hexed_32_path = temp_file_hexed_path.with_name('temph2.igb')
         # Call the Alchemy 3.2 optimization without sending out the final file.
-        alchemy.CallAlchemy(temp_file_hexed_path, alchemy_version = 'Alchemy 3.2', output_path = temp_file_hexed_32_path)
+        alchemy.CallAlchemy(temp_file_hexed_path, alchemy_version = 'Alchemy 3.2', output_path = temp_file_hexed_32_path, debug_mode = settings_dict.get('debug_mode', False), console = output_folder_name)
         # Determine if the output sub-folder should be skipped.
         if settings_dict['skip_subfolder'] == False:
             # The sub-folder should not be skipped.
@@ -161,9 +165,12 @@ def ProcessPSPAsset(asset_type, temp_file_hexed_path, output_file_name, settings
         # Write the Alchemy 5 optimizations.
         optimizations.WriteOptimization(alchemy_5_optimizations_list)
         # Perform the optimizations.
-        alchemy.CallAlchemy(temp_file_hexed_32_path, output_path = output_file_path)
+        alchemy.CallAlchemy(temp_file_hexed_32_path, output_path = output_file_path, debug_mode = settings_dict.get('debug_mode', False), console = output_folder_name)
         # Delete the temp file.
         remove(temp_file_hexed_32_path)
         # For XML2, delete the secondary optimization file.
         if ((game == 'XML2') and ((Path(environ['temp']) / 'opt2.ini').exists())):
-            remove(Path(environ['temp']) / 'opt2.ini')
+            if settings_dict.get('debug_mode', False) == True:
+                rename((Path(environ['temp']) / 'opt2.ini'), (Path(environ['temp']) / f'opt2 - {output_folder_name} - Alchemy 5 - {str(datetime.now(timezone.utc)).replace(':', '-')}.ini'))
+            else:
+                remove(Path(environ['temp']) / 'opt2.ini')
