@@ -299,7 +299,7 @@ def CallAlchemy(input_file_path, **kwargs):
                 remove(file)
 
 # This function cleans up the debug files in the temp directory.
-def CleanUpDebugTemp(settings_dict)
+def CleanUpDebugTemp(settings_dict):
     # Determine if debug mode is in use.
     if settings_dict.get('debug_mode', False) == True:
         # Debug mode is in use.
