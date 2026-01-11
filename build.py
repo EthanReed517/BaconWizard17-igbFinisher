@@ -29,18 +29,32 @@ makedirs(dist_folder)
 build_to_do = questions.Select('Which build are you compiling?', ['Personal Build', 'Release Build'])
 # Announce that resources are being copied.
 questions.PrintImportant('Copying resources . . .')
-# Copy the settings.ini file.
-copy((application_path / 'settings.ini'), dist_folder)
 # Determine which build was selected.
 if build_to_do == 'Personal Build':
     # This is the personal build.
     # Copy the personal folder detection folder.
     copytree((application_path / 'Folder Detection'), (dist_folder / 'Folder Detection'))
     remove(dist_folder / 'Folder Detection' / 'Cyclops (Example).xml')
+    # Copy the settings.ini file.
+    copy((application_path / 'settings.ini'), dist_folder)
 else:
     # This is the release build.
+    # Set up the release version of the folder detection folder.
     makedirs(dist_folder / 'Folder Detection')
     copy((application_path / 'Folder Detection' / 'Cyclops (Example).xml'), (dist_folder / 'Folder Detection' / 'Cyclops.xml'))
+    # Set up the release version of settings.ini.
+    with open((dist_folder / 'settings.ini'), 'w') as file:
+        file.write('[CHARACTER]\n')
+        file.write('XML1_num = None\nXML2_num = 0101\nMUA1_num = 17201\nMUA2_num = Ask\n')
+        file.write('XML1_path = None\nXML2_path = Detect\nMUA1_path = C:\\Users\\ethan\\Desktop\\New Folder\nMUA2_path = Ask\n')
+        file.write('\n[ASSET]\n')
+        file.write('XML1_num_XX = False\nXML2_num_XX = True\nMUA1_num_XX = True\nMUA2_num_XX = True\n')
+        file.write('XML1_special_name = None\nXML2_special_name = Boss Skin\nMUA1_special_name = None\nMUA2_special_name = None\n')
+        file.write('\n[CONSOLES]\n')
+        file.write('PC = True\nSteam = True\nGameCube = False\nPS2 = False\nPS3 = True\nPSP = False\nWii = True\nXbox = True\nXbox_360 = True\n')
+        file.write('\n[SETTINGS]\n')
+        file.write('big_texture = False\nsecondary_skin = False\nuntextured_okay = False\ngenerate_collision = False\nigBlend_to_igAlpha_transparency = False\n')
+        file.write('skip_subfolder = False\nforce_adv_tex_folders = False\nadvanced_texture_ini = None\nfoced_asset_type = None')
 # Open the existing batch file.
 with open((application_path / 'igbFinisher.bat'), 'r') as file:
     # Create a list of lines.
