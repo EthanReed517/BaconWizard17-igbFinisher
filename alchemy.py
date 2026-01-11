@@ -138,7 +138,7 @@ def GetTextureInfo(file_name) -> list:
     # Write the optimization.
     optimizations.WriteOptimization(['igStatisticsTexture'])
     # Write the command.
-    cmd = f'"{sgOptimizer}" "{file_name}" "%temp%\\temp.igb" "{Path(environ['temp']) / 'opt.ini'}"'
+    cmd = f'"{sgOptimizer}" "{file_name}" "%temp%\\tex_out.igb" "{Path(environ['temp']) / 'opt.ini'}"'
     # Call the command.
     output = popen(cmd).read()
     # Initialize a list of textures.
@@ -157,6 +157,9 @@ def GetTextureInfo(file_name) -> list:
             texture_dict['Format'] = texture.split('^|')[3].rstrip()
             texture_dict['Type'] = texture.split('^|')[4].rstrip()
             textures_list.append(texture_dict)
+    # Delete the temp file.
+    if (Path(environ['temp']) / 'tex_out.igb').exists():
+        remove(Path(environ['temp']) / 'tex_out.igb')
     # Return the collected texture information.
     return textures_list
 
@@ -164,7 +167,7 @@ def GetModelStats(input_file_path, asset_type, settings_dict):
     # Write the optimization.
     optimizations.WriteOptimization(['igStatisticsGeometry'])
     # Write the command.
-    cmd = f'"{sgOptimizer}" "{input_file_path}" "%temp%\\temp.igb" "{Path(environ['temp']) / 'opt.ini'}"'
+    cmd = f'"{sgOptimizer}" "{input_file_path}" "%temp%\\model_out.igb" "{Path(environ['temp']) / 'opt.ini'}"'
     # Call the command.
     output = popen(cmd).read()
     # Initialize a list to store the geometry information.
@@ -210,6 +213,9 @@ def GetModelStats(input_file_path, asset_type, settings_dict):
         questions.PrintDebug('geometry_list', geometry_list)
         questions.PrintDebug('has_cel', has_cel)
         questions.PrintPlain('\n\n')
+    # Delete the temp file.
+    if (Path(environ['temp']) / 'model_out.igb').exists():
+        remove(Path(environ['temp']) / 'model_out.igb')
     # Return all found texture paths
     return geometry_list, has_cel, settings_dict
 
@@ -284,7 +290,12 @@ def CallAlchemy(input_file_path, **kwargs):
         # Rename the optimization file.
         rename(optimization_path, (Path(environ['temp']) / f'{optimization_path.stem} - {console} - {alchemy_version} - {time_stamp}.ini'))
         # Make a copy of the exported file.
-        copy(output_file_path, (Path(environ['temp']) / f'temp - {console} - {alchemy_version} - {time_stamp}.igb'))
+        copy(output_file_path, (Path(environ['temp']) / f'{output_file_path.stem} - {console} - {alchemy_version} - {time_stamp}.igb'))
+        # Check if the input path is the same as the output path.
+        if not(output_file_path == input_file_path):
+            # The paths are different.
+            # Make a copy of the input file.
+            copy(input_file_path, (Path(environ['temp']) / f'{input_file_path.stem} - {console} - {alchemy_version} - {time_stamp}.igb'))
         # Check for other paths and rename them.
         for file in [optimization_path2, temp_txt_path]:
             if file.exists():
@@ -308,7 +319,7 @@ def CleanUpDebugTemp(settings_dict):
         # If the user wants to, delete all the debug temp files.
         if delete_temp == True:
             for file in listdir(Path(environ['temp'])):
-                if ((file.startswith('opt')) or (file.startswith('temp - '))):
+                if ((file.startswith('opt')) or (file.startswith('temp - ')) or (file.endswith('.igb'))):
                     if (Path(environ['temp']) / file).is_file():
                         remove(Path(environ['temp']) / file)
         # Pause the program.

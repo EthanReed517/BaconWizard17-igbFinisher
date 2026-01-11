@@ -178,7 +178,7 @@ def ProcessXboxAsset(asset_type, temp_file_hexed_path, output_file_name, setting
             else:
                 # The texture is transparent.
                 # Write the list of transparent textures.
-                processing.TransparentTextureNames(texture_info_dict['textures_list'])
+                processing.TransparentTextureNames(temp_file_hexed_path)
                 # Convert to PNG8, skipping transparent textures.
                 optimization_list.append('igQuantizeRaven (exclude)')
             # Determine if there are environment maps.

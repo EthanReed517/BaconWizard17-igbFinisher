@@ -7,6 +7,8 @@
 # ####### #
 # IMPORTS #
 # ####### #
+# Internal modules
+import alchemy
 # External modules
 from os import environ
 from pathlib import Path
@@ -16,11 +18,13 @@ from pathlib import Path
 # FUNCTIONS #
 # ######### #
 # This function is used to get a list of transparent textures and write their names to the temp file.
-def TransparentTextureNames(textures_list):
+def TransparentTextureNames(temp_file_hexed_path):
     # Set up a list of transparent textures.
     transparent_textures = []
+    # Get the list of textures from the file.
+    textures_list_hexed = alchemy.GetTextureInfo(temp_file_hexed_path)
     # Loop through the textures in the list.
-    for texture_dict in textures_list:
+    for texture_dict in textures_list_hexed:
         # Determine if this is a transparent texture.
         if texture_dict['Format'] == 'IG_GFX_TEXTURE_FORMAT_RGBA_8888_32 (7)':
             # This is a transparent texture.
