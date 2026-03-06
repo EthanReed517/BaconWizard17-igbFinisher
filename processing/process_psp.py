@@ -54,6 +54,9 @@ def CanProcessPSP(settings_dict, texture_info_dict, game, has_cel, output_file_n
                     # There's a no cel descriptor.
                     # Remove it.
                     output_file_name = output_file_name.replace(' - No Cel', '')
+                # Check the alternate version.
+                if ' (No Cel)' in output_file_name:
+                    output_file_name = output_file_name.replace(' (No Cel)', '')
         else:
             # This is for MUA1 or MUA2.
             # Determine if the MUA1 and MUA2 information is the same.
