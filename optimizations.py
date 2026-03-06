@@ -144,7 +144,8 @@ def WriteOptimization(optimization_list, **kwargs):
                             try:
                                 file.write(f'{key} = {config[f'OPTIMIZATION{i + 1}'][key]}\n')
                             except Exception as e:
-                                questions.PrintError(f'Failed to access key "{key}" from the "OPTIMIZATION{i + 1}" section of {kwargs['advanced_texture_ini']}.', error_text = e, system_exit = True)
+                                file.write(f'{key} = \n')
+                                #questions.PrintError(f'Failed to access key "{key}" from the "OPTIMIZATION{i + 1}" section of {kwargs['advanced_texture_ini']}.', error_text = e, system_exit = True)
                         # Determine which normal map type.
                         if kwargs.get('normal_map_type', 'green') == 'green':
                             # This is a green normal map.
@@ -152,14 +153,16 @@ def WriteOptimization(optimization_list, **kwargs):
                             try:
                                 file.write(f'normalMap = {config[f'OPTIMIZATION{i + 1}']['normalMapGreen']}\n')
                             except Exception as e:
-                                questions.PrintError(f'Failed to access key "normalMapGreen" from the "OPTIMIZATION{i + 1}" section of {kwargs['advanced_texture_ini']}.', error_text = e, system_exit = True)
+                                file.write(f'normalMap = \n')
+                                #questions.PrintError(f'Failed to access key "normalMapGreen" from the "OPTIMIZATION{i + 1}" section of {kwargs['advanced_texture_ini']}.', error_text = e, system_exit = True)
                         else:
                             # This is a blue normal map.
                             # Write the green normal map path.
                             try:
                                 file.write(f'normalMap = {config[f'OPTIMIZATION{i + 1}']['normalMapBlue']}\n')
                             except Exception as e:
-                                questions.PrintError(f'Failed to access key "normalMapBlue" from the "OPTIMIZATION{i + 1}" section of {kwargs['advanced_texture_ini']}.', error_text = e, system_exit = True)
+                                file.write(f'normalMap = \n')
+                                #questions.PrintError(f'Failed to access key "normalMapBlue" from the "OPTIMIZATION{i + 1}" section of {kwargs['advanced_texture_ini']}.', error_text = e, system_exit = True)
                 else:
                     # The optimization was not recognized.
                     questions.PrintError(f'An unrecognized Alchemy optimization ({optimization}) was called.', contact_creator = True, system_exit = True)
