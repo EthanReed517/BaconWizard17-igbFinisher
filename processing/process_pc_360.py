@@ -134,7 +134,7 @@ def ProcessPC360Asset(asset_type, temp_file_hexed_path, output_file_name, settin
             if texture_info_dict['max_texture_size'] <= 256:
                 # This is a small texture.
                 # Add the conversion to PNG8 in Alchemy 5, which skips transparent textures.
-                alchemy_5_optimization_list.append('igConvertImage (PNG8) (exclude)')
+                alchemy_5_optimization_list.append('igConvertImage (PNG8)')
             else:
                 # This is a large texture.
                 # Add the conversions to DXT1 (for opaque) and DXT5 (for transparent).
