@@ -51,8 +51,8 @@
 	<d_huds XML1="C:\GitHub\BaconWizard17-Mod-Releases\Default Skins - XML1, XML2\Cable" XML2="C:\GitHub\BaconWizard17-Mod-Releases\Default Skins - XML1, XML2\Cable" MUA1="C:\GitHub\BaconWizard17-Mod-Releases\Default Skins - MUA1, MUA2\Cable" MUA2="C:\GitHub\BaconWizard17-Mod-Releases\Default Skins - MUA1, MUA2\Cable" >
 		<!-- Main Universe Skins -->
 		<portrait tex_folder="90s" output_folder="3. 90s" />
-		<portrait tex_folder="New Mutants" output_folder="4. New Mutants" />
-		<portrait tex_folder="X-Force" output_folder="5. X-Force" />
+		<portrait tex_folder="New Mutants" output_folder="4. New Mutants (X2UP)" />
+		<portrait tex_folder="X-Force" output_folder="5. X-Force (X2UP)" />
 		<portrait tex_folder="Classic" output_folder="7. Classic" />
 		<portrait tex_folder="Classic (X2UP)" output_folder="7. Classic (X2UP)" />
 		<portrait tex_folder="Fatigues" output_folder="12. Fatigues" />
@@ -61,8 +61,8 @@
 		<portrait tex_folder="Techno (X2UP)" output_folder="15. Techno (X2UP)" />
 		<!-- Alternate Universe Skins -->
 		<portrait tex_folder="MUA2" output_folder="A4. Techno MUA2" />
-		<portrait tex_folder="Ultimate" output_folder="A5. Ultimate" />
-		<portrait tex_folder="X-Treme Gear" output_folder="A6. X-Treme Gear" />
+		<portrait tex_folder="Ultimate" output_folder="A5. Ultimate (X2UP)" />
+		<portrait tex_folder="X-Treme Gear" output_folder="A6. X-Treme Gear (X2UP)" />
 	</d_huds>
 	<d_csps XML1="C:\GitHub\BaconWizard17-Mod-Releases\Default Skins - XML1, XML2\Cable" XML2="C:\GitHub\BaconWizard17-Mod-Releases\Default Skins - XML1, XML2\Cable" MUA1="C:\GitHub\BaconWizard17-Mod-Releases\Default Skins - MUA1, MUA2\Cable" MUA2="C:\GitHub\BaconWizard17-Mod-Releases\Default Skins - MUA1, MUA2\Cable" >
 		<!-- Main Universe Skins -->
