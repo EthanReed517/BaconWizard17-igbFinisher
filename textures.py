@@ -116,7 +116,7 @@ def FolderDetection(textures_list, settings_dict, application_path, asset_type):
             # Loop through the textures.
             for texture_dict in textures_list:
                 # Check if this is a sphereImage
-                if not(texture_dict['Name'] == 'sphereImage'):
+                if not(texture_dict['Name'] == Path('sphereImage')):
                     # This is not a sphereImage.
                     # Check if this is a cubemap component.
                     if not(texture_dict['Type'] in ['CubeNEG_X', 'CubePOS_X', 'CubeNEG_Y', 'CubePOS_Y', 'CubeNEG_Z', 'CubePOS_Z']):
