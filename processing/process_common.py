@@ -239,11 +239,18 @@ def SetUpLoadingName(settings_dict, game, has_cel):
     return output_file_name
 
 # This function is used to set up the output file name for any file that does not use a character number.
-def SetUpSpecialName(settings_dict, game, has_cel):
-    # Start with the special name.
-    output_file_name = settings_dict[f'{game}_special_name']
-    # Add the file extension if needed.
-    if not(output_file_name.endswith('.igb')):
-        output_file_name += '.igb'
+def SetUpSpecialName(input_file_path, settings_dict, game, has_cel):
+    # Check if any special name was set up.
+    if settings_dict[f'{game}_special_name'] is None:
+        # No special name was set up (this should only be for "Other" types where the special name was not entered in the settings.
+        # Set up the special name as the input file name.
+        output_file_name = input_file_path.name
+    else:
+        # A special name was entered.
+        # Start with the special name.
+        output_file_name = settings_dict[f'{game}_special_name']
+        # Add the file extension if needed.
+        if not(output_file_name.endswith('.igb')):
+            output_file_name += '.igb'
     # Return the output file name.
     return output_file_name
