@@ -21,12 +21,29 @@
 		<cover tex_folder="Classic" output_folder="1. Classic" />
 	</covers>
 	<!-- Default Assets -->
-	<d_huds XML1="C:\GitHub\BaconWizard17-Mod-Releases\Default Portraits - XML1, XML2\Defaultman" XML2="C:\GitHub\BaconWizard17-Mod-Releases\Default Portraits - XML1, XML2\Defaultman" MUA1="C:\GitHub\BaconWizard17-Mod-Releases\Default Portraits - MUA1, MUA2\Defaultman" MUA2="C:\GitHub\BaconWizard17-Mod-Releases\Default Portraits - MUA1, MUA2\Defaultman" >
-		<portrait tex_folder="XML2" output_folder="1. XML2 Default HUD" />
-		<portrait tex_folder="MUA1" output_folder="3. MUA1 Default HUD" />
-		<portrait tex_folder="MUA1 OCP" output_folder="4. MUA1 OCP HUD" />
+    <d_skins XML1="C:\GitHub\BaconWizard17-Mod-Releases\Default Skins - XML1, XML2\Defaultman" XML2="C:\GitHub\BaconWizard17-Mod-Releases\Default Skins - XML1, XML2\Defaultman" MUA1="C:\GitHub\BaconWizard17-Mod-Releases\Default Skins - MUA1, MUA2\Defaultman" MUA2="C:\GitHub\BaconWizard17-Mod-Releases\Default Skins - MUA1, MUA2\Defaultman" >
+		<!-- Main Universe Skins -->
+		<skin tex_folder="Classic" output_folder="1. Classic" />
+		<skin tex_folder="Ice Form" output_folder="5. Ice Form" />
+		<skin tex_folder="Metal Form" output_folder="6. Metal Form" />
+		<skin tex_folder="Rock Form" output_folder="7. Rock Form" />
+	</d_skins>
+	<d_huds XML1="C:\GitHub\BaconWizard17-Mod-Releases\Default Skins - XML1, XML2\Defaultman" XML2="C:\GitHub\BaconWizard17-Mod-Releases\Default Skins - XML1, XML2\Defaultman" MUA1="C:\GitHub\BaconWizard17-Mod-Releases\Default Skins - MUA1, MUA2\Defaultman" MUA2="C:\GitHub\BaconWizard17-Mod-Releases\Default Skins - MUA1, MUA2\Defaultman" >
+		<portrait tex_folder="Classic (XML2)" output_folder="1. Classic" />
+		<portrait tex_folder="Ice Form (XML2)" output_folder="5. Ice Form" />
+		<portrait tex_folder="Metal Form (XML2)" output_folder="6. Metal Form" />
+		<portrait tex_folder="Rock Form (XML2)" output_folder="7. Rock Form" />
+		<portrait tex_folder="Classic (MUA1)" output_folder="1. Classic" />
+		<portrait tex_folder="Ice Form (MUA1)" output_folder="5. Ice Form" />
+		<portrait tex_folder="Metal Form (MUA1)" output_folder="6. Metal Form" />
+		<portrait tex_folder="Rock Form (MUA1)" output_folder="7. Rock Form" />
+		<portrait tex_folder="MUA1 (X2UP)" output_folder="0. MUA1 Default HUD" />
+		<portrait tex_folder="MUA1 OCP (X2UP)" output_folder="0. MUA1 OCP HUD" />
 	</d_huds>
-	<d_csps XML1="C:\GitHub\BaconWizard17-Mod-Releases\Default Portraits - XML1, XML2\Defaultman" XML2="C:\GitHub\BaconWizard17-Mod-Releases\Default Portraits - XML1, XML2\Defaultman" MUA1="C:\GitHub\BaconWizard17-Mod-Releases\Default Portraits - MUA1, MUA2\Defaultman" MUA2="C:\GitHub\BaconWizard17-Mod-Releases\Default Portraits - MUA1, MUA2\Defaultman" >
-		<portrait tex_folder="XML2" output_folder="2. XML2 Unused CSP" />
+	<d_csps XML1="C:\GitHub\BaconWizard17-Mod-Releases\Default Skins - XML1, XML2\Defaultman" XML2="C:\GitHub\BaconWizard17-Mod-Releases\Default Skins - XML1, XML2\Defaultman" MUA1="C:\GitHub\BaconWizard17-Mod-Releases\Default Skins - MUA1, MUA2\Defaultman" MUA2="C:\GitHub\BaconWizard17-Mod-Releases\Default Skins - MUA1, MUA2\Defaultman" >
+		<portrait tex_folder="Classic (XML2)" output_folder="1. Classic" />
+		<portrait tex_folder="Ice Form (XML2)" output_folder="5. Ice Form" />
+		<portrait tex_folder="Metal Form (XML2)" output_folder="6. Metal Form" />
+		<portrait tex_folder="Rock Form (XML2)" output_folder="7. Rock Form" />
 	</d_csps>
 </paths>
