@@ -66,9 +66,9 @@ def UpdateHexOutList(hex_out_list, asset_type, texture_info_dict, geometry_list,
             if not(geometry_name in hex_in_values):
                 # This was not previously accounted for.
                 # Get the hex out value.
-                hex_out_value = hex_in_value.replace('12301', game_num_hex)
+                hex_out_value = geometry_name.replace('12301', game_num_hex)
                 # Add the converted data to the byte data list.
-                hex_out_list_byte.append([bytearray(hex_in_value, 'utf-8'), bytearray(hex_out_value, 'utf-8')])
+                hex_out_list_byte.append([bytearray(geometry_name, 'utf-8'), bytearray(hex_out_value, 'utf-8')])
     # Determine if this is a skin.
     if asset_type == 'Skin':
         # This is a skin.
