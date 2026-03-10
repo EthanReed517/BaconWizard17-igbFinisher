@@ -65,6 +65,10 @@ def CheckGCScaling(settings_dict, asset_type, texture_info_dict):
             # The texture is bigger than the max size.
             # Update the scale factor.
             scale_factor = max_size / texture_info_dict['max_texture_size']
+        elif not(asset_type in ['Conversation Portrait', 'Character Select Portrait', 'Power Icons', 'Comic Cover', 'Concept Art', 'Loading Screen']:
+            # The texture is the max size or smaller, and it's a 3D asset.
+            # The scale factor should be half.
+            scale_factor = 0.5
     # Determine if this is an asset that will be resized by being a secondary skin.
     if asset_type == 'Skin':
         # This is an asset that can be impacted by the secondary skin setting.
