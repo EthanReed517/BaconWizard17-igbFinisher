@@ -375,7 +375,7 @@ def GetForcedAssetType(config):
     elif setting_value == 'Ask':
         # It's necessary to ask about the value.
         # Ask about the value.
-        setting_value = questions.select(f'What asset type should the file be forced to?', asset_type_list)
+        setting_value = questions.Select(f'What asset type should the file be forced to?', asset_type_list)
     else:
         # The setting is either an asset type or not an allowed value.
         if not(setting_value in asset_type_list):
