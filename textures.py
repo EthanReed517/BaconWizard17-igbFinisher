@@ -154,6 +154,9 @@ def FolderDetection(textures_list, settings_dict, application_path, asset_type):
                 # Only 1 folder was found.
                 # Default to this folder.
                 texture_folder_choice = texture_folders_list[0]
+            # Print an error if the texture path is not long enough.
+            if len(texture_folder_choice.parts) < 4:
+                questions.PrintError('The chosen texture path is not long enough. For folder detection, the texture needs to be within at least 3 subfolders. Example:\n...\\Cyclops\\Skins\\90s\\12301.png', system_exit = True)
             # Get the character and sub-folder from the texture folder.
             character = texture_folder_choice.parts[-3]
             asset_type_folder = texture_folder_choice.parts[-2]
