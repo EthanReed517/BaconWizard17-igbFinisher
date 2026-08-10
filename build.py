@@ -54,7 +54,7 @@ else:
         file.write('PC = True\nSteam = True\nGameCube = False\nPS2 = False\nPS3 = True\nPSP = False\nWii = True\nXbox = True\nXbox_360 = True\n')
         file.write('\n[SETTINGS]\n')
         file.write('big_texture = False\nsecondary_skin = False\nuntextured_okay = False\ngenerate_collision = False\nigBlend_to_igAlpha_transparency = False\n')
-        file.write('skip_subfolder = False\nforce_adv_tex_folders = False\nadvanced_texture_ini = None\nfoced_asset_type = None')
+        file.write('skip_subfolder = False\nforce_adv_tex_folders = False\nadvanced_texture_ini = None\nforced_asset_type = None')
 # Open the existing batch file.
 with open((application_path / 'igbFinisher.bat'), 'r') as file:
     # Create a list of lines.
