@@ -6,93 +6,115 @@
 # ####### #
 # IMPORTS #
 # ####### #
-# Python modules
+# External modules
 import os
 from pathlib import Path
+from shutil import copy
 
 
 # ######### #
 # FUNCTIONS #
 # ######### #
-def CreateHexEditPair(bytes_in: bytes, bytes_out: bytes) -> tuple[bytes]:
-    '''
-    Checks if bytes_out is short enough to fit in bytes_in and, if necessary, pads it to match the length of bytes_in.
-    
-    returns a pair tuple with the bytes_in and the padded bytes_out values.
-    '''
-    padding = len(bytes_in) - len(bytes_out)
-    # Only skip if that's acceptable:
-    #if padding < 0:
-    #    return None # or something similar
-    # Otherwise, report that hex-editing is impossible
-    assert padding > -1, f'Cannot hex edit from {bytes_in} to {bytes_out}, the string is too long.'
-    return bytes_in, bytes_out if padding == 0 else bytes_out.ljust(padding, b'\0')
+# This function updates the hex out list and adds game-specific information.
+def UpdateHexOutList(hex_out_list, asset_type, texture_info_dict, geometry_list, game, settings_dict):
+    # Set the game number.
+    game_num = settings_dict[f'{game}_num']
+    # Determine if the character number ends in XX.
+    if game_num.endswith('XX'):
+        # The skin number ends in XX.
+        # Update the number.
+        game_num_hex = f'{game_num[0-2]}01'
+    else:
+        # The skin number is a standard number.
+        # Update the value.
+        game_num_hex = game_num
+    # Start a list of in values (this will check for duplicates).
+    hex_in_values = []
+    # Initialize a list of byte data to hex out.
+    hex_out_list_byte = []
+    # Loop through the values in the hex out list.
+    for hex_out_pair in hex_out_list:
+        # Get the items of the pair.
+        hex_in_value = hex_out_pair[0]
+        hex_out_value = hex_out_pair[1]
+        # Add the in value to the list of in values.
+        hex_in_values.append(hex_in_value)
+        # Determine if the out value has the skin number.
+        if '12301' in hex_out_value:
+            # There is a skin number.
+            # Update the skin number.
+            hex_out_value = hex_out_value.replace('12301', game_num_hex)
+        # Add the converted data to the byte data list.
+        hex_out_list_byte.append([bytearray(hex_in_value, 'utf-8'), bytearray(hex_out_value, 'utf-8')])
+    # Loop through the textures.
+    for texture_dict in texture_info_dict['textures_list']:
+        # Get the input value.
+        hex_in_value = str(texture_dict['Name'])
+        # Determine if the input value was previously accounted for.
+        if not(hex_in_value in hex_in_values):
+            # This was not previously accounted for.
+            # Get the hex out value.
+            hex_out_value = hex_in_value.replace('12301', game_num_hex)
+            # Add the converted data to the byte data list.
+            hex_out_list_byte.append([bytearray(hex_in_value, 'utf-8'), bytearray(hex_out_value, 'utf-8')])
+    # Loop through the geometry names.
+    for geometry_name in geometry_list:
+        # Determine if this is just the plain '12301' geometry.
+        if not(geometry_name == '12301'):
+            # This is not the plain '12301' geometry (that entry will be added at the very end).
+            # Determine if the input value was previously accounted for.
+            if not(geometry_name in hex_in_values):
+                # This was not previously accounted for.
+                # Get the hex out value.
+                hex_out_value = geometry_name.replace('12301', game_num_hex)
+                # Add the converted data to the byte data list.
+                hex_out_list_byte.append([bytearray(geometry_name, 'utf-8'), bytearray(hex_out_value, 'utf-8')])
+    # Determine if this is a skin.
+    if asset_type == 'Skin':
+        # This is a skin.
+        # Add the igActor01Appearance value.
+        hex_out_list_byte.append([bytearray('igActor01Appearance', 'utf-8'), bytearray(game_num_hex, 'utf-8')])
+        # Add the igActor01Skeleton value.
+        hex_out_list_byte.append([bytearray('igActor01Skeleton', 'utf-8'), bytearray(f'{game_num_hex}_skel', 'utf-8')])
+    # Determine if the user wanted to convert igBlend transparency attributes to igAlpha transparency attributes.
+    if settings_dict['igBlend_to_igAlpha_transparency'] == True:
+        # The user wanted to convert these attributes.
+        # Add the attributes to the list.
+        hex_out_list_byte.append([bytearray('igBlendStateAttr', 'utf-8'), bytearray('igAlphaStateAttr', 'utf-8')])
+        hex_out_list_byte.append([bytearray('igBlendFunctionAttr', 'utf-8'), bytearray('igAlphaFunctionAttr', 'utf-8')])
+    # Add the final 12301 value, which will get anything that's left.
+    hex_out_list_byte.append([bytearray('12301', 'utf-8'), bytearray(game_num_hex, 'utf-8')])
+    # Return the new list with the byte format data.
+    return hex_out_list_byte
 
-def CreateHexEditPairs(replace_values: list[tuple[bytes]], textures: list[dict], geometries: list[str],
-                       is_skin: bool, skin_number: str, igBlend_to_igAlpha_transparency: bool) -> list[tuple[bytes]]:
-    '''
-    Write the values in the three lists to a list with pairs, where the first item is the input value,
-    and the second item is the input value where '12301' is replaced with the skin_number.
-    replace_values should contain pairs where the first item is the input value and the second item
-    will have '12301' replaced instead of the input value (may contain simple replace strings without '12301' as well).
-    If is_skin, replaces igActor01Appearance and igActor01Skeleton,
-    and igBlend_to_igAlpha_transparency, replaces the blend attribute strings with the alpha equivalents.
-    
-    returns the list with the final replace pairs.
-    '''
-    # If necessary, replace the XX suffix with the number 01.
-    if skin_number.endswith('XX'):
-        skin_number = f'{game_num[:-2]}01'
+# This function hex edits files.
+def HexEditor(temp_file_path, temp_file_hexed_path, hex_out_list_byte):
+    # Read the file in byte mode
+    with open(temp_file_path, 'rb') as f:
+        byte = f.read()
+    # Loop through the entries in the hex out list.
+    for hex_out_pair in hex_out_list_byte:
+        # Get the parts of the pair.
+        hex_in = hex_out_pair[0]
+        hex_out = hex_out_pair[1]
+        # Verify that the before value is longer.
+        if len(hex_in) >= len(hex_out):
+            # The before value is longer.
+            # Set up the hex out value with the necessary amount of whitespace.
+            hex_out_adjusted = hex_out + bytearray(([0] * (len(hex_in) - len(hex_out))))
+            # Update the byte version of the file with the new hex string.
+            byte = byte.replace(hex_in, hex_out_adjusted)
+    # Replace the same file with the new byte data
+    with open(temp_file_hexed_path, 'wb') as f:
+        f.write(byte)
 
-    # Initialize a set to check for duplicates. '12301' will be added last.
-    in_values = {'12301'}
-    # Initialize the final hex edit pair list and a method that only adds unique in values and replaces the placeholder '12301' with the skin_number.
-    hex_out_list = []
-    def add_pair(in_value: str, out_value: str):
-        out_value = out_value.replace('12301', skin_number)
-        if in_value not in in_values and in_value != out_value:
-            in_values.add(in_value)
-            hex_out_list.append(CreateHexEditPair(in_value.encode('ansi'), out_value.encode('ansi')))
-
-    for pair in replace_values:
-        # Add the adjusted pair as bytes
-        add_pair(*pair)
-
-    for texture_dict in textures:
-        texture_name = str(texture_dict['Name']) # note: what other types can this be than str?
-        # Add the texture_name and adjusted texture_name as bytes
-        add_pair(texture_name, texture_name)
-
-    for geometry_name in geometries:
-        # Add the geometry_name and adjusted geometry_name as bytes
-        add_pair(geometry_name, geometry_name)
-
-    if is_skin:
-        # Add the igActor01Appearance and igActor01Skeleton values.
-        hex_out_list.append(CreateHexEditPair(b'igActor01Appearance', skin_number.encode('ansi')))
-        hex_out_list.append(CreateHexEditPair(b'igActor01Skeleton', f'{skin_number}_skel'.encode('ansi')))
-
-    if igBlend_to_igAlpha_transparency:
-        # The user wants to convert blend to alpha attributes, so add them to the hex edit list.
-        hex_out_list.append(CreateHexEditPair(b'igBlendStateAttr', b'igAlphaStateAttr'))
-        hex_out_list.append(CreateHexEditPair(b'igBlendFunctionAttr', b'igAlphaFunctionAttr'))
-
-    # Add '12301', which will cover any remaining occurrences.
-    hex_out_list.append(CreateHexEditPair(b'12301', skin_number.encode('ansi')))
-
-    return hex_out_list
-
-def HexEdit(file_path: Path, replace_values: list[tuple[bytes]]) -> Path:
-    '''
-    In temp_file_path, replaces all occurrence of each input value with each output value from replace_values.
-    replace_values must contain at least one valid replace pair.
-    
-    returns the pathlib.Path of the hex-edited file.
-    '''
-    # If the list can be empty, you might have to check for that, and either silently return the original path or throw an exception.
-    data = file_path.read_bytes()
-    for bytes_in, bytes_out in replace_values:
-        data.replace(hex_in, hex_out_adjusted)
+# This function coordinates the hex editing.
+def HexEdit(temp_file_path, asset_type, hex_out_list, texture_info_dict, geometry_list, game, settings_dict):
+    # Add the game-specific information to the hex out list.
+    hex_out_list_byte = UpdateHexOutList(hex_out_list, asset_type, texture_info_dict, geometry_list, game, settings_dict)
+    # Set up the path to the hex edited file.
     temp_file_hexed_path = Path(os.environ['TEMP']) / 'temph.igb'
-    temp_file_hexed_path.write_bytes(data)
+    # Perform the hex editing.
+    HexEditor(temp_file_path, temp_file_hexed_path, hex_out_list_byte)
+    # Return the new file path.
     return temp_file_hexed_path
