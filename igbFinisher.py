@@ -57,7 +57,7 @@ def GetApplicationPath():
 # ############## #
 # MAIN EXECUTION #
 # ############## #
-if __name__ == "__main__":
+if __name__ == '__main__':
     # Set the window title and display welcome info.
     system('title BaconWizard17\'s igb Finisher')
     DisplayInfo()
