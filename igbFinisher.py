@@ -22,6 +22,13 @@ import sys
 from time import sleep
 
 
+# ################ #
+# GLOBAL VARIABLES #
+# ################ #
+# The app version.
+__version__ = '4.1.1'
+
+
 # ######### #
 # FUNCTIONS #
 # ######### #
@@ -33,7 +40,7 @@ def DisplayInfo():
     questions.PrintPlain('██║██║   ██║██╔══██╗██╔══╝  ██║██║╚██╗██║██║╚════██║██╔══██║██╔══╝  ██╔══██╗')
     questions.PrintPlain('██║╚██████╔╝██████╔╝██║     ██║██║ ╚████║██║███████║██║  ██║███████╗██║  ██║')
     questions.PrintPlain('╚═╝ ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚═╝  ╚═══╝╚═╝╚══════╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝')
-    questions.PrintPlain('\nVersion 4.1.1')
+    questions.PrintPlain(f'\nVersion v{__version__}')
     questions.PrintPlain('https://marvelmods.com/forum/index.php/topic,11440.0.html\n')
     questions.PrintImportant("Welcome to BaconWizard17's igb Finisher!\n")
 
