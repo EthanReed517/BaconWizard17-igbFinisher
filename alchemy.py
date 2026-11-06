@@ -20,7 +20,7 @@ from winreg import ConnectRegistry, CreateKeyEx, DeleteKey, HKEY_CURRENT_USER, K
 
 
 # ################ #
-# Global variables #
+# GLOBAL VARIABLES #
 # ################ #
 # This is the path to sgOptimizer in Alchemy 3.2.
 sgOptimizer32 = '%IG_ROOT%\\bin32\\sgOptimizer.exe'
@@ -41,31 +41,23 @@ alchemy_32_files_list = [
 # ######### #
 # This function checks when Alchemy was last reset.
 def CheckAlchemyDate(last_reset_date):
-    # Convert the stored date into a new datetime object.
+    # Convert the stored date into a new datetime object and subtract from today's date.
     last_reset_datetime = datetime.fromisoformat(last_reset_date)
-    # Subtract the last reset date from today's date.
     diff = datetime.now(timezone.utc) - last_reset_datetime
-    # Check if it's been 60 days or more.
+    # The evaluation period is still valid if it's been less than 60 days.
     if diff.days >= 60:
-        # It's been 60 days or more.
-        # The date is no longer valid.
         valid_date = False
     else:
-        # It's been less than 60 days.
-        # The date is valid
         valid_date = True
-    # Return whether or not the date is acceptable.
     return valid_date
 
 # This function is used to reset the Alchemy evaluation.
 def ResetAlchemy(marvel_mods_key_path):
-    # Define the key that defines the evaluation.
+    # This key defines the evaluation.
     key = 'Software\\Vicarious Visions\\Driver'
-    # Try to look for the key.
     try:
-        # Open the key that stores the date.
         marvel_mods_key = OpenKey(HKEY_CURRENT_USER, marvel_mods_key_path, access=KEY_WRITE)
-        # Set the date value to today's date.
+        # Open the key that stores the date and set the value to today's date.
         SetValueEx(marvel_mods_key, 'last_reset', 0, REG_SZ, str(datetime.now(timezone.utc)))
         # Open the key that stores the evaluation (will error if it doesn't exist).
         k = OpenKey(HKEY_CURRENT_USER, key)
@@ -77,80 +69,57 @@ def ResetAlchemy(marvel_mods_key_path):
 
 # This function checks if it's necessary to reset the Alchemy evaluation.
 def CheckAlchemyReset():
-    # Define the registry key for the date.
     marvel_mods_key_path = 'Software\\Vicarious Visions\\Marvel Mods'
-    # Try to set the date.
     try:
         # Open the existing date key. If it doesn't exist, it will raise an error.
         marvel_mods_key = OpenKey(HKEY_CURRENT_USER, marvel_mods_key_path, access=KEY_READ)
         # Get the value of the current date. If it's not set, it will raise an error.
         (last_reset_date, type) = QueryValueEx(marvel_mods_key, 'last_reset')
-        # Check if the date is too far out.
+        # Check if the date is too far out and reset if needed.
         valid_date = CheckAlchemyDate(last_reset_date)
-        # Determine what was found.
         if valid_date == False:
-            # The date is too far out.
-            # Reset the Alchemy evaluation and update the date to today's date.
             ResetAlchemy(marvel_mods_key_path)
     except:
-        # Create the key where the value will be set.
         CreateKeyEx(HKEY_CURRENT_USER, marvel_mods_key_path, access=KEY_WRITE)
+        # Create the key where the date value will be set.
         # Reset the Alchemy evaluation and update the date to today's date.
         ResetAlchemy(marvel_mods_key_path)
 
 # This function checks for the existence of Alchemy.
 def CheckAlchemyStatus():
-    # Try to get the IG_ROOT environment variable.
+    # Try to get the IG_ROOT environment variable. Abort if not found.
     try:
         environ['IG_ROOT']
     except KeyError:
-        # The IG_ROOT environment variable does not exist. Notify the user.
         questions.PrintError('Alchemy 5 is not properly installed. Please properly install Alchemy 5 and try again.', system_exit = True)
-    # Set up the path to the Alchemy 3.2 folder.
+    # Check if the Alchemy 3.2 folder exists and verify its files. Error if any files or folders are missing.
     alchemy_32_folder = Path(environ['IG_ROOT']) / 'bin32'
-    # Check if the Alchemy 3.2 folder exists.
     if alchemy_32_folder.exists():
-        # The path exists.
-        # Check through the list of Alchemy 3.2 files.
         for file in alchemy_32_files_list:
-            # Check if the file exists.
+        # Check through the list of Alchemy 3.2 files to make sure that they exist.
             if not((alchemy_32_folder / file).exists()):
-                # The necessary file doesn't exist.
-                # Give an Error.
                 questions.PrintError(f'{file} is missing from {alchemy_32_folder}. Please properly install Alchemy 3.2 and try again.', system_exit = True)
+        # For Alchemy 3.2, the necessary dll files must also exist, either in the Alchemy 3.2 folder or in SysWOW64.
         for file in ['msvcp70.dll', 'msvcr70.dll']:
-            # Check if the file exists in the Alchemy 3.2 folder.
             if not((alchemy_32_folder / file).exists()):
-                # The necessary file doesn't exist in the Alchemy 3.2 folder.
-                # Check if the file exists in the SysWOW64 folder.
                 if not((Path('C:\\Windows\\SysWOW64') / file).exists()):
-                    # The necessary file doesn't exist in the SysWOW64 folder either.
-                    # Give an error.
                     questions.PrintError(f'{file} could not be found in either {alchemy_32_folder} or C:\\Windows\\SysWOW64. The file should have been included in the Alchemy 3.2 download. Please properly install Alchemy 3.2 and try again.')
     else:
-        # The path doesn't exist.
-        # Give an error.
         questions.PrintError(f'There is no "bin32" folder in the Alchemy 5 installation ({environ['IG_ROOT']}). Please properly install Alchemy 3.2 and try again.', system_exit = True)
     # Check the Alchemy reset date.
     CheckAlchemyReset()
 
+# This function gets information about the model's textures.
 def GetTextureInfo(file_name) -> list:
-    # Write the optimization.
     optimizations.WriteOptimization(['igStatisticsTexture'])
-    # Write the command.
-    cmd = f'"{sgOptimizer}" "{file_name}" "%temp%\\tex_out.igb" "{Path(environ['temp']) / 'opt.ini'}"'
-    # Call the command.
+    cmd = f'"{SG_OPTIMIZER}" "{file_name}" "%temp%\\tex_out.igb" "{Path(environ['temp']) / 'opt.ini'}"'
     output = popen(cmd).read()
     # Initialize a list of textures.
     textures_list = []
     # Run through the lines in the return.
     for texture in output.split('\n'):
-        # Initialize a dictionary for this line.
         texture_dict = {}
-        # Check if a format is found.
         if texture.find('IG_GFX_TEXTURE_FORMAT_') > 0:
-            # If a texture exists, it's listed with a texture format.
-            # Add the necessary information to the dictionary.
             texture_dict['Name'] = Path(texture.split('^|')[0].rstrip())
             texture_dict['Width'] = int(texture.split('^|')[1])
             texture_dict['Height'] = int(texture.split('^|')[2])
@@ -160,55 +129,42 @@ def GetTextureInfo(file_name) -> list:
     # Delete the temp file.
     if (Path(environ['temp']) / 'tex_out.igb').exists():
         remove(Path(environ['temp']) / 'tex_out.igb')
-    # Return the collected texture information.
     return textures_list
 
+# This function gets information about the model's geometry.
 def GetModelStats(input_file_path, asset_type, settings_dict):
-    # Write the optimization.
+    # Write the optimization and the command and call it.
     optimizations.WriteOptimization(['igStatisticsGeometry'])
-    # Write the command.
     cmd = f'"{sgOptimizer}" "{input_file_path}" "%temp%\\model_out.igb" "{Path(environ['temp']) / 'opt.ini'}"'
-    # Call the command.
     output = popen(cmd).read()
     # Initialize a list to store the geometry information.
     geometry_list = []
-    # Run the optimization and isolate the model names
+    # Run the optimization and isolate the model names.
     for geometry in output.split('\n'):
         if geometry.find('igGeometryAttr') > 0:
-            # If a model exists, it's listed with a model type
-            # Append the path from the same line (first listed)
             geometry_list.append((geometry.split('^|'))[0].rstrip())
     # Initialize a variable to check for cel shading (assume none).
     has_cel = False
-    # Loop through the geometry entries.
+    # Loop through the geometry entries to check for cel shading.
     for geometry in geometry_list:
-        # Determine if this is outline geometry.
         if '_outline' in geometry:
-            # This is outline geometry.
-            # Update the cel shading status.
             has_cel = True
-            # Update the necessary settings.
+            # MUA1 and MUA2 do not use cel shading and will be skipped.
             settings_dict['MUA1_num'] = None
             settings_dict['MUA2_num'] = None
             settings_dict['MUA1_path'] = None
             settings_dict['MUA2_path'] = None
-    # Make sure this is an asset that can have cel shading.
+    # Make sure this is an asset that can have cel shading and give an error if not.
     if ((asset_type in ['Conversation Portrait', 'Character Select Portrait', 'Power Icons', 'Comic Cover', 'Concept Art', 'Loading Screen']) and (has_cel == True)):
-        # This is an asset type that doesn't support cel shading.
-        # Give an error.
         questions.PrintError(f'Assets of type {asset_type} cannot use cel shading, but cel shading was detected.', system_exit = True)
-    # Determine if this is an other model.
+    # Determine if this is an other model and update the name to remove the no cel descriptor for MUA.
     if asset_type == 'Other':
-        # This is an other model.
-        # Determine if the name has ' - No Cel' in it.
         for game in ['MUA1', 'MUA2']:
             if settings_dict[f'{game}_special_name'] is not None:
                 if ' - No Cel' in settings_dict[f'{game}_special_name']:
                     settings_dict[f'{game}_special_name'].replace(' - No Cel', '')
-    # Determine if it's necessary to print the debug information.
+    # Print the debug information if needed.
     if settings_dict.get('debug_mode', False) == True:
-        # It's necessary to print the debug information.
-        # Print the title.
         questions.PrintPlain('\n\nDebug information from GetModelStats in alchemy.py:')
         questions.PrintDebug('settings_dict', settings_dict)
         questions.PrintDebug('geometry_list', geometry_list)
@@ -217,7 +173,6 @@ def GetModelStats(input_file_path, asset_type, settings_dict):
     # Delete the temp file.
     if (Path(environ['temp']) / 'model_out.igb').exists():
         remove(Path(environ['temp']) / 'model_out.igb')
-    # Return all found texture paths
     return geometry_list, has_cel, settings_dict
 
 # This function is used to create a proper anim DB for a skin.
@@ -239,18 +194,15 @@ def CreateAnimDB(input_file_path):
     # Delete the lingering files.
     remove(temp_anim_producer_file)
     remove(animation_producer_txt_path)
-    # Return the path of the temp file.
     return temp_skin_path
 
 # This function is used to set up a non-skin asset as a temp file.
 def SetUpTempFile(input_file_path):
     # Set up a dummy optimization so that the asset is processed through Alchemy 3.2. This slightly reduces the file size.
     optimizations.WriteOptimization(['igResizeImage'], alchemy_version = 'Alchemy 3.2', scale_to = 1.0)
-    # Set up the output path as the temp folder.
+    # Set up the output path as the temp folder and perform the optimization.
     temp_file_path = Path(environ['TEMP']) / 'temp.igb'
-    # Perform the optimization.
     CallAlchemy(input_file_path, alchemy_version = 'Alchemy 3.2', output_path = temp_file_path)
-    # Return the path of the temp file.
     return temp_file_path
 
 # This function performs Alchemy optimizations on a file.
@@ -262,60 +214,40 @@ def CallAlchemy(input_file_path, **kwargs):
         optimizer_path = sgOptimizer32
     else:
         optimizer_path = sgOptimizer 
-    # Determine if an output path was given.
+    # Set up a unique output path for the optimization if needed.
     if kwargs.get('output_path', None) is not None:
-        # An output path was given.
-        # Set up the output path.
         output_file_path = kwargs['output_path']
-        # Set up the output folder.
         makedirs(output_file_path.parent, exist_ok = True)
     else:
-        # There is no special output path.
-        # The output path is just the input path.
         output_file_path = input_file_path
     # Set up the optimization paths as a variable for convenience.
     optimization_path = kwargs.get('optimization_path', (Path(environ['temp']) / 'opt.ini'))
     # Set up paths to the other possible path types to be able to delete/rename them later.
     optimization_path2 = Path(environ['temp']) / 'opt2.ini'
     temp_txt_path = Path(environ['temp']) / 'temp.txt'
-    # Set up the Alchemy command.
+    # Set up the Alchemy command and run it.
     cmd = f'"{optimizer_path}" "{input_file_path}" "{output_file_path}" "{optimization_path}"'
-    # Call the operation.
     subprocess.run(cmd, shell=True, stdout=subprocess.DEVNULL)
-    # Determine if debug mode is active.
+    # If debug mode is active, create copies of the files at the specific state. Otherwise, clean up.
     if kwargs.get('debug_mode', False) == True:
-        # Debug mode is active.
-        # Set up some variables.
         console = kwargs.get('console', 'none')
         time_stamp = str(datetime.now(timezone.utc)).replace(':', '-')
-        # Rename the optimization file.
         rename(optimization_path, (Path(environ['temp']) / f'{optimization_path.stem} - {console} - {alchemy_version} - {time_stamp}.ini'))
-        # Make a copy of the exported file.
         copy(output_file_path, (Path(environ['temp']) / f'{output_file_path.stem} - {console} - {alchemy_version} - {time_stamp}.igb'))
-        # Check if the input path is the same as the output path.
         if not(output_file_path == input_file_path):
-            # The paths are different.
-            # Make a copy of the input file.
             copy(input_file_path, (Path(environ['temp']) / f'{input_file_path.stem} - {console} - {alchemy_version} - {time_stamp}.igb'))
-        # Check for other paths and rename them.
         for file in [optimization_path2, temp_txt_path]:
             if file.exists():
                 rename(file, (Path(environ['temp']) / f'{file.stem} - {console} - {alchemy_version} - {time_stamp}.{file.suffix}'))
     else:
-        # Debug mode is not active.
-        # Delete the optimization file.
         remove(optimization_path)
-        # Check for other paths and delete them.
         for file in [optimization_path2, temp_txt_path]:
             if file.exists():
                 remove(file)
 
 # This function cleans up the debug files in the temp directory.
 def CleanUpDebugTemp(settings_dict):
-    # Determine if debug mode is in use.
     if settings_dict.get('debug_mode', False) == True:
-        # Debug mode is in use.
-        # Determine if the user wants to delete the temp files.
         delete_temp = questions.Confirm('Delete the debug temp files?')
         # If the user wants to, delete all the debug temp files.
         if delete_temp == True:
