@@ -23,11 +23,13 @@ from winreg import ConnectRegistry, CreateKeyEx, DeleteKey, HKEY_CURRENT_USER, K
 # GLOBAL VARIABLES #
 # ################ #
 # This is the path to sgOptimizer in Alchemy 3.2.
-sgOptimizer32 = '%IG_ROOT%\\bin32\\sgOptimizer.exe'
+SG_OPTIMIZER_32 = '%IG_ROOT%\\bin32\\sgOptimizer.exe'
 # This is the path to sgOptimizer in Alchemy 5.
-sgOptimizer = '%IG_ROOT%\\bin\\sgOptimizer.exe'
+SG_OPTIMIZER = '%IG_ROOT%\\bin\\sgOptimizer.exe'
+# This is the path to the key that stores the last Alchemy reset date.
+MARVEL_MODS_KEY_PATH = 'Software\\Vicarious Visions\\Marvel Mods'
 # This is the list of files in ALchemy 3.2 (not all of them, just some important ones that are hopefully a big enough sample size).
-alchemy_32_files_list = [
+ALCHEMY_32_FILES_LIST = [
     'plugins\\optimizations\\libIGOptExtension.dll',
     'plugins\\optimizations\\libIGOptExtensionRaven.dll',
     'alchemy.ini',
@@ -52,12 +54,12 @@ def CheckAlchemyDate(last_reset_date):
     return valid_date
 
 # This function is used to reset the Alchemy evaluation.
-def ResetAlchemy(marvel_mods_key_path):
+def ResetAlchemy():
     # This key defines the evaluation.
     key = 'Software\\Vicarious Visions\\Driver'
     try:
-        marvel_mods_key = OpenKey(HKEY_CURRENT_USER, marvel_mods_key_path, access=KEY_WRITE)
         # Open the key that stores the date and set the value to today's date.
+        marvel_mods_key = OpenKey(HKEY_CURRENT_USER, MARVEL_MODS_KEY_PATH, access=KEY_WRITE)
         SetValueEx(marvel_mods_key, 'last_reset', 0, REG_SZ, str(datetime.now(timezone.utc)))
         # Open the key that stores the evaluation (will error if it doesn't exist).
         k = OpenKey(HKEY_CURRENT_USER, key)
@@ -69,21 +71,20 @@ def ResetAlchemy(marvel_mods_key_path):
 
 # This function checks if it's necessary to reset the Alchemy evaluation.
 def CheckAlchemyReset():
-    marvel_mods_key_path = 'Software\\Vicarious Visions\\Marvel Mods'
     try:
         # Open the existing date key. If it doesn't exist, it will raise an error.
-        marvel_mods_key = OpenKey(HKEY_CURRENT_USER, marvel_mods_key_path, access=KEY_READ)
+        marvel_mods_key = OpenKey(HKEY_CURRENT_USER, MARVEL_MODS_KEY_PATH, access=KEY_READ)
         # Get the value of the current date. If it's not set, it will raise an error.
         (last_reset_date, type) = QueryValueEx(marvel_mods_key, 'last_reset')
         # Check if the date is too far out and reset if needed.
         valid_date = CheckAlchemyDate(last_reset_date)
         if valid_date == False:
-            ResetAlchemy(marvel_mods_key_path)
+            ResetAlchemy()
     except:
-        CreateKeyEx(HKEY_CURRENT_USER, marvel_mods_key_path, access=KEY_WRITE)
         # Create the key where the date value will be set.
+        CreateKeyEx(HKEY_CURRENT_USER, MARVEL_MODS_KEY_PATH, access=KEY_WRITE)
         # Reset the Alchemy evaluation and update the date to today's date.
-        ResetAlchemy(marvel_mods_key_path)
+        ResetAlchemy()
 
 # This function checks for the existence of Alchemy.
 def CheckAlchemyStatus():
@@ -95,8 +96,8 @@ def CheckAlchemyStatus():
     # Check if the Alchemy 3.2 folder exists and verify its files. Error if any files or folders are missing.
     alchemy_32_folder = Path(environ['IG_ROOT']) / 'bin32'
     if alchemy_32_folder.exists():
-        for file in alchemy_32_files_list:
         # Check through the list of Alchemy 3.2 files to make sure that they exist.
+        for file in ALCHEMY_32_FILES_LIST:
             if not((alchemy_32_folder / file).exists()):
                 questions.PrintError(f'{file} is missing from {alchemy_32_folder}. Please properly install Alchemy 3.2 and try again.', system_exit = True)
         # For Alchemy 3.2, the necessary dll files must also exist, either in the Alchemy 3.2 folder or in SysWOW64.
@@ -111,12 +112,13 @@ def CheckAlchemyStatus():
 
 # This function gets information about the model's textures.
 def GetTextureInfo(file_name) -> list:
+    # Write the optimization and the command and call it.
     optimizations.WriteOptimization(['igStatisticsTexture'])
     cmd = f'"{SG_OPTIMIZER}" "{file_name}" "%temp%\\tex_out.igb" "{Path(environ['temp']) / 'opt.ini'}"'
     output = popen(cmd).read()
     # Initialize a list of textures.
     textures_list = []
-    # Run through the lines in the return.
+    # Run through the lines in the return and collect the necessary information.
     for texture in output.split('\n'):
         texture_dict = {}
         if texture.find('IG_GFX_TEXTURE_FORMAT_') > 0:
@@ -135,7 +137,7 @@ def GetTextureInfo(file_name) -> list:
 def GetModelStats(input_file_path, asset_type, settings_dict):
     # Write the optimization and the command and call it.
     optimizations.WriteOptimization(['igStatisticsGeometry'])
-    cmd = f'"{sgOptimizer}" "{input_file_path}" "%temp%\\model_out.igb" "{Path(environ['temp']) / 'opt.ini'}"'
+    cmd = f'"{SG_OPTIMIZER}" "{input_file_path}" "%temp%\\model_out.igb" "{Path(environ['temp']) / 'opt.ini'}"'
     output = popen(cmd).read()
     # Initialize a list to store the geometry information.
     geometry_list = []
@@ -211,9 +213,9 @@ def CallAlchemy(input_file_path, **kwargs):
     alchemy_version = kwargs.get('alchemy_version', 'Alchemy 5')
     # Get the correct optimizer.
     if alchemy_version == 'Alchemy 3.2':
-        optimizer_path = sgOptimizer32
+        optimizer_path = SG_OPTIMIZER_32
     else:
-        optimizer_path = sgOptimizer 
+        optimizer_path = SG_OPTIMIZER 
     # Set up a unique output path for the optimization if needed.
     if kwargs.get('output_path', None) is not None:
         output_file_path = kwargs['output_path']
