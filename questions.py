@@ -164,13 +164,11 @@ def PathInput(question, **kwargs):
 
 # This function asks a confirmation question.
 def Confirm(question, **kwargs):
-    # Pose the question to the user.
     answer = questionary.confirm(
         question,
         style = question_style,
         default = kwargs.get('default_choice', None)
     ).ask()
-    # Return the collected answer.
     return answer
 
 # This function validates a user entering a skin number.
