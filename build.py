@@ -4,15 +4,31 @@
 # Internal modules
 import questions
 # External modules
-from os import makedirs, remove, system
+from datetime import datetime
+from os import makedirs, remove
 from pathlib import Path
-from shutil import copy, copytree, rmtree
+import pyinstaller_versionfile
+from shutil import copy, copytree, make_archive, rmtree
+import subprocess
+
+
+# ######### #
+# FUNCTIONS #
+# ######### #
+# This function checks for the version number.
+def GetVersion(file_name):
+    with open(file_name, 'r', encoding='utf-8') as f:
+        for line in f:
+            if line.startswith('__version__') and '=' in line:
+                version_str = line.split('=')[1].strip().strip('\'"')
+                # Windows requires a 4-number version number.
+                return f'{version_str}.0', version_str
 
 
 # ############## #
 # MAIN EXECUTION #
 # ############## #
-if __name__ == "__main__":
+if __name__ == '__main__':
     # Get the folder that this is functioning in.
     application_path = Path(__file__).parent
     # Remove the dist folder if it exists and (re)make it.
@@ -60,6 +76,38 @@ if __name__ == "__main__":
                 if 'py ' in line:
                     line = line.replace('py ', '')
                 file.write(line)
+    # Get the version number and the current year.
+    app_version_windows, app_version = GetVersion(application_path / 'igbFinisher.py')
+    copyright_year = datetime.now().year
+    # Create the Windows version file.
+    pyinstaller_versionfile.create_versionfile(
+        output_file='version_info.txt',
+        version=app_version_windows,
+        company_name='Marvel Mods',
+        file_description='Process igb Files After Export',
+        internal_name='igbFinisher',
+        legal_copyright=f'Copyright © {copyright_year} BaconWizard17. All Rights Reserved.',
+        original_filename='igbFinisher.exe',
+        product_name='igbFinisher'
+    )
     # Run pyinstaller.
     questions.PrintImportant('Running pyinstaller . . .')
-    system('pyinstaller igbFinisher.py --onefile --icon=icon.ico --add-data "icon.ico:."')
+    subprocess.run([
+        'pyinstaller',
+        'igbFinisher.py',
+        '--onefile',
+        '--icon=icon.ico',
+        '--version-file=version_info.txt'
+    ], check=True)
+    # Create the zip file.
+    make_archive(
+        base_name=f'igbFinisher-v{app_version}',
+        format='zip',
+        root_dir=application_path / 'dist'
+    )
+    copy(application_path / f'igbFinisher-v{app_version}.zip', application_path / 'dist')
+    remove(application_path / f'igbFinisher-v{app_version}.zip')
+    # Clean up the version file.
+    if (application_path / 'version_info.txt').exists():
+        remove(application_path / 'version_info.txt')
+    questions.PrintSuccess('Build complete!')
