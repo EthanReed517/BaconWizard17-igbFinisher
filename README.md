@@ -145,7 +145,5 @@ Assets that are the same for different games will be placed into folders togethe
 
 ## Development
 Want to help develop igbFinisher? igbFinisher is developed with [Python 3](https://www.python.org/downloads/). There are several Python packages that you'll need to install:
-1. [Pillow](https://pypi.org/project/pillow/)
-2. [PyInstaller](https://pyinstaller.org/en/stable/)
-3. [Questionary](https://pypi.org/project/questionary/)
-4. [tkinterdnd2](https://pypi.org/project/tkinterdnd2/)
+1. [PyInstaller](https://pyinstaller.org/en/stable/)
+2. [Questionary](https://pypi.org/project/questionary/)
