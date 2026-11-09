@@ -4,6 +4,7 @@
 # Internal modules
 import questions
 # External modules
+import configparser
 from datetime import datetime
 from os import makedirs, remove
 from pathlib import Path
@@ -50,18 +51,25 @@ if __name__ == '__main__':
         makedirs(dist_folder / 'Folder Detection')
         copy((application_path / 'Folder Detection' / 'Cyclops (Example).xml'), (dist_folder / 'Folder Detection' / 'Cyclops.xml'))
         # Set up the release version of settings.ini.
+        config = configparser.ConfigParser()
+        # This allows the keys to be capitalized.
+        config.optionxform = str
+        # Set up the keys and write the file.
+        config['CHARACTER'] = {
+            'XML1_num': 'None', 'XML2_num': '0101', 'MUA1_num': '17201', 'MUA2_num': 'Ask',
+            'XML1_path': 'None', 'XML2_path': 'Detect', 'MUA1_path': 'C:\\Users\\ethan\\Desktop\\New Folder', 'MUA2_path': 'Ask'
+        }
+        config['ASSET'] = {
+            'XML1_num_XX': 'False', 'XML2_num_XX': 'True', 'MUA1_num_XX': 'True', 'MUA2_num_XX': 'True',
+            'XML1_special_name': 'None', 'XML2_special_name': 'Boss Skin', 'MUA1_special_name': 'None', 'MUA2_special_name': 'None'
+        }
+        config['CONSOLES'] = {'PC': 'True', 'Steam': 'True', 'GameCube': 'False', 'PS2': 'False', 'PS3': 'True', 'PSP': 'False', 'Wii': 'True', 'Xbox': 'True', 'Xbox_360': 'True'}
+        config['SETTINGS'] = {
+            'big_texture': 'False', 'secondary_skin': 'False', 'untextured_okay': 'False', 'generate_collision': 'False', 'igBlend_to_igAlpha_transparency': 'False',
+            'skip_subfolder': 'False', 'force_adv_tex_folders': 'False', 'advanced_texture_ini': 'None', 'forced_asset_type': 'None'
+        }
         with open((dist_folder / 'settings.ini'), 'w') as file:
-            file.write('[CHARACTER]\n')
-            file.write('XML1_num = None\nXML2_num = 0101\nMUA1_num = 17201\nMUA2_num = Ask\n')
-            file.write('XML1_path = None\nXML2_path = Detect\nMUA1_path = C:\\Users\\ethan\\Desktop\\New Folder\nMUA2_path = Ask\n')
-            file.write('\n[ASSET]\n')
-            file.write('XML1_num_XX = False\nXML2_num_XX = True\nMUA1_num_XX = True\nMUA2_num_XX = True\n')
-            file.write('XML1_special_name = None\nXML2_special_name = Boss Skin\nMUA1_special_name = None\nMUA2_special_name = None\n')
-            file.write('\n[CONSOLES]\n')
-            file.write('PC = True\nSteam = True\nGameCube = False\nPS2 = False\nPS3 = True\nPSP = False\nWii = True\nXbox = True\nXbox_360 = True\n')
-            file.write('\n[SETTINGS]\n')
-            file.write('big_texture = False\nsecondary_skin = False\nuntextured_okay = False\ngenerate_collision = False\nigBlend_to_igAlpha_transparency = False\n')
-            file.write('skip_subfolder = False\nforce_adv_tex_folders = False\nadvanced_texture_ini = None\nforced_asset_type = None')
+            config.write(file)
     # Parse the existing batch file.
     with open((application_path / 'igbFinisher.bat'), 'r') as file:
         batch_file_lines = []
