@@ -154,6 +154,20 @@ def WriteReleaseDocs(application_path):
             for line in lines_before + lines_changelog + lines_after:
                 file.write(line)
 
+# This function updates the .iss file with the latest version number.
+def UpdateISSVersion(application_path, app_version):
+    with open(application_path / 'igbFinisher-setup.iss', 'r') as file:
+        lines = [line.rstrip("\n") for line in file]
+    new_lines = []
+    for line in lines:
+        if line.startswith('#define MyAppVersion'):
+            new_lines.append(f'#define MyAppVersion "{app_version}"')
+        else:
+            new_lines.append(line)
+    with open(application_path / 'igbFinisher-setup.iss', 'w') as file:
+        for line in new_lines:
+            file.write(f'{line}\n')
+
 
 # ############## #
 # MAIN EXECUTION #
@@ -206,7 +220,7 @@ if __name__ == '__main__':
         '--version-file=version_info.txt'
     ], check=True)
     # Create the zip file. It is made in the main folder to avoid self-referencing.
-    zip_file_path = application_path / f'igbFinisher-v{app_version}'
+    zip_file_path = application_path / f'igbFinisher-v{app_version}-portable'
     make_archive(
         base_name=zip_file_path,
         format='zip',
@@ -214,6 +228,14 @@ if __name__ == '__main__':
     )
     copy(f'{zip_file_path}.zip', application_path / 'dist')
     remove(f'{zip_file_path}.zip')
+    # Build the installer.
+    UpdateISSVersion(application_path, app_version)
+    subprocess.run([
+        str(Path('C:\\Program Files\\Inno Setup 7\\ISCC.exe')),
+        '/dist',
+        f'/igbFinisher-v{app_version}-installer',
+        str(Path('igbFinisher-setup.iss').resolve()),
+    ], check=True)
     # Clean up the version file.
     if (application_path / 'version_info.txt').exists():
         remove(application_path / 'version_info.txt')
