@@ -1,0 +1,2 @@
+- Fixed a syntax error in the code.
+- Improved error handling for a user error.

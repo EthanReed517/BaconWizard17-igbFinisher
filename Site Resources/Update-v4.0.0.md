@@ -1,0 +1,18 @@
+- The program is now called as an exe from the command line: `igbFinisher.exe (filename).igb`.
+  - You can now specify a custom settings file (if no settings file is specified, the default name is used).
+    - `igbFinisher.exe (filename).igb -s path\to\settings.ini`
+    - `igbFinisher.exe (filename).igb --settings path\to\settings.ini`
+  - The program runs once and then closes rather than staying open, so this no longer freezes your file explorer window.
+- Settings have been revised for better control:
+  - You can now specify paths for all games.
+  - There are more options for names and numbers.
+  - You can specify a different path for each game.
+  - You can selectively control each console.
+  - Many new settings are added to work with the new capabilities.
+- Error checking is much more simple and straightforward.
+- Console-specific texture folders are no longer needed! igbFinisher now only needs plain png files. The [Marvel Mods GIMP Scripts](https://github.com/EthanReed517/Marvel-Mods-Gimp-Scripts) have been updated to account for this.
+  - Textures are resized and texture formats are now converted with Alchemy optimizations using Alchemy 3.2 and Alchemy 5.
+- Alchemy 3.2 optimizations slightly reduce the file size of static models for last-gen consoles.
+- Added new Alchemy optimizations: generating collision and setting up advanced textures.
+- Improved error handling.
+- Improved overall process flow for speed and efficiency.

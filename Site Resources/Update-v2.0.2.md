@@ -1,0 +1,1 @@
+- Removed the igBuildNativeGeometry optimization for PSP models, as it causes a T-pose on skins.

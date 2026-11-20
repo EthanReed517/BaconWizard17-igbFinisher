@@ -2,10 +2,12 @@
 # IMPORTS #
 # ####### #
 # Internal modules
+import basic_xml_ops
 import questions
 # External modules
 import configparser
 from datetime import datetime
+import xml.etree.ElementTree as ET
 from os import makedirs, remove
 from pathlib import Path
 import pyinstaller_versionfile
@@ -65,6 +67,93 @@ def WriteExeBatchFile(application_path, dist_folder):
                     line = line.replace('py ', '')
                 file.write(line)
 
+# This function gathers the information from the forum release post.
+def GetReleasePostText(application_path):
+    # Open the release post and read its contents.
+    with open(application_path / 'Site Resources' / 'Release.bbcode', 'r') as file:
+        all_lines = file.readlines()
+    # Initialize the lists to store lines before and after the changelog.
+    lines_before = []
+    lines_after = []
+    state = 'before'
+    for line in all_lines:
+        # When encountering the changelog, stop recording the lines. Start again after.
+        if 'Changelog' in line:
+            state = 'skip'
+        if 'Installation Instructions' in line:
+            state = 'after'
+        # Record the line if needed.
+        if state == 'before':
+            lines_before.append(line)
+        if state == 'after':
+            lines_after.append(line)
+    # Add the necessary info to the beginning and end, then return the lists.
+    lines_before += ['[u][b]Changelog[/b][/u]:\n', '[spoiler="Expand to see changelog"]\n', '[list]\n']
+    lines_after = ['[/list]\n', '[/spoiler]\n', '\n', '\n'] + lines_after
+    return lines_before, lines_after
+
+# This function writes the release documentation.
+def WriteReleaseDocs(application_path):
+    # Get the release post info and prepare other lists.
+    lines_before, lines_after = GetReleasePostText(application_path)
+    lines_changelog = []
+    # Open the versions file and loop through the versions.
+    versions_root = basic_xml_ops.OpenGetTreeAndRoot(application_path / 'versions.xml')
+    for version_elem in versions_root.findall('Version'):
+        version_number_attr = version_elem.get('Number')
+        # Prepare the version-specific files lines.
+        bbcode_lines = []
+        md_lines = []
+        # Get the text.
+        lines_changelog.append(f'[li]Version {version_number_attr}:')
+        if version_elem.get('PreText') is not None:
+            bbcode_lines.append(version_elem.get('PreText'))
+        # Start with an initial indent of 1
+        indent = 0
+        # Loop through the changes for this version.
+        for change_elem in version_elem.findall('Change'):
+            # Get the info for this change.
+            desc_attr = change_elem.get('Desc')
+            desc_gh_attr = change_elem.get('Desc_GH', default=change_elem.get('Desc'))
+            # Calculate the change from the old indent before updating the variable.
+            indent_change = int(change_elem.get('Indent', default='1')) - indent
+            indent = int(change_elem.get('Indent', default='1'))
+            # Process the BBCode lines and their tags.
+            for lines in [lines_changelog, bbcode_lines]:
+                if indent_change > 0:
+                    lines.append('\n[list]\n')
+                else:
+                    if indent_change < 0:
+                        for i in range(abs(indent_change)):
+                            lines.append('[/li]\n[/list]\n')
+                    lines.append('[/li]\n')
+                lines.append(f'[li]{change_elem.get('Desc')}')
+            # Markdown lines are more straightforward to format.
+            if change_elem.get('Desc_GH') is not None:
+                md_lines.append(f'{'  ' * (indent - 1)}- {change_elem.get('Desc_GH')}\n')
+            else:
+                md_lines.append(f'{'  ' * (indent - 1)}- {change_elem.get('Desc')}\n')
+        # Close out necessary info.
+        if not(indent == 1):
+            for i in range(abs(indent_change)):
+                bbcode_lines.append('[/li]\n[/list]\n')
+                lines_changelog.append('[/li]\n[/list]\n')
+        bbcode_lines.append('[/li]\n[/list]\n')
+        lines_changelog.append('[/li]\n[/list]\n[/li]\n')
+        if version_elem.get('PostText') is not None:
+            bbcode_lines.append('\n' + version_elem.get('PostText') + '\n')
+        # Write the resulting files.
+        if not(version_elem.get('NoUpdate') == 'True'):
+            with open(application_path / 'Site Resources' / f'Update-v{version_number_attr}.bbcode', 'w') as file:
+                for line in bbcode_lines:
+                    file.write(line)
+        with open(application_path / 'Site Resources' / f'Update-v{version_number_attr}.md', 'w') as file:
+            for line in md_lines:
+                file.write(line)
+    with open(application_path / 'Site Resources' / 'Release.bbcode', 'w') as file:
+            for line in lines_before + lines_changelog + lines_after:
+                file.write(line)
+
 
 # ############## #
 # MAIN EXECUTION #
@@ -72,6 +161,9 @@ def WriteExeBatchFile(application_path, dist_folder):
 if __name__ == '__main__':
     # Get the folder that this is functioning in.
     application_path = Path(__file__).parent
+    # Get the version number.
+    app_version_windows, app_version = GetVersion(application_path / 'igbFinisher.py')
+    questions.PrintImportant(f'Building igbFinisher v{app_version} . . .')
     # Remove the dist folder if it exists and (re)make it.
     dist_folder = application_path / 'dist'
     if dist_folder.exists():
@@ -93,8 +185,6 @@ if __name__ == '__main__':
         WriteReleaseSettings(dist_folder)
     # Set up a correct batch file to work with the exe.
     WriteExeBatchFile(application_path, dist_folder)
-    # Get the version number and the current year.
-    app_version_windows, app_version = GetVersion(application_path / 'igbFinisher.py')
     # Create the Windows version file.
     pyinstaller_versionfile.create_versionfile(
         output_file='version_info.txt',
@@ -122,9 +212,11 @@ if __name__ == '__main__':
         format='zip',
         root_dir=application_path / 'dist'
     )
-    copy(zip_file_path, application_path / 'dist')
-    remove(zip_file_path)
+    copy(f'{zip_file_path}.zip', application_path / 'dist')
+    remove(f'{zip_file_path}.zip')
     # Clean up the version file.
     if (application_path / 'version_info.txt').exists():
         remove(application_path / 'version_info.txt')
-    questions.PrintSuccess('Build complete!')
+    # Write the release docs.
+    WriteReleaseDocs(application_path)
+    questions.PrintSuccess(f'Successfully built igbFinisher v{app_version}!')

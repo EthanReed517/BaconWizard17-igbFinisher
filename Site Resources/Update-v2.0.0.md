@@ -1,0 +1,6 @@
+- Hex editing is now an internal process thanks to @ak2yny, so XVI32 is no longer required.
+- Added new Alchemy-based texture recognition thanks to @ak2yny, which allowed for a reduction in user input.
+- Updated processing to allow automatic detection for other aspects, like mannequin pose names and cel shading.
+- Updated settings to allow the user to put a default, ask each run, or skip for all 4 character numbers and 2 paths.
+- Alchemy operations and hex editing are no longer optional.
+- Generally improved error detection in various aspects.

@@ -1,0 +1,88 @@
+
+<Versions>
+	<Version Number='1.0.0' NoUpdate='True' >
+		<Change Desc='Initial Release' />
+	</Version>
+	<Version Number='1.0.1' NoUpdate='True' >
+		<Change Desc='Corrected DXT1 conversion to only occur on PNG8 textures, not all textures.' />
+	</Version>
+	<Version Number='2.0.0' PreText='igbFinisher has been updated to version 2.0.0 with the following changes:' PostText='Version 2.0.1 was released right after, which fixed the internal version number.' >
+		<Change Desc='Hex editing is now an internal process thanks to ak2yny, so XVI32 is no longer required.' Desc_GH='Hex editing is now an internal process thanks to @ak2yny, so XVI32 is no longer required.' />
+		<Change Desc='Added new Alchemy-based texture recognition thanks to ak2yny, which allowed for a reduction in user input.' Desc_GH='Added new Alchemy-based texture recognition thanks to @ak2yny, which allowed for a reduction in user input.' />
+		<Change Desc='Updated processing to allow automatic detection for other aspects, like mannequin pose names and cel shading.' />
+		<Change Desc='Updated settings to allow the user to put a default, ask each run, or skip for all 4 character numbers and 2 paths.' />
+		<Change Desc='Alchemy operations and hex editing are no longer optional.' />
+		<Change Desc='Generally improved error detection in various aspects.' />
+	</Version>
+	<Version Number='2.0.1' NoUpdate='True' >
+		<Change Desc='The internal version number was corrected to be current.' />
+	</Version>
+	<Version Number='2.0.2' PreText='igbFinisher has been updated to version 2.0.2.' >
+		<Change Desc='Removed the igBuildNativeGeometry optimization for PSP models, as it causes a T-pose on skins.' />
+	</Version>
+	<Version Number='2.1.0' PreText='I updated igbFinisher to v2.1.0 a while back and forgot to update about it. The following was changed:' PostText="I also just updated to version 2.1.1, which fixed some issues with paths." >
+		<Change Desc='Several improvements:' />
+		<Change Desc='Hex editing:' Indent='2' />
+		<Change Desc='Now accounts for any possible geometry name that contains the number "12301."' Indent='3' />
+		<Change Desc='Now accounts for any textures with the number "12301" in their name.' Indent='3' />
+		<Change Desc='Untextured models are now supported.' Indent='2' />
+		<Change Desc="Settings now requires full skin numbers rather than character numbers." Indent='2' />
+		<Change Desc='This allows for support for skin swaps or just specially-numbered skins.' Indent='3' />
+		<Change Desc='Alchemy optimizations are now formatted to remove excess space and comments.' Indent='2' />
+		<Change Desc='Bug fixes:' />
+		<Change Desc='Fixed an issue with path collection that was removing unnecessary characters.' Indent='2' />
+	</Version>
+	<Version Number='2.1.1' NoUpdate='True' >
+		<Change Desc='Fixed some issues with paths.' />
+	</Version>
+	<Version Number='3.0.0' PreText='igbFinisher has been updated to version 3.0.0 with the following updates:' >
+		<Change Desc='Improved overall program design for efficiency.' />
+		<Change Desc='Added support for XML2 PSP skins.' />
+		<Change Desc='Added support for power icons, comic covers, and loading screens.' />
+		<Change Desc="Added a feature to track the last Alchemy reset date so that it doesn't have to be reset every time the program is run." />
+		<Change Desc='Added a feature to detect the destination path based on the input path.' />
+		<Change Desc='Changed how character numbers are handled in the settings to allow better control for descriptions.' />
+		<Change Desc='Added the ability to skip descriptions on assets.' />
+		<Change Desc='Updated formats to line up with the latest version of the Marvel Mods GIMP Scripts.' />
+		<Change Desc='Set up PS2 to always export to a separate folder, since many PS2 assets use a unique format.' />
+	</Version>
+	<Version Number='3.1.0' PreText='igbFinisher has been updated to version 3.1.0 with the following updates:' >
+		<Change Desc='Added support for AnimationProducer, which allows for skins to be built into default-style animation databases, removing the dummy animation and slightly reducing file size.' />
+		<Change Desc='Added some additional hex editing to skins to more closely match default skin structure.' />
+		<Change Desc='Improved handling of environment maps to address some detection issues.' />
+	</Version>
+	<Version Number='4.0.0' PreText='igbFinisher has been updated to v4.0.0 with lots of changes!' >
+		<Change Desc='The program is now called as an exe from the command line or a batch file.' Desc_GH="The program is now called as an exe from the command line: `igbFinisher.exe (filename).igb`." />
+		<Change Desc='You can now specify a custom settings file (if no settings file is specified, the default name is used).' Indent='2' />
+		<Change Desc='[b][font=Courier New][color=#ba8bff]igbFinisher.exe (filename).igb -s path\to\settings.ini[/color][/font][/b]' Desc_GH='`igbFinisher.exe (filename).igb -s path\to\settings.ini`' Indent='3' />
+		<Change Desc='[b][font=Courier New][color=#ba8bff]igbFinisher.exe (filename).igb --settings path\to\settings.ini[/color][/font][/b]' Desc_GH='`igbFinisher.exe (filename).igb --settings path\to\settings.ini`' Indent='3' />
+		<Change Desc='The program runs once and then closes rather than staying open, so this no longer freezes your file explorer window.' Indent='2' />
+		<Change Desc='Settings have been revised for better control:' />
+		<Change Desc='You can now specify paths for all games.' Indent='2' />
+		<Change Desc='There are more options for names and numbers.' Indent='2' />
+		<Change Desc='You can specify a different path for each game.' Indent='2' />
+		<Change Desc='You can selectively control each console.' Indent='2' />
+		<Change Desc='Many new settings are added to work with the new capabilities.' Indent='2' />
+		<Change Desc='Error checking is much more simple and straightforward.' />
+		<Change Desc='Console-specific texture folders are no longer needed! igbFinisher now only needs plain png files. The [url="https://marvelmods.com/forum/index.php/topic,11441.0.html"]Marvel Mods GIMP Scripts[/url] have been updated to account for this.' Desc_GH='Console-specific texture folders are no longer needed! igbFinisher now only needs plain png files. The [Marvel Mods GIMP Scripts](https://github.com/EthanReed517/Marvel-Mods-Gimp-Scripts) have been updated to account for this.' />
+		<Change Desc='Textures are resized and texture formats are now converted with Alchemy optimizations using Alchemy 3.2 and Alchemy 5.' Indent='2' />
+		<Change Desc='Alchemy 3.2 optimizations slightly reduce the file size of static models for last-gen consoles.' />
+		<Change Desc='Added new Alchemy optimizations: generating collision and setting up advanced textures.' />
+		<Change Desc='Improved error handling.' />
+		<Change Desc='Improved overall process flow for speed and efficiency.' />
+	</Version>
+	<Version Number='4.0.1' PreText='igbFinisher has been updated to v4.0.1!' >
+		<Change Desc='Fixed various small syntax bugs for some edge cases.' />
+	</Version>
+	<Version Number='4.0.2' PreText='igbFinisher has been updated to v4.0.2!' >
+		<Change Desc='Fixed a syntax error in the code.' />
+		<Change Desc='Improved error handling for a user error.' />
+	</Version>
+	<Version Number='4.1.0' PreText='igbFinisher has been updated to v4.1.0!' >
+		<Change Desc='Updated the hex editing thanks to ak2yny.' Desc_GH="Updated the hex editing per 587dfd9 (thanks to @ak2yny)." />
+		<Change Desc='Fixed a typo in the generation of the settings.ini file that was causing an error for users.' Desc_GH='Fixed a typo in the generation of the `settings.ini` file that was causing an error for users (18fe9ab).' />
+	</Version>
+	<Version Number='4.1.1' PreText='igbFinisher has been updated to v4.1.1. If you downloaded v4.1.0, please update to this version immediately, as it addresses a program-breaking error.' >
+		<Change Desc='Returned to previous hex editing functionality due to an issue with implementation.' Desc_GH='Rolled back changes from 587dfd9 due to not being fully implemented into the larger code' />
+	</Version>
+</Versions>

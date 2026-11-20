@@ -1,0 +1,9 @@
+- Improved overall program design for efficiency.
+- Added support for XML2 PSP skins.
+- Added support for power icons, comic covers, and loading screens.
+- Added a feature to track the last Alchemy reset date so that it doesn't have to be reset every time the program is run.
+- Added a feature to detect the destination path based on the input path.
+- Changed how character numbers are handled in the settings to allow better control for descriptions.
+- Added the ability to skip descriptions on assets.
+- Updated formats to line up with the latest version of the Marvel Mods GIMP Scripts.
+- Set up PS2 to always export to a separate folder, since many PS2 assets use a unique format.

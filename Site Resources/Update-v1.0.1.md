@@ -1,0 +1,1 @@
+- Corrected DXT1 conversion to only occur on PNG8 textures, not all textures.

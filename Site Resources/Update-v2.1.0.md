@@ -1,0 +1,10 @@
+- Several improvements:
+  - Hex editing:
+    - Now accounts for any possible geometry name that contains the number "12301."
+    - Now accounts for any textures with the number "12301" in their name.
+  - Untextured models are now supported.
+  - Settings now requires full skin numbers rather than character numbers.
+    - This allows for support for skin swaps or just specially-numbered skins.
+  - Alchemy optimizations are now formatted to remove excess space and comments.
+- Bug fixes:
+  - Fixed an issue with path collection that was removing unnecessary characters.

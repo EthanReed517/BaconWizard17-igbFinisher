@@ -1,0 +1,3 @@
+- Added support for AnimationProducer, which allows for skins to be built into default-style animation databases, removing the dummy animation and slightly reducing file size.
+- Added some additional hex editing to skins to more closely match default skin structure.
+- Improved handling of environment maps to address some detection issues.

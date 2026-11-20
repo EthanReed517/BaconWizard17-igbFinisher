@@ -1,0 +1,2 @@
+- Updated the hex editing per 587dfd9 (thanks to @ak2yny).
+- Fixed a typo in the generation of the `settings.ini` file that was causing an error for users (18fe9ab).
