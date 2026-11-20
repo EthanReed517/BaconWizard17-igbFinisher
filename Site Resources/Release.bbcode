@@ -55,20 +55,20 @@ igbFinisher is a program that runs finishing operations on igb files after expor
 [/li]
 [li]Version 2.0.2:
 [list]
-[li]Removed the igBuildNativeGeometry optimization for PSP models, as it causes a T-pose on skins. [/li]
+[li]Removed the igBuildNativeGeometry optimization for PSP models, as it causes a T-pose on skins.[/li]
 [/list]
 [/li]
 [li]Version 2.1.0:
 [list]
-[li]Several Improvements:
+[li]Several improvements:
 [list]
 [li]Hex editing:
 [list]
-[li]Now accounts for any possible geometry name that contains the number "12301"[/li]
-[li]Now accounts for any textures with the number "12301" in their name[/li]
+[li]Now accounts for any possible geometry name that contains the number "12301."[/li]
+[li]Now accounts for any textures with the number "12301" in their name.[/li]
 [/list]
 [/li]
-[li]Untextured models are now supported[/li]
+[li]Untextured models are now supported.[/li]
 [li]Settings now requires full skin numbers rather than character numbers.
 [list]
 [li]This allows for support for skin swaps or just specially-numbered skins.[/li]
@@ -77,7 +77,7 @@ igbFinisher is a program that runs finishing operations on igb files after expor
 [li]Alchemy optimizations are now formatted to remove excess space and comments.[/li]
 [/list]
 [/li]
-[li]Bug Fixes:
+[li]Bug fixes:
 [list]
 [li]Fixed an issue with path collection that was removing unnecessary characters.[/li]
 [/list]
@@ -113,7 +113,12 @@ igbFinisher is a program that runs finishing operations on igb files after expor
 [list]
 [li]The program is now called as an exe from the command line or a batch file.
 [list]
-[li]You can now specify a custom settings file (if no settings file is specified, the default name is used)[/li]
+[li]You can now specify a custom settings file (if no settings file is specified, the default name is used).
+[list]
+[li][b][font=Courier New][color=#ba8bff]igbFinisher.exe (filename).igb -s path\to\settings.ini[/color][/font][/b][/li]
+[li][b][font=Courier New][color=#ba8bff]igbFinisher.exe (filename).igb --settings path\to\settings.ini[/color][/font][/b][/li]
+[/list]
+[/li]
 [li]The program runs once and then closes rather than staying open, so this no longer freezes your file explorer window.[/li]
 [/list]
 [/li]
@@ -124,9 +129,9 @@ igbFinisher is a program that runs finishing operations on igb files after expor
 [li]You can specify a different path for each game.[/li]
 [li]You can selectively control each console.[/li]
 [li]Many new settings are added to work with the new capabilities.[/li]
-[li]Error checking is much more simple and straightforward.[/li]
 [/list]
 [/li]
+[li]Error checking is much more simple and straightforward.[/li]
 [li]Console-specific texture folders are no longer needed! igbFinisher now only needs plain png files. The [url="https://marvelmods.com/forum/index.php/topic,11441.0.html"]Marvel Mods GIMP Scripts[/url] have been updated to account for this.
 [list]
 [li]Textures are resized and texture formats are now converted with Alchemy optimizations using Alchemy 3.2 and Alchemy 5.[/li]
