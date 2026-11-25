@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>About igbFinisher</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="ui_resources.qrc">
+    <normaloff>:/icons/logo.ico</normaloff>:/icons/logo.ico</iconset>
+  </property>
+ </widget>
+ <resources>
+  <include location="ui_resources.qrc"/>
+ </resources>
+ <connections/>
+</ui>
