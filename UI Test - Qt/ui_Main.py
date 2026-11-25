@@ -27,7 +27,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(874, 490)
+        MainWindow.resize(889, 490)
         icon = QIcon()
         icon.addFile(u":/icons/logo.ico", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         MainWindow.setWindowIcon(icon)
@@ -109,21 +109,21 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_3.addWidget(self.label_4)
 
-        self.radioButton = QRadioButton(self.frame_7)
-        self.radioButton.setObjectName(u"radioButton")
+        self.radioButton_xml1_num_none = QRadioButton(self.frame_7)
+        self.radioButton_xml1_num_none.setObjectName(u"radioButton_xml1_num_none")
 
-        self.horizontalLayout_3.addWidget(self.radioButton)
+        self.horizontalLayout_3.addWidget(self.radioButton_xml1_num_none)
 
-        self.radioButton_2 = QRadioButton(self.frame_7)
-        self.radioButton_2.setObjectName(u"radioButton_2")
+        self.radioButton_xml1_num = QRadioButton(self.frame_7)
+        self.radioButton_xml1_num.setObjectName(u"radioButton_xml1_num")
 
-        self.horizontalLayout_3.addWidget(self.radioButton_2)
+        self.horizontalLayout_3.addWidget(self.radioButton_xml1_num)
 
-        self.lineEdit = QLineEdit(self.frame_7)
-        self.lineEdit.setObjectName(u"lineEdit")
-        self.lineEdit.setMaximumSize(QSize(50, 16777215))
+        self.lineEdit_xml1_num = QLineEdit(self.frame_7)
+        self.lineEdit_xml1_num.setObjectName(u"lineEdit_xml1_num")
+        self.lineEdit_xml1_num.setMaximumSize(QSize(50, 16777215))
 
-        self.horizontalLayout_3.addWidget(self.lineEdit)
+        self.horizontalLayout_3.addWidget(self.lineEdit_xml1_num)
 
         self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
@@ -144,21 +144,21 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_4.addWidget(self.label_5)
 
-        self.radioButton_3 = QRadioButton(self.frame_10)
-        self.radioButton_3.setObjectName(u"radioButton_3")
+        self.radioButton_xml2_num_none = QRadioButton(self.frame_10)
+        self.radioButton_xml2_num_none.setObjectName(u"radioButton_xml2_num_none")
 
-        self.horizontalLayout_4.addWidget(self.radioButton_3)
+        self.horizontalLayout_4.addWidget(self.radioButton_xml2_num_none)
 
-        self.radioButton_4 = QRadioButton(self.frame_10)
-        self.radioButton_4.setObjectName(u"radioButton_4")
+        self.radioButton_xml2_num = QRadioButton(self.frame_10)
+        self.radioButton_xml2_num.setObjectName(u"radioButton_xml2_num")
 
-        self.horizontalLayout_4.addWidget(self.radioButton_4)
+        self.horizontalLayout_4.addWidget(self.radioButton_xml2_num)
 
-        self.lineEdit_2 = QLineEdit(self.frame_10)
-        self.lineEdit_2.setObjectName(u"lineEdit_2")
-        self.lineEdit_2.setMaximumSize(QSize(50, 16777215))
+        self.lineEdit_xml2_num = QLineEdit(self.frame_10)
+        self.lineEdit_xml2_num.setObjectName(u"lineEdit_xml2_num")
+        self.lineEdit_xml2_num.setMaximumSize(QSize(50, 16777215))
 
-        self.horizontalLayout_4.addWidget(self.lineEdit_2)
+        self.horizontalLayout_4.addWidget(self.lineEdit_xml2_num)
 
         self.horizontalSpacer_2 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
@@ -179,21 +179,21 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_5.addWidget(self.label_6)
 
-        self.radioButton_5 = QRadioButton(self.frame_9)
-        self.radioButton_5.setObjectName(u"radioButton_5")
+        self.radioButton_mua1_num_none = QRadioButton(self.frame_9)
+        self.radioButton_mua1_num_none.setObjectName(u"radioButton_mua1_num_none")
 
-        self.horizontalLayout_5.addWidget(self.radioButton_5)
+        self.horizontalLayout_5.addWidget(self.radioButton_mua1_num_none)
 
-        self.radioButton_6 = QRadioButton(self.frame_9)
-        self.radioButton_6.setObjectName(u"radioButton_6")
+        self.radioButton_mua1_num = QRadioButton(self.frame_9)
+        self.radioButton_mua1_num.setObjectName(u"radioButton_mua1_num")
 
-        self.horizontalLayout_5.addWidget(self.radioButton_6)
+        self.horizontalLayout_5.addWidget(self.radioButton_mua1_num)
 
-        self.lineEdit_3 = QLineEdit(self.frame_9)
-        self.lineEdit_3.setObjectName(u"lineEdit_3")
-        self.lineEdit_3.setMaximumSize(QSize(50, 16777215))
+        self.lineEdit_mua1_num = QLineEdit(self.frame_9)
+        self.lineEdit_mua1_num.setObjectName(u"lineEdit_mua1_num")
+        self.lineEdit_mua1_num.setMaximumSize(QSize(50, 16777215))
 
-        self.horizontalLayout_5.addWidget(self.lineEdit_3)
+        self.horizontalLayout_5.addWidget(self.lineEdit_mua1_num)
 
         self.horizontalSpacer_3 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
@@ -214,21 +214,21 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_6.addWidget(self.label_7)
 
-        self.radioButton_7 = QRadioButton(self.frame_8)
-        self.radioButton_7.setObjectName(u"radioButton_7")
+        self.radioButton_mua2_num_none = QRadioButton(self.frame_8)
+        self.radioButton_mua2_num_none.setObjectName(u"radioButton_mua2_num_none")
 
-        self.horizontalLayout_6.addWidget(self.radioButton_7)
+        self.horizontalLayout_6.addWidget(self.radioButton_mua2_num_none)
 
-        self.radioButton_8 = QRadioButton(self.frame_8)
-        self.radioButton_8.setObjectName(u"radioButton_8")
+        self.radioButton_mua2_num = QRadioButton(self.frame_8)
+        self.radioButton_mua2_num.setObjectName(u"radioButton_mua2_num")
 
-        self.horizontalLayout_6.addWidget(self.radioButton_8)
+        self.horizontalLayout_6.addWidget(self.radioButton_mua2_num)
 
-        self.lineEdit_4 = QLineEdit(self.frame_8)
-        self.lineEdit_4.setObjectName(u"lineEdit_4")
-        self.lineEdit_4.setMaximumSize(QSize(50, 16777215))
+        self.lineEdit_mua2_num = QLineEdit(self.frame_8)
+        self.lineEdit_mua2_num.setObjectName(u"lineEdit_mua2_num")
+        self.lineEdit_mua2_num.setMaximumSize(QSize(50, 16777215))
 
-        self.horizontalLayout_6.addWidget(self.lineEdit_4)
+        self.horizontalLayout_6.addWidget(self.lineEdit_mua2_num)
 
         self.horizontalSpacer_4 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
@@ -1143,7 +1143,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 874, 33))
+        self.menubar.setGeometry(QRect(0, 0, 889, 33))
         self.menuFile = QMenu(self.menubar)
         self.menuFile.setObjectName(u"menuFile")
         self.menuHelp = QMenu(self.menubar)
@@ -1152,19 +1152,19 @@ class Ui_MainWindow(object):
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
         MainWindow.setStatusBar(self.statusbar)
-        QWidget.setTabOrder(self.tabWidget, self.radioButton)
-        QWidget.setTabOrder(self.radioButton, self.radioButton_2)
-        QWidget.setTabOrder(self.radioButton_2, self.lineEdit)
-        QWidget.setTabOrder(self.lineEdit, self.radioButton_3)
-        QWidget.setTabOrder(self.radioButton_3, self.radioButton_4)
-        QWidget.setTabOrder(self.radioButton_4, self.lineEdit_2)
-        QWidget.setTabOrder(self.lineEdit_2, self.radioButton_5)
-        QWidget.setTabOrder(self.radioButton_5, self.radioButton_6)
-        QWidget.setTabOrder(self.radioButton_6, self.lineEdit_3)
-        QWidget.setTabOrder(self.lineEdit_3, self.radioButton_7)
-        QWidget.setTabOrder(self.radioButton_7, self.radioButton_8)
-        QWidget.setTabOrder(self.radioButton_8, self.lineEdit_4)
-        QWidget.setTabOrder(self.lineEdit_4, self.radioButton_10)
+        QWidget.setTabOrder(self.tabWidget, self.radioButton_xml1_num_none)
+        QWidget.setTabOrder(self.radioButton_xml1_num_none, self.radioButton_xml1_num)
+        QWidget.setTabOrder(self.radioButton_xml1_num, self.lineEdit_xml1_num)
+        QWidget.setTabOrder(self.lineEdit_xml1_num, self.radioButton_xml2_num_none)
+        QWidget.setTabOrder(self.radioButton_xml2_num_none, self.radioButton_xml2_num)
+        QWidget.setTabOrder(self.radioButton_xml2_num, self.lineEdit_xml2_num)
+        QWidget.setTabOrder(self.lineEdit_xml2_num, self.radioButton_mua1_num_none)
+        QWidget.setTabOrder(self.radioButton_mua1_num_none, self.radioButton_mua1_num)
+        QWidget.setTabOrder(self.radioButton_mua1_num, self.lineEdit_mua1_num)
+        QWidget.setTabOrder(self.lineEdit_mua1_num, self.radioButton_mua2_num_none)
+        QWidget.setTabOrder(self.radioButton_mua2_num_none, self.radioButton_mua2_num)
+        QWidget.setTabOrder(self.radioButton_mua2_num, self.lineEdit_mua2_num)
+        QWidget.setTabOrder(self.lineEdit_mua2_num, self.radioButton_10)
         QWidget.setTabOrder(self.radioButton_10, self.radioButton_11)
         QWidget.setTabOrder(self.radioButton_11, self.radioButton_9)
         QWidget.setTabOrder(self.radioButton_9, self.lineEdit_5)
@@ -1193,7 +1193,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.tabWidget.setCurrentIndex(3)
+        self.tabWidget.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -1213,18 +1213,18 @@ class Ui_MainWindow(object):
 #endif // QT_CONFIG(tooltip)
         self.label_3.setText("")
         self.label_4.setText(QCoreApplication.translate("MainWindow", u"XML1:", None))
-        self.radioButton.setText(QCoreApplication.translate("MainWindow", u"None", None))
-        self.radioButton_2.setText(QCoreApplication.translate("MainWindow", u"Number:", None))
-        self.lineEdit.setText("")
+        self.radioButton_xml1_num_none.setText(QCoreApplication.translate("MainWindow", u"None", None))
+        self.radioButton_xml1_num.setText(QCoreApplication.translate("MainWindow", u"Number:", None))
+        self.lineEdit_xml1_num.setText("")
         self.label_5.setText(QCoreApplication.translate("MainWindow", u"XML2:", None))
-        self.radioButton_3.setText(QCoreApplication.translate("MainWindow", u"None", None))
-        self.radioButton_4.setText(QCoreApplication.translate("MainWindow", u"Number:", None))
+        self.radioButton_xml2_num_none.setText(QCoreApplication.translate("MainWindow", u"None", None))
+        self.radioButton_xml2_num.setText(QCoreApplication.translate("MainWindow", u"Number:", None))
         self.label_6.setText(QCoreApplication.translate("MainWindow", u"MUA1:", None))
-        self.radioButton_5.setText(QCoreApplication.translate("MainWindow", u"None", None))
-        self.radioButton_6.setText(QCoreApplication.translate("MainWindow", u"Number:", None))
+        self.radioButton_mua1_num_none.setText(QCoreApplication.translate("MainWindow", u"None", None))
+        self.radioButton_mua1_num.setText(QCoreApplication.translate("MainWindow", u"Number:", None))
         self.label_7.setText(QCoreApplication.translate("MainWindow", u"MUA2:", None))
-        self.radioButton_7.setText(QCoreApplication.translate("MainWindow", u"None", None))
-        self.radioButton_8.setText(QCoreApplication.translate("MainWindow", u"Number:", None))
+        self.radioButton_mua2_num_none.setText(QCoreApplication.translate("MainWindow", u"None", None))
+        self.radioButton_mua2_num.setText(QCoreApplication.translate("MainWindow", u"Number:", None))
         self.label_8.setText(QCoreApplication.translate("MainWindow", u"Output Folder Paths:", None))
 #if QT_CONFIG(tooltip)
         self.label_9.setToolTip(QCoreApplication.translate("MainWindow", u"<html><head/><body><p>Enter the output folder for each game. If &quot;Detect&quot; is selected, output folder detection will be used. If &quot;None&quot; is selected, the game will be skipped.</p></body></html>", None))

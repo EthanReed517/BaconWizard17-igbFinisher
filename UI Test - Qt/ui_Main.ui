@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>874</width>
+    <width>889</width>
     <height>490</height>
    </rect>
   </property>
@@ -38,7 +38,7 @@
        <item>
         <widget class="QTabWidget" name="tabWidget">
          <property name="currentIndex">
-          <number>3</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="tab">
           <attribute name="title">
@@ -173,21 +173,21 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QRadioButton" name="radioButton">
+                  <widget class="QRadioButton" name="radioButton_xml1_num_none">
                    <property name="text">
                     <string>None</string>
                    </property>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QRadioButton" name="radioButton_2">
+                  <widget class="QRadioButton" name="radioButton_xml1_num">
                    <property name="text">
                     <string>Number:</string>
                    </property>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit">
+                  <widget class="QLineEdit" name="lineEdit_xml1_num">
                    <property name="maximumSize">
                     <size>
                      <width>50</width>
@@ -238,21 +238,21 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QRadioButton" name="radioButton_3">
+                  <widget class="QRadioButton" name="radioButton_xml2_num_none">
                    <property name="text">
                     <string>None</string>
                    </property>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QRadioButton" name="radioButton_4">
+                  <widget class="QRadioButton" name="radioButton_xml2_num">
                    <property name="text">
                     <string>Number:</string>
                    </property>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_2">
+                  <widget class="QLineEdit" name="lineEdit_xml2_num">
                    <property name="maximumSize">
                     <size>
                      <width>50</width>
@@ -300,21 +300,21 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QRadioButton" name="radioButton_5">
+                  <widget class="QRadioButton" name="radioButton_mua1_num_none">
                    <property name="text">
                     <string>None</string>
                    </property>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QRadioButton" name="radioButton_6">
+                  <widget class="QRadioButton" name="radioButton_mua1_num">
                    <property name="text">
                     <string>Number:</string>
                    </property>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_3">
+                  <widget class="QLineEdit" name="lineEdit_mua1_num">
                    <property name="maximumSize">
                     <size>
                      <width>50</width>
@@ -362,21 +362,21 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QRadioButton" name="radioButton_7">
+                  <widget class="QRadioButton" name="radioButton_mua2_num_none">
                    <property name="text">
                     <string>None</string>
                    </property>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QRadioButton" name="radioButton_8">
+                  <widget class="QRadioButton" name="radioButton_mua2_num">
                    <property name="text">
                     <string>Number:</string>
                    </property>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_4">
+                  <widget class="QLineEdit" name="lineEdit_mua2_num">
                    <property name="maximumSize">
                     <size>
                      <width>50</width>
@@ -2166,7 +2166,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>874</width>
+     <width>889</width>
      <height>33</height>
     </rect>
    </property>
@@ -2207,18 +2207,18 @@
  </widget>
  <tabstops>
   <tabstop>tabWidget</tabstop>
-  <tabstop>radioButton</tabstop>
-  <tabstop>radioButton_2</tabstop>
-  <tabstop>lineEdit</tabstop>
-  <tabstop>radioButton_3</tabstop>
-  <tabstop>radioButton_4</tabstop>
-  <tabstop>lineEdit_2</tabstop>
-  <tabstop>radioButton_5</tabstop>
-  <tabstop>radioButton_6</tabstop>
-  <tabstop>lineEdit_3</tabstop>
-  <tabstop>radioButton_7</tabstop>
-  <tabstop>radioButton_8</tabstop>
-  <tabstop>lineEdit_4</tabstop>
+  <tabstop>radioButton_xml1_num_none</tabstop>
+  <tabstop>radioButton_xml1_num</tabstop>
+  <tabstop>lineEdit_xml1_num</tabstop>
+  <tabstop>radioButton_xml2_num_none</tabstop>
+  <tabstop>radioButton_xml2_num</tabstop>
+  <tabstop>lineEdit_xml2_num</tabstop>
+  <tabstop>radioButton_mua1_num_none</tabstop>
+  <tabstop>radioButton_mua1_num</tabstop>
+  <tabstop>lineEdit_mua1_num</tabstop>
+  <tabstop>radioButton_mua2_num_none</tabstop>
+  <tabstop>radioButton_mua2_num</tabstop>
+  <tabstop>lineEdit_mua2_num</tabstop>
   <tabstop>radioButton_10</tabstop>
   <tabstop>radioButton_11</tabstop>
   <tabstop>radioButton_9</tabstop>
