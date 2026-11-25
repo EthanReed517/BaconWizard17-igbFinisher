@@ -16,9 +16,9 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
     QIcon, QImage, QKeySequence, QLinearGradient,
     QPainter, QPalette, QPixmap, QRadialGradient,
     QTransform)
-from PySide6.QtWidgets import (QApplication, QCheckBox, QFrame, QHBoxLayout,
-    QLabel, QLineEdit, QMainWindow, QMenu,
-    QMenuBar, QPushButton, QRadioButton, QSizePolicy,
+from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QFrame,
+    QHBoxLayout, QLabel, QLineEdit, QMainWindow,
+    QMenu, QMenuBar, QRadioButton, QSizePolicy,
     QSpacerItem, QStatusBar, QTabWidget, QToolButton,
     QVBoxLayout, QWidget)
 import ui_resources_rc
@@ -27,12 +27,13 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(876, 490)
+        MainWindow.resize(874, 490)
         icon = QIcon()
         icon.addFile(u":/icons/logo.ico", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         MainWindow.setWindowIcon(icon)
         self.actionExit = QAction(MainWindow)
         self.actionExit.setObjectName(u"actionExit")
+        self.actionExit.setMenuRole(QAction.MenuRole.TextHeuristicRole)
         self.actionAbout = QAction(MainWindow)
         self.actionAbout.setObjectName(u"actionAbout")
         self.centralwidget = QWidget(MainWindow)
@@ -310,11 +311,12 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_8.addWidget(self.lineEdit_5)
 
-        self.pushButton = QPushButton(self.frame_14)
-        self.pushButton.setObjectName(u"pushButton")
-        self.pushButton.setMaximumSize(QSize(24, 16777215))
+        self.toolButton_5 = QToolButton(self.frame_14)
+        self.toolButton_5.setObjectName(u"toolButton_5")
+        icon1 = QIcon(QIcon.fromTheme(QIcon.ThemeIcon.DocumentOpen))
+        self.toolButton_5.setIcon(icon1)
 
-        self.horizontalLayout_8.addWidget(self.pushButton)
+        self.horizontalLayout_8.addWidget(self.toolButton_5)
 
 
         self.verticalLayout_4.addWidget(self.frame_14)
@@ -354,6 +356,7 @@ class Ui_MainWindow(object):
 
         self.toolButton = QToolButton(self.frame_13)
         self.toolButton.setObjectName(u"toolButton")
+        self.toolButton.setIcon(icon1)
 
         self.horizontalLayout_9.addWidget(self.toolButton)
 
@@ -395,6 +398,7 @@ class Ui_MainWindow(object):
 
         self.toolButton_2 = QToolButton(self.frame_12)
         self.toolButton_2.setObjectName(u"toolButton_2")
+        self.toolButton_2.setIcon(icon1)
 
         self.horizontalLayout_10.addWidget(self.toolButton_2)
 
@@ -436,6 +440,7 @@ class Ui_MainWindow(object):
 
         self.toolButton_3 = QToolButton(self.frame_11)
         self.toolButton_3.setObjectName(u"toolButton_3")
+        self.toolButton_3.setIcon(icon1)
 
         self.horizontalLayout_11.addWidget(self.toolButton_3)
 
@@ -795,6 +800,310 @@ class Ui_MainWindow(object):
         self.tabWidget.addTab(self.tab_3, "")
         self.tab_4 = QWidget()
         self.tab_4.setObjectName(u"tab_4")
+        self.verticalLayout_8 = QVBoxLayout(self.tab_4)
+        self.verticalLayout_8.setObjectName(u"verticalLayout_8")
+        self.frame_18 = QFrame(self.tab_4)
+        self.frame_18.setObjectName(u"frame_18")
+        self.frame_18.setFrameShape(QFrame.Shape.NoFrame)
+        self.frame_18.setFrameShadow(QFrame.Shadow.Raised)
+        self.horizontalLayout_13 = QHBoxLayout(self.frame_18)
+        self.horizontalLayout_13.setObjectName(u"horizontalLayout_13")
+        self.horizontalLayout_13.setContentsMargins(-1, 3, -1, 0)
+        self.label_18 = QLabel(self.frame_18)
+        self.label_18.setObjectName(u"label_18")
+
+        self.horizontalLayout_13.addWidget(self.label_18)
+
+        self.label_19 = QLabel(self.frame_18)
+        self.label_19.setObjectName(u"label_19")
+        self.label_19.setPixmap(QPixmap(u":/ui/info_icon.png"))
+
+        self.horizontalLayout_13.addWidget(self.label_19)
+
+        self.horizontalSpacer_8 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_13.addItem(self.horizontalSpacer_8)
+
+
+        self.verticalLayout_8.addWidget(self.frame_18)
+
+        self.frame_19 = QFrame(self.tab_4)
+        self.frame_19.setObjectName(u"frame_19")
+        self.frame_19.setFrameShape(QFrame.Shape.StyledPanel)
+        self.frame_19.setFrameShadow(QFrame.Shadow.Raised)
+        self.verticalLayout_12 = QVBoxLayout(self.frame_19)
+        self.verticalLayout_12.setSpacing(6)
+        self.verticalLayout_12.setObjectName(u"verticalLayout_12")
+        self.verticalLayout_12.setContentsMargins(-1, 4, -1, 4)
+        self.frame_20 = QFrame(self.frame_19)
+        self.frame_20.setObjectName(u"frame_20")
+        self.frame_20.setFrameShape(QFrame.Shape.NoFrame)
+        self.frame_20.setFrameShadow(QFrame.Shadow.Raised)
+        self.horizontalLayout_14 = QHBoxLayout(self.frame_20)
+        self.horizontalLayout_14.setSpacing(6)
+        self.horizontalLayout_14.setObjectName(u"horizontalLayout_14")
+        self.horizontalLayout_14.setContentsMargins(0, 0, 0, 0)
+        self.checkBox_14 = QCheckBox(self.frame_20)
+        self.checkBox_14.setObjectName(u"checkBox_14")
+
+        self.horizontalLayout_14.addWidget(self.checkBox_14)
+
+        self.label_20 = QLabel(self.frame_20)
+        self.label_20.setObjectName(u"label_20")
+        self.label_20.setPixmap(QPixmap(u":/ui/info_icon.png"))
+
+        self.horizontalLayout_14.addWidget(self.label_20)
+
+        self.horizontalSpacer_9 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_14.addItem(self.horizontalSpacer_9)
+
+
+        self.verticalLayout_12.addWidget(self.frame_20)
+
+        self.frame_21 = QFrame(self.frame_19)
+        self.frame_21.setObjectName(u"frame_21")
+        self.frame_21.setFrameShape(QFrame.Shape.NoFrame)
+        self.frame_21.setFrameShadow(QFrame.Shadow.Raised)
+        self.horizontalLayout_15 = QHBoxLayout(self.frame_21)
+        self.horizontalLayout_15.setObjectName(u"horizontalLayout_15")
+        self.horizontalLayout_15.setContentsMargins(0, 0, 0, 0)
+        self.checkBox_15 = QCheckBox(self.frame_21)
+        self.checkBox_15.setObjectName(u"checkBox_15")
+
+        self.horizontalLayout_15.addWidget(self.checkBox_15)
+
+        self.label_21 = QLabel(self.frame_21)
+        self.label_21.setObjectName(u"label_21")
+        self.label_21.setPixmap(QPixmap(u":/ui/info_icon.png"))
+
+        self.horizontalLayout_15.addWidget(self.label_21)
+
+        self.horizontalSpacer_10 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_15.addItem(self.horizontalSpacer_10)
+
+
+        self.verticalLayout_12.addWidget(self.frame_21)
+
+        self.frame_29 = QFrame(self.frame_19)
+        self.frame_29.setObjectName(u"frame_29")
+        self.frame_29.setFrameShape(QFrame.Shape.NoFrame)
+        self.frame_29.setFrameShadow(QFrame.Shadow.Raised)
+        self.horizontalLayout_16 = QHBoxLayout(self.frame_29)
+        self.horizontalLayout_16.setObjectName(u"horizontalLayout_16")
+        self.horizontalLayout_16.setContentsMargins(0, 0, 0, 0)
+        self.checkBox_16 = QCheckBox(self.frame_29)
+        self.checkBox_16.setObjectName(u"checkBox_16")
+
+        self.horizontalLayout_16.addWidget(self.checkBox_16)
+
+        self.label_22 = QLabel(self.frame_29)
+        self.label_22.setObjectName(u"label_22")
+        self.label_22.setPixmap(QPixmap(u":/ui/info_icon.png"))
+
+        self.horizontalLayout_16.addWidget(self.label_22)
+
+        self.horizontalSpacer_12 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_16.addItem(self.horizontalSpacer_12)
+
+
+        self.verticalLayout_12.addWidget(self.frame_29)
+
+        self.frame_30 = QFrame(self.frame_19)
+        self.frame_30.setObjectName(u"frame_30")
+        self.frame_30.setFrameShape(QFrame.Shape.NoFrame)
+        self.frame_30.setFrameShadow(QFrame.Shadow.Raised)
+        self.horizontalLayout_17 = QHBoxLayout(self.frame_30)
+        self.horizontalLayout_17.setObjectName(u"horizontalLayout_17")
+        self.horizontalLayout_17.setContentsMargins(0, 0, 0, 0)
+        self.checkBox_17 = QCheckBox(self.frame_30)
+        self.checkBox_17.setObjectName(u"checkBox_17")
+
+        self.horizontalLayout_17.addWidget(self.checkBox_17)
+
+        self.label_23 = QLabel(self.frame_30)
+        self.label_23.setObjectName(u"label_23")
+        self.label_23.setPixmap(QPixmap(u":/ui/info_icon.png"))
+
+        self.horizontalLayout_17.addWidget(self.label_23)
+
+        self.horizontalSpacer_13 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_17.addItem(self.horizontalSpacer_13)
+
+
+        self.verticalLayout_12.addWidget(self.frame_30)
+
+        self.frame_31 = QFrame(self.frame_19)
+        self.frame_31.setObjectName(u"frame_31")
+        self.frame_31.setFrameShape(QFrame.Shape.NoFrame)
+        self.frame_31.setFrameShadow(QFrame.Shadow.Raised)
+        self.horizontalLayout_18 = QHBoxLayout(self.frame_31)
+        self.horizontalLayout_18.setObjectName(u"horizontalLayout_18")
+        self.horizontalLayout_18.setContentsMargins(0, 0, 0, 0)
+        self.checkBox_18 = QCheckBox(self.frame_31)
+        self.checkBox_18.setObjectName(u"checkBox_18")
+
+        self.horizontalLayout_18.addWidget(self.checkBox_18)
+
+        self.label_24 = QLabel(self.frame_31)
+        self.label_24.setObjectName(u"label_24")
+        self.label_24.setPixmap(QPixmap(u":/ui/info_icon.png"))
+
+        self.horizontalLayout_18.addWidget(self.label_24)
+
+        self.horizontalSpacer_14 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_18.addItem(self.horizontalSpacer_14)
+
+
+        self.verticalLayout_12.addWidget(self.frame_31)
+
+        self.frame_32 = QFrame(self.frame_19)
+        self.frame_32.setObjectName(u"frame_32")
+        self.frame_32.setFrameShape(QFrame.Shape.NoFrame)
+        self.frame_32.setFrameShadow(QFrame.Shadow.Raised)
+        self.horizontalLayout_19 = QHBoxLayout(self.frame_32)
+        self.horizontalLayout_19.setObjectName(u"horizontalLayout_19")
+        self.horizontalLayout_19.setContentsMargins(0, 0, 0, 0)
+        self.checkBox_19 = QCheckBox(self.frame_32)
+        self.checkBox_19.setObjectName(u"checkBox_19")
+
+        self.horizontalLayout_19.addWidget(self.checkBox_19)
+
+        self.label_25 = QLabel(self.frame_32)
+        self.label_25.setObjectName(u"label_25")
+        self.label_25.setPixmap(QPixmap(u":/ui/info_icon.png"))
+
+        self.horizontalLayout_19.addWidget(self.label_25)
+
+        self.horizontalSpacer_15 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_19.addItem(self.horizontalSpacer_15)
+
+
+        self.verticalLayout_12.addWidget(self.frame_32)
+
+        self.frame_34 = QFrame(self.frame_19)
+        self.frame_34.setObjectName(u"frame_34")
+        self.frame_34.setFrameShape(QFrame.Shape.NoFrame)
+        self.frame_34.setFrameShadow(QFrame.Shadow.Raised)
+        self.horizontalLayout_28 = QHBoxLayout(self.frame_34)
+        self.horizontalLayout_28.setObjectName(u"horizontalLayout_28")
+        self.horizontalLayout_28.setContentsMargins(0, 0, 0, 0)
+        self.checkBox_20 = QCheckBox(self.frame_34)
+        self.checkBox_20.setObjectName(u"checkBox_20")
+
+        self.horizontalLayout_28.addWidget(self.checkBox_20)
+
+        self.label_38 = QLabel(self.frame_34)
+        self.label_38.setObjectName(u"label_38")
+        self.label_38.setPixmap(QPixmap(u":/ui/info_icon.png"))
+
+        self.horizontalLayout_28.addWidget(self.label_38)
+
+        self.lineEdit_9 = QLineEdit(self.frame_34)
+        self.lineEdit_9.setObjectName(u"lineEdit_9")
+
+        self.horizontalLayout_28.addWidget(self.lineEdit_9)
+
+        self.toolButton_4 = QToolButton(self.frame_34)
+        self.toolButton_4.setObjectName(u"toolButton_4")
+        self.toolButton_4.setIcon(icon1)
+
+        self.horizontalLayout_28.addWidget(self.toolButton_4)
+
+
+        self.verticalLayout_12.addWidget(self.frame_34)
+
+        self.line_2 = QFrame(self.frame_19)
+        self.line_2.setObjectName(u"line_2")
+        self.line_2.setFrameShape(QFrame.Shape.HLine)
+        self.line_2.setFrameShadow(QFrame.Shadow.Sunken)
+
+        self.verticalLayout_12.addWidget(self.line_2)
+
+        self.frame_33 = QFrame(self.frame_19)
+        self.frame_33.setObjectName(u"frame_33")
+        self.frame_33.setFrameShape(QFrame.Shape.NoFrame)
+        self.frame_33.setFrameShadow(QFrame.Shadow.Raised)
+        self.horizontalLayout_26 = QHBoxLayout(self.frame_33)
+        self.horizontalLayout_26.setObjectName(u"horizontalLayout_26")
+        self.horizontalLayout_26.setContentsMargins(0, 0, 0, 0)
+        self.label_26 = QLabel(self.frame_33)
+        self.label_26.setObjectName(u"label_26")
+
+        self.horizontalLayout_26.addWidget(self.label_26)
+
+        self.comboBox = QComboBox(self.frame_33)
+        self.comboBox.addItem("")
+        self.comboBox.addItem("")
+        self.comboBox.addItem("")
+        self.comboBox.setObjectName(u"comboBox")
+        self.comboBox.setEditable(True)
+        self.comboBox.setSizeAdjustPolicy(QComboBox.SizeAdjustPolicy.AdjustToContents)
+
+        self.horizontalLayout_26.addWidget(self.comboBox)
+
+        self.label_35 = QLabel(self.frame_33)
+        self.label_35.setObjectName(u"label_35")
+        self.label_35.setPixmap(QPixmap(u":/ui/info_icon.png"))
+
+        self.horizontalLayout_26.addWidget(self.label_35)
+
+        self.horizontalSpacer_17 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_26.addItem(self.horizontalSpacer_17)
+
+
+        self.verticalLayout_12.addWidget(self.frame_33)
+
+        self.frame_35 = QFrame(self.frame_19)
+        self.frame_35.setObjectName(u"frame_35")
+        self.frame_35.setFrameShape(QFrame.Shape.NoFrame)
+        self.frame_35.setFrameShadow(QFrame.Shadow.Raised)
+        self.horizontalLayout_27 = QHBoxLayout(self.frame_35)
+        self.horizontalLayout_27.setObjectName(u"horizontalLayout_27")
+        self.horizontalLayout_27.setContentsMargins(0, 0, 0, 0)
+        self.label_36 = QLabel(self.frame_35)
+        self.label_36.setObjectName(u"label_36")
+
+        self.horizontalLayout_27.addWidget(self.label_36)
+
+        self.comboBox_forced_assets = QComboBox(self.frame_35)
+        self.comboBox_forced_assets.addItem("")
+        self.comboBox_forced_assets.setObjectName(u"comboBox_forced_assets")
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.comboBox_forced_assets.sizePolicy().hasHeightForWidth())
+        self.comboBox_forced_assets.setSizePolicy(sizePolicy)
+        self.comboBox_forced_assets.setSizeAdjustPolicy(QComboBox.SizeAdjustPolicy.AdjustToContents)
+
+        self.horizontalLayout_27.addWidget(self.comboBox_forced_assets)
+
+        self.label_37 = QLabel(self.frame_35)
+        self.label_37.setObjectName(u"label_37")
+        self.label_37.setPixmap(QPixmap(u":/ui/info_icon.png"))
+
+        self.horizontalLayout_27.addWidget(self.label_37)
+
+        self.horizontalSpacer_18 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_27.addItem(self.horizontalSpacer_18)
+
+
+        self.verticalLayout_12.addWidget(self.frame_35)
+
+
+        self.verticalLayout_8.addWidget(self.frame_19)
+
+        self.verticalSpacer_4 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+
+        self.verticalLayout_8.addItem(self.verticalSpacer_4)
+
         self.tabWidget.addTab(self.tab_4, "")
 
         self.verticalLayout.addWidget(self.tabWidget)
@@ -834,7 +1143,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 876, 33))
+        self.menubar.setGeometry(QRect(0, 0, 874, 33))
         self.menuFile = QMenu(self.menubar)
         self.menuFile.setObjectName(u"menuFile")
         self.menuHelp = QMenu(self.menubar)
@@ -859,8 +1168,7 @@ class Ui_MainWindow(object):
         QWidget.setTabOrder(self.radioButton_10, self.radioButton_11)
         QWidget.setTabOrder(self.radioButton_11, self.radioButton_9)
         QWidget.setTabOrder(self.radioButton_9, self.lineEdit_5)
-        QWidget.setTabOrder(self.lineEdit_5, self.pushButton)
-        QWidget.setTabOrder(self.pushButton, self.radioButton_12)
+        QWidget.setTabOrder(self.lineEdit_5, self.radioButton_12)
         QWidget.setTabOrder(self.radioButton_12, self.radioButton_15)
         QWidget.setTabOrder(self.radioButton_15, self.radioButton_18)
         QWidget.setTabOrder(self.radioButton_18, self.lineEdit_6)
@@ -885,7 +1193,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(3)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -894,6 +1202,9 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"igbFinisher", None))
         self.actionExit.setText(QCoreApplication.translate("MainWindow", u"Exit", None))
+#if QT_CONFIG(shortcut)
+        self.actionExit.setShortcut(QCoreApplication.translate("MainWindow", u"Alt+F4", None))
+#endif // QT_CONFIG(shortcut)
         self.actionAbout.setText(QCoreApplication.translate("MainWindow", u"About", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"Processing Settings:", None))
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"Skin Numbers:", None))
@@ -923,7 +1234,7 @@ class Ui_MainWindow(object):
         self.radioButton_10.setText(QCoreApplication.translate("MainWindow", u"None", None))
         self.radioButton_11.setText(QCoreApplication.translate("MainWindow", u"Detect", None))
         self.radioButton_9.setText(QCoreApplication.translate("MainWindow", u"Path:", None))
-        self.pushButton.setText(QCoreApplication.translate("MainWindow", u"...", None))
+        self.toolButton_5.setText(QCoreApplication.translate("MainWindow", u"...", None))
         self.label_11.setText(QCoreApplication.translate("MainWindow", u"XML2:", None))
         self.radioButton_12.setText(QCoreApplication.translate("MainWindow", u"None", None))
         self.radioButton_15.setText(QCoreApplication.translate("MainWindow", u"Detect", None))
@@ -983,6 +1294,63 @@ class Ui_MainWindow(object):
         self.checkBox_8.setText(QCoreApplication.translate("MainWindow", u"Xbox", None))
         self.checkBox_9.setText(QCoreApplication.translate("MainWindow", u"Xbox 360", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), QCoreApplication.translate("MainWindow", u"Console", None))
+        self.label_18.setText(QCoreApplication.translate("MainWindow", u"Other Settings:", None))
+#if QT_CONFIG(tooltip)
+        self.label_19.setToolTip(QCoreApplication.translate("MainWindow", u"<html><head/><body><p>Additional settings that control the output.</p></body></html>", None))
+#endif // QT_CONFIG(tooltip)
+        self.label_19.setText("")
+        self.checkBox_14.setText(QCoreApplication.translate("MainWindow", u"Process with big textures", None))
+#if QT_CONFIG(tooltip)
+        self.label_20.setToolTip(QCoreApplication.translate("MainWindow", u"<html><head/><body><p>If oversized textures should preserve their original size on weaker consoles (GameCube, PS2, PSP). This is ignored for 2D assets.</p><p>This is recomended for large characters like Galactus/Ymir or for specific assets like maps, where it will preserve the original texture size for XML1, XML2, and MUA1 PS2 and only cut it in half for GameCube, PSP, and MUA2 PS2. Otherwise, it should be turned off, and the textures will be scaled to the maximum recommended size for that console. </p></body></html>", None))
+#endif // QT_CONFIG(tooltip)
+        self.label_20.setText("")
+#if QT_CONFIG(tooltip)
+        self.frame_21.setToolTip(QCoreApplication.translate("MainWindow", u"<html><head/><body><p>If this is a secondary skin (like Human Torch's flame on skin), which should have its texture size cut in half on weaker consoles (GameCube, PS2, and PSP). This setting only applies to Skins. For XML1/XML2/MUA1 PS2, this setting also applies to Other models, which are sometimes the same resolution as the more powerful consoles, but sometimes they are the same as the weaker consoles.</p></body></html>", None))
+#endif // QT_CONFIG(tooltip)
+        self.checkBox_15.setText(QCoreApplication.translate("MainWindow", u"Secondary skin", None))
+        self.label_21.setText("")
+        self.checkBox_16.setText(QCoreApplication.translate("MainWindow", u"Untextured models are okay", None))
+#if QT_CONFIG(tooltip)
+        self.label_22.setToolTip(QCoreApplication.translate("MainWindow", u"<html><head/><body><p>Whether untextured models can be processed. Only applies to 3D assets, as 2D assets always need a texture.</p></body></html>", None))
+#endif // QT_CONFIG(tooltip)
+        self.label_22.setText("")
+        self.checkBox_17.setText(QCoreApplication.translate("MainWindow", u"Generate collision", None))
+#if QT_CONFIG(tooltip)
+        self.label_23.setToolTip(QCoreApplication.translate("MainWindow", u"<html><head/><body><p>If collision should be generated with the Alchemy 3.2 &quot;igCollideHullRaven&quot; optimization. This setting only applies to Other models and is only recommended for maps and map models.</p></body></html>", None))
+#endif // QT_CONFIG(tooltip)
+        self.label_23.setText("")
+        self.checkBox_18.setText(QCoreApplication.translate("MainWindow", u"Convert igBlend transparency attributes to igAlpha", None))
+#if QT_CONFIG(tooltip)
+        self.label_24.setToolTip(QCoreApplication.translate("MainWindow", u"<html><head/><body><p>If igBlendFunctionAttr should be hex edited to igAlphaFunctionAttr and igBlendStateAttr should be hex edited to igAlphaStateAttr to allow transparent textures to appear correctly.</p></body></html>", None))
+#endif // QT_CONFIG(tooltip)
+        self.label_24.setText("")
+        self.checkBox_19.setText(QCoreApplication.translate("MainWindow", u"Skip subfolder", None))
+#if QT_CONFIG(tooltip)
+        self.label_25.setToolTip(QCoreApplication.translate("MainWindow", u"<html><head/><body><p>If the console-specific sub-folder should be skipped when exporting the assets, and the asset will just be exported directly to the chosen export directory. This is only recommended if you are exporting for one game/console.</p></body></html>", None))
+#endif // QT_CONFIG(tooltip)
+        self.label_25.setText("")
+        self.checkBox_20.setText(QCoreApplication.translate("MainWindow", u"Advanced texture ini", None))
+#if QT_CONFIG(tooltip)
+        self.label_38.setToolTip(QCoreApplication.translate("MainWindow", u"<html><head/><body><p>If an ini file for advanced textures should be used. If an advanced texture ini file is used, the asset will only be exported for MUA1 PC, Steam, PS3, and Xbox 360. This only works with 3D assets.</p></body></html>", None))
+#endif // QT_CONFIG(tooltip)
+        self.label_38.setText("")
+        self.toolButton_4.setText(QCoreApplication.translate("MainWindow", u"...", None))
+        self.label_26.setText(QCoreApplication.translate("MainWindow", u"Folder Grouping:", None))
+        self.comboBox.setItemText(0, QCoreApplication.translate("MainWindow", u"Automatic", None))
+        self.comboBox.setItemText(1, QCoreApplication.translate("MainWindow", u"Advanced Texture Folders (PC with Xbox 360, Steam with PS3)", None))
+        self.comboBox.setItemText(2, QCoreApplication.translate("MainWindow", u"Advanced Texture Folders (PC with PS3, Steam with Xbox 360)", None))
+
+#if QT_CONFIG(tooltip)
+        self.label_35.setToolTip(QCoreApplication.translate("MainWindow", u"<html><head/><body><p>If folders for certain consoles should be grouped together. </p></body></html>", None))
+#endif // QT_CONFIG(tooltip)
+        self.label_35.setText("")
+        self.label_36.setText(QCoreApplication.translate("MainWindow", u"Forced Asset Type:", None))
+        self.comboBox_forced_assets.setItemText(0, QCoreApplication.translate("MainWindow", u"New Item", None))
+
+#if QT_CONFIG(tooltip)
+        self.label_37.setToolTip(QCoreApplication.translate("MainWindow", u"<html><head/><body><p>If a specific asset type should be forced, regardless of file name.</p></body></html>", None))
+#endif // QT_CONFIG(tooltip)
+        self.label_37.setText("")
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_4), QCoreApplication.translate("MainWindow", u"Other", None))
         self.label_14.setText(QCoreApplication.translate("MainWindow", u"Drag and Drop igb Files Below or click to select files:", None))
         self.label_15.setText("")
