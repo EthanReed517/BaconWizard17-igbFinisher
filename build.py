@@ -216,7 +216,7 @@ if __name__ == '__main__':
         'pyinstaller',
         'igbFinisher.py',
         '--onefile',
-        '--icon=icon.ico',
+        '--icon=logo.ico',
         '--version-file=version_info.txt'
     ], check=True)
     # Create the zip file. It is made in the main folder to avoid self-referencing.
