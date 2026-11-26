@@ -308,11 +308,13 @@ class Ui_MainWindow(object):
         self.lineEdit_5 = QLineEdit(self.frame_14)
         self.lineEdit_5.setObjectName(u"lineEdit_5")
         self.lineEdit_5.setMinimumSize(QSize(200, 0))
+        self.lineEdit_5.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
 
         self.horizontalLayout_8.addWidget(self.lineEdit_5)
 
         self.toolButton_5 = QToolButton(self.frame_14)
         self.toolButton_5.setObjectName(u"toolButton_5")
+        self.toolButton_5.setEnabled(True)
         icon1 = QIcon(QIcon.fromTheme(QIcon.ThemeIcon.DocumentOpen))
         self.toolButton_5.setIcon(icon1)
 
@@ -351,6 +353,7 @@ class Ui_MainWindow(object):
         self.lineEdit_6 = QLineEdit(self.frame_13)
         self.lineEdit_6.setObjectName(u"lineEdit_6")
         self.lineEdit_6.setMinimumSize(QSize(200, 0))
+        self.lineEdit_6.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
 
         self.horizontalLayout_9.addWidget(self.lineEdit_6)
 
@@ -393,6 +396,7 @@ class Ui_MainWindow(object):
         self.lineEdit_7 = QLineEdit(self.frame_12)
         self.lineEdit_7.setObjectName(u"lineEdit_7")
         self.lineEdit_7.setMinimumSize(QSize(200, 0))
+        self.lineEdit_7.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
 
         self.horizontalLayout_10.addWidget(self.lineEdit_7)
 
@@ -435,6 +439,7 @@ class Ui_MainWindow(object):
         self.lineEdit_8 = QLineEdit(self.frame_11)
         self.lineEdit_8.setObjectName(u"lineEdit_8")
         self.lineEdit_8.setMinimumSize(QSize(200, 0))
+        self.lineEdit_8.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
 
         self.horizontalLayout_11.addWidget(self.lineEdit_8)
 
@@ -1006,6 +1011,7 @@ class Ui_MainWindow(object):
 
         self.lineEdit_9 = QLineEdit(self.frame_34)
         self.lineEdit_9.setObjectName(u"lineEdit_9")
+        self.lineEdit_9.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
 
         self.horizontalLayout_28.addWidget(self.lineEdit_9)
 
@@ -1276,7 +1282,7 @@ class Ui_MainWindow(object):
         self.radioButton_13.setText(QCoreApplication.translate("MainWindow", u"Detect", None))
         self.radioButton_19.setText(QCoreApplication.translate("MainWindow", u"Path:", None))
         self.toolButton_2.setText(QCoreApplication.translate("MainWindow", u"...", None))
-        self.label_13.setText(QCoreApplication.translate("MainWindow", u"MUA2", None))
+        self.label_13.setText(QCoreApplication.translate("MainWindow", u"MUA2:", None))
         self.radioButton_17.setText(QCoreApplication.translate("MainWindow", u"None", None))
         self.radioButton_14.setText(QCoreApplication.translate("MainWindow", u"Detect", None))
         self.radioButton_20.setText(QCoreApplication.translate("MainWindow", u"Path:", None))
