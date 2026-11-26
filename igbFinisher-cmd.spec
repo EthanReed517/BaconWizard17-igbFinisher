@@ -2,7 +2,7 @@
 
 
 a = Analysis(
-    ['igbFinisher.py'],
+    ['igbFinisher-cmd.py'],
     pathex=[],
     binaries=[],
     datas=[],
@@ -22,7 +22,7 @@ exe = EXE(
     a.binaries,
     a.datas,
     [],
-    name='igbFinisher',
+    name='igbFinisher-cmd',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,

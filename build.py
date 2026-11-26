@@ -61,8 +61,8 @@ def WriteExeBatchFile(application_path, dist_folder):
     with open((dist_folder / 'igbFinisher.bat'), 'w') as file:
         for line in batch_file_lines:
             if not('pause' in line):
-                if 'igbFinisher.py' in line:
-                    line = line.replace('igbFinisher.py', 'igbFinisher.exe')
+                if 'igbFinisher-cmd.py' in line:
+                    line = line.replace('igbFinisher-cmd.py', 'igbFinisher-cmd.exe')
                 if 'py ' in line:
                     line = line.replace('py ', '')
                 file.write(line)
@@ -176,14 +176,16 @@ if __name__ == '__main__':
     # Get the folder that this is functioning in.
     application_path = Path(__file__).parent
     # Get the version number.
-    app_version_windows, app_version = GetVersion(application_path / 'igbFinisher.py')
+    app_version_windows, app_version = GetVersion(application_path / 'igbFinisher-cmd.py')
     questions.PrintImportant(f'Building igbFinisher v{app_version} . . .')
-    # Remove the dist folder if it exists and (re)make it.
+    # Remove the dist and release folder if it exists and (re)make it.
     dist_folder = application_path / 'dist'
-    if dist_folder.exists():
-        questions.PrintImportant('Clearing existing folder . . .')
-        rmtree(dist_folder)
-    makedirs(dist_folder)
+    release_folder = application_path / 'release'
+    for subfolder in [dist_folder, release_folder]:
+        if subfolder.exists():
+            questions.PrintImportant('Clearing existing folder . . .')
+            rmtree(subfolder)
+        makedirs(subfolder)
     # Determine which build is being done.
     build_to_do = questions.Select('Which build are you compiling?', ['Personal Build', 'Release Build'])
     # Announce that resources are being copied.
@@ -204,17 +206,18 @@ if __name__ == '__main__':
         output_file='version_info.txt',
         version=app_version_windows,
         company_name='Marvel Mods',
-        file_description='Process igb Files After Export',
+        file_description='Command line tool to process igb Files After Export',
         internal_name='igbFinisher',
         legal_copyright=f'Copyright © {datetime.now().year} BaconWizard17. All Rights Reserved.',
-        original_filename='igbFinisher.exe',
-        product_name='igbFinisher'
+        original_filename='igbFinisher-cmd.exe',
+        product_name='igbFinisher Command Line'
     )
     # Run pyinstaller.
     questions.PrintImportant('Running pyinstaller . . .')
+    copy(application_path / 'design' / 'logo.ico', application_path)
     subprocess.run([
         'pyinstaller',
-        'igbFinisher.py',
+        'igbFinisher-cmd.py',
         '--onefile',
         '--icon=logo.ico',
         '--version-file=version_info.txt'
@@ -226,7 +229,7 @@ if __name__ == '__main__':
         format='zip',
         root_dir=application_path / 'dist'
     )
-    copy(f'{zip_file_path}.zip', application_path / 'dist')
+    copy(f'{zip_file_path}.zip', release_folder)
     remove(f'{zip_file_path}.zip')
     # Build the installer.
     UpdateISSVersion(application_path, app_version)
@@ -239,6 +242,7 @@ if __name__ == '__main__':
     # Clean up the version file.
     if (application_path / 'version_info.txt').exists():
         remove(application_path / 'version_info.txt')
+    remove(application_path / 'logo.ico')
     # Write the release docs.
     WriteReleaseDocs(application_path)
     questions.PrintSuccess(f'Successfully built igbFinisher v{app_version}!')

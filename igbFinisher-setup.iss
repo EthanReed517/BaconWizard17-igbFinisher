@@ -6,7 +6,7 @@
 #define MyAppVersion "5.0.0"
 #define MyAppPublisher "MarvelMods"
 #define MyAppURL "https://www.marvelmods.com/"
-#define MyAppExeName "igbFinisher.exe"
+#define MyAppExeName "igbFinisher-cmd.exe"
 #define DoubleAmp(Value) StringChange(Value, "&", "&&")
 #define EscapeConstArgument(Value) StringChange(StringChange(StringChange(Value, "%", "%25"), ",", "%2c"), "}", "%7d")
 
@@ -34,9 +34,9 @@ DefaultGroupName=Marvel Mods
 AllowNoIcons=yes
 ; Uncomment the following line to run in non administrative install mode (install for current user only).
 ;PrivilegesRequired=lowest
-OutputDir=C:\GitHub\BaconWizard17-igbFinisher\dist
+OutputDir=C:\GitHub\BaconWizard17-igbFinisher\release
 OutputBaseFilename=igbFinisher-v{#MyAppVersion}-setup
-SetupIconFile=C:\GitHub\BaconWizard17-igbFinisher\icon.ico
+SetupIconFile=C:\GitHub\BaconWizard17-igbFinisher\logo.ico
 SolidCompression=yes
 WizardStyle=modern
 
