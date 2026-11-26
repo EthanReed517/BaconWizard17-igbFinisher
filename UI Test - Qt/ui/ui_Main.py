@@ -19,15 +19,15 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
 from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QFrame,
     QHBoxLayout, QLabel, QLineEdit, QMainWindow,
     QMenu, QMenuBar, QRadioButton, QSizePolicy,
-    QSpacerItem, QStatusBar, QTabWidget, QToolButton,
-    QVBoxLayout, QWidget)
+    QSpacerItem, QStatusBar, QTabWidget, QTextEdit,
+    QToolButton, QVBoxLayout, QWidget)
 from . import ui_resources_rc
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(889, 490)
+        MainWindow.resize(911, 504)
         icon = QIcon()
         icon.addFile(u":/icons/logo.ico", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         MainWindow.setWindowIcon(icon)
@@ -1120,22 +1120,53 @@ class Ui_MainWindow(object):
 
         self.frame_2 = QFrame(self.centralwidget)
         self.frame_2.setObjectName(u"frame_2")
+        self.frame_2.setMinimumSize(QSize(0, 0))
         self.frame_2.setFrameShape(QFrame.Shape.StyledPanel)
         self.frame_2.setFrameShadow(QFrame.Shadow.Raised)
         self.verticalLayout_6 = QVBoxLayout(self.frame_2)
         self.verticalLayout_6.setObjectName(u"verticalLayout_6")
-        self.label_14 = QLabel(self.frame_2)
+        self.frame_36 = QFrame(self.frame_2)
+        self.frame_36.setObjectName(u"frame_36")
+        self.frame_36.setFrameShape(QFrame.Shape.StyledPanel)
+        self.frame_36.setFrameShadow(QFrame.Shadow.Raised)
+        self.verticalLayout_13 = QVBoxLayout(self.frame_36)
+        self.verticalLayout_13.setObjectName(u"verticalLayout_13")
+        self.label_14 = QLabel(self.frame_36)
         self.label_14.setObjectName(u"label_14")
         self.label_14.setMaximumSize(QSize(16777215, 36))
 
-        self.verticalLayout_6.addWidget(self.label_14)
+        self.verticalLayout_13.addWidget(self.label_14)
 
-        self.label_15 = QLabel(self.frame_2)
+        self.label_15 = QLabel(self.frame_36)
         self.label_15.setObjectName(u"label_15")
         self.label_15.setFrameShape(QFrame.Shape.Box)
         self.label_15.setPixmap(QPixmap(u":/ui/alchemy_logo.png"))
+        self.label_15.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        self.verticalLayout_6.addWidget(self.label_15)
+        self.verticalLayout_13.addWidget(self.label_15)
+
+
+        self.verticalLayout_6.addWidget(self.frame_36)
+
+        self.frame_37 = QFrame(self.frame_2)
+        self.frame_37.setObjectName(u"frame_37")
+        self.frame_37.setFrameShape(QFrame.Shape.StyledPanel)
+        self.frame_37.setFrameShadow(QFrame.Shadow.Raised)
+        self.verticalLayout_14 = QVBoxLayout(self.frame_37)
+        self.verticalLayout_14.setObjectName(u"verticalLayout_14")
+        self.label_39 = QLabel(self.frame_37)
+        self.label_39.setObjectName(u"label_39")
+
+        self.verticalLayout_14.addWidget(self.label_39)
+
+        self.textEdit = QTextEdit(self.frame_37)
+        self.textEdit.setObjectName(u"textEdit")
+        self.textEdit.setEnabled(False)
+
+        self.verticalLayout_14.addWidget(self.textEdit)
+
+
+        self.verticalLayout_6.addWidget(self.frame_37)
 
 
         self.horizontalLayout.addWidget(self.frame_2)
@@ -1143,7 +1174,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 889, 33))
+        self.menubar.setGeometry(QRect(0, 0, 911, 33))
         self.menuFile = QMenu(self.menubar)
         self.menuFile.setObjectName(u"menuFile")
         self.menuHelp = QMenu(self.menubar)
@@ -1354,6 +1385,7 @@ class Ui_MainWindow(object):
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_4), QCoreApplication.translate("MainWindow", u"Other", None))
         self.label_14.setText(QCoreApplication.translate("MainWindow", u"Drag and Drop igb Files Below or click to select files:", None))
         self.label_15.setText("")
+        self.label_39.setText(QCoreApplication.translate("MainWindow", u"Console", None))
         self.menuFile.setTitle(QCoreApplication.translate("MainWindow", u"File", None))
         self.menuHelp.setTitle(QCoreApplication.translate("MainWindow", u"Help", None))
     # retranslateUi
