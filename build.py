@@ -22,7 +22,7 @@ import subprocess
 def GetVersion(file_name):
     with open(file_name, 'r', encoding='utf-8') as f:
         for line in f:
-            if line.startswith('__version__') and '=' in line:
+            if line.startswith('APP_VERSION') and '=' in line:
                 version_str = line.split('=')[1].strip().strip('\'"')
                 # Windows requires a 4-number version number.
                 return f'{version_str}.0', version_str
@@ -176,7 +176,7 @@ if __name__ == '__main__':
     # Get the folder that this is functioning in.
     application_path = Path(__file__).parent
     # Get the version number.
-    app_version_windows, app_version = GetVersion(application_path / 'igbFinisher-cmd.py')
+    app_version_windows, app_version = GetVersion(application_path / 'info.py')
     questions.PrintImportant(f'Building igbFinisher v{app_version} . . .')
     # Remove the dist and release folder if it exists and (re)make it.
     dist_folder = application_path / 'dist'

@@ -11,6 +11,7 @@
 import alchemy
 import asset_recognition
 import hex
+import info
 import questions
 import processing
 import settings
@@ -20,13 +21,6 @@ from os import environ, listdir, remove, system
 from pathlib import Path
 import sys
 from time import sleep
-
-
-# ################ #
-# GLOBAL VARIABLES #
-# ################ #
-# The app version.
-__version__ = '5.0.0'
 
 
 # ######### #
@@ -40,9 +34,9 @@ def DisplayInfo():
     questions.PrintPlain('██║██║   ██║██╔══██╗██╔══╝  ██║██║╚██╗██║██║╚════██║██╔══██║██╔══╝  ██╔══██╗')
     questions.PrintPlain('██║╚██████╔╝██████╔╝██║     ██║██║ ╚████║██║███████║██║  ██║███████╗██║  ██║')
     questions.PrintPlain('╚═╝ ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚═╝  ╚═══╝╚═╝╚══════╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝')
-    questions.PrintPlain(f'\nVersion v{__version__}')
-    questions.PrintPlain('https://marvelmods.com/forum/index.php/topic,11440.0.html\n')
-    questions.PrintImportant("Welcome to BaconWizard17's igb Finisher!\n")
+    questions.PrintPlain(f'\nVersion v{info.APP_VERSION}')
+    questions.PrintPlain(f'{info.APP_URL}\n')
+    questions.PrintImportant(f"Welcome to BaconWizard17's {info.APP_NAME}!\n")
 
 # This function gets the application path to check if it's running as a .exe or .py.
 def GetApplicationPath():
@@ -59,7 +53,7 @@ def GetApplicationPath():
 # ############## #
 if __name__ == '__main__':
     # Set the window title and display welcome info.
-    system('title BaconWizard17\'s igb Finisher')
+    system('title igb Finisher')
     DisplayInfo()
     # Perform initial checks and gather information.
     application_path = GetApplicationPath()

@@ -8,7 +8,6 @@
 # IMPORTS #
 # ####### #
 # Internal modules
-import info
 from ui.func_Main import MainWindow
 # External modules
 import sys
