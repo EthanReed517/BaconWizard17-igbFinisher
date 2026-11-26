@@ -183,7 +183,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def on_none_selected_path(self, key: str):
         """Handles switching to the 'None' radio button."""
-        _, _, _, line_edit, tool_button = self.num_controls[key]
+        _, _, _, line_edit, tool_button = self.path_controls[key]
         line_edit.clear()
         line_edit.setEnabled(False)
         tool_button.setEnabled(False)
@@ -193,7 +193,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def on_detect_selected(self, key: str):
         """Handles switching to the 'Detect' radio button."""
-        _, _, _, line_edit, tool_button = self.num_controls[key]
+        _, _, _, line_edit, tool_button = self.path_controls[key]
         line_edit.clear()
         line_edit.setEnabled(False)
         tool_button.setEnabled(False)
@@ -213,7 +213,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def on_path_selected(self, key: str):
         """Handles switching to the 'Path' radio button."""
-        _, _, _, line_edit, tool_button = self.num_controls[key]
+        _, _, _, line_edit, tool_button = self.path_controls[key]
         line_edit.setEnabled(True)
         tool_button.setEnabled(True)
 
