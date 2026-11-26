@@ -290,35 +290,35 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_8.addWidget(self.label_10)
 
-        self.radioButton_10 = QRadioButton(self.frame_14)
-        self.radioButton_10.setObjectName(u"radioButton_10")
+        self.radioButton_xml1_path_none = QRadioButton(self.frame_14)
+        self.radioButton_xml1_path_none.setObjectName(u"radioButton_xml1_path_none")
 
-        self.horizontalLayout_8.addWidget(self.radioButton_10)
+        self.horizontalLayout_8.addWidget(self.radioButton_xml1_path_none)
 
-        self.radioButton_11 = QRadioButton(self.frame_14)
-        self.radioButton_11.setObjectName(u"radioButton_11")
+        self.radioButton_xml1_path_detect = QRadioButton(self.frame_14)
+        self.radioButton_xml1_path_detect.setObjectName(u"radioButton_xml1_path_detect")
 
-        self.horizontalLayout_8.addWidget(self.radioButton_11)
+        self.horizontalLayout_8.addWidget(self.radioButton_xml1_path_detect)
 
-        self.radioButton_9 = QRadioButton(self.frame_14)
-        self.radioButton_9.setObjectName(u"radioButton_9")
+        self.radioButton_xml1_path = QRadioButton(self.frame_14)
+        self.radioButton_xml1_path.setObjectName(u"radioButton_xml1_path")
 
-        self.horizontalLayout_8.addWidget(self.radioButton_9)
+        self.horizontalLayout_8.addWidget(self.radioButton_xml1_path)
 
-        self.lineEdit_5 = QLineEdit(self.frame_14)
-        self.lineEdit_5.setObjectName(u"lineEdit_5")
-        self.lineEdit_5.setMinimumSize(QSize(200, 0))
-        self.lineEdit_5.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
+        self.lineEdit_xml1_path = QLineEdit(self.frame_14)
+        self.lineEdit_xml1_path.setObjectName(u"lineEdit_xml1_path")
+        self.lineEdit_xml1_path.setMinimumSize(QSize(200, 0))
+        self.lineEdit_xml1_path.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
 
-        self.horizontalLayout_8.addWidget(self.lineEdit_5)
+        self.horizontalLayout_8.addWidget(self.lineEdit_xml1_path)
 
-        self.toolButton_5 = QToolButton(self.frame_14)
-        self.toolButton_5.setObjectName(u"toolButton_5")
-        self.toolButton_5.setEnabled(True)
+        self.toolButton_xml1_path = QToolButton(self.frame_14)
+        self.toolButton_xml1_path.setObjectName(u"toolButton_xml1_path")
+        self.toolButton_xml1_path.setEnabled(True)
         icon1 = QIcon(QIcon.fromTheme(QIcon.ThemeIcon.DocumentOpen))
-        self.toolButton_5.setIcon(icon1)
+        self.toolButton_xml1_path.setIcon(icon1)
 
-        self.horizontalLayout_8.addWidget(self.toolButton_5)
+        self.horizontalLayout_8.addWidget(self.toolButton_xml1_path)
 
 
         self.verticalLayout_4.addWidget(self.frame_14)
@@ -335,33 +335,33 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_9.addWidget(self.label_11)
 
-        self.radioButton_12 = QRadioButton(self.frame_13)
-        self.radioButton_12.setObjectName(u"radioButton_12")
+        self.radioButton_xml2_path_none = QRadioButton(self.frame_13)
+        self.radioButton_xml2_path_none.setObjectName(u"radioButton_xml2_path_none")
 
-        self.horizontalLayout_9.addWidget(self.radioButton_12)
+        self.horizontalLayout_9.addWidget(self.radioButton_xml2_path_none)
 
-        self.radioButton_15 = QRadioButton(self.frame_13)
-        self.radioButton_15.setObjectName(u"radioButton_15")
+        self.radioButton_xml2_path_detect = QRadioButton(self.frame_13)
+        self.radioButton_xml2_path_detect.setObjectName(u"radioButton_xml2_path_detect")
 
-        self.horizontalLayout_9.addWidget(self.radioButton_15)
+        self.horizontalLayout_9.addWidget(self.radioButton_xml2_path_detect)
 
-        self.radioButton_18 = QRadioButton(self.frame_13)
-        self.radioButton_18.setObjectName(u"radioButton_18")
+        self.radioButton_xml2_path = QRadioButton(self.frame_13)
+        self.radioButton_xml2_path.setObjectName(u"radioButton_xml2_path")
 
-        self.horizontalLayout_9.addWidget(self.radioButton_18)
+        self.horizontalLayout_9.addWidget(self.radioButton_xml2_path)
 
-        self.lineEdit_6 = QLineEdit(self.frame_13)
-        self.lineEdit_6.setObjectName(u"lineEdit_6")
-        self.lineEdit_6.setMinimumSize(QSize(200, 0))
-        self.lineEdit_6.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
+        self.lineEdit_xml2_path = QLineEdit(self.frame_13)
+        self.lineEdit_xml2_path.setObjectName(u"lineEdit_xml2_path")
+        self.lineEdit_xml2_path.setMinimumSize(QSize(200, 0))
+        self.lineEdit_xml2_path.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
 
-        self.horizontalLayout_9.addWidget(self.lineEdit_6)
+        self.horizontalLayout_9.addWidget(self.lineEdit_xml2_path)
 
-        self.toolButton = QToolButton(self.frame_13)
-        self.toolButton.setObjectName(u"toolButton")
-        self.toolButton.setIcon(icon1)
+        self.toolButton_xml2_path = QToolButton(self.frame_13)
+        self.toolButton_xml2_path.setObjectName(u"toolButton_xml2_path")
+        self.toolButton_xml2_path.setIcon(icon1)
 
-        self.horizontalLayout_9.addWidget(self.toolButton)
+        self.horizontalLayout_9.addWidget(self.toolButton_xml2_path)
 
 
         self.verticalLayout_4.addWidget(self.frame_13)
@@ -378,33 +378,33 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_10.addWidget(self.label_12)
 
-        self.radioButton_16 = QRadioButton(self.frame_12)
-        self.radioButton_16.setObjectName(u"radioButton_16")
+        self.radioButton_mua1_path_none = QRadioButton(self.frame_12)
+        self.radioButton_mua1_path_none.setObjectName(u"radioButton_mua1_path_none")
 
-        self.horizontalLayout_10.addWidget(self.radioButton_16)
+        self.horizontalLayout_10.addWidget(self.radioButton_mua1_path_none)
 
-        self.radioButton_13 = QRadioButton(self.frame_12)
-        self.radioButton_13.setObjectName(u"radioButton_13")
+        self.radioButton_mua1_path_detect = QRadioButton(self.frame_12)
+        self.radioButton_mua1_path_detect.setObjectName(u"radioButton_mua1_path_detect")
 
-        self.horizontalLayout_10.addWidget(self.radioButton_13)
+        self.horizontalLayout_10.addWidget(self.radioButton_mua1_path_detect)
 
-        self.radioButton_19 = QRadioButton(self.frame_12)
-        self.radioButton_19.setObjectName(u"radioButton_19")
+        self.radioButton_mua1_path = QRadioButton(self.frame_12)
+        self.radioButton_mua1_path.setObjectName(u"radioButton_mua1_path")
 
-        self.horizontalLayout_10.addWidget(self.radioButton_19)
+        self.horizontalLayout_10.addWidget(self.radioButton_mua1_path)
 
-        self.lineEdit_7 = QLineEdit(self.frame_12)
-        self.lineEdit_7.setObjectName(u"lineEdit_7")
-        self.lineEdit_7.setMinimumSize(QSize(200, 0))
-        self.lineEdit_7.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
+        self.lineEdit_mua1_path = QLineEdit(self.frame_12)
+        self.lineEdit_mua1_path.setObjectName(u"lineEdit_mua1_path")
+        self.lineEdit_mua1_path.setMinimumSize(QSize(200, 0))
+        self.lineEdit_mua1_path.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
 
-        self.horizontalLayout_10.addWidget(self.lineEdit_7)
+        self.horizontalLayout_10.addWidget(self.lineEdit_mua1_path)
 
-        self.toolButton_2 = QToolButton(self.frame_12)
-        self.toolButton_2.setObjectName(u"toolButton_2")
-        self.toolButton_2.setIcon(icon1)
+        self.toolButton_mua1_path = QToolButton(self.frame_12)
+        self.toolButton_mua1_path.setObjectName(u"toolButton_mua1_path")
+        self.toolButton_mua1_path.setIcon(icon1)
 
-        self.horizontalLayout_10.addWidget(self.toolButton_2)
+        self.horizontalLayout_10.addWidget(self.toolButton_mua1_path)
 
 
         self.verticalLayout_4.addWidget(self.frame_12)
@@ -421,33 +421,33 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_11.addWidget(self.label_13)
 
-        self.radioButton_17 = QRadioButton(self.frame_11)
-        self.radioButton_17.setObjectName(u"radioButton_17")
+        self.radioButton_mua2_path_none = QRadioButton(self.frame_11)
+        self.radioButton_mua2_path_none.setObjectName(u"radioButton_mua2_path_none")
 
-        self.horizontalLayout_11.addWidget(self.radioButton_17)
+        self.horizontalLayout_11.addWidget(self.radioButton_mua2_path_none)
 
-        self.radioButton_14 = QRadioButton(self.frame_11)
-        self.radioButton_14.setObjectName(u"radioButton_14")
+        self.radioButton_mua2_path_detect = QRadioButton(self.frame_11)
+        self.radioButton_mua2_path_detect.setObjectName(u"radioButton_mua2_path_detect")
 
-        self.horizontalLayout_11.addWidget(self.radioButton_14)
+        self.horizontalLayout_11.addWidget(self.radioButton_mua2_path_detect)
 
-        self.radioButton_20 = QRadioButton(self.frame_11)
-        self.radioButton_20.setObjectName(u"radioButton_20")
+        self.radioButton_mua2_path = QRadioButton(self.frame_11)
+        self.radioButton_mua2_path.setObjectName(u"radioButton_mua2_path")
 
-        self.horizontalLayout_11.addWidget(self.radioButton_20)
+        self.horizontalLayout_11.addWidget(self.radioButton_mua2_path)
 
-        self.lineEdit_8 = QLineEdit(self.frame_11)
-        self.lineEdit_8.setObjectName(u"lineEdit_8")
-        self.lineEdit_8.setMinimumSize(QSize(200, 0))
-        self.lineEdit_8.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
+        self.lineEdit_mua2_path = QLineEdit(self.frame_11)
+        self.lineEdit_mua2_path.setObjectName(u"lineEdit_mua2_path")
+        self.lineEdit_mua2_path.setMinimumSize(QSize(200, 0))
+        self.lineEdit_mua2_path.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
 
-        self.horizontalLayout_11.addWidget(self.lineEdit_8)
+        self.horizontalLayout_11.addWidget(self.lineEdit_mua2_path)
 
-        self.toolButton_3 = QToolButton(self.frame_11)
-        self.toolButton_3.setObjectName(u"toolButton_3")
-        self.toolButton_3.setIcon(icon1)
+        self.toolButton_mua2_path = QToolButton(self.frame_11)
+        self.toolButton_mua2_path.setObjectName(u"toolButton_mua2_path")
+        self.toolButton_mua2_path.setIcon(icon1)
 
-        self.horizontalLayout_11.addWidget(self.toolButton_3)
+        self.horizontalLayout_11.addWidget(self.toolButton_mua2_path)
 
 
         self.verticalLayout_4.addWidget(self.frame_11)
@@ -1201,25 +1201,25 @@ class Ui_MainWindow(object):
         QWidget.setTabOrder(self.lineEdit_mua1_num, self.radioButton_mua2_num_none)
         QWidget.setTabOrder(self.radioButton_mua2_num_none, self.radioButton_mua2_num)
         QWidget.setTabOrder(self.radioButton_mua2_num, self.lineEdit_mua2_num)
-        QWidget.setTabOrder(self.lineEdit_mua2_num, self.radioButton_10)
-        QWidget.setTabOrder(self.radioButton_10, self.radioButton_11)
-        QWidget.setTabOrder(self.radioButton_11, self.radioButton_9)
-        QWidget.setTabOrder(self.radioButton_9, self.lineEdit_5)
-        QWidget.setTabOrder(self.lineEdit_5, self.radioButton_12)
-        QWidget.setTabOrder(self.radioButton_12, self.radioButton_15)
-        QWidget.setTabOrder(self.radioButton_15, self.radioButton_18)
-        QWidget.setTabOrder(self.radioButton_18, self.lineEdit_6)
-        QWidget.setTabOrder(self.lineEdit_6, self.toolButton)
-        QWidget.setTabOrder(self.toolButton, self.radioButton_16)
-        QWidget.setTabOrder(self.radioButton_16, self.radioButton_13)
-        QWidget.setTabOrder(self.radioButton_13, self.radioButton_19)
-        QWidget.setTabOrder(self.radioButton_19, self.lineEdit_7)
-        QWidget.setTabOrder(self.lineEdit_7, self.toolButton_2)
-        QWidget.setTabOrder(self.toolButton_2, self.radioButton_17)
-        QWidget.setTabOrder(self.radioButton_17, self.radioButton_14)
-        QWidget.setTabOrder(self.radioButton_14, self.radioButton_20)
-        QWidget.setTabOrder(self.radioButton_20, self.lineEdit_8)
-        QWidget.setTabOrder(self.lineEdit_8, self.toolButton_3)
+        QWidget.setTabOrder(self.lineEdit_mua2_num, self.radioButton_xml1_path_none)
+        QWidget.setTabOrder(self.radioButton_xml1_path_none, self.radioButton_xml1_path_detect)
+        QWidget.setTabOrder(self.radioButton_xml1_path_detect, self.radioButton_xml1_path)
+        QWidget.setTabOrder(self.radioButton_xml1_path, self.lineEdit_xml1_path)
+        QWidget.setTabOrder(self.lineEdit_xml1_path, self.radioButton_xml2_path_none)
+        QWidget.setTabOrder(self.radioButton_xml2_path_none, self.radioButton_xml2_path_detect)
+        QWidget.setTabOrder(self.radioButton_xml2_path_detect, self.radioButton_xml2_path)
+        QWidget.setTabOrder(self.radioButton_xml2_path, self.lineEdit_xml2_path)
+        QWidget.setTabOrder(self.lineEdit_xml2_path, self.toolButton_xml2_path)
+        QWidget.setTabOrder(self.toolButton_xml2_path, self.radioButton_mua1_path_none)
+        QWidget.setTabOrder(self.radioButton_mua1_path_none, self.radioButton_mua1_path_detect)
+        QWidget.setTabOrder(self.radioButton_mua1_path_detect, self.radioButton_mua1_path)
+        QWidget.setTabOrder(self.radioButton_mua1_path, self.lineEdit_mua1_path)
+        QWidget.setTabOrder(self.lineEdit_mua1_path, self.toolButton_mua1_path)
+        QWidget.setTabOrder(self.toolButton_mua1_path, self.radioButton_mua2_path_none)
+        QWidget.setTabOrder(self.radioButton_mua2_path_none, self.radioButton_mua2_path_detect)
+        QWidget.setTabOrder(self.radioButton_mua2_path_detect, self.radioButton_mua2_path)
+        QWidget.setTabOrder(self.radioButton_mua2_path, self.lineEdit_mua2_path)
+        QWidget.setTabOrder(self.lineEdit_mua2_path, self.toolButton_mua2_path)
 
         self.menubar.addAction(self.menuFile.menuAction())
         self.menubar.addAction(self.menuHelp.menuAction())
@@ -1268,25 +1268,25 @@ class Ui_MainWindow(object):
 #endif // QT_CONFIG(tooltip)
         self.label_9.setText("")
         self.label_10.setText(QCoreApplication.translate("MainWindow", u"XML1:", None))
-        self.radioButton_10.setText(QCoreApplication.translate("MainWindow", u"None", None))
-        self.radioButton_11.setText(QCoreApplication.translate("MainWindow", u"Detect", None))
-        self.radioButton_9.setText(QCoreApplication.translate("MainWindow", u"Path:", None))
-        self.toolButton_5.setText(QCoreApplication.translate("MainWindow", u"...", None))
+        self.radioButton_xml1_path_none.setText(QCoreApplication.translate("MainWindow", u"None", None))
+        self.radioButton_xml1_path_detect.setText(QCoreApplication.translate("MainWindow", u"Detect", None))
+        self.radioButton_xml1_path.setText(QCoreApplication.translate("MainWindow", u"Path:", None))
+        self.toolButton_xml1_path.setText(QCoreApplication.translate("MainWindow", u"...", None))
         self.label_11.setText(QCoreApplication.translate("MainWindow", u"XML2:", None))
-        self.radioButton_12.setText(QCoreApplication.translate("MainWindow", u"None", None))
-        self.radioButton_15.setText(QCoreApplication.translate("MainWindow", u"Detect", None))
-        self.radioButton_18.setText(QCoreApplication.translate("MainWindow", u"Path:", None))
-        self.toolButton.setText(QCoreApplication.translate("MainWindow", u"...", None))
+        self.radioButton_xml2_path_none.setText(QCoreApplication.translate("MainWindow", u"None", None))
+        self.radioButton_xml2_path_detect.setText(QCoreApplication.translate("MainWindow", u"Detect", None))
+        self.radioButton_xml2_path.setText(QCoreApplication.translate("MainWindow", u"Path:", None))
+        self.toolButton_xml2_path.setText(QCoreApplication.translate("MainWindow", u"...", None))
         self.label_12.setText(QCoreApplication.translate("MainWindow", u"MUA1:", None))
-        self.radioButton_16.setText(QCoreApplication.translate("MainWindow", u"None", None))
-        self.radioButton_13.setText(QCoreApplication.translate("MainWindow", u"Detect", None))
-        self.radioButton_19.setText(QCoreApplication.translate("MainWindow", u"Path:", None))
-        self.toolButton_2.setText(QCoreApplication.translate("MainWindow", u"...", None))
+        self.radioButton_mua1_path_none.setText(QCoreApplication.translate("MainWindow", u"None", None))
+        self.radioButton_mua1_path_detect.setText(QCoreApplication.translate("MainWindow", u"Detect", None))
+        self.radioButton_mua1_path.setText(QCoreApplication.translate("MainWindow", u"Path:", None))
+        self.toolButton_mua1_path.setText(QCoreApplication.translate("MainWindow", u"...", None))
         self.label_13.setText(QCoreApplication.translate("MainWindow", u"MUA2:", None))
-        self.radioButton_17.setText(QCoreApplication.translate("MainWindow", u"None", None))
-        self.radioButton_14.setText(QCoreApplication.translate("MainWindow", u"Detect", None))
-        self.radioButton_20.setText(QCoreApplication.translate("MainWindow", u"Path:", None))
-        self.toolButton_3.setText(QCoreApplication.translate("MainWindow", u"...", None))
+        self.radioButton_mua2_path_none.setText(QCoreApplication.translate("MainWindow", u"None", None))
+        self.radioButton_mua2_path_detect.setText(QCoreApplication.translate("MainWindow", u"Detect", None))
+        self.radioButton_mua2_path.setText(QCoreApplication.translate("MainWindow", u"Path:", None))
+        self.toolButton_mua2_path.setText(QCoreApplication.translate("MainWindow", u"...", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QCoreApplication.translate("MainWindow", u"Asset", None))
         self.label_27.setText(QCoreApplication.translate("MainWindow", u"Special Names:", None))
 #if QT_CONFIG(tooltip)

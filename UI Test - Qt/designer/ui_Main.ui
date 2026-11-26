@@ -526,28 +526,28 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QRadioButton" name="radioButton_10">
+                  <widget class="QRadioButton" name="radioButton_xml1_path_none">
                    <property name="text">
                     <string>None</string>
                    </property>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QRadioButton" name="radioButton_11">
+                  <widget class="QRadioButton" name="radioButton_xml1_path_detect">
                    <property name="text">
                     <string>Detect</string>
                    </property>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QRadioButton" name="radioButton_9">
+                  <widget class="QRadioButton" name="radioButton_xml1_path">
                    <property name="text">
                     <string>Path:</string>
                    </property>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_5">
+                  <widget class="QLineEdit" name="lineEdit_xml1_path">
                    <property name="minimumSize">
                     <size>
                      <width>200</width>
@@ -560,7 +560,7 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QToolButton" name="toolButton_5">
+                  <widget class="QToolButton" name="toolButton_xml1_path">
                    <property name="enabled">
                     <bool>true</bool>
                    </property>
@@ -598,28 +598,28 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QRadioButton" name="radioButton_12">
+                  <widget class="QRadioButton" name="radioButton_xml2_path_none">
                    <property name="text">
                     <string>None</string>
                    </property>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QRadioButton" name="radioButton_15">
+                  <widget class="QRadioButton" name="radioButton_xml2_path_detect">
                    <property name="text">
                     <string>Detect</string>
                    </property>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QRadioButton" name="radioButton_18">
+                  <widget class="QRadioButton" name="radioButton_xml2_path">
                    <property name="text">
                     <string>Path:</string>
                    </property>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_6">
+                  <widget class="QLineEdit" name="lineEdit_xml2_path">
                    <property name="minimumSize">
                     <size>
                      <width>200</width>
@@ -632,7 +632,7 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QToolButton" name="toolButton">
+                  <widget class="QToolButton" name="toolButton_xml2_path">
                    <property name="text">
                     <string>...</string>
                    </property>
@@ -667,28 +667,28 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QRadioButton" name="radioButton_16">
+                  <widget class="QRadioButton" name="radioButton_mua1_path_none">
                    <property name="text">
                     <string>None</string>
                    </property>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QRadioButton" name="radioButton_13">
+                  <widget class="QRadioButton" name="radioButton_mua1_path_detect">
                    <property name="text">
                     <string>Detect</string>
                    </property>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QRadioButton" name="radioButton_19">
+                  <widget class="QRadioButton" name="radioButton_mua1_path">
                    <property name="text">
                     <string>Path:</string>
                    </property>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_7">
+                  <widget class="QLineEdit" name="lineEdit_mua1_path">
                    <property name="minimumSize">
                     <size>
                      <width>200</width>
@@ -701,7 +701,7 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QToolButton" name="toolButton_2">
+                  <widget class="QToolButton" name="toolButton_mua1_path">
                    <property name="text">
                     <string>...</string>
                    </property>
@@ -736,28 +736,28 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QRadioButton" name="radioButton_17">
+                  <widget class="QRadioButton" name="radioButton_mua2_path_none">
                    <property name="text">
                     <string>None</string>
                    </property>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QRadioButton" name="radioButton_14">
+                  <widget class="QRadioButton" name="radioButton_mua2_path_detect">
                    <property name="text">
                     <string>Detect</string>
                    </property>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QRadioButton" name="radioButton_20">
+                  <widget class="QRadioButton" name="radioButton_mua2_path">
                    <property name="text">
                     <string>Path:</string>
                    </property>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_8">
+                  <widget class="QLineEdit" name="lineEdit_mua2_path">
                    <property name="minimumSize">
                     <size>
                      <width>200</width>
@@ -770,7 +770,7 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QToolButton" name="toolButton_3">
+                  <widget class="QToolButton" name="toolButton_mua2_path">
                    <property name="text">
                     <string>...</string>
                    </property>
@@ -2285,25 +2285,25 @@
   <tabstop>radioButton_mua2_num_none</tabstop>
   <tabstop>radioButton_mua2_num</tabstop>
   <tabstop>lineEdit_mua2_num</tabstop>
-  <tabstop>radioButton_10</tabstop>
-  <tabstop>radioButton_11</tabstop>
-  <tabstop>radioButton_9</tabstop>
-  <tabstop>lineEdit_5</tabstop>
-  <tabstop>radioButton_12</tabstop>
-  <tabstop>radioButton_15</tabstop>
-  <tabstop>radioButton_18</tabstop>
-  <tabstop>lineEdit_6</tabstop>
-  <tabstop>toolButton</tabstop>
-  <tabstop>radioButton_16</tabstop>
-  <tabstop>radioButton_13</tabstop>
-  <tabstop>radioButton_19</tabstop>
-  <tabstop>lineEdit_7</tabstop>
-  <tabstop>toolButton_2</tabstop>
-  <tabstop>radioButton_17</tabstop>
-  <tabstop>radioButton_14</tabstop>
-  <tabstop>radioButton_20</tabstop>
-  <tabstop>lineEdit_8</tabstop>
-  <tabstop>toolButton_3</tabstop>
+  <tabstop>radioButton_xml1_path_none</tabstop>
+  <tabstop>radioButton_xml1_path_detect</tabstop>
+  <tabstop>radioButton_xml1_path</tabstop>
+  <tabstop>lineEdit_xml1_path</tabstop>
+  <tabstop>radioButton_xml2_path_none</tabstop>
+  <tabstop>radioButton_xml2_path_detect</tabstop>
+  <tabstop>radioButton_xml2_path</tabstop>
+  <tabstop>lineEdit_xml2_path</tabstop>
+  <tabstop>toolButton_xml2_path</tabstop>
+  <tabstop>radioButton_mua1_path_none</tabstop>
+  <tabstop>radioButton_mua1_path_detect</tabstop>
+  <tabstop>radioButton_mua1_path</tabstop>
+  <tabstop>lineEdit_mua1_path</tabstop>
+  <tabstop>toolButton_mua1_path</tabstop>
+  <tabstop>radioButton_mua2_path_none</tabstop>
+  <tabstop>radioButton_mua2_path_detect</tabstop>
+  <tabstop>radioButton_mua2_path</tabstop>
+  <tabstop>lineEdit_mua2_path</tabstop>
+  <tabstop>toolButton_mua2_path</tabstop>
  </tabstops>
  <resources>
   <include location="ui_resources.qrc"/>

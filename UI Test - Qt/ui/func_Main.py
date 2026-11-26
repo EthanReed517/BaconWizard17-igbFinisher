@@ -45,11 +45,17 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         )
         self.RefreshForcedAssets()
         # Map settings values to their controls.
-        self.asset_controls = {
+        self.num_controls = {
             'XML1_num': (self.radioButton_xml1_num_none, self.radioButton_xml1_num, self.lineEdit_xml1_num),
             'XML2_num': (self.radioButton_xml2_num_none, self.radioButton_xml2_num, self.lineEdit_xml2_num),
             'MUA1_num': (self.radioButton_mua1_num_none, self.radioButton_mua1_num, self.lineEdit_mua1_num),
             'MUA2_num': (self.radioButton_mua2_num_none, self.radioButton_mua2_num, self.lineEdit_mua2_num)
+        }
+        self.path_controls = {
+            'XML1_path': (self.radioButton_xml1_path_none, self.radioButton_xml1_path_detect, self.radioButton_xml1_path, self.lineEdit_xml1_path, self.toolButton_xml1_path),
+            'XML2_path': (self.radioButton_xml2_path_none, self.radioButton_xml2_path_detect, self.radioButton_xml2_path, self.lineEdit_xml2_path, self.toolButton_xml2_path),
+            'MUA1_path': (self.radioButton_mua1_path_none, self.radioButton_mua1_path_detect, self.radioButton_mua1_path, self.lineEdit_mua1_path, self.toolButton_mua1_path),
+            'MUA2_path': (self.radioButton_mua2_path_none, self.radioButton_mua2_path_detect, self.radioButton_mua2_path, self.lineEdit_mua2_path, self.toolButton_mua2_path)
         }
         # Settings functions.
         self.load_settings()
@@ -80,7 +86,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if "ASSET" not in CONFIG:
             CONFIG["ASSET"] = {}
 
-        for key, (rb_none, rb_num, line_edit) in self.asset_controls.items():
+        for key, (rb_none, rb_num, line_edit) in self.num_controls.items():
             # Default to "None" if the key is missing from the file
             val = CONFIG["ASSET"].get(key, "None").strip()
 
@@ -107,12 +113,41 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                         f"The value '{val}' for {key} in settings.ini is not a valid number."
                     )
 
+        for key, (rb_none, rb_detect, rb_path, line_edit, tool_button) in self.path_controls.items():
+            # Default to "None" if the key is missing from the file
+            val = CONFIG["ASSET"].get(key, "None").strip()
+
+            if val == "None":
+                rb_none.setChecked(True)
+                line_edit.clear()
+                line_edit.setEnabled(False)
+                tool_button.setEnabled(False)
+
+            elif val == "Detect":
+                rb_detect.setChecked(True)
+                line_edit.clear()
+                line_edit.setEnabled(False)
+                tool_button.setEnabled(False)
+
+            elif val == "Ask":
+                rb_path.setChecked(True)
+                line_edit.clear()
+                line_edit.setEnabled(True)
+                tool_button.setEnabled(True)
+                
+            else:
+                rb_path.setChecked(True)
+                line_edit.setEnabled(True)
+                tool_button.setEnabled(True)
+                line_edit.setText(val)
+                
+
     def connect_signals(self):
         """Connects radio buttons and line edits using default arguments to capture loop variables."""
-        for key, (rb_none, rb_num, line_edit) in self.asset_controls.items():
+        for key, (rb_none, rb_num, line_edit) in self.num_controls.items():
             # toggled fires when checked state changes; we only act when checked == True
             rb_none.toggled.connect(
-                lambda checked, k=key: self.on_none_selected(k) if checked else None
+                lambda checked, k=key: self.on_none_selected_num(k) if checked else None
             )
             rb_num.toggled.connect(
                 lambda checked, k=key: self.on_number_selected(k) if checked else None
@@ -121,20 +156,66 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             line_edit.editingFinished.connect(
                 lambda k=key: self.on_line_edit_finished(k)
             )
+        for key, (rb_none, rb_detect, rb_path, line_edit, tool_button) in self.path_controls.items():
+            # toggled fires when checked state changes; we only act when checked == True
+            rb_none.toggled.connect(
+                lambda checked, k=key: self.on_none_selected_path(k) if checked else None
+            )
+            rb_detect.toggled.connect(
+                lambda checked, k=key: self.on_detect_selected(k) if checked else None
+            )
+            rb_path.toggled.connect(
+                lambda checked, k=key: self.on_path_selected(k) if checked else None
+            )
+            # editingFinished triggers when the user presses Enter or tabs/clicks away
+            #line_edit.editingFinished.connect(
+                #lambda k=key: self.on_line_edit_finished(k)
+            #)
 
-    def on_none_selected(self, key: str):
+    def on_none_selected_num(self, key: str):
         """Handles switching to the 'None' radio button."""
-        _, _, line_edit = self.asset_controls[key]
+        _, _, line_edit = self.num_controls[key]
         line_edit.clear()
         line_edit.setEnabled(False)
 
         CONFIG["ASSET"][key] = "None"
         self.save_ini()
 
+    def on_none_selected_path(self, key: str):
+        """Handles switching to the 'None' radio button."""
+        _, _, _, line_edit, tool_button = self.num_controls[key]
+        line_edit.clear()
+        line_edit.setEnabled(False)
+        tool_button.setEnabled(False)
+
+        CONFIG["ASSET"][key] = "None"
+        self.save_ini()
+
+    def on_detect_selected(self, key: str):
+        """Handles switching to the 'Detect' radio button."""
+        _, _, _, line_edit, tool_button = self.num_controls[key]
+        line_edit.clear()
+        line_edit.setEnabled(False)
+        tool_button.setEnabled(False)
+
+        CONFIG["ASSET"][key] = "Detect"
+        self.save_ini()
+
     def on_number_selected(self, key: str):
         """Handles switching to the 'Number' radio button."""
-        _, _, line_edit = self.asset_controls[key]
+        _, _, line_edit = self.num_controls[key]
         line_edit.setEnabled(True)
+
+        # If currently empty, immediately set to "Ask"
+        if not line_edit.text().strip():
+            CONFIG["ASSET"][key] = "Ask"
+            self.save_ini()
+
+    def on_path_selected(self, key: str):
+        """Handles switching to the 'Path' radio button."""
+        _, _, _, line_edit, tool_button = self.num_controls[key]
+        line_edit.setEnabled(True)
+        tool_button.setEnabled(True)
 
         # If currently empty, immediately set to "Ask"
         if not line_edit.text().strip():
@@ -146,7 +227,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if self._validating:
             return
 
-        _, rb_num, line_edit = self.asset_controls[key]
+        _, rb_num, line_edit = self.num_controls[key]
 
         # Ignore if 'Number' isn't selected (e.g., if disabled programmatically)
         if not rb_num.isChecked():
