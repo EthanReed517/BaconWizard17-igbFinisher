@@ -5,16 +5,11 @@ from PySide6.QtWidgets import QDialog, QComboBox
 import configparser
 import os
 
+import info
 from ui.ui_About import Ui_Dialog
 from ui.ui_Main import Ui_MainWindow
 
-APP_NAME = 'igbFinisher'
-APP_VERSION = '5.0.0'
-APP_AUTHOR = 'BaconWizard17'
-APP_DESCRIPTION = 'A program to process igb files after exporting from 3ds Max.'
-APP_URL = 'https://marvelmods.com/forum/index.php/topic,11440.0.html'
-APP_GITHUB = 'https://github.com/EthanReed517/BaconWizard17-igbFinisher'
-ASSET_TYPES = ['Skin', 'Mannequin', '3D Head', 'Conversation Portrait', 'Character Select Portrait', 'Comic Cover', 'Concept Art', 'Loading Screen', 'Other']
+
 
 INI_PATH = 'settings.ini'
 CONFIG = configparser.ConfigParser()
@@ -25,11 +20,11 @@ class AboutWindow(QDialog, Ui_Dialog):
         super().__init__(parent)
         self.setupUi(self)
         
-        self.label_name.setText(APP_NAME)
-        self.label_version.setText(f'Version v{APP_VERSION}')
-        self.label_desc.setText(APP_DESCRIPTION)
-        self.label_url.setText(f'<a href="{APP_URL}">Marvel Mods Release Post</a>')
-        self.label_url_github.setText(f'<a href="{APP_GITHUB}">GitHub Page</a>')
+        self.label_name.setText(info.APP_NAME)
+        self.label_version.setText(f'Version v{info.APP_VERSION}')
+        self.label_desc.setText(info.APP_DESCRIPTION)
+        self.label_url.setText(f'<a href="{info.APP_URL}">Marvel Mods Release Post</a>')
+        self.label_url_github.setText(f'<a href="{info.APP_GITHUB}">GitHub Page</a>')
         
         self.setFixedSize(self.sizeHint())
 
@@ -190,7 +185,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def RefreshForcedAssets(self):
         self.comboBox_forced_assets.blockSignals(True)
         self.comboBox_forced_assets.clear()
-        self.comboBox_forced_assets.addItems(['None', *ASSET_TYPES])
+        self.comboBox_forced_assets.addItems(['None', *info.ASSET_TYPES])
         self.comboBox_forced_assets.setCurrentIndex(0)
         self.comboBox_forced_assets.blockSignals(False)
     
