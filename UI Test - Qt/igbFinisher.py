@@ -5,8 +5,8 @@ from PySide6.QtWidgets import QDialog, QComboBox
 import configparser
 import os
 
-from ui_About import Ui_Dialog
-from ui_Main import Ui_MainWindow
+from ui.ui_About import Ui_Dialog
+from ui.ui_Main import Ui_MainWindow
 
 APP_NAME = 'igbFinisher'
 APP_VERSION = '5.0.0'

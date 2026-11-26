@@ -21,7 +21,7 @@ from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QFrame,
     QMenu, QMenuBar, QRadioButton, QSizePolicy,
     QSpacerItem, QStatusBar, QTabWidget, QToolButton,
     QVBoxLayout, QWidget)
-import ui_resources_rc
+from . import ui_resources_rc
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):

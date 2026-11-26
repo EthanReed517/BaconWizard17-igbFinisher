@@ -17,13 +17,13 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QAbstractButton, QApplication, QDialog, QDialogButtonBox,
     QLabel, QSizePolicy, QVBoxLayout, QWidget)
-import ui_resources_rc
+from . import ui_resources_rc
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         if not Dialog.objectName():
             Dialog.setObjectName(u"Dialog")
-        Dialog.resize(168, 294)
+        Dialog.resize(292, 422)
         sizePolicy = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -74,6 +74,7 @@ class Ui_Dialog(object):
         self.label_url_github = QLabel(Dialog)
         self.label_url_github.setObjectName(u"label_url_github")
         self.label_url_github.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.label_url_github.setOpenExternalLinks(True)
 
         self.verticalLayout.addWidget(self.label_url_github)
 
