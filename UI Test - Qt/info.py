@@ -1,3 +1,12 @@
+# ########### #
+# INFORMATION #
+# ########### #
+# This module holds important global variables for igbFinisher.
+
+
+# ################ #
+# GLOBAL VARIABLES #
+# ################ #
 APP_NAME = 'igbFinisher'
 APP_VERSION = '5.0.0'
 APP_AUTHOR = 'BaconWizard17'

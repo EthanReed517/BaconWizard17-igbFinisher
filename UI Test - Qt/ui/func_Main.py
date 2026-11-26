@@ -1,14 +1,34 @@
+# ########### #
+# INFORMATION #
+# ########### #
+# This module sets up the functionality of the about window.
+
+
+# ####### #
+# IMPORTS #
+# ####### #
+# Internal modules
+from .func_About import AboutWindow
+from .ui_Main import Ui_MainWindow
+import info
+# External modules
 from PySide6 import QtWidgets, QtCore
 import configparser
 import os
-import info
-from .func_About import AboutWindow
-from .ui_Main import Ui_MainWindow
 
+
+# ################ #
+# GLOBAL VARIABLES #
+# ################ #
 INI_PATH = 'settings.ini'
 CONFIG = configparser.ConfigParser()
 CONFIG.optionxform = str
 
+
+# ####### #
+# CLASSES #
+# ####### #
+# This is the main window.
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self):
         super().__init__()
@@ -16,10 +36,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.about_win = None
         # Prevent recursive popups on focus loss.
         self._validating = False
-        # Menubar functions.
+        # Add menubar functions.
         self.actionAbout.triggered.connect(self.OpenAbout)
         self.actionExit.triggered.connect(self.close)
-        # Load the options for the asset type.
+        # Load the options for the forced asset type.
         self.comboBox_forced_assets.setSizeAdjustPolicy(
             QtWidgets.QComboBox.SizeAdjustPolicy.AdjustToContents
         )
